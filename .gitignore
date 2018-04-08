@@ -31,6 +31,8 @@ Obj/
 /wwwroot/dist/
 !/wwwroot/dist/css/
 !/wwwroot/dist/fonts/
+!/wwwroot/dist/css/*
+!/wwwroot/dist/fonts/*
 /ClientApp/dist/
 
 # MSTest test Results
