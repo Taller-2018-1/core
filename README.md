@@ -1,7 +1,7 @@
 # Installation and run instructions
 
 ## Prerequisites
-* Node.js + npm
+* Node.js ≥ v8.9.0 + npm
 * .NET Core 2
 
 ## Installation
