@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace think_adgro_metrics.Controllers
+namespace think_agro_metrics.Controllers
 {
     public class HomeController : Controller
     {

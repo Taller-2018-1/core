@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace think_adgro_metrics
+namespace think_agro_metrics
 {
     public class Program
     {
