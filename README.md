@@ -1,4 +1,9 @@
 # Installation and run instructions
+
+## Prerequisites
+* Node.js + npm
+* .NET Core 2
+
 ## Installation
 ```bash
 npm install
