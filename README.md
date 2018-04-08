@@ -1,3 +1,7 @@
+Master: [![Build Status](https://travis-ci.org/Taller-2018-1/core.svg?branch=master)](https://travis-ci.org/Taller-2018-1/core) 
+
+Staging: [![Build Status](https://travis-ci.org/Taller-2018-1/core.svg?branch=staging)](https://travis-ci.org/Taller-2018-1/core)
+
 # Installation and run instructions
 
 ## Prerequisites
