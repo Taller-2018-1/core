@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace think_adgro_metrics.Controllers
+namespace think_agro_metrics.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
