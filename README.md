@@ -37,7 +37,7 @@ dotnet run
     ``` 
     - If not installed globally, use the version dowloaded with `npm install`.
 
-        **Note** : Run this on Windows PowerShell on Linux.
+        **Note** : Run this on Windows PowerShell or Linux.
     ```
     node_modules/.bin/webpack --config webpack.config.vendor.js
     ```
