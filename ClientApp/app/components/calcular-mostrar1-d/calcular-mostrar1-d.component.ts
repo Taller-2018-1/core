@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-calcular-mostrar1-d',
@@ -7,9 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalcularMostrar1DComponent implements OnInit {
 
-  constructor() { }
+  public indicador1d: Indicador1D;
+
+    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+        
+        http.get(baseUrl + 'api/CalcularMostrar1D/GetIndicador1D').subscribe(result => {
+            this.indicador1d = result.json() as Indicador1D;
+        }, error => console.error(error));
+
+
+    }
 
   ngOnInit() {
   }
 
+}
+
+
+interface Indicador1D {
+  id: string;
+  titulo: string;
+  descripcion : string;
+  recursos : Recurso[];
+}
+
+interface Recurso{
+  id : number;
 }

@@ -29,6 +29,7 @@ import { CalcularMostrar1DComponent } from './components/calcular-mostrar1-d/cal
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'CalcularMostrar1D', component: CalcularMostrar1DComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
