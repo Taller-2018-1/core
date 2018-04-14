@@ -28,18 +28,6 @@ Obj/
 
 # Visual Studio 2015 cache/options directory
 .vs/
-/wwwroot/dist/*
-!/wwwroot/dist/css/
-!/wwwroot/dist/fonts/
-!/wwwroot/dist/css/*/*
-!/wwwroot/dist/fonts/*/*
-!/wwwroot/dist/css/*/*/*
-!/wwwroot/dist/fonts/*/*/*
-!/wwwroot/dist/css/*/*/*/*
-!/wwwroot/dist/fonts/*/*/*/*
-!/wwwroot/dist/css/*/*/*/*/*
-!/wwwroot/dist/fonts/*/*/*/*/*
-/ClientApp/dist/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -195,8 +183,6 @@ orleans.codegen.cs
 
 /node_modules
 
-/yarn.lock
-
 # RIA/Silverlight projects
 Generated_Code/
 
@@ -245,3 +231,7 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# MacOSX
+**/*.DS_Store
+**/*node_modules
