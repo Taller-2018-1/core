@@ -16,5 +16,25 @@ namespace think_agro_metrics.Models
 
         public string Link { get; set; }
         #endregion
+        
+        public bool Crear()
+        {
+            return false;
+        }
+
+        public bool Seleccionar()
+        {
+            return false;
+        }
+
+        public bool Modificar()
+        {
+            return false;
+        }
+
+        public bool Eliminar()
+        {
+            return false;
+        }
     }
 }
