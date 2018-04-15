@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Detail1eService } from '../detail1e.service';
+import { Detail1eService } from '../../services/detail1e/detail1e.service';
 import { Observable } from 'rxjs/Observable';
 
 

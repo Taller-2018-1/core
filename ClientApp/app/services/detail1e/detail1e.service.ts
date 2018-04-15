@@ -6,7 +6,7 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/map';  
 
-import {Registro1E} from './detail1e/detail1e.component';
+import { Registro1E } from '../../components/detail1e/detail1e.component';
 
 @Injectable()
 export class Detail1eService {
