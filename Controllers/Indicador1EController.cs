@@ -10,10 +10,13 @@ namespace think_agro_metrics.Controllers
     [Route("api/[controller]")]
     public class Indicador1EController: Controller {
 
-        private static string [] Eventos = new string[]
+        private static string [] Events = new string[]
         {"Feria Internacional Universidad de Talca",
             "Conferencia Internacional de University of New South Whales",
-            "Convención anual Qantas AU"
+            "ConvenciÃ³n anual Qantas AU",
+            "The ACM-ICPC Contest",
+            "Google I/O",
+            "Mobile World Congress:MWC18"
         };
 
 
@@ -21,11 +24,11 @@ namespace think_agro_metrics.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Registro1E> LoadRegistro1E() {
             var rnd = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Registro1E
+            return Enumerable.Range(1, 10).Select(index => new Registro1E
             {
                 date = DateTime.Now.AddDays(index).ToString("d"),
-                name = Indicador1EController.Eventos[rnd.Next(0, 2)],
-                resource = "localhost:5000/detalle1e"
+                name = Indicador1EController.Events[rnd.Next(0, 5)],
+                resource = "#"
             });
         }
 

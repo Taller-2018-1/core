@@ -9,7 +9,8 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { Detalle1eComponent } from './detalle1e/detalle1e.component';
+import { Detail1eComponent } from './detail1e/detail1e.component';
+import { Detail1eService } from './detail1e.service';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,7 @@ import { Detalle1eComponent } from './detalle1e/detalle1e.component';
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        Detalle1eComponent
+        Detail1eComponent
     ],
     imports: [
         CommonModule,
@@ -29,10 +30,11 @@ import { Detalle1eComponent } from './detalle1e/detalle1e.component';
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
-            { path: 'detalle1e', component: Detalle1eComponent },
+            { path: 'detail1e', component: Detail1eComponent },
             { path: '**', redirectTo: 'home' }
         ])
-    ]
+    ],
+    providers: [Detail1eService]
 })
 export class AppModuleShared {
 }
