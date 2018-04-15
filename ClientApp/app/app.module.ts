@@ -9,7 +9,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { Detalle1aComponent } from './components/detalle1a/detalle1a.component';
+import { Detail1aComponent } from './components/detail1a/detail1a.component';
 
 
 
@@ -20,7 +20,7 @@ import { Detalle1aComponent } from './components/detalle1a/detalle1a.component';
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        Detalle1aComponent
+        Detail1aComponent      
     ],
     imports: [
         CommonModule,
@@ -31,6 +31,7 @@ import { Detalle1aComponent } from './components/detalle1a/detalle1a.component';
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'detail1a', component: Detail1aComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
