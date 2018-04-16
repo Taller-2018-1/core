@@ -9,7 +9,8 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { CalcularMostrar1DComponent } from './components/calcular-mostrar1-d/calcular-mostrar1-d.component';
+import { ComputeAndShow1dComponent } from './components/computeandshow1d/computeandshow1d.component';
+import { Computeandshow1dService } from './computeandshow1d.service';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,7 @@ import { CalcularMostrar1DComponent } from './components/calcular-mostrar1-d/cal
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        CalcularMostrar1DComponent
+        ComputeAndShow1dComponent
     ],
     imports: [
         CommonModule,
@@ -29,10 +30,11 @@ import { CalcularMostrar1DComponent } from './components/calcular-mostrar1-d/cal
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
-            { path: 'CalcularMostrar1D', component: CalcularMostrar1DComponent },
+            { path: 'CalcularMostrar1D', component: ComputeAndShow1dComponent },
             { path: '**', redirectTo: 'home' }
         ])
-    ]
+    ],
+    providers: [Computeandshow1dService]
 })
 export class AppModuleShared {
 }

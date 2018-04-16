@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalcularMostrar1DComponent } from './calcular-mostrar1-d.component';
+import { ComputeAndShow1dComponent } from './computeandshow1d.component';
 
-describe('CalcularMostrar1DComponent', () => {
-  let component: CalcularMostrar1DComponent;
-  let fixture: ComponentFixture<CalcularMostrar1DComponent>;
+describe('ComputeAndShow1dComponent', () => {
+  let component: ComputeAndShow1dComponent;
+  let fixture: ComponentFixture<ComputeAndShow1dComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalcularMostrar1DComponent ]
+      declarations: [ ComputeAndShow1dComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalcularMostrar1DComponent);
+    fixture = TestBed.createComponent(ComputeAndShow1dComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
