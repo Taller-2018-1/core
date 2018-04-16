@@ -22,7 +22,7 @@ export class Detail1eService {
           return new Registro1E(
             item.date,
             item.name,
-            item.source
+            item.documentUrl
           );
         });
       });

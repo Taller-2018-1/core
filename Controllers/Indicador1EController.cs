@@ -28,14 +28,14 @@ namespace think_agro_metrics.Controllers
             {
                 date = DateTime.Now.AddDays(index).ToString("d"),
                 name = Indicador1EController.Events[rnd.Next(0, 5)],
-                resource = "#"
+                documentUrl = "#"
             });
         }
 
         public class Registro1E {
             public string date {get; set;}
             public string name {get; set;}
-            public string resource {get; set;}
+            public string documentUrl {get; set;}
         }
     }
 }

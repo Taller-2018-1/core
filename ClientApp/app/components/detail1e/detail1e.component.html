@@ -17,7 +17,7 @@
       <tr *ngFor="let registro of registros | async as list">
           <td>{{ registro.date }}</td>
           <td>{{ registro.name }}</td>
-          <td><a href="{{ registro.resource }}">Descargar respaldo</a></td>
+          <td><a href="{{ registro.documentUrl }}">Descargar respaldo</a></td>
       </tr>
   </tbody>
 </table>

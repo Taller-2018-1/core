@@ -30,12 +30,12 @@ export class Detail1eComponent implements OnInit {
 export class Registro1E {
   date: string;
   name: string;
-  source: string;
+  documentUrl: string;
   
   constructor(date: string, name: string, source: string) {
       this.date = date;
       this.name = name;
-      this.source = source;
+      this.documentUrl = source;
   }
     
 }
