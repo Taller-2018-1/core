@@ -37,8 +37,8 @@ namespace think_agro_metrics.Controllers
             
             Indicator1D indicator1d = new Indicator1D{
                 Id = "1D",
-                Title = "N° aparaciones en la prensa escrita y digital",
-                Description = "Este indicador mide cuantas veces el CET(Centro de extensionismo tecnologico) aparece nombrado en algun medio escrito y digital.",
+                Title = "N° de aparaciones en la prensa escrita y digital",
+                Description = "Este indicador mide cuantas veces el CET(Centro de extensionismo tecnológico) aparece nombrado en algún medio escrito y digital.",
                 TipoIndicador = TipoIndicador.ValorAbsoluto,
                 resources = new List<Resource>()
 
