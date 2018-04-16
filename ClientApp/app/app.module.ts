@@ -9,7 +9,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { Detail1bComponent } from './components/detail1b/detail1b.component';
+import { Detail1bComponent } from './components/detail1b/detail1b.component'; 
 import { Detail1bService } from './detail1b.service';
 
 @NgModule({
