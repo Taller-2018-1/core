@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Http } from '@angular/http'; 
-import { Detail1bService } from '../../detail1b.service'; 
+import { Detail1bService } from '../services/detail1b/detail1b.service'; 
 import { getBaseUrl } from '../../app.browser.module'; 
 import { Observable } from 'rxjs/Observable'; 
  

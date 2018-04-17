@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core'; 
 import { Http, Response } from '@angular/http'; 
 import { Observable } from 'rxjs/Observable'; 
-import { Detail1b } from '../app/components/detail1b/detail1b.component'; 
-import { getBaseUrl } from '../app/app.browser.module';
-import 'rxjs/add/operator/map'; 
+import { Detail1b } from '../../detail1b/detail1b.component'; 
+import 'rxjs/add/operator/map';
+import { getBaseUrl } from '../../../app.browser.module'; 
  
 @Injectable() 
 export class Detail1bService { 
