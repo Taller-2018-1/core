@@ -14,6 +14,8 @@ import { Detail1dService } from './services/detail1d/detail1d.service';
 import { Detail1eComponent } from './components/detail1e/detail1e.component';
 import { Detail1eService } from './services/detail1e/detail1e.service';
 import { Detail1aComponent } from './components/detail1a/detail1a.component';
+import { Create1aComponent } from './components/create1a/create1a.component';
+import { Create1aService } from './services/create1a/create1a.service';
 
 @NgModule({
     declarations: [
@@ -24,7 +26,8 @@ import { Detail1aComponent } from './components/detail1a/detail1a.component';
         HomeComponent,
         Detail1dComponent,
         Detail1eComponent,
-        Detail1aComponent      
+        Detail1aComponent,
+        Create1aComponent      
     ],
     imports: [
         CommonModule,
@@ -38,10 +41,11 @@ import { Detail1aComponent } from './components/detail1a/detail1a.component';
             { path: 'detail1d', component: Detail1dComponent },
             { path: 'detail1e', component: Detail1eComponent },
             { path: 'detail1a', component: Detail1aComponent },
+            { path: 'create1a', component: Create1aComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [Detail1eService, Detail1dService]
+    providers: [Detail1eService, Detail1dService, Create1aService]
 })
 export class AppModuleShared {
 }
