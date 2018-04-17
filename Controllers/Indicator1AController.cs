@@ -29,7 +29,14 @@ namespace think_agro_metrics.Controllers
                 documenturl = "#"
             });
         }
- 
+
+        [HttpPost("[action]")]
+        public Boolean SaveRegistro([FromBody]Detail1A recurso)
+        {
+            Console.WriteLine("Registro guardado: " + recurso.name);
+            return true;
+        }
+
         public class Detail1A {
             public string date {get; set;}
             public string name {get; set;}

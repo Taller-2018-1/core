@@ -1,0 +1,24 @@
+<h1>Ingresar recurso indicador 1A</h1>
+
+<h4>Vinculación con entidades nacionales e internacionales</h4>
+
+<p>Ingrese un nuevo registro para este indicador</p>
+
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+    <div class="form-group">
+        <label>Nombre actividad: </label>
+        <input type="text" class="form-control" 
+               id="name" 
+               placeholder="Actividad X"
+               [(ngModel)]="model.name" 
+               name="name"
+               #name="ngModel">
+        <div [hidden]="name.valid || name.pristine"
+             class="alert alert-danger">
+            Ingrese un nombre
+        </div>
+        <label>Documento: </label>
+        <input type="file">
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar</button>
+</form>
