@@ -9,7 +9,8 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { CalcularMostrarIndicador1EComponent } from './components/calcular-mostrar-indicador1-e/calcular-mostrar-indicador1-e.component';
+import { calculateandshow1Ecomponent } from './components/calculateandshow1E/calculateandshow1E.component';
+import { Detail1E } from './Detail1E.service';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,7 @@ import { CalcularMostrarIndicador1EComponent } from './components/calcular-mostr
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        CalcularMostrarIndicador1EComponent
+        calculateandshow1Ecomponent
     ],
     imports: [
         CommonModule,
@@ -29,10 +30,11 @@ import { CalcularMostrarIndicador1EComponent } from './components/calcular-mostr
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
-            { path: 'Indicador-1E', component: CalcularMostrarIndicador1EComponent },
+            { path: 'Indicador-1E', component: calculateandshow1Ecomponent },
             { path: '**', redirectTo: 'home' }
         ])
-    ]
+    ],
+    providers: [Detail1E]
 })
 export class AppModuleShared {
 }

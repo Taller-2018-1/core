@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalcularMostrarIndicador1EComponent } from './calcular-mostrar-indicador1-e.component';
+import { calculateandshow1Ecomponent } from './calculateandshow1E.component';
 
 describe('CalcularMostrarIndicador1EComponent', () => {
-  let component: CalcularMostrarIndicador1EComponent;
-  let fixture: ComponentFixture<CalcularMostrarIndicador1EComponent>;
+  let component: calculateandshow1Ecomponent;
+  let fixture: ComponentFixture<calculateandshow1Ecomponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalcularMostrarIndicador1EComponent ]
+      declarations: [ calculateandshow1Ecomponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalcularMostrarIndicador1EComponent);
+    fixture = TestBed.createComponent(calculateandshow1Ecomponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
