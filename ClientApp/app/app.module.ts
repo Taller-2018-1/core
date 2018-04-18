@@ -11,6 +11,11 @@ import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { Detail1bComponent } from './components/detail1b/detail1b.component'; 
 import { Detail1bService } from './services/detail1b/detail1b.service';
+import { Detail1dComponent } from './components/detail1d/detail1d.component';
+import { Detail1dService } from './services/detail1d/detail1d.service';
+import { Detail1eComponent } from './components/detail1e/detail1e.component';
+import { Detail1eService } from './services/detail1e/detail1e.service';
+import { Detail1aComponent } from './components/detail1a/detail1a.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +24,10 @@ import { Detail1bService } from './services/detail1b/detail1b.service';
         CounterComponent,
         FetchDataComponent,
         Detail1bComponent,
-        HomeComponent
+        HomeComponent,
+        Detail1dComponent,
+        Detail1eComponent,
+        Detail1aComponent      
     ],
     imports: [
         CommonModule,
@@ -31,10 +39,13 @@ import { Detail1bService } from './services/detail1b/detail1b.service';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'detail1b', component: Detail1bComponent},
+            { path: 'detail1d', component: Detail1dComponent },
+            { path: 'detail1e', component: Detail1eComponent },
+            { path: 'detail1a', component: Detail1aComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [Detail1bService]
+    providers: [Detail1eService, Detail1dService, Detail1bService]
 })
 export class AppModuleShared {
 }
