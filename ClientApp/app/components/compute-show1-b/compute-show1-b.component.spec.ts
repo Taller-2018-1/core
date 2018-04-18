@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalcularMostrar1BComponent } from './calcular-mostrar1-b.component';
+import { ComputeShow1BComponent } from './compute-show1-b.component';
 
-describe('CalcularMostrar1BComponent', () => {
-  let component: CalcularMostrar1BComponent;
-  let fixture: ComponentFixture<CalcularMostrar1BComponent>;
+describe('ComputeShow1BComponent', () => {
+  let component: ComputeShow1BComponent;
+  let fixture: ComponentFixture<ComputeShow1BComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalcularMostrar1BComponent ]
+      declarations: [ ComputeShow1BComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalcularMostrar1BComponent);
+    fixture = TestBed.createComponent(ComputeShow1BComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
