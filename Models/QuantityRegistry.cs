@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace think_agro_metrics.Models
 {
-    interface IIndicatorCalculator
+    public class QuantityRegistry : Registry
     {
-        double Calculate(ICollection<Registry> registries);
+        public int Quantity { get; set; }
+
+        public QuantityRegistry() { }
     }
 }

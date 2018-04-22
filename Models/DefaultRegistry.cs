@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace think_agro_metrics.Models
 {
-    interface IIndicatorCalculator
+    public class DefaultRegistry : Registry
     {
-        double Calculate(ICollection<Registry> registries);
+        public DefaultRegistry() { }
     }
 }

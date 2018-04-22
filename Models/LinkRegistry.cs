@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace think_agro_metrics.Models
 {
-    interface IIndicatorCalculator
+    public class LinkRegistry
     {
-        double Calculate(ICollection<Registry> registries);
+        public ICollection<string> Links { get; set; }
+
+        public LinkRegistry() {}
     }
 }

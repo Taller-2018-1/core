@@ -7,5 +7,6 @@ namespace think_agro_metrics.Models
 {
     interface IDocumentFactory
     {
+        Document CreateDocument(DocumentType type);
     }
 }
