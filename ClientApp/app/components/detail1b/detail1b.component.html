@@ -1,0 +1,24 @@
+<h1>Detalle 1B</h1>
+<h2>Vinculación con entidades nacionales e internacionales</h2>
+<h3>Nº de Nuevas entidades internacionales vinculadas al CET</h3>
+
+<p *ngIf="!details"><em>Cargando datos...</em></p>
+
+<table class='table' *ngIf="details">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Nombre de entidad nacional</th>
+            <th>Documento de Respaldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let detail of details | async">
+            <td>{{ detail.date }}</td>
+            <td>{{ detail.name }}</td>
+            <td><a href="{{ detail.documenturl }}">Descargar respaldo</a></td> 
+  
+        </tr>
+    </tbody>
+</table>
+
