@@ -19,6 +19,14 @@ import { DemoRoutingModule } from './demo-routing.module';
     HomeComponent,
     CounterComponent,
     FetchDataComponent
+  ],
+  exports: [
+    NavMenuComponent,
+    HomeComponent,
+    CounterComponent,
+    FetchDataComponent
   ]
 })
-export class DemoModule { }
+export class DemoModule {
+
+}

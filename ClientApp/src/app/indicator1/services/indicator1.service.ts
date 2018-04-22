@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Detail1A } from '../model/Detail1A';
 import { Detail1B } from '../model/Detail1B';
-import { Detail1D } from '../model/DetailD';
-import { Detail1E } from '../model/DetailE';
+import { Detail1D } from '../model/Detail1D';
+import { Detail1E } from '../model/Detail1E';
 
 @Injectable()
 // TODO: Dev team must properly document this service.

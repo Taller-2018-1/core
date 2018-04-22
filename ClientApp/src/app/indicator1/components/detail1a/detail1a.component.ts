@@ -14,7 +14,7 @@ import { Indicator1Service } from '../../services';
 @Component({
   selector: 'app-indicator1-detail1a',
   templateUrl: './detail1a.component.html',
-  styleUrls: ['./detail1d.component.css']
+  styleUrls: ['./detail1a.component.css']
 })
 export class Detail1AComponent implements OnInit {
 

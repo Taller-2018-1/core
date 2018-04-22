@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { Detail1bComponent, Detail1dComponent, Detail1eComponent, Detail1aComponent } from '.';
+import { Detail1AComponent, Detail1BComponent, Detail1DComponent, Detail1EComponent } from '.';
 
 const routes: Routes = [
-  { path: 'detail1b', component: Detail1bComponent },
-  { path: 'detail1d', component: Detail1dComponent },
-  { path: 'detail1e', component: Detail1eComponent },
-  { path: 'detail1a', component: Detail1aComponent }
+  { path: 'detail1a', component: Detail1AComponent },
+  { path: 'detail1b', component: Detail1BComponent },
+  { path: 'detail1d', component: Detail1DComponent },
+  { path: 'detail1e', component: Detail1EComponent },
 ];
 
 @NgModule({
