@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace think_agro_metrics.Models
 {
-    public class Registry
+    public abstract class Registry
     {
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public ICollection<Document> Documents { get; set; }
 
         public Registry() {
+            this.Date = DateTime.Today;
             this.Documents = new List<Document>();
         }
     }

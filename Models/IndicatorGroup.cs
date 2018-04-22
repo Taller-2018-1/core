@@ -12,7 +12,9 @@ namespace think_agro_metrics.Models
         public ICollection<Indicator> Indicators { get; set; }
 
         public IndicatorGroup() {
-            this.Indicators = new List<Indicator>();
+            this.Indicators = new List<Indicator>();           
         }
+
+        
     }
 }

@@ -13,7 +13,9 @@ namespace think_agro_metrics.Models
         public string Link { get; set; }
         public DateTime Date { get; set; }
 
-        public Document() { }
+        public Document() {
+            Date = DateTime.Today;
+        }
 
 
     }
