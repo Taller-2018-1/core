@@ -16,6 +16,6 @@ export class Detail1DComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.press = this.indicator1Service.getDetails1D();
+    this.press = this.indicator1Service.indexDetails1D();
   }
 }

@@ -24,6 +24,6 @@ export class Detail1AComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.details = this.indicator1Service.getDetails1B();
+    this.details = this.indicator1Service.indexDetails1B();
   }
 }

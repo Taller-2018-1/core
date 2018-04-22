@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using think_agro_metrics.Model.Indicator1;
 
 namespace think_agro_metrics.Controllers {
-  [Route ("api/[controller]")]
-  public class Indicador1DController : Controller {
+  [Route ("api/indicator1/[controller]")]
+  public class Detail1DController : Controller {
     private static string[] Press = new string[] {
       "Think Agro innova con nuevas tecnologias",
       "Estos son los lideres agros en la region",
@@ -22,7 +22,7 @@ namespace think_agro_metrics.Controllers {
       var rnd = new Random ();
       return Enumerable.Range (1, 5).Select (index => new Registro1D {
         Date = DateTime.Now.AddDays (index).ToString ("d"),
-          Header = Indicador1DController.Press[rnd.Next (0, 2)],
+          Header = Detail1DController.Press[rnd.Next (0, 2)],
           Backup = "$"
       });
     }
