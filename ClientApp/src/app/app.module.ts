@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
-import { HomeComponent, CounterComponent, FetchDataComponent, DemoModule } from './demo';
+import { HomeComponent, CounterComponent, FetchDataComponent } from './demo';
 import { Indicator1Service } from './indicator1/services';
 import { SharedModule } from './shared/shared.module';
 import { Indicator1Module } from './indicator1/indicator1.module';
+import { DemoModule } from './demo/demo.module';
 
 
 @NgModule({
@@ -26,8 +27,9 @@ import { Indicator1Module } from './indicator1/indicator1.module';
     SharedModule,
 
     RouterModule.forRoot([
-      {path: 'indicators', loadChildren: './indicator1/indicator1-routing.module#Indicator1RoutingModule'},
-      {path: 'demo', loadChildren: './demo/demo-routing.module#DemoRoutingModule'}
+      {path: 'indicators',  loadChildren: () => Indicator1Module},
+      {path: 'demo',        loadChildren: () => DemoModule},
+      {path: '',            loadChildren: () => DemoModule}
     ])
   ],
   providers: [],

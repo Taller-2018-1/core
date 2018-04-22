@@ -12,13 +12,13 @@ import { Detail1E } from '../model/Detail1E';
 // https://angular.io/guide/http
 export class Indicator1Service {
   // BASE URL definition
-  public static BASE_URL = `api/Indicator1A`;
+  public static BASE_URL = `api`;
 
   // Route definition
-  public static GET_DETAILS_1A = `${Indicator1Service.BASE_URL}/api/Indicator1A/GetDetail`;
-  public static GET_DETAILS_1B = `${Indicator1Service.BASE_URL}/api/Indicator1B/GetDetail`;
-  public static GET_DETAILS_1D = `${Indicator1Service.BASE_URL}/api/Indicator1D/GetDetail`;
-  public static GET_DETAILS_1E = `${Indicator1Service.BASE_URL}/api/Indicator1E/GetDetail`;
+  public static GET_DETAILS_1A = `${Indicator1Service.BASE_URL}/Indicator1A/GetDetail`;
+  public static GET_DETAILS_1B = `${Indicator1Service.BASE_URL}/Indicator1B/GetDetail`;
+  public static GET_DETAILS_1D = `${Indicator1Service.BASE_URL}/Indicator1D/GetDetail`;
+  public static GET_DETAILS_1E = `${Indicator1Service.BASE_URL}/Indicator1E/GetDetail`;
 
   constructor(public http: HttpClient) { }
     // Consume de manera asincrona los datos desde la API REST

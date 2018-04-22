@@ -27,9 +27,7 @@ import { Detail1AComponent } from './components/detail1a/detail1a.component';
     Detail1AComponent,
     Detail1BComponent,
     Detail1DComponent,
-    Detail1EComponent,
-    Indicator1Service,
-    Indicator1GroupService
+    Detail1EComponent
   ]
 })
 export class Indicator1Module { }

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { Detail1AComponent, Detail1BComponent, Detail1DComponent, Detail1EComponent } from '.';
 
 const routes: Routes = [
+  { path: '', component: Detail1AComponent, pathMatch: 'full'  },
   { path: 'detail1a', component: Detail1AComponent },
   { path: 'detail1b', component: Detail1BComponent },
   { path: 'detail1d', component: Detail1DComponent },
