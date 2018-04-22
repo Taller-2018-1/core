@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace think_agro_metrics.Models
 {
-    interface IDocumentFactory
+    public interface IDocumentFactory
     {
-        Document CreateDocument(DocumentType type);
+        Document CreateDocument();
     }
 }

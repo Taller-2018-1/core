@@ -9,6 +9,6 @@ namespace think_agro_metrics.Models
     {
         public ICollection<string> Links { get; set; }
 
-        public LinkRegistry() {}
+        public LinkRegistry() { }
     }
 }
