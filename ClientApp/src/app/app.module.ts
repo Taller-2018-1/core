@@ -18,9 +18,8 @@ import { HomeComponent, CounterComponent, FetchDataComponent } from './demo';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      {path: 'indicators', loadChildren: './indicator1/indicator1-routing.module#Indicator1RoutingModule'},
+      {path: 'demo', loadChildren: './demo/demo-routing.module#DemoRoutingModule'}
     ])
   ],
   providers: [],

@@ -5,12 +5,14 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { FormsModule } from '@angular/forms';
+import { DemoRoutingModule } from './demo-routing.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    DemoRoutingModule,
+    FormsModule
   ],
   declarations: [
     NavMenuComponent,
