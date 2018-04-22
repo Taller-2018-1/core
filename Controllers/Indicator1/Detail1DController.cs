@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using think_agro_metrics.Model.Indicator1;
+using ThinkAgroMetrics.Model.Indicator1;
 
-namespace think_agro_metrics.Controllers {
+namespace ThinkAgroMetrics.Controllers {
   [Route ("api/indicator1/[controller]")]
   public class Detail1DController : Controller {
     private static string[] Press = new string[] {

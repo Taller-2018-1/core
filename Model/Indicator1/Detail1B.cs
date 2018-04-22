@@ -1,4 +1,4 @@
-namespace think_agro_metrics.Model.Indicator1 {
+namespace ThinkAgroMetrics.Model.Indicator1 {
 
   public class Detail1B {
 

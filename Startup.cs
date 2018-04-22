@@ -6,7 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using AspNetCore.RouteAnalyzer;
 using System.Diagnostics;
 
-namespace think_agro_metrics
+
+namespace ThinkAgroMetrics
 {
     public class Startup
     {
@@ -22,7 +23,6 @@ namespace think_agro_metrics
         {
             services.AddMvc();
             services.AddRouteAnalyzer();
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -47,7 +47,7 @@ namespace think_agro_metrics
 
             app.UseMvc(routes =>
             {
-                routes.MapRouteAnalyzer("/routes");
+              routes.MapRouteAnalyzer("/routes");
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
