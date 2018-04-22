@@ -35,7 +35,7 @@ export class Indicator1Service {
     }
     indexDetails1D(): Observable<Detail1D[]> {
       // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
-      return this.http.get<Detail1D[]>(Indicator1Service.INDEX_DETAILS_1E);
+      return this.http.get<Detail1D[]>(Indicator1Service.INDEX_DETAILS_1D);
     }
     indexDetails1E(): Observable<Detail1E[]> {
       // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
