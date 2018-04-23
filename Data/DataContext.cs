@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using think_agro_metrics.Models;
 
-namespace think_agro_metrics.Models
+namespace think_agro_metrics.Data
 {
     public class DataContext : DbContext
     {
@@ -16,6 +17,14 @@ namespace think_agro_metrics.Models
         public DbSet<Document> Documents { get; set; }
         public DbSet<Registry> Registries { get; set; }
 
+        public DataContext() : base()
+        {
+        }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
+
         //Luego es necesario declarar  la forma de conexion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +33,7 @@ namespace think_agro_metrics.Models
             //comienzo  de la jerarquia en SMSS
             //El campo Database corresponde al nombre de  la base de datos a utilizar.
             //El otro ponganlo because of reasons.
-            optionsBuilder.UseSqlServer("Server=DESKTOP-RC34OJH\\SQLEXPRESS;Database=think_agro_metrics;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=LAPTOP-6OAH5MG7\\SQLEXPRESS;Database=think_agro_metrics;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

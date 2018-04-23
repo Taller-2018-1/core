@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 
 namespace think_agro_metrics.Controllers
