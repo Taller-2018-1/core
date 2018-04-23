@@ -7,7 +7,7 @@ export class Indicator {
     registries :  Registry [];    
     constructor(name : string, type: IndicatorType) {
         this.name = name;
-        this.registries = []
+        this.registries = [];
         this.type = type;
     }
 

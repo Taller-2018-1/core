@@ -15,12 +15,13 @@ export class IndicatorDetailComponent implements OnInit {
   public model : Indicator;
   
   constructor(private service : IndicatorDetailService) { // DELETE THIS
-    //this.model = new Indicator("Indicador que indica", IndicatorType.PercentIndicatorCalculator);
-    //this.model.addRegistry(new Date(1996,6,25),"nombre de registro","#");
+    //this.model = {};
+    this.model = new Indicator("Indicador que indica", IndicatorType.PercentIndicatorCalculator);
+    this.model.addRegistry(new Date(1996,6,25),"nombre de registro","#");
     
-    service.getIndicators("1E", IndicatorType.QuantityIndicatorCalculator).map((item : any) => {
-      this.model = item;
-    });
+    //service.getIndicators("1E", IndicatorType.QuantityIndicatorCalculator).map((item : any) => {
+    //  this.model = item;
+    //});
   }
 
   ngOnInit() {
