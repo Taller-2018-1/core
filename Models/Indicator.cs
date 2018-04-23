@@ -16,6 +16,7 @@ namespace think_agro_metrics.Models
         [NotMapped]
         public IIndicatorCalculator IndicatorCalculator { get; private set; }
 
+        public long IndicatorID { get; set; }
         public string Name { get; set; }
         public ICollection<Registry> Registries { get; set; }
         
