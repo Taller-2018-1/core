@@ -38,6 +38,11 @@ namespace think_agro_metrics.Models
                 .Property(i => i.Type)
                 .HasField("type");
             });
+
+            modelBuilder.Entity<DefaultRegistry>();
+            modelBuilder.Entity<ActivityRegistry>();
+            modelBuilder.Entity<QuantityRegistry>();
+            modelBuilder.Entity<LinkRegistry>();
         }
 
     }

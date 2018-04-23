@@ -7,6 +7,7 @@ namespace think_agro_metrics.Models
 {
     public class Document
     {
+        public long DocumentID { get; set; }
         public string Name { get; set; }
         public string DocumentName { get; set; }
         public string Extension { get; set; }
