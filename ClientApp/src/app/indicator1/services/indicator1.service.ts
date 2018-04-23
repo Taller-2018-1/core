@@ -25,20 +25,19 @@ export class Indicator1Service {
 
     // TODO: Devteam, Documentar estas llamadas
 
-    indexDetails1A(): Observable<Detail1A[]> {
-      // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
+    public indexDetails1A(): Observable<Detail1A[]> {
       return this.http.get<Detail1A[]>(Indicator1Service.INDEX_DETAILS_1A);
     }
-    indexDetails1B(): Observable<Detail1B[]> {
-      // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
+
+    public indexDetails1B(): Observable<Detail1B[]> {
       return this.http.get<Detail1B[]>(Indicator1Service.INDEX_DETAILS_1B);
     }
-    indexDetails1D(): Observable<Detail1D[]> {
-      // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
+
+    public indexDetails1D(): Observable<Detail1D[]> {
       return this.http.get<Detail1D[]>(Indicator1Service.INDEX_DETAILS_1D);
     }
-    indexDetails1E(): Observable<Detail1E[]> {
-      // Solicitud GET al controlador .NET Indicator1A por el método GetDetail
+
+    public indexDetails1E(): Observable<Detail1E[]> {
       return this.http.get<Detail1E[]>(Indicator1Service.INDEX_DETAILS_1E);
     }
 }
