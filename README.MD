@@ -59,7 +59,7 @@ npm install
 
 ## How to build the project
 
-You have three ways to build the project.
+You have two ways to build the project.
 
 ### Build the production version
 Use this method when preparing to ship code. This forces AoT on all components, hence revealing runtime errors before they go into production. Also, this way is also used by Travis to check if the project is correctly built.
