@@ -15,7 +15,7 @@ import { Detail1eComponent } from './components/detail1e/detail1e.component';
 import { Detail1eService } from './services/detail1e/detail1e.service';
 import { Detail1aComponent } from './components/detail1a/detail1a.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
-import { IndicatorDetailService } from './services/indicator-detail/indicator-detail.service';
+import { IndicatorService } from './services/indicator/indicator.service';
 
 @NgModule({
     declarations: [
@@ -47,7 +47,7 @@ import { IndicatorDetailService } from './services/indicator-detail/indicator-de
     ],
     providers: [Detail1eService, 
         Detail1dService, 
-        IndicatorDetailService]
+        IndicatorService]
 })
 export class AppModuleShared {
 }

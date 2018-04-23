@@ -7,24 +7,18 @@ import 'rxjs/add/operator/map';
 import { Indicator } from '../../shared/indicator';
 import { IndicatorType } from '../../shared/indicatorType';
 import { Registry } from '../../shared/registry';
+import { getBaseUrl } from '../../app.browser.module';
 
 
 
 @Injectable()
-export class IndicatorDetailService {
+export class IndicatorService {
 
   constructor(private http : Http) { }
 
-  getIndicators(indicatorId : string, indicatorType : IndicatorType) : Observable<Indicator> {
-    let apiUrl = 'api/Indicators/' + indicatorId;
-    return this.http.get(apiUrl)
-      .map(res => {
-        return res.json().map((item : Indicator) => {
-          return new Indicator(
-            item.name,
-            indicatorType
-          );
-        });
-      });
-  }
+    getIndicators(indicatorId: number): Observable<any> {
+        let apiUrl = getBaseUrl() + 'api/Indicators/' + indicatorId;
+        return this.http.get(apiUrl);
+    }
+  
 }

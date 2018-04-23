@@ -1,4 +1,6 @@
 <h1>Detalles Indicador {{model.name}}</h1>
+<h2>Tipo: {{model.tipo}}</h2>
+<div *ngIf="model.tipo == null">El tipo es null... Pega por hacer :)</div>
 
 <table class="table" *ngIf="model.registries.length != 0">
     <thead>
