@@ -1,25 +1,45 @@
-<h1>Detalles Indicador 1A</h1>
-<h2>Vinculación con entidades nacionales e internacionales</h2>
-<h3>Nº de Nuevas entidades internacionales vinculadas al CET</h3>
+<div class="component">
+    <h1>Indicador 1A Vinculación con entidades internacionales</h1>
+    <div class="panel panel-default panel-size">
+        <div class="panel-heading header-panel-style">{{indicator1A.title}}</div>
+        <div class="panel-body">
+            <span>
+                <strong>Descripción:</strong> {{indicator1A.description}}</span>
+            <br>
+            <br>
+            <span>
+                <strong>N° de aparaciones: </strong>{{indicator1A.resources.length}}</span>
+        </div>
+    </div>
+</div>
+<button (click)="toggleDetail()" class="btn">{{showDetail ? 'Ocultar Detalles':'Mostrar Detalles'}}</button>
+<div *ngIf="showDetail" class="component2">
+    <h3>Detalles Indicador 1A</h3>
+    <!--Si están cargandose datos se meustra este mensaje-->
+    <p *ngIf="!details">
+        <em>Cargando datos...</em>
+    </p>
 
-<!--Si están cargandose datos se meustra este mensaje-->
-<p *ngIf="!details"><em>Cargando datos...</em></p>
+    <!--Tabla de detalles, mostrada cuando ya se cargaron lo datos-->
+    <table class='table' *ngIf="!!details">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre de entidad internacional</th>
+                <th>Documento de respaldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Ya que details es un Observable, async se encarga de manejar el suscribe-->
 
-<!--Tabla de detalles, mostrada cuando ya se cargaron lo datos-->
-<table class='table' *ngIf="!!details">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Nombre de entidad internacional</th>
-            <th>Documento de respaldo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--Ya que details es un Observable, async se encarga de manejar el suscribe-->
-        <tr *ngFor="let detail of details | async">
-            <td>{{ detail.date }}</td>
-            <td>{{ detail.name }}</td>
-            <td><a href="{{ detail.documenturl }}">Descargar respaldo</a></td>
-        </tr>
-    </tbody>
-</table>
+            <tr *ngFor="let detail of details | async">
+                <td>{{ detail.date }}</td>
+                <td>{{ detail.name }}</td>
+                <td>
+                    <a href="{{ detail.documenturl }}">Descargar respaldo</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
