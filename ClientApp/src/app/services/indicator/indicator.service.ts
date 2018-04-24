@@ -1,24 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
 
+// Angular models from shared
 import { Indicator } from '../../shared/indicator';
 import { IndicatorType } from '../../shared/indicatorType';
 import { Registry } from '../../shared/registry';
-import { getBaseUrl } from '../../app.browser.module';
-
 
 
 @Injectable()
 export class IndicatorService {
 
-  constructor(private http : Http) { }
+    public static BASE_URL = `api/Indicators`;
 
-    getIndicators(indicatorId: number): Observable<any> {
-        let apiUrl = getBaseUrl() + 'api/Indicators/' + indicatorId;
-        return this.http.get(apiUrl);
+    public static INDICATOR_1A = '/api/Indicators';
+
+    constructor(public http: HttpClient) { }
+
+    getIndicator(indicatorId: number): Observable<Indicator> {
+        return this.http.get<Indicator>(IndicatorService.INDICATOR_1A);
     }
-  
 }

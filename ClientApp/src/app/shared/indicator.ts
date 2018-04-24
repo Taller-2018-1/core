@@ -1,20 +1,23 @@
-import {IndicatorType} from "./indicatorType";
+import {IndicatorType} from './indicatorType';
 import { Registry } from './registry';
 
 export class Indicator {
-    name : string;
-    type : any;
-    registries :  Registry [];    
-    constructor(name : string, type: IndicatorType) {
+    name: string;
+    type: any;
+    registries:  Registry [];
+    constructor(name: string, type: IndicatorType) {
         this.name = name;
         this.registries = [];
         this.type = type;
     }
 
-    addRegistry(date : Date,name : string, urlDocument: string, value? : number) {
-        if(value)
+    addRegistry(date: Date, name: string, urlDocument: string, value?: number) {
+        if (value) {
             this.registries.push(new Registry(date, name, urlDocument, value));
-        else
-            this.registries.push(new Registry(date, name, urlDocument));
+        }
+
+        this.registries.push(new Registry(date, name, urlDocument));
+
     }
+
 }

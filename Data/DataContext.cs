@@ -33,7 +33,7 @@ namespace think_agro_metrics.Data
             //comienzo  de la jerarquia en SMSS
             //El campo Database corresponde al nombre de  la base de datos a utilizar.
             //El otro ponganlo because of reasons.
-            optionsBuilder.UseSqlServer("Server=LAPTOP-6OAH5MG7\\SQLEXPRESS;Database=think_agro_metrics;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-RC34OJH\\SQLEXPRESS;Database=think_agro_metrics;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

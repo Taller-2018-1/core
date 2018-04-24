@@ -5,17 +5,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-
 import { HomeComponent, CounterComponent, FetchDataComponent } from './demo';
-import { Indicator1Service } from './indicator1/services';
-import { SharedModule } from './shared/shared.module';
-import { Indicator1Module } from './indicator1/indicator1.module';
+import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
+import { IndicatorService } from './services/indicator/indicator.service';
 import { DemoModule } from './demo/demo.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IndicatorDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -23,16 +22,18 @@ import { DemoModule } from './demo/demo.module';
     FormsModule,
 
     DemoModule,
-    Indicator1Module,
-    SharedModule,
 
     RouterModule.forRoot([
-      {path: 'indicators',  loadChildren: () => Indicator1Module},
-      {path: 'demo',        loadChildren: () => DemoModule},
-      {path: '',            loadChildren: () => DemoModule}
+      { path: 'demo',        loadChildren: () => DemoModule },
+      { path: '',            loadChildren: () => DemoModule },
+      { path: 'indicator-detail', component: IndicatorDetailComponent }
     ])
   ],
-  providers: [],
+  providers: [IndicatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function getBaseUrl() {
+  return document.getElementsByTagName('base')[0].href;
+}
