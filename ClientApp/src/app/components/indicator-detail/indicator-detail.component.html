@@ -1,0 +1,22 @@
+<h1>Detalles Indicador {{model.name}}</h1>
+<h2>Tipo: {{model.tipo}}</h2>
+<div *ngIf="model.tipo == null">El tipo es null... Pega por hacer :)</div>
+
+<table class="table" *ngIf="model.registries.length != 0">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th *ngIf="model.type == 1">Valor</th>
+            <th>Documento respaldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let registry of model.registries">
+            <td>{{registry.date.getDate()}}/{{registry.date.getMonth()}}/{{registry.date.getFullYear()}}</td>
+            <td>{{registry.name}}</td>
+            <td *ngIf="model.type == 1">{{registry.value}}</td>
+            <td><a href="{{registry.urlDocument}}">Descargar respaldo</a></td>
+        </tr>
+    </tbody>
+</table>
