@@ -25,6 +25,7 @@ namespace think_agro_metrics.Controllers
         [HttpGet]
         public IEnumerable<Indicator> GetIndicators()
         {
+            _context.Indicators.Include(x => x.Registries).ToList();
             return _context.Indicators;
         }
 
@@ -44,6 +45,7 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            _context.Indicators.Include(x => x.Registries).ToList();
             return Ok(indicator);
         }
 

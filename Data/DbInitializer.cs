@@ -12,33 +12,60 @@ namespace think_agro_metrics.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
+            // Look for any indicator group.
             if (context.IndicatorGroups.Any())
             {
                 return;   // DB has been seeded
             }
 
+            var documents = new Document[]{
+                new Document{
+                    Name = "Artículo de la Revista de la Universidad de Talca",
+                    DocumentName = "articulo1",
+                    Extension = ".pdf",
+                    Link = "www.utalca.cl"
+                }
+            };
+
+            foreach(Document document in documents){
+                context.Documents.Add(document);
+            }
+            context.SaveChanges();
+
+            var registries = new Registry[]{
+                new LinkRegistry{
+                    Name = "Revista Universidad de Talca",
+                    Date = DateTime.Today,
+                    Documents = documents
+                }
+            };
+
+            foreach(Registry registry in registries){
+                context.Registries.Add(registry);
+            }
+            context.SaveChanges();
+
             var indicators = new Indicator[]
             {
-                new Indicator{Name="1A"},
-                new Indicator{Name="1B"},
-                new Indicator{Name="1C"},
-                new Indicator{Name="1D"},
-                new Indicator{Name="1E"}
+                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET"},
+                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET"},
+                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas"},
+                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries= registries},
+                new Indicator{Name="Número de actividades de difusión en la que el CET participa"}
             };
-            foreach (Indicator i in indicators)
+            foreach (Indicator indicator in indicators)
             {
-                context.Indicators.Add(i);
+                context.Indicators.Add(indicator);
             }
             context.SaveChanges();
 
             var indicatorGroups = new IndicatorGroup[]
             {
-                new IndicatorGroup{Name="1", Indicators=indicators}
+                new IndicatorGroup{Name="Vinculación con entidades nacionales e internacionales", Indicators=indicators}
             };
-            foreach (IndicatorGroup iG in indicatorGroups)
+            foreach (IndicatorGroup indicatorGroup in indicatorGroups)
             {
-                context.IndicatorGroups.Add(iG);
+                context.IndicatorGroups.Add(indicatorGroup);
             }
             context.SaveChanges();
         }

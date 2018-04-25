@@ -16,6 +16,7 @@ namespace think_agro_metrics.Data
         public DbSet<Indicator> Indicators { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Registry> Registries { get; set; }
+        public DbSet<LinkWrapper> Links { get; set; }
 
         public DataContext() : base()
         {

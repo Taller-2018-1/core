@@ -8,7 +8,6 @@ namespace think_agro_metrics.Models
     public class LinkWrapper
     {
         public long LinkWrapperID { get; set; }
-        public long RegistryID { get; set; }
         public String Value { get; set; }
     }
 }
