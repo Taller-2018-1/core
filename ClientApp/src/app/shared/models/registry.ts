@@ -1,13 +1,15 @@
 export class Registry {
+    dateAdded: Date;
     date: Date;
     name: string;
     value: number;
-    urlDocument: string;
+    urlDocuments: string[];
 
-    constructor(date: Date, name: string, urlDocument: string, value?: number) {
+    constructor(dateAdded: Date, date: Date, name: string, urlDocuments: string[], value?: number) {
         this.date = date;
+        this.dateAdded = dateAdded;
         this.name = name;
-        this.urlDocument = urlDocument;
+        this.urlDocuments = urlDocuments;
         this.value = -1;
     }
 }

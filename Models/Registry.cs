@@ -9,10 +9,13 @@ namespace think_agro_metrics.Models
     {
         public long RegistryID { get; set; }
         public string Name { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime DateAdded { get; set; } // Date in which the registry is added
+        public DateTime Date { get; set; } // Date when the registry occured
+        public string Value { get; set; }
         public ICollection<Document> Documents { get; set; }
 
         public Registry() {
+            this.DateAdded = DateTime.Now;
             this.Date = DateTime.Today;
             this.Documents = new List<Document>();
         }
