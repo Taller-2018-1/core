@@ -8,12 +8,12 @@ export class Indicator {
 
     constructor() { }
 
-    addRegistry(date: Date, name: string, urlDocument: string, value?: number) {
+    addRegistry(dateAdded: Date, date: Date, name: string, urlDocuments: string[], value?: number) {
         if (value) {
-            this.registries.push(new Registry(date, name, urlDocument, value));
+            this.registries.push(new Registry(dateAdded, date, name, urlDocuments, value));
         }
 
-        this.registries.push(new Registry(date, name, urlDocument));
+        this.registries.push(new Registry(dateAdded, date, name, urlDocuments));
 
     }
 
