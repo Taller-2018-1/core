@@ -1,0 +1,25 @@
+<h1>Detalles indicador 1D</h1>
+
+<h4>Vinculación con entidades nacionales e internacionales</h4>
+
+<p>Nº de apariciones en prensa digital y escrita</p>
+
+<p *ngIf="!press"><em>Cargando datos...</em></p>
+<table class='table'>
+  <thead>
+      <tr>
+          <th>Fecha</th>
+          <th>Titular</th>
+          <th>Documentos de respaldo</th>
+          <th>Medio</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let news of press | async as list">
+          <td>{{ news.date }}</td>
+          <td>{{ news.header }}</td>
+          <td><a href="{{ news.backup }}">Noticia Original</a></td>
+          <td>{{ news.media }}</td>
+      </tr>
+  </tbody>
+</table>
