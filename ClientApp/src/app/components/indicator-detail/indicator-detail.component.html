@@ -2,6 +2,7 @@
 <h2>Tipo: {{ indicator.type }}</h2>
 <div *ngIf="indicator.type == -1">El tipo es default...</div>
 
+<button (click)="gotoAddRegistry()" class="btn btn-default" style="float:right">Nuevo Registro</button>
 <table class="table" *ngIf="indicator.registries.length != 0">
     <thead>
         <tr>

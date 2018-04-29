@@ -5,6 +5,7 @@ import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -14,9 +15,11 @@ import { HttpClient } from '@angular/common/http';
 export class IndicatorDetailComponent implements OnInit {
 
   public indicator: Indicator = new Indicator();
+  router: Router;
 
-  constructor(private service: IndicatorService) {
+  constructor(router: Router, private service: IndicatorService) {
     this.getIndicator(4);
+    this.router = router;
   }
 
   ngOnInit() {
@@ -26,7 +29,10 @@ export class IndicatorDetailComponent implements OnInit {
     this.service.getIndicator(indicatorId).subscribe(
       data => { this.indicator = data; },
       err => console.error(err)
-      );
+    );
   }
 
+  gotoAddRegistry() {
+    this.router.navigateByUrl('/indicator-add-registry');
+  }
 }

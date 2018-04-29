@@ -10,12 +10,14 @@ import { HomeComponent, CounterComponent, FetchDataComponent } from './demo';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { DemoModule } from './demo/demo.module';
+import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    IndicatorDetailComponent
+    IndicatorDetailComponent,
+    RegistryFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,6 +28,7 @@ import { DemoModule } from './demo/demo.module';
 
     RouterModule.forRoot([
       { path: 'indicator-detail', component: IndicatorDetailComponent },
+      { path: 'indicator-add-registry', component: RegistryFormComponent },
       {path: 'demo',        loadChildren: () => DemoModule},
       {path: '',            loadChildren: () => DemoModule}
     ])

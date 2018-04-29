@@ -14,10 +14,16 @@ export class IndicatorService {
     public static BASE_URL = `api/Indicators`;
 
     public static INDICATORS_API = '/api/Indicators/';
+    public static ADD_REGISTRY_METHOD = "/AddRegistry";
 
     constructor(public http: HttpClient) { }
 
     getIndicator(indicatorId: number): Observable<Indicator> {
         return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+    }
+
+    addRegistry(registry: Registry, indicatorId: number) {
+        this.http.post<Indicator>(IndicatorService.INDICATORS_API + indicatorId
+          + IndicatorService.ADD_REGISTRY_METHOD, registry ).subscribe();
     }
 }
