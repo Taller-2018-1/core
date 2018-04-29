@@ -18,7 +18,7 @@ export class IndicatorDetailComponent implements OnInit {
   router: Router;
 
   constructor(router: Router, private service: IndicatorService) {
-    this.getIndicator(4);
+    this.getIndicator(4); //Reemplazar por ID
     this.router = router;
   }
 
@@ -34,5 +34,9 @@ export class IndicatorDetailComponent implements OnInit {
 
   gotoAddRegistry() {
     this.router.navigateByUrl('/indicator-add-registry');
+  }
+
+  gotoRegistry() {
+    this.router.navigateByUrl('/registry-details/' + 1); //Reemplazar por ID, sacado del button
   }
 }
