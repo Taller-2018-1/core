@@ -12,16 +12,18 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./indicator-detail.component.css']
 })
 export class IndicatorDetailComponent implements OnInit {
-
+  
   public indicator: Indicator = new Indicator();
 
   constructor(private service: IndicatorService) {
-    this.getIndicator(4);
+    this.getIndicator(5);
+    this.getIndicator(7);
   }
 
   ngOnInit() {
+  
   }
-
+ 
   private getIndicator(indicatorId: number) {
     this.service.getIndicator(indicatorId).subscribe(
       data => { this.indicator = data; },

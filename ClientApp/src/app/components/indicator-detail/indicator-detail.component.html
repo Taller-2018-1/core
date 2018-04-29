@@ -1,7 +1,7 @@
-<h1>    {{ indicator.name }}</h1>
+<h1>    {{ indicator.name }}: {{indicator.registries.length}}</h1>
 <h2>Tipo: {{ indicator.type }}</h2>
 <div *ngIf="indicator.type == -1">El tipo es default...</div>
-
+<!--
 <table class="table" *ngIf="indicator.registries.length != 0">
     <thead>
         <tr>
@@ -20,3 +20,23 @@
         </tr>
     </tbody>
 </table>
+-->
+<div class="heading-block">
+    <h2>Detalle de Registros</h2>
+</div>
+<ng-container *ngIf="indicator.type == -1">
+<div class="panel panel-default" *ngFor="let registry of indicator.registries">
+<!-- Default panel contents -->
+<div class="panel-heading">{{registry.name}}</div>
+<div class="panel-body">
+    <!-- Table -->
+    <table class="table">
+        <tr><td><b>Fecha</b></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
+        <tr><td><b>Documento respaldo</b></td><td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td></tr>
+    </table>
+</div>
+</div>
+</ng-container>
+<button type="button" class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#modal-login">
+    Añadir registro
+</button>
