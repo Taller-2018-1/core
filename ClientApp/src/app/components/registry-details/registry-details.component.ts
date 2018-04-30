@@ -30,4 +30,12 @@ export class RegistryDetailsComponent implements OnInit {
     );
   }
 
+  gotoAddLinkDocument() {
+    this.router.navigateByUrl('/registry-add-file-document');
+  }
+
+  gotoAddFileDocument() {
+    this.router.navigateByUrl('/registry-add-link-document');
+  }
+  
 }

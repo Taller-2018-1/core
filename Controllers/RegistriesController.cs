@@ -43,7 +43,7 @@ namespace think_agro_metrics.Controllers
             {
                 return NotFound();
             }
-
+            _context.Registries.Include(x => x.Documents).ToList();
             return Ok(registry);
         }
 

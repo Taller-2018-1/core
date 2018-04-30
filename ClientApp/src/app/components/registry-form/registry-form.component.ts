@@ -29,7 +29,7 @@ export class RegistryFormComponent implements OnInit {
   }
 
   constructor(router: Router, private IndicatorService: IndicatorService) {
-    this.model = new Registry(new Date(), new Date(), "", [""], 0);
+    this.model = new Registry();
     this.router = router;
   }
 

@@ -10,7 +10,8 @@ export class RegistryService {
   public static BASE_URL = `api/Registries`;
 
   public static REGISTRIES_API = '/api/Registries/';
-  public static ADD_DOCUMENT_METHOD = "/AddDocument";
+  public static ADD_FILE_DOCUMENT_METHOD = "/AddFileDocument";
+  public static ADD_LINK_DOCUMENT_METHOD = "/AddLinkDocument";
 
   constructor(public http: HttpClient) { }
 
@@ -19,9 +20,13 @@ export class RegistryService {
   }
 
   /*
-  addRegistry(registry: Registry, indicatorId: number) {
-      this.http.post<Indicator>(IndicatorService.INDICATORS_API + indicatorId
-        + IndicatorService.ADD_REGISTRY_METHOD, registry ).subscribe();
+  addLinkDocument(document: String, registryId: number) {
+    this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
+      + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
   }
-  */
+
+  addFileDocument(document: Registry, registryId: number) {
+      this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
+        + RegistryService.ADD_FILE_DOCUMENT_METHOD, document ).subscribe();
+  }*/
 }

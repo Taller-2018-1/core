@@ -1,16 +1,33 @@
 <h1>Nombre registro: {{ registry.name }}</h1>
 
-<button (click)="gotoAddFileDocument()" class="btn btn-default" style="float:right">Agregar archivo</button>
+<div style="float:right">
+  <button (click)="gotoAddLinkDocument()" class="btn btn-default">Agregar desde link</button>
+  <button (click)="gotoAddFileDocument()" class="btn btn-default">Agregar desde archivo</button>
+</div>
+
 <table class="table" *ngIf="registry.documents.length != 0">
   <thead>
     <tr>
-      <td></td>
+      <td>Nombre</td>
+      <td>Documento</td>
+      <td>Extensión</td>
+      <td>Fecha</td>
+      <td>Código</td>
+      <td>Descargar</td>
+      <td>Eliminar</td>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td></td>
+    <tr *ngFor="let document of registry.documents">
+      <td>{{document.name}}</td>
+      <td>{{document.documentName}}</td>
+      <td>{{document.extension}}</td>
+      <td>{{document.date}}</td>
+      <td>{{document.code}}</td>
+      <td><button type="button" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></td>
+      <td><button type="button" class="btn btn-danger">Eliminar</button></td>
     </tr>
   </tbody>
 </table>
 
+<p *ngIf="registry.documents.length == 0">No Hay elementos para mostrar</p>
