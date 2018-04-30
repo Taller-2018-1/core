@@ -1,10 +1,13 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Inject } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
+// Models
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
+
+// Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
-import { Observable } from 'rxjs/Observable';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -13,20 +16,17 @@ import { HttpClient } from '@angular/common/http';
 })
 export class IndicatorDetailComponent implements OnInit {
 
-  public indicator: Indicator = new Indicator();
+  public indicator$: Observable<Indicator>;
+  private idIndicator = -1;   // Variable that will hold the value of the indicator's ID
 
-  constructor(private service: IndicatorService) {
-    this.getIndicator(4);
+  constructor(private route: ActivatedRoute, private service: IndicatorService) {
+    // Obtain the indicator's ID from the url (Eg: localhost:5000/indicator/1)
+    this.idIndicator = this.route.snapshot.params.idIndicator;
   }
 
   ngOnInit() {
-  }
-
-  private getIndicator(indicatorId: number) {
-    this.service.getIndicator(indicatorId).subscribe(
-      data => { this.indicator = data; },
-      err => console.error(err)
-      );
+    // Load the details of the specific indicator (using its ID)
+    this.indicator$ = this.service.getIndicator(this.idIndicator);
   }
 
 }

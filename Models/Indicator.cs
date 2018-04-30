@@ -25,24 +25,23 @@ namespace think_agro_metrics.Models
                 return type;
             }
             set {
+                type = value;
                 if (type == IndicatorType.QuantityIndicatorCalculator) {
                     this.IndicatorCalculator = new QuantityIndicatorCalculator();
                 }
-                if (type == IndicatorType.PercentIndicatorCalculator)
+                else if (type == IndicatorType.PercentIndicatorCalculator)
                 {
                     this.IndicatorCalculator = new PercentIndicatorCalculator();
                 }
                 else {
-                    this.IndicatorCalculator = null;
+                    this.IndicatorCalculator = new DefaultIndicatorCalculator();
                 }
-                type = value;
+
             }
         }        
 
         public Indicator() {
             this.Registries = new List<Registry>();
-            this.type = IndicatorType.DefaultIndicatorCalculator;
-            this.IndicatorCalculator = null;
         }
 
 

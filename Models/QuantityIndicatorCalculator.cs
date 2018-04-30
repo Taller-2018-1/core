@@ -9,7 +9,11 @@ namespace think_agro_metrics.Models
     {
         public double Calculate(ICollection<Registry> registries)
         {
-            throw new NotImplementedException();
+            int sum = 0;
+            foreach (Registry registry in registries) {
+                sum += (registry as QuantityRegistry).Quantity;
+            }
+            return sum;
         }
     }
 }
