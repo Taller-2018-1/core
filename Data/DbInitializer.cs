@@ -22,7 +22,7 @@ namespace think_agro_metrics.Data
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca",
                     DocumentName = "articulo1",
-                    Extension = ".pdf",
+                    Extension = "link",
                     Link = "www.utalca.cl"
                 }
             };

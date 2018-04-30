@@ -13,6 +13,8 @@ import { RegistryService } from './services/registry/registry.service';
 import { DemoModule } from './demo/demo.module';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
+import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
+import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { RegistryDetailsComponent } from './components/registry-details/registry
     AppComponent,
     IndicatorDetailComponent,
     RegistryFormComponent,
-    RegistryDetailsComponent
+    RegistryDetailsComponent,
+    FileDocumentFormComponent,
+    LinkDocumentFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,6 +37,8 @@ import { RegistryDetailsComponent } from './components/registry-details/registry
       { path: 'indicator-detail', component: IndicatorDetailComponent },
       { path: 'indicator-add-registry', component: RegistryFormComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
+      { path: 'registry-add-file-document', component: FileDocumentFormComponent },
+      { path: 'registry-add-link-document', component: LinkDocumentFormComponent },
       {path: 'demo',        loadChildren: () => DemoModule},
       {path: '',            loadChildren: () => DemoModule}
     ])
