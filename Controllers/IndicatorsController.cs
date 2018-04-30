@@ -25,12 +25,14 @@ namespace think_agro_metrics.Controllers
         [HttpGet]
         public IEnumerable<Indicator> GetIndicators()
         {
-            _context.Indicators.Include(x => x.Registries).ToList();
+            _context.Indicators.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToList();
+            _context.LinkRegistries.Include(x => x.Links).ToList();
             return _context.Indicators;
         }
 
         // GET: api/Indicators/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> GetIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -45,9 +47,49 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
-            _context.Indicators.Include(x => x.Registries).ToList();
+            _context.Indicators.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToList();
+            _context.LinkRegistries.Include(x => x.Links).ToList();
             return Ok(indicator);
         }
+
+        // GET: api/Indicators/Calculate
+        [Route("Calculate")]
+        public async Task<IActionResult> CalculateIndicators()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Load from the DB the Indicators with its Registries, Documents, and Links
+            _context.Indicators.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToList();
+            _context.LinkRegistries.Include(x => x.Links).ToList();
+
+            // Obtain the Indicators
+            List<Indicator> indicators = new List<Indicator>();
+            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+
+            // If the indicators list is empty, show NotFound
+            if (!indicators.Any())
+            {
+                return NotFound();
+            }
+
+            // List of the results of every indicator
+            List<double> list = new List<double>();
+
+            // Calculate every indicator
+            foreach (Indicator indicator in indicators) {
+                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
+            }
+            
+            // Return the list with the results
+            return Ok(list);
+        }
+        
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]

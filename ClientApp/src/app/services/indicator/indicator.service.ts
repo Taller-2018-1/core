@@ -17,7 +17,11 @@ export class IndicatorService {
 
     constructor(public http: HttpClient) { }
 
-    getIndicator(indicatorId: number): Observable<Indicator> {
+    getIndicator(indicatorId: number | string): Observable<Indicator> {
         return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+    }
+
+    calculateIndicators(): Observable<number[]> {
+        return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
     }
 }

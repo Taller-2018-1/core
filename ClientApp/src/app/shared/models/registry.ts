@@ -1,15 +1,12 @@
+import { Document } from './document';
+
 export class Registry {
     dateAdded: Date;
     date: Date;
     name: string;
     value: number;
-    urlDocuments: string[];
+    links: string[];
+    documents: Document[] = new Array<Document>();
 
-    constructor(dateAdded: Date, date: Date, name: string, urlDocuments: string[], value?: number) {
-        this.date = date;
-        this.dateAdded = dateAdded;
-        this.name = name;
-        this.urlDocuments = urlDocuments;
-        this.value = -1;
-    }
+    constructor() { }
 }

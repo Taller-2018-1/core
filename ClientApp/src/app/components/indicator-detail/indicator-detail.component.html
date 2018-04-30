@@ -1,22 +1,40 @@
-<h1>    {{ indicator.name }}</h1>
-<h2>Tipo: {{ indicator.type }}</h2>
-<div *ngIf="indicator.type == -1">El tipo es default...</div>
+<div *ngIf="indicator$ | async as indicator; else loading">
 
-<table class="table" *ngIf="indicator.registries.length != 0">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Nombre</th>
-            <th *ngIf="indicator.type == 1">Valor</th>
-            <th>Documento respaldo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let registry of indicator.registries">
-            <td>{{ registry.date | date:'dd-MM-yyyy' }}</td>
-            <td>{{ registry.name }}</td>
-            <td *ngIf="indicator.type == 1">{{ registry.value }}</td>
-            <td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td>
-        </tr>
-    </tbody>
-</table>
+    <section>
+        <div id="head-page-section" class="l-grey-bg head-page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-7">
+                        <div class="head-title">
+                            <h1>    {{ indicator.name }}</h1>
+                            <!--h2>Tipo: {{ indicator.type }}</h2-->
+                        </div> <!-- end subsection-text -->
+                    </div> <!-- end col-md-8 -->
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </div>
+    </section>
+
+    <table class="table" *ngIf="indicator.registries.length != 0">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th *ngIf="indicator.type == 1">Cantidad</th>
+                <th>Documento respaldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let registry of indicator.registries">
+                <td>{{ registry.date | date:'dd-MM-yyyy' }}</td>
+                <td>{{ registry.name }}</td>
+                <td *ngIf="indicator.type == 1">{{ registry.quantity }}</td>
+                <td><a href="#">Descargar respaldo</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #loading>
+    Cargando...
+</ng-template>
