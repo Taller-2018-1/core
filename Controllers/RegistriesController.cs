@@ -122,5 +122,42 @@ namespace think_agro_metrics.Controllers
         {
             return _context.Registries.Any(e => e.RegistryID == id);
         }
+
+        // ADD LinkDocument: api/Registries/5/AddLinkDocument
+        [HttpPost("{RegistryId}/AddLinkDocument")]
+        public async Task<IActionResult> AddLinkDocument([FromRoute] long registryId,
+            [FromBody] Document document)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Registry registry = _context.Registries.First(i => i.RegistryID == registryId);
+
+            registry.Documents.Add(document);
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(registryId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
     }
+
+
 }

@@ -19,12 +19,12 @@ export class RegistryService {
       return this.http.get<Registry>(RegistryService.REGISTRIES_API + registryId);
   }
 
-  /*
+
   addLinkDocument(document: String, registryId: number) {
     this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
       + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
   }
-
+  /*
   addFileDocument(document: Registry, registryId: number) {
       this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
         + RegistryService.ADD_FILE_DOCUMENT_METHOD, document ).subscribe();
