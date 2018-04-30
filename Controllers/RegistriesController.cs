@@ -124,8 +124,8 @@ namespace think_agro_metrics.Controllers
         }
 
         // ADD LinkDocument: api/Registries/5/AddLinkDocument
-        [HttpPost("{RegistryId}/AddLinkDocument")]
-        public async Task<IActionResult> AddLinkDocument([FromRoute] long registryId,
+        [HttpPost("{id}/AddLinkDocument")]
+        public async Task<IActionResult> AddLinkDocument([FromRoute] long id,
             [FromBody] Document document)
         {
             if (!ModelState.IsValid)
@@ -133,7 +133,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Registry registry = _context.Registries.First(i => i.RegistryID == registryId);
+            Registry registry = _context.Registries.First(i => i.RegistryID == id);
 
             registry.Documents.Add(document);
 
@@ -145,7 +145,7 @@ namespace think_agro_metrics.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegistryExists(registryId))
+                if (!RegistryExists(id))
                 {
                     return NotFound();
                 }

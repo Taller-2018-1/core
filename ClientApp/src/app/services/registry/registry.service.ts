@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 // Angular models from shared
 import { Registry } from '../../shared/models/registry';
+import { Document } from '../../shared/models/document';
 
 @Injectable()
 export class RegistryService {
@@ -20,7 +21,7 @@ export class RegistryService {
   }
 
 
-  addLinkDocument(document: String, registryId: number) {
+  addLinkDocument(document: Document, registryId: number) {
     this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
       + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
   }

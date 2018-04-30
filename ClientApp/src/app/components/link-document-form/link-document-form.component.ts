@@ -15,12 +15,12 @@ import { Router } from '@angular/router';
 export class LinkDocumentFormComponent implements OnInit {
 
   model: Document;
-  router: Router;
 
   onSubmit() {
+    console.log(this.model);
     this.model.extension = "link";
-    this.RegistryService.addLinkDocument(this.model.name, 1); //Reemplazar por ID
-    this.router.navigateByUrl('/www.utalca.cl');
+    this.RegistryService.addLinkDocument(this.model, 1); //Reemplazar por ID
+    this.router.navigateByUrl('/indicator-detail');
   }
 
   showFormControls(form: any) {
@@ -28,9 +28,10 @@ export class LinkDocumentFormComponent implements OnInit {
       form.controls['name'].value; // Dr. IQ
   }
 
-  constructor(router: Router, private RegistryService: RegistryService) {
+  constructor(private router: Router, private RegistryService: RegistryService) {
     this.model = new Document();
-    this.router = router;
+    this.model.name = "Nombre";
+    this.model.link = "";
   }
 
   ngOnInit() {
