@@ -25,8 +25,7 @@ import { DemoModule } from './demo/demo.module';
     DemoModule,
 
     RouterModule.forRoot([
-      { path: 'indicator-detail', component: IndicatorDetailComponent },
-      { path: 'indicator-detail2b', component: IndicatorDetailComponent },
+      { path: 'indicator-detail/:idIndicator', component: IndicatorDetailComponent },
       {path: 'demo',        loadChildren: () => DemoModule},
       {path: '',            loadChildren: () => DemoModule}
     ])

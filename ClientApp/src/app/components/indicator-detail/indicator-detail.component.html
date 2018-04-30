@@ -27,7 +27,12 @@
 <ng-container *ngIf="indicator.type == -1">
 <div class="panel panel-default" *ngFor="let registry of indicator.registries">
 <!-- Default panel contents -->
-<div class="panel-heading">{{registry.name}}</div>
+<div class="panel-heading">{{registry.name}} 
+       <div class="pull-right">
+        <button  href="#" class="btn btn-success btn-xs"> <span class = "glyphicon glyphicon-pencil">  </span>  </button>
+        <button href="#" class="btn btn-danger btn-xs"> <span class = "glyphicon glyphicon-trash"> </span> </button>
+    </div>
+</div>
 <div class="panel-body">
     <!-- Table -->
     <table class="table">
