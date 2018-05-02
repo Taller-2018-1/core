@@ -11,15 +11,20 @@ import { Registry } from '../../shared/models/registry';
 @Injectable()
 export class IndicatorService {
 
-    public static BASE_URL = `api/Indicators`;
+  public static BASE_URL = `api/Indicators`;
 
-    public static INDICATORS_API = '/api/Indicators/';
+  public static INDICATORS_API = '/api/Indicators/';
+  public static REGISTRIES_API = '/api/Registries/';
 
-    constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
-    getIndicator(indicatorId: number | string): Observable<Indicator> {
-        return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
-    }
+  getIndicator(indicatorId: number): Observable<Indicator> {
+      return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+  }
+
+  deleteRegistry(registryId: number): Observable<Registry> {
+    return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registryId);
+  }
 
     calculateIndicators(): Observable<number[]> {
         return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
