@@ -30,8 +30,8 @@
       <!-- Table -->
       <table class="table">
         <tr><td><b>Fecha</b></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
-        <tr *ngIf="indicator.type == 0"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
-        <tr *ngIf="indicator.type == 1"><td><b>Porcentaje</b></td><td>{{registry.percent | percent}}</td></tr>
+        <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
+        <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td>{{registry.percent | percent}}</td></tr>
         <tr><td><b>Documento respaldo</b></td><td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td></tr>
       </table>
     </div>
