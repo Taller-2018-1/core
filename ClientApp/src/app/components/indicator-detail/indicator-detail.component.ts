@@ -33,7 +33,7 @@ export class IndicatorDetailComponent implements OnInit {
       );
   }
 
-  private deleteRegistry(registry: Registry) {
+  private deleteRegistry (registry: Registry) {
     const date: Date = new Date(registry.date);
     const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
     const result = confirm('Está seguro que desea eliminar el registro: \n' + formatedDate + ' - ' + registry.name);
@@ -45,7 +45,11 @@ export class IndicatorDetailComponent implements OnInit {
         err => console.error(err)
       );
 
-      this.indicator.deleteRegistry(removed);
+      const index: number = this.indicator.registries.indexOf(registry);
+      if ( index !== -1) {
+        this.indicator.registries.splice(index, 1);
+      }
+      console.log(this.indicator.registries);
     }
   }
 

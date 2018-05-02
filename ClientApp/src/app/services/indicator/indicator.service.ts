@@ -14,7 +14,7 @@ export class IndicatorService {
   public static BASE_URL = `api/Indicators`;
 
   public static INDICATORS_API = '/api/Indicators/';
-  public static REGISTRIES_API = '/api/Registries/'
+  public static REGISTRIES_API = '/api/Registries/';
 
   constructor(public http: HttpClient) { }
 
