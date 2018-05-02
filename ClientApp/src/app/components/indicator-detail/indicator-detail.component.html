@@ -1,47 +1,36 @@
 <h1>    {{ indicator.name }}: {{indicator.registries.length}}</h1>
 <h2>Tipo: {{ indicator.type }}</h2>
 <div *ngIf="indicator.type == -1">El tipo es default...</div>
-<!--
-<table class="table" *ngIf="indicator.registries.length != 0">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Nombre</th>
-            <th *ngIf="indicator.type == 1">Valor</th>
-            <th>Documento respaldo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let registry of indicator.registries">
-            <td>{{ registry.date | date:'dd-MM-yyyy' }}</td>
-            <td>{{ registry.name }}</td>
-            <td *ngIf="indicator.type == 1">{{ registry.value }}</td>
-            <td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td>
-        </tr>
-    </tbody>
-</table>
--->
+
+<ng-template #loading>
+  Cargando...
+</ng-template>
+
+
 <div class="heading-block">
-    <h2>Detalle de Registros</h2>
+  <h2>Detalle de Registros</h2>
 </div>
 <ng-container *ngIf="indicator.type == -1">
-<div class="panel panel-default" *ngFor="let registry of indicator.registries">
-<!-- Default panel contents -->
-<div class="panel-heading">{{registry.name}} 
-       <div class="pull-right">
-        <button  href="#" class="btn btn-success btn-xs"> <span class = "glyphicon glyphicon-pencil">  </span>  </button>
-        <button href="#" class="btn btn-danger btn-xs"> <span class = "glyphicon glyphicon-trash"> </span> </button>
+  <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      {{registry.name}}
+      <div class="pull-right">
+        <button href="#" class="btn btn-success btn-xs"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
+        <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)" > <span class="glyphicon glyphicon-trash"> </span> </button>
+      </div>
     </div>
-</div>
-<div class="panel-body">
-    <!-- Table -->
-    <table class="table">
+    <div class="panel-body">
+      <!-- Table -->
+      <table class="table">
         <tr><td><b>Fecha</b></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
+        <tr *ngIf="indicator.type == 0"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
+        <tr *ngIf="indicator.type == 1"><td><b>Porcentaje</b></td><td>{{registry.percent | percent}}</td></tr>
         <tr><td><b>Documento respaldo</b></td><td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td></tr>
-    </table>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
 </ng-container>
-<button type="button" class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#modal-login">
-    Añadir registro
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
+  Añadir registro
 </button>

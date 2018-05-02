@@ -23,7 +23,8 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca",
                     DocumentName = "articulo1",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 1
                 }
             };
 
@@ -32,7 +33,8 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca 2",
                     DocumentName = "articulo2",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 2
                 }
             };
             var documents3 = new Document[]{
@@ -40,7 +42,8 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca 3",
                     DocumentName = "articulo3",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 3
                 }
             };
             var documents4 = new Document[]{
@@ -48,7 +51,8 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca 4",
                     DocumentName = "articulo4",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 4
                 }
             };
             var documents5 = new Document[]{
@@ -56,7 +60,8 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca 5",
                     DocumentName = "articulo5",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 5
                 }
             };
 

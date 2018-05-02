@@ -112,10 +112,25 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            //var documents = _context.Documents.Where(d => d.RegistryID == id);
+            var documents = registry.Documents;
+            foreach (Document document in documents) // Remove documents from model
+            {
+                registry.Documents.Remove(document);
+            }
+
+            var docsDB = _context.Documents.Where(d => d.RegistryID == id);
+            foreach (Document document in docsDB)  // Remove documents from database
+            {
+                _context.Documents.Remove(document);
+            }
+
+            _context.SaveChanges();
+
             _context.Registries.Remove(registry);
             await _context.SaveChangesAsync();
 
-            return Ok(registry);
+            return Ok(registry); // It works
         }
 
         private bool RegistryExists(long id)
