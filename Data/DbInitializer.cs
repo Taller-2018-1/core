@@ -134,12 +134,57 @@ namespace think_agro_metrics.Data
                 }
             };
 
+            var registries4c = new Registry[]
+            {
+                new QuantityRegistry{
+                    Name = "Dole",
+                    Date = DateTime.Today,
+                    Quantity = 25,
+                    Documents = null //documents4c1
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Santa Margarita",
+                    Date = DateTime.Today,
+                    Quantity = 17,
+                    Documents = null //documents4c2
+                }
+            };
+
+            var registries4d = new Registry[]
+            {
+                new QuantityRegistry{
+                    Name = "Dole",
+                    Date = DateTime.Today,
+                    Quantity = 25,
+                    Documents = null //documents4d1
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Santa Margarita",
+                    Date = DateTime.Today,
+                    Quantity = 17,
+                    Documents = null //documents4d2
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Tio Genaro",
+                    Date = DateTime.Today,
+                    Quantity = 40,
+                    Documents = null //documents4d3
+                }
+            };
+
             context.Registries.AddRange(registries1a);
             context.Registries.AddRange(registries1b);
             context.Registries.AddRange(registries1c);
             context.Registries.AddRange(registries1d);
             context.Registries.AddRange(registries1e);
-
+            context.Registries.AddRange(registries4c);
+            context.Registries.AddRange(registries4d);
 
 
             // INDICATORS
@@ -168,8 +213,9 @@ namespace think_agro_metrics.Data
             {
                 new Indicator{Name="Número diagnósticos realizados a Pymes"},
                 new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria."},
-                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas"},
-                new Indicator{Name="Porcentaje de subsidio por empresa."}
+                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", Registries = registries4c, Type=IndicatorType.PercentIndicatorCalculator},
+                new Indicator{Name="Porcentaje de subsidio por empresa.", Registries = registries4d, Type =IndicatorType.PercentIndicatorCalculator}
+
             };
 
             var indicators5 = new Indicator[]
