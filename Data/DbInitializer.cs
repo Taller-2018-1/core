@@ -72,7 +72,7 @@ namespace think_agro_metrics.Data
                     Name = "FruitCompany",
                     Date = DateTime.Today,
                     Documents = null //documents1a2
-                }
+                },
             };
 
             var registries1b = new Registry[]

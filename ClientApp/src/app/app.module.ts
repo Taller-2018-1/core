@@ -10,9 +10,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
-
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
+import { RegistryFormComponent } from './components/registry-form/registry-form.component';
+import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
+import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
+import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
 
 @NgModule({
   declarations: [
@@ -21,15 +25,24 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
     FooterComponent,
     IndicatorHomeComponent,
     IndicatorDetailComponent,
-    IndicatorDisplayComponent
+    IndicatorDisplayComponent,
+    RegistryFormComponent,
+    FileDocumentFormComponent,
+    LinkDocumentFormComponent,
+    RegistryDetailsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ModalModule.forRoot(),
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
+      { path: 'indicator-add-registry', component: RegistryFormComponent },
+      { path: 'registry-details/:id', component: RegistryDetailsComponent },
+      { path: 'registry-add-file-document', component: FileDocumentFormComponent },
+      { path: 'registry-add-link-document', component: LinkDocumentFormComponent },
       { path: 'home',        component: IndicatorHomeComponent },
       { path: '',            component: IndicatorHomeComponent },
       { path: '**',          component: IndicatorHomeComponent }

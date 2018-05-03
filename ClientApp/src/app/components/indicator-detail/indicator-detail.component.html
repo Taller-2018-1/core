@@ -6,35 +6,65 @@
                 <div class="row">
                     <div class="col-md-8 col-sm-7">
                         <div class="head-title">
-                            <h1>    {{ indicator.name }}</h1>
+                            <h1> {{ indicator.name }}</h1>
                             <!--h2>Tipo: {{ indicator.type }}</h2-->
-                        </div> <!-- end subsection-text -->
-                    </div> <!-- end col-md-8 -->
-                </div> <!-- end row -->
-            </div> <!-- end container -->
+                        </div>
+                        <!-- end subsection-text -->
+                    </div>
+                    <!-- end col-md-8 -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
         </div>
     </section>
 
-    <table class="table" *ngIf="indicator.registries.length != 0">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Nombre</th>
-                <th *ngIf="indicator.type == 1">Cantidad</th>
-                <th>Documento respaldo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let registry of indicator.registries">
-                <td>{{ registry.date | date:'dd-MM-yyyy' }}</td>
-                <td>{{ registry.name }}</td>
-                <td *ngIf="indicator.type == 1">{{ registry.quantity }}</td>
-                <td><a href="#">Descargar respaldo</a></td>
-            </tr>
-        </tbody>
-    </table>
+    
+    <div class="container">
+        <div class="heading-block">
+            <h2>Detalle de Registros</h2>
+        </div>
+        <ng-container *ngIf="indicator.type == 0">
+            <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+                <!-- Default panel contents -->
+                <div class="panel-heading">{{registry.name}}</div>
+                <div class="panel-body">
+                    <!-- Table -->
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <b>Fecha</b>
+                            </td>
+                            <td>{{registry.date | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Documento respaldo</b>
+                            </td>
+                            <td>
+                                <a href="{{ registry.urlDocument }} ">Descargar respaldo</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+        <button type="button" class="btn btn-primary" (click)="openModal(template)">Añadir registro</button>
+        <ng-template #template>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"> </app-registry-form>
+            </div>
+        </ng-template>
+    </div>
 </div>
 
+<br>
 <ng-template #loading>
     Cargando...
 </ng-template>

@@ -166,5 +166,42 @@ namespace think_agro_metrics.Controllers
         {
             return _context.Indicators.Any(e => e.IndicatorID == id);
         }
+
+        // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/AddRegistry")]
+        public async Task<IActionResult> AddRegistry([FromRoute] long indicatorId,
+            [FromBody] DefaultRegistry registry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
+
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
     }
 }
