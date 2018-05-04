@@ -25,4 +25,8 @@ export class IndicatorService {
   deleteRegistry(registryId: number): Observable<Registry> {
     return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registryId);
   }
+
+    calculateIndicators(): Observable<number[]> {
+        return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
+    }
 }

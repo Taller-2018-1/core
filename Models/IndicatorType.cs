@@ -7,9 +7,9 @@ namespace think_agro_metrics.Models
 {
     public enum IndicatorType
     {
-        DefaultIndicatorCalculator = -1, // Used by the empty constructor of Indicator required by EntityFramework
-        QuantityIndicatorCalculator = 0,
-        PercentIndicatorCalculator = 1
+        DefaultIndicatorCalculator = 0, // Used by the empty constructor of Indicator required by EntityFramework (and the most common one)
+        QuantityIndicatorCalculator = 1,
+        PercentIndicatorCalculator = 2
         // Add other types here if it's necessary
     }
 }

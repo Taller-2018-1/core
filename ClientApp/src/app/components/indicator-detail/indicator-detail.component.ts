@@ -3,6 +3,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { PercentPipe } from '@angular/common';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
+
+// Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Registry } from '../../shared/models/registry';
 import { Observable } from 'rxjs/Observable';

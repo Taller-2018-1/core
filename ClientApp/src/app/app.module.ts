@@ -5,32 +5,37 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-
-import { HomeComponent, CounterComponent, FetchDataComponent } from './demo';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
+import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
-import { IndicatorService } from './services/indicator/indicator.service';
-import { DemoModule } from './demo/demo.module';
 
+import { IndicatorService } from './services/indicator/indicator.service';
+import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IndicatorDetailComponent
+    HeaderComponent,
+    FooterComponent,
+    IndicatorHomeComponent,
+    IndicatorDetailComponent,
+    IndicatorDisplayComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
 
-    DemoModule,
-
     RouterModule.forRoot([
-      { path: 'indicator-detail/:idIndicator', component: IndicatorDetailComponent },
-      {path: 'demo',        loadChildren: () => DemoModule},
-      {path: '',            loadChildren: () => DemoModule}
+      { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
+      { path: 'home',        component: IndicatorHomeComponent },
+      { path: '',            component: IndicatorHomeComponent },
+      { path: '**',          component: IndicatorHomeComponent }
     ])
   ],
-  providers: [IndicatorService],
+  providers: [IndicatorService, IndicatorGroupService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

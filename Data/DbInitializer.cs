@@ -18,17 +18,23 @@ namespace think_agro_metrics.Data
                 return;   // DB has been seeded
             }
 
-            var documents = new Document[]{
+            // LINKS
+            LinkWrapper link1 = new LinkWrapper { Value = "www.link1.com" };
+            LinkWrapper link2 = new LinkWrapper { Value = "www.link2.com" };
+            LinkWrapper link3 = new LinkWrapper { Value = "www.link3.com" };
+            LinkWrapper link4 = new LinkWrapper { Value = "www.link4.com" };
+            context.Links.AddRange(link1, link2, link3, link4);
+
+
+            // DOCUMENTS
+            var documents1d1 = new Document[]{
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca",
                     DocumentName = "articulo1",
                     Extension = ".pdf",
                     Link = "www.utalca.cl",
                     RegistryID = 1
-                }
-            };
-
-            var documents2 = new Document[]{
+                },
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 2",
                     DocumentName = "articulo2",
@@ -37,129 +43,250 @@ namespace think_agro_metrics.Data
                     RegistryID = 2
                 }
             };
-            var documents3 = new Document[]{
+
+            var documents1d2 = new Document[]{
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 3",
-                    DocumentName = "articulo3",
+                    DocumentName = "articulo2",
                     Extension = ".pdf",
                     Link = "www.utalca.cl",
                     RegistryID = 3
-                }
-            };
-            var documents4 = new Document[]{
+                },
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 4",
-                    DocumentName = "articulo4",
+                    DocumentName = "articulo2",
                     Extension = ".pdf",
                     Link = "www.utalca.cl",
                     RegistryID = 4
                 }
             };
-            var documents5 = new Document[]{
-                new Document{
-                    Name = "Artículo de la Revista de la Universidad de Talca 5",
-                    DocumentName = "articulo5",
-                    Extension = ".pdf",
-                    Link = "www.utalca.cl",
-                    RegistryID = 5
+
+            context.Documents.AddRange(documents1d1);
+            context.Documents.AddRange(documents1d2);
+
+            // REGISTRIES
+            var registries1a = new Registry[]
+            {
+                new DefaultRegistry{
+                    Name = "AgroIndustry",
+                    Date = DateTime.Today,
+                    Documents = null //documents1a1
+                },
+                new DefaultRegistry{
+                    Name = "FruitCompany",
+                    Date = DateTime.Today,
+                    Documents = null //documents1a2
                 }
             };
 
-            foreach(Document document in documents){
-                context.Documents.Add(document);
-            }
+            var registries1b = new Registry[]
+            {
+                new DefaultRegistry{
+                    Name = "Agrosuper",
+                    Date = DateTime.Today,
+                    Documents = null //documents1b1
+                },
+                new DefaultRegistry{
+                    Name = "Agrozzi",
+                    Date = DateTime.Today,
+                    Documents = null //documents1b2
+                }
+            };
 
-            foreach(Document document in documents2){
-                context.Documents.Add(document);
-            }
-            foreach(Document document in documents3){
-                context.Documents.Add(document);
-            }
-            foreach(Document document in documents4){
-                context.Documents.Add(document);
-            }
-            foreach(Document document in documents5){
-                context.Documents.Add(document);
-            }
-            
-            var registries = new Registry[]{
+            var registries1c = new QuantityRegistry[]
+            {
+                new QuantityRegistry{
+                    Name = "Reunión de empresas agrícolas",
+                    Date = DateTime.Today,
+                    Quantity = 10,
+                    Documents = null //documents1c1
+                },
+                new QuantityRegistry{
+                    Name = "Reunión de empresas frutícolas",
+                    Date = DateTime.Today,
+                    Quantity = 17,
+                    Documents = null //documents1c2
+                }
+            };
+
+            var registries1d = new LinkRegistry[]{
                 new LinkRegistry{
                     Name = "Revista Universidad de Talca",
                     Date = DateTime.Today,
-                    Documents = documents
+                    Documents = documents1d1,
+                    Links = new LinkWrapper[]{link1, link2}
                 },
                 new LinkRegistry{
                     Name = "Revista Universidad de Talca 2",
                     Date = DateTime.Today,
-                    Documents = documents2
+                    Documents = documents1d2,
+                    Links = new LinkWrapper[]{link3, link4}
                 }
             };
-            foreach(Registry registry in registries){
-                context.Registries.Add(registry);
-            }
-            var registries2 = new Registry[]{
-                new LinkRegistry{
-                    Name = "Revista Universidad de Talca 3",
-                    Date = DateTime.Today,
-                    Documents = documents3
-                },
-                new LinkRegistry{
-                    Name = "Revista Universidad de Talca 4",
-                    Date = DateTime.Today,
-                    Documents = documents4
-                },
-                new LinkRegistry{
-                    Name = "Revista Universidad de Talca 5",
-                    Date = DateTime.Today,
-                    Documents = documents5
-                },
-                
-            };
-            foreach(Registry registry in registries2){
-                context.Registries.Add(registry);
-            }
 
-
-
-
-            
-
-            var indicators = new Indicator[]
+            var registries1e = new Registry[]
             {
-                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET"},
-                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET"},
-                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas"},
-                new Indicator{Name="Número de apariciones en prensa digital y escrita"},
-                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries= registries}
+                new DefaultRegistry{
+                    Name = "Actividad de difusión 1",
+                    Date = DateTime.Today,
+                    Documents = null //documents1e1
+                },
+                new DefaultRegistry{
+                    Name = "Actividad de difusión 2",
+                    Date = DateTime.Today,
+                    Documents = null //documents1e2
+                }
             };
-            
-            foreach (Indicator indicator in indicators)
+
+            var registries4c = new Registry[]
             {
-                context.Indicators.Add(indicator);
-            }
+                new QuantityRegistry{
+                    Name = "Dole",
+                    Date = DateTime.Today,
+                    Quantity = 25,
+                    Documents = null //documents4c1
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Santa Margarita",
+                    Date = DateTime.Today,
+                    Quantity = 17,
+                    Documents = null //documents4c2
+                }
+            };
+
+            var registries4d = new Registry[]
+            {
+                new QuantityRegistry{
+                    Name = "Dole",
+                    Date = DateTime.Today,
+                    Quantity = 25,
+                    Documents = null //documents4d1
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Santa Margarita",
+                    Date = DateTime.Today,
+                    Quantity = 17,
+                    Documents = null //documents4d2
+                },
+
+                new QuantityRegistry
+                {
+                    Name = "Tio Genaro",
+                    Date = DateTime.Today,
+                    Quantity = 40,
+                    Documents = null //documents4d3
+                }
+            };
+
+            context.Registries.AddRange(registries1a);
+            context.Registries.AddRange(registries1b);
+            context.Registries.AddRange(registries1c);
+            context.Registries.AddRange(registries1d);
+            context.Registries.AddRange(registries1e);
+            context.Registries.AddRange(registries4c);
+            context.Registries.AddRange(registries4d);
+
+
+            // INDICATORS
+            var indicators1 = new Indicator[]
+            {
+                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a},
+                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b},
+                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Type = IndicatorType.QuantityIndicatorCalculator},
+                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d},
+                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e}
+            };
 
             var indicators2 = new Indicator[]
             {
                 new Indicator{Name="Número de académicos que participan en actividades del CET"},
-                new Indicator{Name="Número de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET",Registries= registries2}
-                
+                new Indicator{Name="Número de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET"}
             };
-            
-            foreach (Indicator indicator in indicators2)
+
+            var indicators3 = new Indicator[]
             {
-                context.Indicators.Add(indicator);
-            }
+                new Indicator{Name="Número de programas de formación implementados"},
+                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Type=IndicatorType.QuantityIndicatorCalculator}
+            };
+
+            var indicators4 = new Indicator[]
+            {
+                new Indicator{Name="Número diagnósticos realizados a Pymes"},
+                new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria."},
+                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", Registries = registries4c, Type=IndicatorType.PercentIndicatorCalculator},
+                new Indicator{Name="Porcentaje de subsidio por empresa.", Registries = registries4d, Type =IndicatorType.PercentIndicatorCalculator}
+
+            };
+
+            var indicators5 = new Indicator[]
+            {
+                new Indicator{Name="Porcentaje de satisfacción de empresas frutícolas"},
+                new Indicator{Name="Porcentaje de satisfacción de empresas agroindustriales"}
+            };
+
+            var indicators6 = new Indicator[]
+            {
+                new Indicator{Name="Número de empresas con aumentos de productividad"},
+                new Indicator{Name="Porcentaje de aumento de productividad de los clientes asesorados/as"}
+            };
+
+            var indicators7 = new Indicator[]
+            {
+                new Indicator{Name="Número de empresas con aumento de ventas"},
+                new Indicator{Name="Porcentaje de aumento de ventas de los clientes asesorados/as que declararon ventas"}
+            };
+
+             var indicators8 = new Indicator[]
+            {
+                new Indicator{Name="Número de empresas con disminución de costos"},
+                new Indicator{Name="Porcentaje de disminución de costos de los clientes asesorados/as"}
+            };
+
+            var indicators9 = new Indicator[]
+            {
+                new Indicator{Name="Número de empresas asesoradas con nuevos empleos formales"},
+                new Indicator{Name="Porcentaje de aumento empleos de los clientes asesorados/as que declararon nuevos empleos"}
+            };
+
+            var indicators10 = new Indicator[]
+            {
+                new Indicator{Name="Número de empresas con aumento de inversión"},
+                new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
+            };
+
+            context.Indicators.AddRange(indicators1); context.SaveChanges(); // Saved here to keep the indicators in order in the DB
+            context.Indicators.AddRange(indicators2); context.SaveChanges();
+            context.Indicators.AddRange(indicators3); context.SaveChanges();
+            context.Indicators.AddRange(indicators4); context.SaveChanges();
+            context.Indicators.AddRange(indicators5); context.SaveChanges();
+            context.Indicators.AddRange(indicators6); context.SaveChanges();
+            context.Indicators.AddRange(indicators7); context.SaveChanges();
+            context.Indicators.AddRange(indicators8); context.SaveChanges();
+            context.Indicators.AddRange(indicators9); context.SaveChanges();
+            context.Indicators.AddRange(indicators10); context.SaveChanges();
 
 
+            // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
             {
-                new IndicatorGroup{Name="Vinculación con entidades nacionales e internacionales", Indicators=indicators},
-                new IndicatorGroup{Name="Vinculación con Académicos y Estudiantes", Indicators=indicators2}
+                new IndicatorGroup{Name="Vinculación con entidades nacionales e internacionales", Indicators=indicators1},
+                new IndicatorGroup{Name="Vinculación con académicos y estudiantes", Indicators=indicators2},
+                new IndicatorGroup{Name="Formación de los profesionales extensionistas e integrantes del equipo de gestión, en ámbitos relacionados al extensionismo tecnológico", Indicators=indicators3},
+                new IndicatorGroup{Name="Prestación de servicios de extensionismo tecnológico a empresas", Indicators=indicators4},
+                new IndicatorGroup{Name="Satisfacción de empresas por servicios prestados", Indicators=indicators5},
+                new IndicatorGroup{Name="Estimación del aumento de productividad en empresas", Indicators=indicators6},
+                new IndicatorGroup{Name="Estimación del aumento de ventas en empresas", Indicators=indicators7},
+                new IndicatorGroup{Name="Estimación de la disminución de costos en empresas", Indicators=indicators8},
+                new IndicatorGroup{Name="Estimación de la creación de nuevos empleos a partir de la prestación de servicios", Indicators=indicators9},
+                new IndicatorGroup{Name="Estimación de aumento de inversiones de las empresas", Indicators=indicators10},
             };
-            foreach (IndicatorGroup indicatorGroup in indicatorGroups)
-            {
-                context.IndicatorGroups.Add(indicatorGroup);
-            }
+
+            context.IndicatorGroups.AddRange(indicatorGroups);
+            
             context.SaveChanges();
         }
     }

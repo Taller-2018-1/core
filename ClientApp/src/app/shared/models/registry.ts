@@ -1,3 +1,5 @@
+import { Document } from './document';
+
 export class Registry {
   registryID: number;
   dateAdded: Date;
