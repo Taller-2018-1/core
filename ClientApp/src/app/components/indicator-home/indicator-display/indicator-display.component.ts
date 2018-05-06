@@ -13,7 +13,7 @@ import { IndicatorService } from '../../../services/indicator/indicator.service'
   styleUrls: ['./indicator-display.component.css']
 })
 export class IndicatorDisplayComponent implements OnInit {
-  @Input() indicatorGroups;
+  @Input() indicatorGroup;
   indicatorResults$: Observable<number[]>;
 
 

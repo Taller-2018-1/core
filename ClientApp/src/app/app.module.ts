@@ -10,6 +10,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
+import { ResultHomeComponent } from './components/result-home/result-home.component';
+import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
 
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
@@ -21,7 +23,9 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
     FooterComponent,
     IndicatorHomeComponent,
     IndicatorDetailComponent,
-    IndicatorDisplayComponent
+    IndicatorDisplayComponent,
+    ResultDisplayComponent,
+    ResultHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,9 +34,10 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
-      { path: 'home',        component: IndicatorHomeComponent },
-      { path: '',            component: IndicatorHomeComponent },
-      { path: '**',          component: IndicatorHomeComponent }
+      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
+      { path: 'home',        component: ResultHomeComponent },
+      { path: '',            component: ResultHomeComponent },
+      { path: '**',          component: ResultHomeComponent }
     ])
   ],
   providers: [IndicatorService, IndicatorGroupService],
