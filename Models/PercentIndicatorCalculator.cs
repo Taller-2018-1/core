@@ -12,7 +12,7 @@ namespace think_agro_metrics.Models
             int sum = 0;
             int quantity = 0;
             foreach (Registry registry in registries) {
-                sum += Int32.Parse(registry.Value);
+                sum += (registry as QuantityRegistry).Quantity;
                 quantity++;
             }
             return sum / quantity;

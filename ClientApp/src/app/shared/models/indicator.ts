@@ -7,6 +7,6 @@ export class Indicator {
     type: any;
     registries:  Registry [] = new Array<Registry>();
 
-    constructor() { }
+  constructor() { }
 
 }
