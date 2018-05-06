@@ -3,27 +3,39 @@
 <br>
 <br>
 <br>
-<div class="container">
-  <h1>    {{ indicator.name }}</h1>
-<!--h2>Tipo: {{ indicator.type }}</h2-->
-<div *ngIf="indicator.type == -1">El tipo es default...</div>
 
 <ng-template #loading>
-  Cargando...
+  <div class="container">
+    <h2>Cargando datos...</h2>
+  </div>
+</ng-template>
+
+<ng-template #noRegistries>
+    <h2>Aún no se han añadido registros.</h2>
 </ng-template>
 
 
-<div class="heading-block">
-  <h2>Detalle de Registros</h2>
-</div>
+
+<div class="container">
+  <h1>    {{ indicator.name }}</h1>
+  <!--h2>Tipo: {{ indicator.type }}</h2-->
+  <!--<div *ngIf="indicator.type == -1">El tipo es default...</div>-->
+
+  <app-registry-editor></app-registry-editor>
+
+
+  <div class="heading-block" *ngIf="registriesCount != 0; else noRegistries">
+    <h2>Detalle de Registros</h2>
+  </div>
 
   <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+
     <!-- Default panel contents -->
     <div class="panel-heading">
       {{registry.name}}
       <div class="pull-right">
         <button href="#" class="btn btn-success btn-xs"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
-        <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)" > <span class="glyphicon glyphicon-trash"> </span> </button>
+        <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
       </div>
     </div>
     <div class="panel-body">
@@ -37,8 +49,10 @@
     </div>
   </div>
 
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-  Añadir registro
-</button>
+
+
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
+    Añadir registro
+  </button>
 
 </div>

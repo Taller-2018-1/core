@@ -19,18 +19,22 @@ import { HttpClient } from '@angular/common/http';
 export class IndicatorDetailComponent implements OnInit {
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
+  public registriesCount = 0;
 
   constructor(private service: IndicatorService,
-              private route: ActivatedRoute) {
+    private route: ActivatedRoute) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
   }
 
   ngOnInit() {
     this.getIndicator(this.idIndicator);
   }
+  
   private getIndicator(indicatorId: number) {
     this.service.getIndicator(indicatorId).subscribe(
-      data => { this.indicator = data; },
+      data => {
+      this.indicator = data;
+      this.registriesCount = data.registries.length},
       err => console.error(err)
       );
   }
@@ -43,7 +47,9 @@ export class IndicatorDetailComponent implements OnInit {
     if (result) {
       let removed: Registry;
       this.service.deleteRegistry(registry.registryID).subscribe(
-        data => {removed = data; },
+        data => {
+          removed = data;
+          this.registriesCount--;},
         err => console.error(err)
       );
 

@@ -14,6 +14,9 @@ import { IndicatorDetailComponent } from './components/indicator-detail/indicato
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,13 +24,14 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
     FooterComponent,
     IndicatorHomeComponent,
     IndicatorDetailComponent,
-    IndicatorDisplayComponent
+    IndicatorDisplayComponent,
+    RegistryEditorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-
+    NgbModule.forRoot(),
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
       { path: 'home',        component: IndicatorHomeComponent },
