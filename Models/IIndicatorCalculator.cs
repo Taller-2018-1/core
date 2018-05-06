@@ -8,5 +8,6 @@ namespace think_agro_metrics.Models
     public interface IIndicatorCalculator
     {
         double Calculate(ICollection<Registry> registries);
+        double Calculate(ICollection<Registry> registries, int year);
     }
 }

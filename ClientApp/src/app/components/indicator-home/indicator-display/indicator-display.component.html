@@ -4,6 +4,18 @@
       <div class="heading-block">
         <h2>{{ indicatorGroup.name }}</h2>
       </div>
+
+      <!--Dropdown Year Filter-->
+      Seleccione los años a calcular:
+      <div ngbDropdown class="d-inline-block dropdown">
+        <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{ selection }} <i class="fa fa-caret-down"></i> </button>             
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownBasic1">          
+          <li><a class="dropdown-item" (click)="calcularIndicadores('Todos los años')">Todos los años</a></li>          
+          <li *ngFor="let year of years"><a class="dropdown-item" (click)="calcularIndicadores(year)">Año {{ year }}</a></li>          
+        </ul>
+      </div>
+      <br>
+
       <!-- end col-md-12 -->
     </div>
     <!-- end container -->
@@ -23,7 +35,14 @@
                 <div class="services-content">
                   <div class="statistic-percent" [attr.data-perc]="'indicatorResults[indicator.indicatorID-1]'">
                     <div class="fact">
-                      <span class="percentfactor">{{ indicatorResults[indicator.indicatorID-1] }}</span>
+
+                      <div *ngIf="indicator.type == 2; else noPercent">
+                        <span class="percentfactor">{{ indicatorResults[indicator.indicatorID-1] | number:'.0-2'}}%</span>
+                      </div>
+                      <ng-template #noPercent>
+                         <span class="percentfactor">{{ indicatorResults[indicator.indicatorID-1] | number:'.0-2'}}</span>
+                      </ng-template>
+                      
                       <p>{{ indicator.name }}</p>
                     </div>
                     <!-- end fact -->

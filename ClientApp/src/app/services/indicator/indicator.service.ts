@@ -29,4 +29,8 @@ export class IndicatorService {
   calculateIndicators(): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
   }
+
+  calculateIndicatorsYear(year: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
+  }
 }

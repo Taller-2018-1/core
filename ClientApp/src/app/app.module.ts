@@ -10,6 +10,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
 
@@ -28,6 +29,7 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
     ResultHomeComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
