@@ -42,5 +42,24 @@ namespace think_agro_metrics.Models
                 return 0;
             }
         }
+
+        public double Calculate(ICollection<Registry> registries, int year, int month)
+        {
+            double sum = 0;
+            double quantity = 0;
+            foreach (Registry registry in registries) {
+                if(registry.Date.Year == year && registry.Date.Month) {
+                    sum += (registry as QuantityRegistry).Quantity;
+                    quantity++;
+                }
+            }
+            if(quantity > 0){
+                return sum / quantity;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

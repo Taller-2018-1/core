@@ -8,8 +8,21 @@
       <!--Dropdown Year Filter-->
       Seleccione los años a calcular:
       <div ngbDropdown class="d-inline-block dropdown">
-        <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{ selection }} <i class="fa fa-caret-down"></i> </button>             
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownBasic1">          
+        <button class="btn btn-primary" id="dropdownYear" ngbDropdownToggle>{{ selectionYear }} <i class="fa fa-caret-down"></i> </button>             
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownYear">          
+          <li><a class="dropdown-item" (click)="calcularIndicadores('Todos los años')">Todos los años</a></li>          
+          <li *ngFor="let year of years">
+            <a class="dropdown-item" (click)="calculateIndicadors(year)">Año {{ year }}</a>
+          </li>          
+        </ul>
+      </div>
+      <br>
+
+      <!--Dropdown Month Filter-->
+      Seleccione los años a calcular:
+      <div ngbDropdown class="d-inline-block dropdown">
+        <button class="btn btn-primary" id="dropdownMonth" ngbDropdownToggle>{{ selectionMonth }} <i class="fa fa-caret-down"></i> </button>             
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownMonth">          
           <li><a class="dropdown-item" (click)="calcularIndicadores('Todos los años')">Todos los años</a></li>          
           <li *ngFor="let year of years"><a class="dropdown-item" (click)="calcularIndicadores(year)">Año {{ year }}</a></li>          
         </ul>
