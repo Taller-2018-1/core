@@ -140,44 +140,44 @@ namespace think_agro_metrics.Data
 
             var registries4c = new Registry[]
             {
-                new QuantityRegistry{
+                new PercentRegistry{
                     Name = "Dole",
                     Date = DateTime.Today,
-                    Quantity = 25,
+                    Percent = 25,
                     Documents = null //documents4c1
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
-                    Quantity = 17,
+                    Percent = 17,
                     Documents = null //documents4c2
                 }
             };
 
             var registries4d = new Registry[]
             {
-                new QuantityRegistry{
+                new PercentRegistry{
                     Name = "Dole",
                     Date = DateTime.Today,
-                    Quantity = 25,
+                    Percent = 25,
                     Documents = null //documents4d1
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
-                    Quantity = 17,
+                    Percent = 17,
                     Documents = null //documents4d2
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Tio Genaro",
                     Date = DateTime.Today,
-                    Quantity = 40,
+                    Percent = 40,
                     Documents = null //documents4d3
                 }
             };

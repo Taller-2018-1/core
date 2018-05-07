@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap'; // Gonna need this
 
 import { Registry } from '../../../shared/models/registry';
 import { Indicator } from '../../../shared/models/indicator';
+import { RegistryService } from '../../../services/registry/registry.service';
 
 
 @Component({
@@ -11,30 +12,22 @@ import { Indicator } from '../../../shared/models/indicator';
   styleUrls: ['./registry-editor.component.css'],
 })
 export class RegistryEditorComponent implements OnInit {
-  closeResult: string;
 
-  constructor(private modalService: NgbModal) { }
+  @Input()
+  public registry: {registry: Registry, type: number};
 
-  ngOnInit() {}
+  private registryType: number;
 
-  open(content) {
-    /*
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });*/
-    this.modalService.open(content);
+  constructor(private modalService: NgbModal, private service: RegistryService) {
+    
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
+  ngOnInit() { }
 
+  editRegistry() {
+    console.log(this.registry.registry);
+    console.log(this.registry.registry.quantity);
+    this.service.editRegistry(this.registry.registry).subscribe();
+    this.registry = null;
+  }
 }

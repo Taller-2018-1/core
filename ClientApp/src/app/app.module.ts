@@ -16,6 +16,7 @@ import { IndicatorGroupService } from './services/indicator-group/indicator-grou
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+import { RegistryService } from './services/registry/registry.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { RegistryEditorComponent } from './components/indicator-detail/registry-
       { path: '**',          component: IndicatorHomeComponent }
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

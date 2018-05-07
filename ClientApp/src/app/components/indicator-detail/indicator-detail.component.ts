@@ -21,6 +21,8 @@ export class IndicatorDetailComponent implements OnInit {
   public idIndicator = -1;
   public registriesCount = 0;
 
+  public registry: {registry: Registry, type: number};
+
   constructor(private service: IndicatorService,
     private route: ActivatedRoute) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
@@ -37,6 +39,10 @@ export class IndicatorDetailComponent implements OnInit {
       this.registriesCount = data.registries.length},
       err => console.error(err)
       );
+  }
+
+  private editRegistry(registry: Registry) {
+    this.registry = { registry: registry, type: this.indicator.type };
   }
 
   private deleteRegistry (registry: Registry) {
