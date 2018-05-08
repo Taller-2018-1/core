@@ -24,8 +24,7 @@
                   <div class="services-content">
                     <div class="statistic-percent" [attr.data-perc]="'indicatorResults[indicator.indicatorID-1]'">
                       <div class="fact">
-                        <span class="percentfactor" *ngIf="indicator.type === 0 || indicator.type === 1">{{ indicatorResults[indicator.indicatorID-1]}}</span>
-                        <span class="percentfactor" *ngIf="indicator.type === 2">{{ indicatorResults[indicator.indicatorID-1] | percent}}</span>
+                        <span class="percentfactor">{{ indicatorResults[indicator.indicatorID-1] }}</span> 
                         <p>{{ indicator.name }}</p>
                       </div>
                       <!-- end fact -->

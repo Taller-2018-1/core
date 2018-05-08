@@ -50,7 +50,7 @@ namespace think_agro_metrics.Controllers
         // PUT: api/Registries/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] Registry registry)
-        {
+        {   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -62,6 +62,8 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
+            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
+            //return Ok();
 
             try
             {
