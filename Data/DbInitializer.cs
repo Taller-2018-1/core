@@ -32,13 +32,15 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca",
                     DocumentName = "articulo1",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 1
                 },
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 2",
                     DocumentName = "articulo2",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 2
                 }
             };
 
@@ -47,13 +49,15 @@ namespace think_agro_metrics.Data
                     Name = "Artículo de la Revista de la Universidad de Talca 3",
                     DocumentName = "articulo2",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 3
                 },
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 4",
                     DocumentName = "articulo2",
                     Extension = ".pdf",
-                    Link = "www.utalca.cl"
+                    Link = "www.utalca.cl",
+                    RegistryID = 4
                 }
             };
 
