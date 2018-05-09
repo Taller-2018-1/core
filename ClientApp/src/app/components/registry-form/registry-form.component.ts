@@ -23,7 +23,8 @@ export class RegistryFormComponent implements OnInit {
   @Input() idIndicator;
   @Input() indicator:Indicator;
   onSubmit() {
-    this.IndicatorService.addRegistry(this.model, this.idIndicator); //Reemplazar por ID
+    //this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
+    this.IndicatorService.addRegistry(this.model, this.idIndicator, this.indicator.type);
     this.indicator.registries.push(this.model);
     this.router.navigateByUrl('/indicator/'+this.idIndicator);
   }
@@ -32,12 +33,8 @@ export class RegistryFormComponent implements OnInit {
     this.modalRef.hide();
     this.modalRef = null;
   }
-
-  showFormControls(form: any) {
-    return form && form.controls['name'] &&
-      form.controls['name'].value; // Dr. IQ
-  }
-
+  
+  
   constructor(router: Router, private IndicatorService: IndicatorService, private modalService: BsModalService) {
     this.model = new Registry();
     this.router = router;

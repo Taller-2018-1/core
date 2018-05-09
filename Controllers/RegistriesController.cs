@@ -82,19 +82,118 @@ namespace think_agro_metrics.Controllers
             return NoContent();
         }
 
-        // POST: api/Registries
-        [HttpPost]
-        public async Task<IActionResult> PostRegistry([FromBody] Registry registry)
+       // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/DefaultRegistry")]
+        public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
+            [FromBody] DefaultRegistry registry)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Registries.Add(registry);
-            await _context.SaveChangesAsync();
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
 
-            return CreatedAtAction("GetRegistry", new { id = registry.RegistryID }, registry);
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+         private bool IndicatorExists(long id)
+        {
+            return _context.Indicators.Any(e => e.IndicatorID == id);
+        }
+        // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/QuantityRegistry")]
+        public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
+            [FromBody] QuantityRegistry registry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
+
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/LinkRegistry")]
+        public async Task<IActionResult> LinkRegistry([FromRoute] long indicatorId,
+            [FromBody] LinkRegistry registry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
+
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // DELETE: api/Registries/5

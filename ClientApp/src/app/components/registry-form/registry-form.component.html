@@ -21,20 +21,26 @@
 <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
   <div class="form-group">
     <label for="name" class="sr-only">Nombre del registro</label>
-    <input type="name" name="name" id="name" class="form-control" placeholder="Nombre del registro" required [(ngModel)]="model.name"
-      name="name" #name="ngModel">
+    <input type="name" id="name" class="form-control" placeholder="Nombre del registro" required [(ngModel)]="model.name" name="name"
+      #name="ngModel">
   </div>
   <div class="form-group">
     <label class="sr-only">Fecha</label>
-    <input name="fecha" id="email" class="form-control" placeholder="Fecha">
+    <!--<input name="fecha" id="email" class="form-control" placeholder="Fecha">-->
+    <input type="date" required [(ngModel)]="model.date" name="date" #name="ngModel">
   </div>
-  <div class="form-group">
+  <div class="form-group"  *ngIf="indicator.type==0">
     <label class="sr-only">Recurso</label>
     <input name="recurso" id="recurso" class="form-control" placeholder="Recurso">
   </div>
+  
+  <div class="form-group" *ngIf="indicator.type==1">
+    <label class="sr-only">Ingrese Numero</label>
+    <input type ="number" name="recursos" id="recurso" class="form-control" placeholder="cantidad de empresas asistentes">
+  </div>
 
   <div class="form-group">
-    <label for="select" class="btn btn-sm btn-clean-2" >Seleccionar Documento</label>
+    <label for="select" class="btn btn-sm btn-clean-2">Seleccionar Documento</label>
     <input type="file" id="files" multiple name="photo" id="select" />
   </div>
   <button type="submit" class="btn btn-primary" (click)="closeModal()">Registrar</button>

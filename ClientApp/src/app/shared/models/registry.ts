@@ -6,6 +6,7 @@ export class Registry {
     name: string;
     value: number;
     links: string[];
+    indicatorID: number;
     documents: Document[] = new Array<Document>();
 
     constructor() { }

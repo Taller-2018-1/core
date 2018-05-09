@@ -18,13 +18,12 @@
             <!-- end container -->
         </div>
     </section>
-
     
     <div class="container">
         <div class="heading-block">
             <h2>Detalle de Registros</h2>
         </div>
-        <ng-container *ngIf="indicator.type == 0">
+        <ng-container *ngIf="indicator.type == 0 || indicator.type == 1">
             <div class="panel panel-default" *ngFor="let registry of indicator.registries">
                 <!-- Default panel contents -->
                 <div class="panel-heading">{{registry.name}}</div>
