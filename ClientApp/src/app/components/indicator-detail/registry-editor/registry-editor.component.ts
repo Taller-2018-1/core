@@ -27,7 +27,7 @@ export class RegistryEditorComponent implements OnInit {
   editRegistry() {
     console.log(this.registry.registry);
     console.log(this.registry.registry.quantity);
-    this.service.editRegistry(this.registry.registry).subscribe();
+    this.service.editRegistry(this.registry.registry, this.registryType).subscribe();
     this.registry = null;
   }
 }
