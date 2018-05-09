@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -14,7 +15,6 @@ import { IndicatorDetailComponent } from './components/indicator-detail/indicato
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 
@@ -32,7 +32,7 @@ import { RegistryService } from './services/registry/registry.service';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    NgbModule.forRoot(),
+    ModalModule.forRoot(),
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
       { path: 'home',        component: IndicatorHomeComponent },

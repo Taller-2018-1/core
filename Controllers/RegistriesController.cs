@@ -80,8 +80,8 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
+            return Ok();
+            //return NoContent();
         }
 
 
@@ -119,7 +119,8 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
+            //return NoContent();
         }
 
         // PUT: api/Registries/5/PercentRegistry
@@ -156,7 +157,8 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
+            //return NoContent();
         }
 
         // PUT: api/Registries/5/LinkRegistry
@@ -193,7 +195,8 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
+            //return NoContent();
         }
 
         // PUT: api/Registries/5/ActivityRegistry
@@ -230,7 +233,8 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
+            //return NoContent();
         }
 
         // POST: api/Registries

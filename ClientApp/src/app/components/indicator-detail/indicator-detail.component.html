@@ -11,7 +11,7 @@
 </ng-template>
 
 <ng-template #noRegistries>
-    <h2>Aún no se han añadido registros.</h2>
+    <h2>Aún no se han cargado registros.</h2>
 </ng-template>
 
 
@@ -20,7 +20,7 @@
   <h1>    {{ indicator.name }}</h1>
   <!--h2>Tipo: {{ indicator.type }}</h2-->
   <!--<div *ngIf="indicator.type == -1">El tipo es default...</div>-->
-  <app-registry-editor [registry]="registry"></app-registry-editor>
+  
 
   <div class="heading-block" *ngIf="registriesCount != 0; else noRegistries">
     <h2>Detalle de Registros</h2>
@@ -31,7 +31,7 @@
     <div class="panel-heading">
       {{registry.name}}
       <div class="pull-right">
-        <button href="#" class="btn btn-success btn-xs" (click)="editRegistry(registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
+        <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
         <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
       </div>
     </div>
@@ -52,4 +52,20 @@
     Añadir registro
   </button>
 
+
+  <!--Modal Edit Registry-->
+  
+  <ng-template #editRegistry>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Editar registro</h4>
+      <button type="button" class="close pull-right" aria-label="close" (click)="editModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-registry-editor [registry]="registry" [editModalRef]="editModalRef"></app-registry-editor>
+    </div>
+  </ng-template>
+
+  <!--END Modal Edit Registry-->
 </div>
