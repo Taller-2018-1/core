@@ -21,16 +21,17 @@ export class RegistryService {
       .append('Content-Type', 'application/json');
     
     let discriminator: string = RegistryService.DEFAULT;
-    if (type === 1) {
+    if (type == 0) {
+      discriminator = RegistryService.DEFAULT;
+    } else if (type == 1) {
       discriminator = RegistryService.QUANTITY;
-    } else if (type === 2) {
+    } else if (type == 2) {
       discriminator = RegistryService.PERCENT;
-    } else if (type === 3) {
-      alert("Tipo no definido");
-    } else if (type === 4) {
-      alert("Tipo no definido");
+    } else if (type == 3) {
+      alert("Tipo no definido"); // LinkRegistry and ActivityRegistry types aren't defined yet - link is 3 or 4?
+    } else if (type == 4) {
+      alert ("Tipo no definido")
     }
-
 
     return this.http.put<Registry>(RegistryService.BASE_URL + registry.registryID + discriminator, registry, { headers: headers })
       .pipe(
