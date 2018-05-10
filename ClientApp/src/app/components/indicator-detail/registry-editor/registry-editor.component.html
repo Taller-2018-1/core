@@ -34,8 +34,27 @@
       Porcentaje debe ser un número entero o decimal (punto "." es separador de decimales)
     </div>
   </div>
+  
+
+  <div class="heading-block">
+    <h4>Documentos</h4>
+  </div>
+  <div class="panel panel-default">
+    <table class="table">
+      <thead><tr><td>Nombre</td><td>Opciones</td></tr></thead>
+      <tbody>
+        <tr *ngFor="let document of registry.registry.documents">
+          <td>{{ document.name }}</td>
+          <td>
+            <button href="#" class="btn btn-danger btn-xs" > <span class="glyphicon glyphicon-trash"> </span> </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="modal-footer">
     <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid">Editar</button>
   </div>
-
 </form>
+
