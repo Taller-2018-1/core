@@ -15,5 +15,16 @@ namespace think_agro_metrics.Models
             }
             return sum;
         }
+
+        public double Calculate(ICollection<Registry> registries,int year)
+        {
+            int sum = 0;
+            foreach (Registry registry in registries) {
+                if(registry.Date.Year == year) {
+                    sum += (registry as QuantityRegistry).Quantity;
+                }
+            }
+            return sum;
+        }
     }
 }

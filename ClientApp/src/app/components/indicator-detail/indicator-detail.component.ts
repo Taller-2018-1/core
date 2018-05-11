@@ -1,6 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
 import { PercentPipe } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
+// Models
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
 import { Registry } from '../../shared/models/registry';
@@ -11,9 +16,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
-import { Observable } from 'rxjs/Observable';
-import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 import { RegistryService } from '../../services/registry/registry.service';
 
 @Component({
@@ -70,7 +72,7 @@ export class IndicatorDetailComponent implements OnInit {
       this.service.deleteRegistry(registry.registryID).subscribe(
         data => {
           removed = data;
-          this.registriesCount--;},
+          this.registriesCount--; },
         err => console.error(err)
       );
 

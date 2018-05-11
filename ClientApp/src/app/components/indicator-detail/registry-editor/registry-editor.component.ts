@@ -27,9 +27,7 @@ export class RegistryEditorComponent implements OnInit {
 
   constructor(private service: RegistryService) {  }
 
-  ngOnInit() {
-    this.bsValue = this.registry.date;
-  }
+  ngOnInit() {  }
 
   editRegistry() {
     this.service.editRegistry(this.registry, this.type).subscribe();
@@ -55,7 +53,7 @@ export class RegistryEditorComponent implements OnInit {
 
       const index: number = this.registry.documents.indexOf(document);
       if (index !== -1) {
-        this.registry.documents.splice(index,1);
+        this.registry.documents.splice(index, 1);
       }
     }
   }

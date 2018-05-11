@@ -138,6 +138,53 @@ namespace think_agro_metrics.Data
                 }
             };
 
+            var registries4a = new Registry[]
+            {
+                new QuantityRegistry{
+                    Name = "Empresa 1",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4a1
+                },
+
+                new QuantityRegistry{
+                    Name = "Empresa 2",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4a2
+                },
+                
+                new QuantityRegistry{
+                    Name = "Empresa 3",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4a3
+                }
+            };
+
+            var registries4b = new Registry[]
+            {   
+                new QuantityRegistry{
+                    Name = "Empresa 1",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4b1
+                },
+                new QuantityRegistry{
+                    Name = "Empresa 2",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4a2
+                },
+                
+                new QuantityRegistry{
+                    Name = "Empresa 3",
+                    Date = DateTime.Today,
+                    Quantity = 1,
+                    Documents = null //documents4a3
+                }    
+            };
+
             var registries4c = new Registry[]
             {
                 new PercentRegistry{
@@ -187,6 +234,8 @@ namespace think_agro_metrics.Data
             context.Registries.AddRange(registries1c);
             context.Registries.AddRange(registries1d);
             context.Registries.AddRange(registries1e);
+            context.Registries.AddRange(registries4a);
+            context.Registries.AddRange(registries4b);
             context.Registries.AddRange(registries4c);
             context.Registries.AddRange(registries4d);
 
@@ -215,8 +264,8 @@ namespace think_agro_metrics.Data
 
             var indicators4 = new Indicator[]
             {
-                new Indicator{Name="Número diagnósticos realizados a Pymes"},
-                new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria."},
+                new Indicator{Name="Número diagnósticos realizados a Pymes", Registries = registries4a, Type=IndicatorType.QuantityIndicatorCalculator},
+                new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria.", Registries = registries4b, Type=IndicatorType.QuantityIndicatorCalculator},
                 new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", Registries = registries4c, Type=IndicatorType.PercentIndicatorCalculator},
                 new Indicator{Name="Porcentaje de subsidio por empresa.", Registries = registries4d, Type =IndicatorType.PercentIndicatorCalculator}
 

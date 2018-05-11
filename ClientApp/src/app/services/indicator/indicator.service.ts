@@ -19,14 +19,18 @@ export class IndicatorService {
   constructor(public http: HttpClient) { }
 
   getIndicator(indicatorId: number): Observable<Indicator> {
-      return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+    return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
   }
 
   deleteRegistry(registryId: number): Observable<Registry> {
     return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registryId);
   }
 
-    calculateIndicators(): Observable<number[]> {
-        return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
-    }
+  calculateIndicators(): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
+  }
+
+  calculateIndicatorsYear(year: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
+  }
 }

@@ -42,8 +42,8 @@
       <!-- Table -->
       <table class="table">
         <tr><td><b>Fecha ingreso de registro</b></td><td></td><td></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
-        <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
-        <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td>{{registry.percent}}%</td></tr>
+        <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td></td><td></td><td>{{registry.quantity}}</td></tr>
+        <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td></td><td></td><td>{{registry.percent}}%</td></tr>
       </table>
       <div class="container">
           <h6>Documentos de respaldo</h6>
