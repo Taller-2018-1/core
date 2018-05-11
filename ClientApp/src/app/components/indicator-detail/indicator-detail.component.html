@@ -36,13 +36,42 @@
       </div>
     </div>
     <div class="panel-body">
+        <div class="container">
+            <h6>Datos registro</h6>
+        </div>
       <!-- Table -->
       <table class="table">
-        <tr><td><b>Fecha</b></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
+        <tr><td><b>Fecha ingreso de registro</b></td><td></td><td></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
         <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
         <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td>{{registry.percent}}%</td></tr>
-        <tr><td><b>Documento respaldo</b></td><td><a href="{{ registry.urlDocument }}">Descargar respaldo</a></td></tr>
       </table>
+      <div class="container">
+          <h6>Documentos de respaldo</h6>
+      </div>
+      <table class="table">
+        <tr *ngFor = "let document of registry.documents">
+          <td><b>{{document.name}}</b></td>
+          <td>{{document.date | date: 'dd-MM-yyyy'}}</td>
+          <td><a href="{{ document.link }}">Descargar</a></td>
+          <td><button class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(registry,document)" > <span class="glyphicon glyphicon-trash"> </span> </button></td>
+        </tr>
+      </table>
+      <!--
+      <table class="table">
+        <thead>
+            <tr><td><b>Documentos de respaldo</b></td><td></td><td></td></tr>
+        <p *ngIf="registry.documents.length == 0"><em> No hay documentos</em></p>
+            
+        </thead>
+        <tbody>
+            <tr *ngFor = "let document of registry.documents">
+                <td><b>{{document.name}}</b></td>
+                <td><a href={{document.link}}>Descargar</a></td>
+                <td><button href="#" class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(document)" > <span class="glyphicon glyphicon-trash"> </span> </button></td>
+              </tr>
+        </tbody>
+      </table>
+      -->
     </div>
   </div>
 
@@ -54,17 +83,8 @@
 
 
   <!--Modal Edit Registry-->
-  
   <ng-template #editRegistry>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Editar registro</h4>
-      <button type="button" class="close pull-right" aria-label="close" (click)="editModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <app-registry-editor [registry]="registry" [editModalRef]="editModalRef"></app-registry-editor>
-    </div>
+      <app-registry-editor [registry]="registry" [type]="type" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
   </ng-template>
 
   <!--END Modal Edit Registry-->

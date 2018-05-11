@@ -11,6 +11,8 @@ export class Registry {
   name: string;
   urlDocuments: string[];
 
+  documents: Document[];
+
   constructor(dateAdded: Date, date: Date, name: string, urlDocuments: string[], quantity?: number, percent?: number ) {
     this.date = date;
     this.dateAdded = dateAdded;

@@ -4,6 +4,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+import { Document } from '../../shared/models/document';
+
 @Injectable()
 export class RegistryService {
 
@@ -13,6 +15,8 @@ export class RegistryService {
   private static PERCENT = '/PercentRegistry';
   private static LINK = '/LinkRegistry';
   private static ACTIVITY = '/ActivityRegistry';
+
+private static DOCUMENTS = 'Documents/';
 
   constructor(private http: HttpClient) { }
 
@@ -37,5 +41,9 @@ export class RegistryService {
       .pipe(
       retry(5) // retry a failed request up to 3 times, but don't handle errros
       );
+  }
+
+  deleteDocument(document: Document): Observable<Document> {
+    return this.http.delete<Document>(RegistryService.BASE_URL + RegistryService.DOCUMENTS + document.documentID);
   }
 }
