@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace think_agro_metrics.Controllers
 {
@@ -15,10 +18,12 @@ namespace think_agro_metrics.Controllers
     public class RegistriesController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public RegistriesController(DataContext context)
+        public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Registries
@@ -156,6 +161,68 @@ namespace think_agro_metrics.Controllers
             }
 
             return NoContent();
+        }
+
+        // ADD FileDocument: api/Registries/5/AddFileDocument
+        [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
+        public ActionResult AddFileDocument([FromRoute] long id)
+        {
+            /*
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            */
+            try
+            {
+                var file = Request.Form.Files[0];
+                string folderName = "Repository";
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0)
+                {
+                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    string fullPath = Path.Combine(newPath, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                return Json("Upload Successful.");
+            }
+            catch (System.Exception ex)
+            {
+                return Json("Upload Failed: " + ex.Message);
+            }
+            /*
+            Registry registry = _context.Registries.First(i => i.RegistryID == id);
+
+            registry.Documents.Add(document);
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+            */
         }
     }
 

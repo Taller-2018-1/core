@@ -1,3 +1,43 @@
-<p>
-  file-document-form works!
-</p>
+<h3>Ingrese un nuevo registro</h3>
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+  <div class="form-group">
+    <label>Nombre registro: </label>
+    <input type="text" class="form-control"
+           id="name"
+           placeholder="Registro X"
+           required
+           [(ngModel)]="model.name"
+           name="name"
+           #name="ngModel">
+    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+      Ingrese un nombre
+    </div>
+
+    <input #file type="file" multiple (change)="upload(file.files)" />
+    <br />
+    <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+      {{progress}}%
+    </span>
+
+    <span style="font-weight:bold;color:green;" *ngIf="message">
+      {{message}}
+    </span>
+
+    <!--<label>Link: </label>
+  <input type="file" class="btn btn-add"
+         id="file"
+         required
+         [(ngModel)]="files"
+         name="file"
+         #file="ngModel">
+  <div [hidden]="file.valid || file.pristine" class="alert alert-danger">
+    Ingrese un archivo
+  </div>
+      -->
+    <label>Fecha: </label>
+    <input type="date"
+           [(ngModel)]="model.date"
+           value="{{ date | date: 'yyyy-MM-dd' }}">
+  </div>
+  <input type="submit" class="btn btn-primary">
+</form>

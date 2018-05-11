@@ -25,9 +25,9 @@ export class RegistryService {
     this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
       + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
   }
-  /*
-  addFileDocument(document: Registry, registryId: number) {
+  
+  addFileDocument(document: Document, registryId: number) {
       this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
         + RegistryService.ADD_FILE_DOCUMENT_METHOD, document ).subscribe();
-  }*/
+  }
 }
