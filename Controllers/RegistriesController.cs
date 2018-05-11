@@ -47,8 +47,8 @@ namespace think_agro_metrics.Controllers
             return Ok(registry);
         }
 
-        // PUT: api/Registries/5/DefaultRegistry
-        [HttpPut("{id}/DefaultRegistry")]
+        // PUT: api/Registries/DefaultRegistry/5
+        [HttpPut("DefaultRegistry/{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] DefaultRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -62,8 +62,6 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
-            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
-            //return Ok();
 
             try
             {
@@ -81,12 +79,11 @@ namespace think_agro_metrics.Controllers
                 }
             }
             return Ok();
-            //return NoContent();
         }
 
 
-        // PUT: api/Registries/5/QuantityRegistry
-        [HttpPut("{id}/QuantityRegistry")]
+        // PUT: api/Registries/QuantityRegistry/5
+        [HttpPut("QuantityRegistry/{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] QuantityRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -100,8 +97,6 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
-            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
-            //return Ok();
 
             try
             {
@@ -120,11 +115,10 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok();
-            //return NoContent();
         }
 
-        // PUT: api/Registries/5/PercentRegistry
-        [HttpPut("{id}/PercentRegistry")]
+        // PUT: api/Registries/PercentRegistry/5
+        [HttpPut("PercentRegistry/{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] PercentRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -138,8 +132,6 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
-            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
-            //return Ok();
 
             try
             {
@@ -158,11 +150,10 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok();
-            //return NoContent();
         }
 
-        // PUT: api/Registries/5/LinkRegistry
-        [HttpPut("{id}/LinkRegistry")]
+        // PUT: api/Registries/LinkRegistry/5
+        [HttpPut("LinkRegistry/{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] LinkRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -176,8 +167,6 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
-            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
-            //return Ok();
 
             try
             {
@@ -196,11 +185,10 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok();
-            //return NoContent();
         }
 
-        // PUT: api/Registries/5/ActivityRegistry
-        [HttpPut("{id}/ActivityRegistry")]
+        // PUT: api/Registries/ActivityRegistry/5
+        [HttpPut("ActivityRegistry/{id}")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] ActivityRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -214,8 +202,6 @@ namespace think_agro_metrics.Controllers
             }
 
             _context.Entry(registry).State = EntityState.Modified;
-            //var registryDb = await _context.Registries.SingleOrDefaultAsync(r=> r.RegistryID == id);
-            //return Ok();
 
             try
             {
@@ -234,7 +220,6 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok();
-            //return NoContent();
         }
 
         // POST: api/Registries

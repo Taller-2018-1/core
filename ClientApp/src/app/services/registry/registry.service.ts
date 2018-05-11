@@ -10,11 +10,11 @@ import { Document } from '../../shared/models/document';
 export class RegistryService {
 
   private static BASE_URL = '/api/Registries/';
-  private static DEFAULT = '/DefaultRegistry';
-  private static QUANTITY = '/QuantityRegistry';
-  private static PERCENT = '/PercentRegistry';
-  private static LINK = '/LinkRegistry';
-  private static ACTIVITY = '/ActivityRegistry';
+  private static DEFAULT = 'DefaultRegistry/';
+  private static QUANTITY = 'QuantityRegistry/';
+  private static PERCENT = 'PercentRegistry/';
+  private static LINK = 'LinkRegistry/';
+  private static ACTIVITY = 'ActivityRegistry/';
 
 private static DOCUMENTS = 'Documents/';
 
@@ -37,7 +37,7 @@ private static DOCUMENTS = 'Documents/';
       alert ('Tipo no definido');
     }
 
-    return this.http.put<Registry>(RegistryService.BASE_URL + registry.registryID + discriminator, registry, { headers: headers })
+    return this.http.put<Registry>(RegistryService.BASE_URL + discriminator + registry.registryID , registry, { headers: headers })
       .pipe(
       retry(5) // retry a failed request up to 3 times, but don't handle errros
       );
