@@ -1,0 +1,21 @@
+     <!-- Head page section================================================== -->
+     
+      <div id="head-page-section" class="l-grey-bg head-page-section">
+       <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-sm-7">
+               <div class="head-title">
+                <h1>
+                  Resultados e Indicadores
+                </h1>
+              </div> <!-- end subsection-text -->
+            </div> <!-- end col-md-8 -->
+          </div> <!-- end row -->
+        </div> <!-- end container -->
+      </div>
+    <!-- end head-page-section -->
+    <!-- about boxes
+================================================== -->
+<div *ngIf="indicatorGroup$ | async as indicatorGroup">
+    <app-indicator-display [indicatorGroup]="indicatorGroup"></app-indicator-display>
+</div>

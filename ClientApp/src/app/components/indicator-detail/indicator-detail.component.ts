@@ -1,30 +1,37 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Indicator } from '../../shared/models/indicator';
-import { IndicatorType } from '../../shared/models/indicatorType';
-import { IndicatorService } from '../../services/indicator/indicator.service';
+import { PercentPipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
+// Models
+import { Indicator } from '../../shared/models/indicator';
+import { IndicatorType } from '../../shared/models/indicatorType';
+import { Registry } from '../../shared/models/registry';
+
+// Services
+import { IndicatorService } from '../../services/indicator/indicator.service';
 
 @Component({
   selector: 'app-indicator-detail',
   templateUrl: './indicator-detail.component.html',
-  styleUrls: ['./indicator-detail.component.css']
+  styleUrls: ['./indicator-detail.component.css'],
 })
 export class IndicatorDetailComponent implements OnInit {
-
   public indicator: Indicator = new Indicator();
-  router: Router;
+  public idIndicator = -1;
 
-  constructor(router: Router, private service: IndicatorService) {
-    this.getIndicator(4); //Reemplazar por ID
-    this.router = router;
+  constructor(private router: Router,
+              private service: IndicatorService,
+              private route: ActivatedRoute) {
+    this.idIndicator = this.route.snapshot.params.idIndicator;
   }
 
   ngOnInit() {
+    this.getIndicator(this.idIndicator);
   }
-
   private getIndicator(indicatorId: number) {
     this.service.getIndicator(indicatorId).subscribe(
       data => { this.indicator = data; },
@@ -36,7 +43,27 @@ export class IndicatorDetailComponent implements OnInit {
     this.router.navigateByUrl('/indicator-add-registry');
   }
 
-  gotoRegistry() {
-    this.router.navigateByUrl('/registry-details/' + 1); //Reemplazar por ID, sacado del button
+  gotoRegistry(registryID: number) {
+    this.router.navigateByUrl('/registry-details/' + registryID);
+  }
+  
+  private deleteRegistry (registry: Registry) {
+    const date: Date = new Date(registry.date);
+    const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
+    const result = confirm('Está seguro que desea eliminar el registro: \n' + formatedDate + ' - ' + registry.name);
+
+    if (result) {
+      let removed: Registry;
+      this.service.deleteRegistry(registry.registryID).subscribe(
+        data => {removed = data; },
+        err => console.error(err)
+      );
+
+      const index: number = this.indicator.registries.indexOf(registry);
+      if ( index !== -1) {
+        this.indicator.registries.splice(index, 1);
+      }
+      console.log(this.indicator.registries);
+    }
   }
 }
