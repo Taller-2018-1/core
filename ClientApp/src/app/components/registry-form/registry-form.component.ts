@@ -20,7 +20,7 @@ export class RegistryFormComponent implements OnInit {
 
   onSubmit() {
     this.IndicatorService.addRegistry(this.model, 4); //Reemplazar por ID
-    this.router.navigateByUrl('/indicator-detail');
+    this.router.navigateByUrl('/indicator/1'); //Reemplazar por ID
   }
 
   showFormControls(form: any) {

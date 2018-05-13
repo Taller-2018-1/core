@@ -31,11 +31,11 @@ export class RegistryDetailsComponent implements OnInit {
   }
 
   gotoAddLinkDocument() {
-    this.router.navigateByUrl('/registry-add-file-document');
+    this.router.navigateByUrl('/registry-add-link-document');
   }
 
   gotoAddFileDocument() {
-    this.router.navigateByUrl('/registry-add-link-document');
+    this.router.navigateByUrl('/registry-add-file-document');
   }
   
 }

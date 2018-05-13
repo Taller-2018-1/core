@@ -44,7 +44,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   gotoRegistry(registryID: number) {
-    this.router.navigateByUrl('/registry-details/' + registryID);
+    this.router.navigateByUrl('/registry/' + registryID);
   }
   
   private deleteRegistry (registry: Registry) {
