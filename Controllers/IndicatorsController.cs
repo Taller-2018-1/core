@@ -63,8 +63,7 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Registries).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
@@ -100,8 +99,7 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Registries).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
@@ -137,8 +135,7 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Registries).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators

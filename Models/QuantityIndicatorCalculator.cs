@@ -31,7 +31,7 @@ namespace think_agro_metrics.Models
         {
             int sum = 0;
             foreach (Registry registry in registries) {
-                if(registry.Date.Year == year && registry.Date.Month == Month) {
+                if(registry.Date.Year == year && registry.Date.Month == month) {
                     sum += (registry as QuantityRegistry).Quantity;
                 }
             }
