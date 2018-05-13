@@ -56,8 +56,6 @@ export class IndicatorDetailComponent implements OnInit {
   gotoRegistry() {
     this.router.navigateByUrl('/registry-details/' + 1); //Reemplazar por ID, sacado del button
   }
-  get diagnostric(){return JSON.stringify(this.indicator.registries)}
-
 
 }
 

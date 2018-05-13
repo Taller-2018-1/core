@@ -24,7 +24,7 @@ export class RegistryFormComponent implements OnInit {
   @Input() indicator:Indicator;
   onSubmit() {
     //this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
-    this.IndicatorService.addRegistry(this.model, this.idIndicator, this.indicator.type);
+    this.IndicatorService.addRegistry(this.model, this.idIndicator, this.indicator.registries[0].discriminator);
     this.indicator.registries.push(this.model);
     this.router.navigateByUrl('/indicator/'+this.idIndicator);
   }

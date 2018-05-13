@@ -18,7 +18,6 @@
             <!-- end container -->
         </div>
     </section>
-    
     <div class="container">
         <div class="heading-block">
             <h2>Detalle de Registros</h2>
@@ -35,6 +34,14 @@
                                 <b>Fecha</b>
                             </td>
                             <td>{{registry.date | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                        <tr *ngIf="registry.discriminator ==='QuantityRegistry'"> 
+                            <td>
+                                <b>N°</b>
+                            </td>
+                            <td>
+                                {{registry.quantity}}
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -57,7 +64,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"> </app-registry-form>
+                <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
             </div>
         </ng-template>
     </div>

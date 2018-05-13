@@ -8,6 +8,8 @@ export class Registry {
     links: string[];
     indicatorID: number;
     documents: Document[] = new Array<Document>();
+    discriminator: string;
+    quantity : number;
 
     constructor() { }
 }

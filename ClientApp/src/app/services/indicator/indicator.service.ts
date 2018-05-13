@@ -32,16 +32,18 @@ export class IndicatorService {
         return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
     }
 
-    addRegistry(registry: Registry, indicatorId: String, type: number) {
+    addRegistry(registry: Registry, indicatorId: String, type: string) {
         let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
-        if (type === 1) {
+        if (type === "QuantityRegistry") {
             discriminator = IndicatorService.QUANTITY_REGISTRY;
-        } else if (type === 2) {
+        } else if (type === "PercentRegistry") {
             discriminator = IndicatorService.PERCENT_REGISTRY;
-        } else if (type === 3) {
-            alert("Tipo no definido");
-        } else if (type === 4) {
-            alert("Tipo no definido");
+        } else if (type === "ActivityRegistry") {
+            discriminator = IndicatorService.ACTIVITY_REGISTRY;
+            //alert("Tipo no definido");
+        } else if (type === "LinkRegistry") {
+            discriminator = IndicatorService.LINK_REGISTRY;
+            //alert("Tipo no definido");
         }
         this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
             + discriminator, registry).subscribe();
