@@ -14,12 +14,27 @@ export class IndicatorService {
   public static BASE_URL = `api/Indicators`;
 
   public static INDICATORS_API = '/api/Indicators/';
-  public static REGISTRIES_API = '/api/Registries/';
+  public static PERCENT_REGISTRY = '/PercentRegistry';
+  public static ACTIVITY_REGISTRY = '/ActivityRegistry';
+  public static QUANTITY_REGISTRY = '/QuantityRegistry';
+  public static LINK_REGISTRY = '/LinkRegistry';
+  public static DEFAULT_REGISTRY = '/DefaultRegistry/';
+    
+    public static REGISTRIES_API = '/api/Registries/';
 
   constructor(public http: HttpClient) { }
 
   getIndicator(indicatorId: number): Observable<Indicator> {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+  }
+
+  addRegistry(registry: Registry, indicatorId: String, type: string) {
+    let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
+    if (type === "LinkRegistry") {
+      discriminator = IndicatorService.LINK_REGISTRY;
+    }
+    this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
+      + discriminator, registry).subscribe();
   }
 
   deleteRegistry(registryId: number): Observable<Registry> {

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace think_agro_metrics.Controllers
 {
@@ -15,10 +18,12 @@ namespace think_agro_metrics.Controllers
     public class RegistriesController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public RegistriesController(DataContext context)
+        public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Registries
@@ -43,7 +48,7 @@ namespace think_agro_metrics.Controllers
             {
                 return NotFound();
             }
-
+            _context.Registries.Include(x => x.Documents).ToList();
             return Ok(registry);
         }
 
@@ -82,23 +87,123 @@ namespace think_agro_metrics.Controllers
             return NoContent();
         }
 
-        // POST: api/Registries
-        [HttpPost]
-        public async Task<IActionResult> PostRegistry([FromBody] Registry registry)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+		// ADD REGISTRY: api/Indicators/5/AddRegistry
+		[HttpPost("{indicatorId}/DefaultRegistry")]
+		public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
+			[FromBody] DefaultRegistry registry)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-            _context.Registries.Add(registry);
-            await _context.SaveChangesAsync();
+			Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+			//Registry registry = new DefaultRegistry();
+			//registry.Name = name;
 
-            return CreatedAtAction("GetRegistry", new { id = registry.RegistryID }, registry);
-        }
+			indicator.Registries.Add(registry);
 
-        // DELETE: api/Registries/5
-        [HttpDelete("{id}")]
+			_context.Entry(indicator).State = EntityState.Modified;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!IndicatorExists(indicatorId))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+			return NoContent();
+		}
+		private bool IndicatorExists(long id)
+		{
+			return _context.Indicators.Any(e => e.IndicatorID == id);
+		}
+		// ADD REGISTRY: api/Indicators/5/AddRegistry
+		[HttpPost("{indicatorId}/QuantityRegistry")]
+		public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
+			[FromBody] QuantityRegistry registry)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+			//Registry registry = new DefaultRegistry();
+			//registry.Name = name;
+
+			indicator.Registries.Add(registry);
+
+			_context.Entry(indicator).State = EntityState.Modified;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!IndicatorExists(indicatorId))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+			return NoContent();
+		}
+
+		// ADD REGISTRY: api/Indicators/5/AddRegistry
+		[HttpPost("{indicatorId}/LinkRegistry")]
+		public async Task<IActionResult> LinkRegistry([FromRoute] long indicatorId,
+			[FromBody] LinkRegistry registry)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+			//Registry registry = new DefaultRegistry();
+			//registry.Name = name;
+
+			indicator.Registries.Add(registry);
+
+			_context.Entry(indicator).State = EntityState.Modified;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!IndicatorExists(indicatorId))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+			return NoContent();
+		}
+
+
+		// DELETE: api/Registries/5
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -137,5 +242,112 @@ namespace think_agro_metrics.Controllers
         {
             return _context.Registries.Any(e => e.RegistryID == id);
         }
+
+        // ADD LinkDocument: api/Registries/5/AddLinkDocument
+        [HttpPost("{id}/AddLinkDocument")]
+        public async Task<IActionResult> AddLinkDocument([FromRoute] long id,
+            [FromBody] Document document)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Registry registry = _context.Registries.First(i => i.RegistryID == id);
+
+            registry.Documents.Add(document);
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // ADD FileDocument: api/Registries/5/AddFileDocument
+        [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
+        public ActionResult AddFileDocument([FromRoute] long id)
+        {
+            try
+            {
+                string name = "";
+                string link = "";
+                var file = Request.Form.Files[0];
+                string folderName = "Repository";
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0)
+                {
+                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    name = fileName;
+                    link = Path.Combine(folderName, fileName); //Reemplazar por un nombre pulento (con hash)
+                    string fullPath = Path.Combine(newPath, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+
+                Registry registry = _context.Registries.First(i => i.RegistryID == id);
+                Document document = new Document();
+                document.Name = name;
+                document.Link = link;
+                document.Extension = "file";
+                registry.Documents.Add(document);
+                _context.Entry(registry).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Json("Upload Successful.");
+            }
+            catch (System.Exception ex)
+            {
+                return Json("Upload Failed: " + ex.Message);
+            }
+            /*
+            Registry registry = _context.Registries.First(i => i.RegistryID == id);
+
+            registry.Documents.Add(document);
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+            */
+        }
     }
+
+
 }

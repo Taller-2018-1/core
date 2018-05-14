@@ -1,17 +1,21 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
 import { PercentPipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 // Models
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
+import { Registry } from '../../shared/models/registry';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
-import { Registry } from '../../shared/models/registry';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -19,24 +23,39 @@ import { Registry } from '../../shared/models/registry';
   styleUrls: ['./indicator-detail.component.css'],
 })
 export class IndicatorDetailComponent implements OnInit {
+  public indicator$: Observable<Indicator>;
   public indicator: Indicator = new Indicator();
-  public idIndicator = -1;
+  private idIndicator = -1;   // Variable that will hold the value of the indicator's ID
+  router: Router;
 
-  constructor(private service: IndicatorService,
-              private route: ActivatedRoute) {
+  modalRef: BsModalRef;
+
+  constructor(router: Router,
+              private service: IndicatorService,
+    private route: ActivatedRoute, private modalService: BsModalService) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
+    this.router = router;
   }
 
   ngOnInit() {
-    this.getIndicator(this.idIndicator);
+    this.indicator$ = this.service.getIndicator(this.idIndicator);
   }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
   private getIndicator(indicatorId: number) {
     this.service.getIndicator(indicatorId).subscribe(
       data => { this.indicator = data; },
       err => console.error(err)
-      );
+    );
   }
-
+  
+  gotoRegistry(registryID: number) {
+    this.router.navigateByUrl('/registry/' + registryID);
+  }
+  
   private deleteRegistry (registry: Registry) {
     const date: Date = new Date(registry.date);
     const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
@@ -56,5 +75,4 @@ export class IndicatorDetailComponent implements OnInit {
       console.log(this.indicator.registries);
     }
   }
-
 }
