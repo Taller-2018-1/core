@@ -29,14 +29,21 @@
     <!--<input name="fecha" id="email" class="form-control" placeholder="Fecha">-->
     <input type="date" required [(ngModel)]="model.date" name="date" #name="ngModel">
   </div>
-  <div class="form-group"  *ngIf="indicator.type==0">
+  <div class="form-group"  *ngIf="indicator.registries[0].discriminator==='DefaultRegistry'">
     <label class="sr-only">Recurso</label>
     <input name="recurso" id="recurso" class="form-control" placeholder="Recurso">
   </div>
+
   <div class="form-group" *ngIf="indicator.registries[0].discriminator==='QuantityRegistry'">
     <label class="sr-only">Ingrese Numero</label>
     <input type ="number" id="quantity" class="form-control" placeholder="cantidad de empresas asistentes"
     required [(ngModel)]="model.quantity" name="quantity" #name="ngModel">
+  </div>
+
+  <div class="form-group" *ngIf="indicator.registries[0].discriminator==='LinkRegistry'">
+    <label class="sr-only">Ingrese Link</label>
+    <input type ="text" id="link" class="form-control" placeholder="Ingrese Link"
+    required [(ngModel)]="model.link" name="link" #name="ngModel">
   </div>
 
   <div class="form-group">

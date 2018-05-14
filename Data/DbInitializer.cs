@@ -134,6 +134,22 @@ namespace think_agro_metrics.Data
                 }
             };
 
+             var registries3b = new QuantityRegistry[]
+            {
+                new QuantityRegistry{
+                    Name = "Reunión de empresas agrícolas",
+                    Date = DateTime.Today,
+                    Quantity = 10,
+                    Documents = null //documents1c1
+                },
+                new QuantityRegistry{
+                    Name = "Reunión de empresas frutícolas",
+                    Date = DateTime.Today,
+                    Quantity = 5,
+                    Documents = null //documents1c2
+                }
+            };
+
             context.Registries.AddRange(registries1a);
             context.Registries.AddRange(registries1b);
             context.Registries.AddRange(registries1c);
@@ -161,7 +177,7 @@ namespace think_agro_metrics.Data
             var indicators3 = new Indicator[]
             {
                 new Indicator{Name="Número de programas de formación implementados"},
-                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Type=IndicatorType.QuantityIndicatorCalculator}
+                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b,Type=IndicatorType.QuantityIndicatorCalculator}
             };
 
             var indicators4 = new Indicator[]
