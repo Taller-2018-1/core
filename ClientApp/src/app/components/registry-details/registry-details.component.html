@@ -1,41 +1,66 @@
-<br>
-<br>
-<br>
-<br>
-<br>
 
+<section>
+    <div id="head-page-section" class="l-grey-bg head-page-section">
+      <div class="container">
+          <h1>    Nombre registro: {{ registry.name }}</h1>
+          <div style="float:right">
+            <button (click)="openModal(linkModal)" class="btn btn-primary btn-lg">Agregar desde link</button>
+            <button (click)="openModal(fileModal)" class="btn btn-primary btn-lg">Agregar desde archivo</button>
+          </div>
+      </div>
+    </div>
+</section>
 
 <div class="container">
-<h1>    Nombre registro: {{ registry.name }}</h1>
-<div style="float:right; margin-bottom: 3px">
-  <button (click)="gotoAddLinkDocument()" class="btn btn-primary btn-lg">Agregar desde link</button>
-  <button (click)="gotoAddFileDocument()" class="btn btn-primary btn-lg">Agregar desde archivo</button>
-</div>
+  <table class="table" *ngIf="registry.documents.length != 0">
+    <thead>
+      <tr>
+        <td>Nombre</td>
+        <td>Documento</td>
+        <td>Extensión</td>
+        <td>Fecha</td>
+        <td>Código</td>
+        <td>Descargar</td>
+        <td>Eliminar</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let document of registry.documents">
+        <td>{{document.name}}</td>
+        <td>{{document.documentName}}</td>
+        <td>{{document.extension}}</td>
+        <td>{{document.date}}</td>
+        <td>{{document.code}}</td>
+        <td><button type="button" (click)="goToLink(document.link)" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></td>
+        <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
 
-<table class="table" *ngIf="registry.documents.length != 0">
-  <thead>
-    <tr>
-      <td>Nombre</td>
-      <td>Documento</td>
-      <td>Extensión</td>
-      <td>Fecha</td>
-      <td>Código</td>
-      <td>Descargar</td>
-      <td>Eliminar</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let document of registry.documents">
-      <td>{{document.name}}</td>
-      <td>{{document.documentName}}</td>
-      <td>{{document.extension}}</td>
-      <td>{{document.date}}</td>
-      <td>{{document.code}}</td>
-      <td><button type="button" (click)="goToLink(document.link)" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></td>
-      <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-    </tr>
-  </tbody>
-</table>
-
-<p *ngIf="registry.documents">No Hay elementos para mostrar</p>
+  <p *ngIf="registry.documents">No Hay elementos para mostrar</p>
 </div>
+<br>
+
+<ng-template #linkModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un link externo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-link-document-form [registry]="registry" [idRegistry]="idRegistry" [modalRef]="modalRef"></app-link-document-form>
+  </div>
+</ng-template>
+
+<ng-template #fileModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un documento de respaldo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-file-document-form [registry]="registry" [idRegistry]="idRegistry" [modalRef]="modalRef"></app-file-document-form>
+  </div>
+</ng-template>

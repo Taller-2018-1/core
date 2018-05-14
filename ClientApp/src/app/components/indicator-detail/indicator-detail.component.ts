@@ -51,11 +51,7 @@ export class IndicatorDetailComponent implements OnInit {
       err => console.error(err)
     );
   }
-
-  gotoAddRegistry() {
-    this.router.navigateByUrl('/indicator-add-registry');
-  }
-
+  
   gotoRegistry(registryID: number) {
     this.router.navigateByUrl('/registry/' + registryID);
   }

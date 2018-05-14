@@ -7,7 +7,7 @@ export class Registry {
   name: string;
   value: number;
   indicatorID: number;
-  urlDocuments: string[];
+  documents: Document [] = new Array<Document>();
   discriminator: string;
   quantity: number;
 
