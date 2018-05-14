@@ -282,14 +282,10 @@ namespace think_agro_metrics.Controllers
         [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
         public ActionResult AddFileDocument([FromRoute] long id)
         {
-            /*
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            */
             try
             {
+                string name = "";
+                string link = "";
                 var file = Request.Form.Files[0];
                 string folderName = "Repository";
                 string webRootPath = _hostingEnvironment.WebRootPath;
@@ -301,12 +297,24 @@ namespace think_agro_metrics.Controllers
                 if (file.Length > 0)
                 {
                     string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    name = fileName;
+                    link = Path.Combine(folderName, fileName); //Reemplazar por un nombre pulento (con hash)
                     string fullPath = Path.Combine(newPath, fileName);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
                 }
+
+                Registry registry = _context.Registries.First(i => i.RegistryID == id);
+                Document document = new Document();
+                document.Name = name;
+                document.Link = link;
+                document.Extension = "file";
+                registry.Documents.Add(document);
+                _context.Entry(registry).State = EntityState.Modified;
+                _context.SaveChanges();
+
                 return Json("Upload Successful.");
             }
             catch (System.Exception ex)

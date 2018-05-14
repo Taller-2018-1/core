@@ -32,7 +32,8 @@ export class FileDocumentFormComponent implements OnInit {
     console.log(this.model);
     this.model.extension = "file";
     this.RegistryService.addFileDocument(this.model, this.idRegistry);
-    this.registry.documents.push(this.model);
+    //this.registry.documents.push(this.model);
+    this.closeModal();
     this.router.navigateByUrl('/registry/' + this.idRegistry);
   }
 
@@ -45,7 +46,7 @@ export class FileDocumentFormComponent implements OnInit {
     for (let file of files)
       formData.append(file.name, file);
 
-    const uploadReq = new HttpRequest('POST', `api/Registries/1/AddFileDocument`, formData, {
+    const uploadReq = new HttpRequest('POST', 'api/Registries/' + this.idRegistry + '/AddFileDocument', formData, {
       reportProgress: true,
     });
 
