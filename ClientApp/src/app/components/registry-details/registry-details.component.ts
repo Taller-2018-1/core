@@ -37,5 +37,11 @@ export class RegistryDetailsComponent implements OnInit {
   gotoAddFileDocument() {
     this.router.navigateByUrl('/registry-add-file-document');
   }
+
+  goToLink(link: string) {
+    //window.location.pathname = link;
+    var url = "http://" + link;
+    window.location.href = url;
+  }
   
 }

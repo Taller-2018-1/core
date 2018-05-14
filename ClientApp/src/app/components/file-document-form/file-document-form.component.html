@@ -13,7 +13,7 @@
       Ingrese un nombre
     </div>
 
-    <input #file type="file" multiple (change)="upload(file.files)" />
+    <input #file type="file" />
     <br />
     <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
       {{progress}}%
@@ -39,5 +39,5 @@
            [(ngModel)]="model.date"
            value="{{ date | date: 'yyyy-MM-dd' }}">
   </div>
-  <input type="submit" class="btn btn-primary">
+  <input type="submit" class="btn btn-primary" (click)="upload(file.files)">
 </form>

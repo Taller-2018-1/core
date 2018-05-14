@@ -31,7 +31,7 @@
       <td>{{document.extension}}</td>
       <td>{{document.date}}</td>
       <td>{{document.code}}</td>
-      <td><a href="{{document.link}}"><button type="button" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></a></td>
+      <td><button type="button" (click)="goToLink(document.link)" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></td>
       <td><button type="button" class="btn btn-danger">Eliminar</button></td>
     </tr>
   </tbody>
