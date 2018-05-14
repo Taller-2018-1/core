@@ -1,44 +1,76 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<div class="container">
-  <h1>    {{ indicator.name }}</h1>
-<!--h2>Tipo: {{ indicator.type }}</h2-->
-<div *ngIf="indicator.type == -1">El tipo es default...</div>
+<div *ngIf="indicator$ | async as indicator; else loading">
 
+  <section>
+    <div id="head-page-section" class="l-grey-bg head-page-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-sm-7">
+            <div class="head-title">
+              <h1> {{ indicator.name }}</h1>
+              <!--h2>Tipo: {{ indicator.type }}</h2-->
+            </div>
+            <!-- end subsection-text -->
+          </div>
+          <!-- end col-md-8 -->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end container -->
+    </div>
+  </section>
+  <div class="container">
+    <div class="heading-block">
+      <h2>Detalle de Registros</h2>
+    </div>
+    <ng-container *ngIf="indicator.type == 0 || indicator.type == 1">
+      <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+        <!-- Default panel contents -->
+        <div class="panel-heading">{{registry.name}}</div>
+        <div class="panel-body">
+          <!-- Table -->
+          <table class="table">
+            <tr>
+              <td>
+                <b>Fecha</b>
+              </td>
+              <td>{{registry.date | date:'dd-MM-yyyy'}}</td>
+            </tr>
+            <tr *ngIf="registry.discriminator ==='QuantityRegistry'">
+              <td>
+                <b>N°</b>
+              </td>
+              <td>
+                {{registry.quantity}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Documento respaldo</b>
+              </td>
+              <td>
+                <a href="{{ registry.urlDocument }} ">Descargar respaldo</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <button type="button" class="btn btn-primary" (click)="openModal(template)">Añadir registro</button>
+    <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<br>
 <ng-template #loading>
   Cargando...
 </ng-template>
-
-
-<div class="heading-block">
-  <h2>Detalle de Registros</h2>
-</div>
-
-  <div class="panel panel-default" *ngFor="let registry of indicator.registries">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-      {{registry.name}}
-      <div class="pull-right">
-        <button href="#" class="btn btn-success btn-xs"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
-        <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)" > <span class="glyphicon glyphicon-trash"> </span> </button>
-      </div>
-    </div>
-    <div class="panel-body">
-      <!-- Table -->
-      <table class="table">
-        <tr><td><b>Fecha</b></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
-        <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td>{{registry.quantity}}</td></tr>
-        <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td>{{registry.percent | percent}}</td></tr>
-        <tr><td><b>Documento respaldo</b></td><td><a (click)="gotoRegistry(registry.registryID)">Descargar respaldo</a></td></tr>
-      </table>
-    </div>
-  </div>
-
-<button (click)="gotoAddRegistry()" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-  Añadir registro
-</button>
-
-</div>

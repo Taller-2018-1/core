@@ -6,7 +6,10 @@ export class Registry {
   date: Date;
   name: string;
   value: number;
+  indicatorID: number;
   urlDocuments: string[];
+  discriminator: string;
+  quantity: number;
 
   constructor() {
   }

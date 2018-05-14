@@ -13,8 +13,12 @@ export class IndicatorService {
 
   public static BASE_URL = `api/Indicators`;
 
-    public static INDICATORS_API = '/api/Indicators/';
-    public static ADD_REGISTRY_METHOD = "/AddRegistry";
+  public static INDICATORS_API = '/api/Indicators/';
+  public static PERCENT_REGISTRY = '/PercentRegistry';
+  public static ACTIVITY_REGISTRY = '/ActivityRegistry';
+  public static QUANTITY_REGISTRY = '/QuantityRegistry';
+  public static LINK_REGISTRY = '/LinkRegistry';
+  public static DEFAULT_REGISTRY = '/DefaultRegistry/';
     
     public static REGISTRIES_API = '/api/Registries/';
 
@@ -24,9 +28,13 @@ export class IndicatorService {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
   }
 
-  addRegistry(registry: Registry, indicatorId: number) {
-    this.http.post<Indicator>(IndicatorService.INDICATORS_API + indicatorId
-      + IndicatorService.ADD_REGISTRY_METHOD, registry ).subscribe();
+  addRegistry(registry: Registry, indicatorId: String, type: string) {
+    let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
+    if (type === "LinkRegistry") {
+      discriminator = IndicatorService.LINK_REGISTRY;
+    }
+    this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
+      + discriminator, registry).subscribe();
   }
 
   deleteRegistry(registryId: number): Observable<Registry> {

@@ -14,6 +14,7 @@ import { RegistryFormComponent } from './components/registry-form/registry-form.
 import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
 import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
@@ -44,6 +45,7 @@ import { RegistryService } from './services/registry/registry.service';
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    ModalModule.forRoot(),
     FormsModule,
 
     RouterModule.forRoot([

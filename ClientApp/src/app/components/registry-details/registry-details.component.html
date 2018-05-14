@@ -1,8 +1,15 @@
-<h1>Nombre registro: {{ registry.name }}</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<div style="float:right">
-  <button (click)="gotoAddLinkDocument()" class="btn btn-default">Agregar desde link</button>
-  <button (click)="gotoAddFileDocument()" class="btn btn-default">Agregar desde archivo</button>
+
+<div class="container">
+<h1>    Nombre registro: {{ registry.name }}</h1>
+<div style="float:right; margin-bottom: 3px">
+  <button (click)="gotoAddLinkDocument()" class="btn btn-primary btn-lg">Agregar desde link</button>
+  <button (click)="gotoAddFileDocument()" class="btn btn-primary btn-lg">Agregar desde archivo</button>
 </div>
 
 <table class="table" *ngIf="registry.documents.length != 0">
@@ -30,4 +37,5 @@
   </tbody>
 </table>
 
-<p *ngIf="registry.documents.length == 0">No Hay elementos para mostrar</p>
+<p *ngIf="registry.documents">No Hay elementos para mostrar</p>
+</div>
