@@ -31,7 +31,17 @@
         <td>{{document.extension}}</td>
         <td>{{document.date}}</td>
         <td>{{document.code}}</td>
-        <td><button type="button" (click)="goToLink(document.link)" class="btn btn-success"><i class="glyphicon glyphicon-download-alt"></i></button></td>
+        <td>
+          <button *ngIf="document.extension=='link'; else file_template" 
+          type="button" (click)="goToLink(document.link)" class="btn btn-success">
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </button>
+        </td>
+        <ng-template #file_template>
+            <button type="button" (click)="download(document.name)" class="btn btn-success">
+              <i class="glyphicon glyphicon-download-alt"></i>
+            </button>
+        </ng-template>
         <td><button type="button" class="btn btn-danger">Eliminar</button></td>
       </tr>
     </tbody>

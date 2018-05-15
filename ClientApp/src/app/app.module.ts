@@ -23,6 +23,7 @@ import { ResultDisplayComponent } from './components/result-home/result-display/
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryService } from './services/registry/registry.service';
+import { FileService } from './services/file/file.service';
 
 
 @NgModule({
@@ -60,7 +61,7 @@ import { RegistryService } from './services/registry/registry.service';
       { path: '**',          component: ResultHomeComponent }
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, FileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

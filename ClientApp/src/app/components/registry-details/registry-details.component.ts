@@ -13,6 +13,7 @@ import { Registry } from '../../shared/models/registry';
 
 //Services
 import { RegistryService } from '../../services/registry/registry.service';
+import { FileService } from '../../services/file/file.service';
 
 @Component({
   selector: 'app-registry-details',
@@ -28,6 +29,7 @@ export class RegistryDetailsComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private service: RegistryService,
+              private fileService: FileService,
               private modalService: BsModalService) {
     this.getRegistry(this.route.snapshot.params.id);
     this.idRegistry = this.route.snapshot.params.id;
@@ -47,6 +49,10 @@ export class RegistryDetailsComponent implements OnInit {
     //window.location.pathname = link;
     var url = "http://" + link;
     window.location.href = url;
+  }
+
+  download(link: string) {
+    this.fileService.downloadFile(link);
   }
   
   openModal(template: TemplateRef<any>) {
