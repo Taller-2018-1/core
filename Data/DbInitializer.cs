@@ -138,7 +138,35 @@ namespace think_agro_metrics.Data
                 }
             };
 
-            var registries4a = new Registry[]
+			var registries2a = new Registry[]
+			{
+				new DefaultRegistry{
+					Name = "Juan Fuentes",
+					Date = DateTime.Today,
+					Documents = null //documents2a1
+                },
+				new DefaultRegistry{
+					Name = "Pedro Perez",
+					Date = DateTime.Today,
+					Documents = null //documents2a2
+                }
+			};
+
+			var registries3a = new Registry[]
+			{
+				new DefaultRegistry{
+					Name = "Programa Formación 1",
+					Date = DateTime.Today,
+					Documents = null //documents3a1
+                },
+				new DefaultRegistry{
+					Name = "Programa Formación 2",
+					Date = DateTime.Today,
+					Documents = null //documents3a2
+                }
+			};
+
+			var registries4a = new Registry[]
             {
                 new QuantityRegistry{
                     Name = "Empresa 1",
@@ -252,13 +280,13 @@ namespace think_agro_metrics.Data
 
             var indicators2 = new Indicator[]
             {
-                new Indicator{Name="Número de académicos que participan en actividades del CET"},
+                new Indicator{Name="Número de académicos que participan en actividades del CET", Registries =  registries2a},
                 new Indicator{Name="Número de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET"}
             };
 
             var indicators3 = new Indicator[]
             {
-                new Indicator{Name="Número de programas de formación implementados"},
+                new Indicator{Name="Número de programas de formación implementados", Registries = registries3a},
                 new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Type=IndicatorType.QuantityIndicatorCalculator}
             };
 
