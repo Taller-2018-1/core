@@ -12,8 +12,11 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                    sum += (registry as QuantityRegistry).Quantity;
+                if(registry.GetType() == typeof(PercentRegistry))
+                {
+                    sum += (registry as PercentRegistry).Percent;
                     quantity++;
+                }
             }
             if(quantity > 0){
                 return sum / quantity;
@@ -29,8 +32,9 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry.Date.Year == year) {
-                    sum += (registry as QuantityRegistry).Quantity;
+                if(registry.Date.Year == year && registry.GetType() == typeof(PercentRegistry))
+                {
+                    sum += (registry as PercentRegistry).Percent;
                     quantity++;
                 }
             }
