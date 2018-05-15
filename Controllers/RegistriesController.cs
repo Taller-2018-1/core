@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using System.Net.Http.Headers;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace think_agro_metrics.Controllers
 {
@@ -297,9 +299,22 @@ namespace think_agro_metrics.Controllers
                 if (file.Length > 0)
                 {
                     string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
                     name = fileName;
-                    link = Path.Combine(folderName, fileName); //Reemplazar por un nombre pulento (con hash)
+
+                    using (var sha256 = SHA256.Create())
+                    {
+                        // Send a sample text to hash.  
+                        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName));
+                        // Get the hashed string.  
+                        var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                        fileName = hash;
+                        //link = hash;
+                    }
+
+                    link = Path.Combine(folderName, fileName);
                     string fullPath = Path.Combine(newPath, fileName);
+
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
@@ -348,6 +363,5 @@ namespace think_agro_metrics.Controllers
             */
         }
     }
-
 
 }

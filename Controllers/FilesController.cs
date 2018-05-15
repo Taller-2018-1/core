@@ -23,13 +23,13 @@ namespace ThinkAgroMetrics.Controllers
         }
 
         // GET: api/Files/ASDKFJ"#L$"L#$J!#"#$JLSDG
-        [HttpGet("{name}")]
-        public IActionResult Download([FromRoute] string name) 
+        [HttpGet("{link}")]
+        public IActionResult Download([FromRoute] string link) 
         {
             string folderName = "Repository";
             string webRootPath = _hostingEnvironment.WebRootPath;
             string newPath = Path.Combine(webRootPath, folderName);
-            string fullPath = Path.Combine(newPath, name);
+            string fullPath = Path.Combine(newPath, link);
 
             var locatedFile = System.IO.File.ReadAllBytes(fullPath);
             return new FileContentResult(locatedFile, new
