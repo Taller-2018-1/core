@@ -11,18 +11,14 @@ namespace think_agro_metrics.Models
         {
             double sum = 0;
             double quantity = 0;
-            foreach (Registry registry in registries) {
-                if(registry.GetType() == typeof(PercentRegistry))
-                {
-                    sum += (registry as PercentRegistry).Percent;
-                    quantity++;
-                }
+            foreach (Registry registry in registries) {               
+                sum += (registry as PercentRegistry).Percent;
+                quantity++;                
             }
-            if(quantity > 0){
+            if(quantity > 0) {
                 return sum / quantity;
             }
-            else
-            {
+            else {
                 return 0;
             }
         }
@@ -32,17 +28,15 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry.Date.Year == year && registry.GetType() == typeof(PercentRegistry))
-                {
+                if(registry.Date.Year == year) {
                     sum += (registry as PercentRegistry).Percent;
                     quantity++;
                 }
             }
-            if(quantity > 0){
+            if(quantity > 0) {
                 return sum / quantity;
             }
-            else
-            {
+            else {
                 return 0;
             }
         }
@@ -53,15 +47,14 @@ namespace think_agro_metrics.Models
             double quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry.Date.Year == year && registry.Date.Month == month) {
-                    sum += (registry as QuantityRegistry).Quantity;
+                    sum += (registry as PercentRegistry).Percent;
                     quantity++;
                 }
             }
-            if(quantity > 0){
+            if(quantity > 0) {
                 return sum / quantity;
             }
-            else
-            {
+            else {
                 return 0;
             }
         }
