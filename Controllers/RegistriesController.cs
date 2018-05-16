@@ -47,10 +47,45 @@ namespace think_agro_metrics.Controllers
             return Ok(registry);
         }
 
-        // PUT: api/Registries/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] Registry registry)
-        {
+        // PUT: api/Registries/DefaultRegistry/5
+        [HttpPut("DefaultRegistry/{id}")]
+        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] DefaultRegistry registry)
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != registry.RegistryID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok();
+        }
+
+
+        // PUT: api/Registries/QuantityRegistry/5
+        [HttpPut("QuantityRegistry/{id}")]
+        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] QuantityRegistry registry)
+        {   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -79,7 +114,112 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
+        }
+
+        // PUT: api/Registries/PercentRegistry/5
+        [HttpPut("PercentRegistry/{id}")]
+        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] PercentRegistry registry)
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != registry.RegistryID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
+        }
+
+        // PUT: api/Registries/LinkRegistry/5
+        [HttpPut("LinkRegistry/{id}")]
+        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] LinkRegistry registry)
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != registry.RegistryID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
+        }
+
+        // PUT: api/Registries/ActivityRegistry/5
+        [HttpPut("ActivityRegistry/{id}")]
+        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] ActivityRegistry registry)
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != registry.RegistryID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(registry).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RegistryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
         }
 
        // ADD REGISTRY: api/Indicators/5/AddRegistry
@@ -196,6 +336,35 @@ namespace think_agro_metrics.Controllers
             return NoContent();
         }
 
+        // DELETE: api/Registries/Documents/5
+        [HttpDelete("Documents/{id}")]
+        public async Task<IActionResult> DeleteDocument([FromRoute] long id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var document = await _context.Documents.SingleOrDefaultAsync(d => d.DocumentID == id );
+            
+            if(document == null)
+            {
+                return NotFound();
+            }
+            
+            // Every documents belongs to a Registry, it's not necessary to validate
+            var registry = await _context.Registries.SingleOrDefaultAsync(r => r.RegistryID == document.RegistryID);
+
+            registry.Documents.Remove(document); // Delete Document from model
+
+            _context.Documents.Remove(document); // Delete Document from Database
+
+            await _context.SaveChangesAsync();
+
+            return Ok(document);
+
+        }
+
         // DELETE: api/Registries/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRegistry([FromRoute] long id)
@@ -210,11 +379,25 @@ namespace think_agro_metrics.Controllers
             {
                 return NotFound();
             }
+            
+            var documents = registry.Documents;
+            foreach (Document document in documents) // Remove documents from model
+            {
+                registry.Documents.Remove(document);
+            }
+
+            var docsDB = _context.Documents.Where(d => d.RegistryID == id);
+            foreach (Document document in docsDB)  // Remove documents from database
+            {
+                _context.Documents.Remove(document);
+            }
+
+            _context.SaveChanges();
 
             _context.Registries.Remove(registry);
             await _context.SaveChangesAsync();
 
-            return Ok(registry);
+            return Ok(registry); // It works
         }
 
         private bool RegistryExists(long id)

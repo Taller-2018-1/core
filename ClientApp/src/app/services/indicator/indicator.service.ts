@@ -22,11 +22,11 @@ export class IndicatorService {
     public static LINK_REGISTRY = '/LinkRegistry';
     public static DEFAULT_REGISTRY = '/DefaultRegistry/';
 
-    constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
-    getIndicator(indicatorId: number | string): Observable<Indicator> {
-        return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
-    }
+  getIndicator(indicatorId: number): Observable<Indicator> {
+    return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
+  }
 
     calculateIndicators(): Observable<number[]> {
         return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
@@ -48,4 +48,11 @@ export class IndicatorService {
         this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
             + discriminator, registry).subscribe();
     }
+  deleteRegistry(registryId: number): Observable<Registry> {
+    return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registryId);
+  }
+  
+  calculateIndicatorsYear(year: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
+  }
 }
