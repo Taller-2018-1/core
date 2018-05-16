@@ -312,7 +312,7 @@ namespace think_agro_metrics.Controllers
                         //link = hash;
                     }
 
-                    link = Path.Combine(folderName, fileName);
+                    link = fileName;
                     string fullPath = Path.Combine(newPath, fileName);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
