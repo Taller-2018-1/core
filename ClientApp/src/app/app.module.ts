@@ -39,10 +39,7 @@ import { LinkDocumentFormComponent } from './components/link-document-form/link-
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
-      { path: 'indicator-add-registry', component: RegistryFormComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
-      { path: 'registry-add-file-document', component: FileDocumentFormComponent },
-      { path: 'registry-add-link-document', component: LinkDocumentFormComponent },
       { path: 'home',        component: IndicatorHomeComponent },
       { path: '',            component: IndicatorHomeComponent },
       { path: '**',          component: IndicatorHomeComponent }
