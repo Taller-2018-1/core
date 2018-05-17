@@ -51,18 +51,14 @@ export class IndicatorDisplayComponent implements OnInit {
     this.selectionYear = IndicatorDisplayComponent.YEAR + currentYear; // By default the current year is shown
     this.selectedYear = currentYear; // The number of the selected year (by default the current year)
 
-    const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
-    // List of the months (numbers) from 0 to the current month (max 11)
-    for (let i = 0; i <= currentMonth; i++) {
-      this.months[i] = i;
-    }
-    this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
+    this.setMonths(); // Set the list of the months (numbers) and the monthsOfTheYear (names of the months)
     this.selectionMonth = IndicatorDisplayComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
   }
 
   // Only specify the year or the month, depending on which one is changed, the other value must be an empty string ('')
-  calculateIndicators(year: any, month: string) { // The 'year' is of type 'any' because it's used as 'int' and 'string'
+  calculateIndicators(year: any, month: string) { // The 'year' is of type 'any' because it's used as 'int' and 'string'}
+    const currentYear = new Date().getFullYear();
     // The change is in the year
     if ((year as string).length !== 0) {
       // ALL_YEARS selected
@@ -80,6 +76,7 @@ export class IndicatorDisplayComponent implements OnInit {
         this.selectionYear = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
+        this.setMonths();
       }
       this.selectionMonth = IndicatorDisplayComponent.ALL_MONTHS;
     }
@@ -105,8 +102,30 @@ export class IndicatorDisplayComponent implements OnInit {
     }
   }
 
+  // Set the list of the months (numbers) from 0 to the current month (max 11)
+  setMonths() {
+    const currentYear = new Date().getFullYear();
+    if (this.selectedYear < currentYear) {
+      this.months = [];
+      for (let i = 0; i <= 11; i++) { // Months from January (0) to December (11)
+        this.months[i] = i;
+      }
+    }
+    // tslint:disable-next-line:one-line
+    else {
+      this.months = [];
+      console.log(this.months);
+      const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = Decembery
+      for (let i = 0; i <= currentMonth; i++) {
+        this.months[i] = i;
+      }
+    }
+    this.setMonthsOfTheYear();
+  }
+
   // Sets the names of the months of the selected year
   setMonthsOfTheYear() {
+    this.monthsOfTheYear = [];
     this.months.forEach(month => {
       this.monthsOfTheYear[month] = this.monthsNames[month];
     });
