@@ -103,6 +103,7 @@ export class IndicatorDisplayComponent implements OnInit {
   }
 
   // Set the list of the months (numbers) from 0 to the current month (max 11)
+  // The months depends on the selected year (this.selectedYear)
   setMonths() {
     const currentYear = new Date().getFullYear();
     if (this.selectedYear < currentYear) {
