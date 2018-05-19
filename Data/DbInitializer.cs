@@ -255,14 +255,42 @@ namespace think_agro_metrics.Data
             context.Registries.AddRange(registries4d);
 
 
+            // GOALS
+            var goals1a = new Goal[] {
+                new Goal { Year=2018, Value=25 },
+                new Goal { Year=2019, Value=30 }
+            };
+            var goals1b = new Goal[] {
+                new Goal { Year=2018, Value=15 },
+                new Goal { Year=2019, Value=20 }
+            };
+            var goals1c = new Goal[] {
+                new Goal { Year=2018, Value=50 },
+                new Goal { Year=2019, Value=60 }
+            };
+            var goals1d = new Goal[] {
+                new Goal { Year=2018, Value=10 },
+                new Goal { Year=2019, Value=30 }
+            };
+            var goals1e = new Goal[] {
+                new Goal { Year=2018, Value=15 },
+                new Goal { Year=2019, Value=20 }
+            };
+            
+            context.Goals.AddRange(goals1a);
+            context.Goals.AddRange(goals1b);
+            context.Goals.AddRange(goals1c);
+            context.Goals.AddRange(goals1d);
+            context.Goals.AddRange(goals1e);
+
             // INDICATORS
             var indicators1 = new Indicator[]
             {
-                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a},
-                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b},
-                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Type = IndicatorType.QuantityIndicatorCalculator},
-                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d},
-                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e}
+                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a, Goals = goals1a},
+                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b, Goals = goals1b},
+                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Type = IndicatorType.QuantityIndicatorCalculator, Goals = goals1c},
+                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d, Goals = goals1d},
+                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e, Goals = goals1e}
             };
 
             var indicators2 = new Indicator[]

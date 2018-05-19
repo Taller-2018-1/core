@@ -26,7 +26,8 @@ namespace think_agro_metrics.Controllers
         [HttpGet]
         public IEnumerable<IndicatorGroup> GetIndicatorGroups()
         {
-            _context.IndicatorGroups.Include(x => x.Indicators).ToList();
+            _context.IndicatorGroups.Include(x => x.Indicators).
+                ThenInclude(x => x.Goals).ToList();
             return _context.IndicatorGroups;
         }
 
@@ -46,7 +47,8 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
-            _context.IndicatorGroups.Include(x => x.Indicators).ToList();
+            _context.IndicatorGroups.Include(x => x.Indicators).
+                ThenInclude(x => x.Goals).ToList();
             return Ok(indicatorGroup);
         }
 

@@ -27,6 +27,7 @@ namespace think_agro_metrics.Controllers
         {
             _context.Indicators.Include(x => x.Registries)
                 .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Goals).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
             return _context.Indicators;
         }
@@ -49,6 +50,7 @@ namespace think_agro_metrics.Controllers
 
             _context.Indicators.Include(x => x.Registries)
                 .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Goals).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
             return Ok(indicator);
         }
