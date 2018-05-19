@@ -10,6 +10,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 //Models
 import { Registry } from '../../shared/models/registry';
+import { Document } from '../../shared/models/document';
 
 //Services
 import { RegistryService } from '../../services/registry/registry.service';
@@ -51,8 +52,8 @@ export class RegistryDetailsComponent implements OnInit {
     window.location.href = url;
   }
 
-  download(link: string) {
-    this.fileService.downloadFile(link);
+  download(document: Document) {
+    this.fileService.downloadFile(document);
   }
   
   openModal(template: TemplateRef<any>) {

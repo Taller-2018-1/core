@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 
+//Models
+import { Document } from '../../shared/models/document';
+
 @Injectable()
 export class FileService {
 
@@ -9,9 +12,9 @@ export class FileService {
 
   public constructor(private http: HttpClient) {}
 
-  public downloadFile(link: string) {
-    this.http.get(FileService.FILES_API + link, { responseType: 'blob' }).subscribe(blob => {
-        saveAs(blob, 'archivo.png')
+  public downloadFile(document: Document) {
+    this.http.get(FileService.FILES_API + document.link, { responseType: 'blob' }).subscribe(blob => {
+        saveAs(blob, document.name)
     })
   }
 }

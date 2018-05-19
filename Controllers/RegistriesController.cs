@@ -286,46 +286,12 @@ namespace think_agro_metrics.Controllers
         {
             try
             {
-                string name = "";
-                string link = "";
                 var file = Request.Form.Files[0];
-                string folderName = "Repository";
-                string webRootPath = _hostingEnvironment.WebRootPath;
-                string newPath = Path.Combine(webRootPath, folderName);
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
-                if (file.Length > 0)
-                {
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-                    name = fileName;
-
-                    using (var sha256 = SHA256.Create())
-                    {
-                        // Send a sample text to hash.  
-                        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName));
-                        // Get the hashed string.  
-                        var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-                        fileName = hash;
-                        //link = hash;
-                    }
-
-                    link = fileName;
-                    string fullPath = Path.Combine(newPath, fileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-
+				var fileDocumentFactory = new FileDocumentFactory(file, _hostingEnvironment);
+				
+				var document = fileDocumentFactory.CreateDocument();
                 Registry registry = _context.Registries.First(i => i.RegistryID == id);
-                Document document = new Document();
-                document.Name = name;
-                document.Link = link;
-                document.Extension = "file";
+                
                 registry.Documents.Add(document);
                 _context.Entry(registry).State = EntityState.Modified;
                 _context.SaveChanges();
@@ -336,31 +302,6 @@ namespace think_agro_metrics.Controllers
             {
                 return Json("Upload Failed: " + ex.Message);
             }
-            /*
-            Registry registry = _context.Registries.First(i => i.RegistryID == id);
-
-            registry.Documents.Add(document);
-
-            _context.Entry(registry).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-            */
         }
     }
 
