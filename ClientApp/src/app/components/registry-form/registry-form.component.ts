@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -35,11 +35,6 @@ export class RegistryFormComponent implements OnInit {
   closeModal() {
     this.modalRef.hide();
     this.modalRef = null;
-  }
-
-  showFormControls(form: any) {
-    return form && form.controls['name'] &&
-      form.controls['name'].value; // Dr. IQ
   }
 
   constructor(router: Router, private IndicatorService: IndicatorService, private modalService: BsModalService) {

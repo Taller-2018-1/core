@@ -1,5 +1,4 @@
 <div *ngIf="indicator$ | async as indicator; else loading">
-
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
@@ -15,62 +14,81 @@
         </div>
         <!-- end row -->
       </div>
-      <!-- end container -->
     </div>
   </section>
   <div class="container">
+    <!-- Revisar este código, porque siempre muestra noRegistries... Lo copié abajo sin ngif
+    <div class="heading-block" *ngIf="registriesCount != 0; else noRegistries">
+      <h2>Detalle de Registros</h2>
+    </div> 
+    -->
     <div class="heading-block">
       <h2>Detalle de Registros</h2>
-    </div>
-    <ng-container *ngIf="indicator.type == 0 || indicator.type == 1">
-      <div class="panel panel-default" *ngFor="let registry of indicator.registries">
-        <!-- Default panel contents -->
-        <div class="panel-heading">{{registry.name}}</div>
-        <div class="panel-body">
-          <!-- Table -->
-          <table class="table">
-            <tr>
-              <td>
-                <b>Fecha</b>
-              </td>
-              <td>{{registry.date | date:'dd-MM-yyyy'}}</td>
-            </tr>
-            <tr *ngIf="registry.discriminator ==='QuantityRegistry'">
-              <td>
-                <b>N°</b>
-              </td>
-              <td>
-                {{registry.quantity}}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Documento respaldo</b>
-              </td>
-              <td>
-                <a (click)="gotoRegistry(registry.registryID)">Ver respaldos</a>
-              </td>
-            </tr>
-          </table>
+    </div> 
+
+    <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+      <div class="panel-heading">
+        {{registry.name}}
+        <div class="pull-right">
+          <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
+          <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
         </div>
       </div>
-    </ng-container>
+      <div class="panel-body">
+        <div class="container">
+            <h6>Datos registro</h6>
+        </div>
+        <table class="table">
+          <tr><td><b>Fecha ingreso de registro</b></td><td></td><td></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
+          <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td></td><td></td><td>{{registry.quantity}}</td></tr>
+          <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td></td><td></td><td>{{registry.percent}}%</td></tr>
+        </table>
+        <div class="container">
+            <h6>Documentos de respaldo</h6>
+        </div>
+        <table class="table">
+          <tr *ngFor = "let document of registry.documents">
+            <td><b>{{document.name}}</b></td>
+            <td>{{document.date | date: 'dd-MM-yyyy'}}</td>
+            <td><a href="{{ document.link }}">Descargar</a></td>
+            <td><button class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(registry,document)" > <span class="glyphicon glyphicon-trash"> </span> </button></td>
+          </tr>
+          <tr>
+              <button class="btn btn-default" (click)="gotoRegistry(registry.registryID)">Agregar documentos</button>
+          </tr>
+        </table>
+      </div>
+    </div>
     <button type="button" class="btn btn-primary" (click)="openModal(template)">Añadir registro</button>
-    <ng-template #template>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
-      </div>
-    </ng-template>
   </div>
 </div>
 
-<br>
+<br/>
+
+<!--TEMPLATES-->
 <ng-template #loading>
-  Cargando...
+    <div class="container">
+      <h2>Cargando datos...</h2>
+    </div>
+  </ng-template>
+  
+  <ng-template #noRegistries>
+      <h2>Aún no se han cargado registros.</h2>
+  </ng-template>
+
+<ng-template #editRegistry>
+  <app-registry-editor [registry]="registry" [type]="type" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
 </ng-template>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+  </div>
+</ng-template>
+<!--END TEMPLATES-->

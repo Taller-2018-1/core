@@ -76,7 +76,7 @@ namespace think_agro_metrics.Data
                     Name = "FruitCompany",
                     Date = DateTime.Today,
                     Documents = null //documents1a2
-                }
+                },
             };
 
             var registries1b = new Registry[]
@@ -165,6 +165,21 @@ namespace think_agro_metrics.Data
 					Documents = null //documents3a2
                 }
 			};
+            var registries3b = new QuantityRegistry[]
+            {
+                new QuantityRegistry{
+                    Name = "Reunión de empresas agrícolas",
+                    Date = DateTime.Today,
+                    Quantity = 10,
+                    Documents = null //documents1c1
+                },
+                new QuantityRegistry{
+                    Name = "Reunión de empresas frutícolas",
+                    Date = DateTime.Today,
+                    Quantity = 5,
+                    Documents = null //documents1c2
+                }
+            };
 
 			var registries4a = new Registry[]
             {
@@ -215,44 +230,44 @@ namespace think_agro_metrics.Data
 
             var registries4c = new Registry[]
             {
-                new QuantityRegistry{
+                new PercentRegistry{
                     Name = "Dole",
                     Date = DateTime.Today,
-                    Quantity = 25,
+                    Percent = 25,
                     Documents = null //documents4c1
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
-                    Quantity = 17,
+                    Percent = 17,
                     Documents = null //documents4c2
                 }
             };
 
             var registries4d = new Registry[]
             {
-                new QuantityRegistry{
+                new PercentRegistry{
                     Name = "Dole",
                     Date = DateTime.Today,
-                    Quantity = 25,
+                    Percent = 25,
                     Documents = null //documents4d1
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
-                    Quantity = 17,
+                    Percent = 17,
                     Documents = null //documents4d2
                 },
 
-                new QuantityRegistry
+                new PercentRegistry
                 {
                     Name = "Tio Genaro",
                     Date = DateTime.Today,
-                    Quantity = 40,
+                    Percent = 40,
                     Documents = null //documents4d3
                 }
             };
@@ -287,7 +302,7 @@ namespace think_agro_metrics.Data
             var indicators3 = new Indicator[]
             {
                 new Indicator{Name="Número de programas de formación implementados", Registries = registries3a},
-                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Type=IndicatorType.QuantityIndicatorCalculator}
+                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b,Type=IndicatorType.QuantityIndicatorCalculator}
             };
 
             var indicators4 = new Indicator[]

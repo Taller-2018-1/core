@@ -13,9 +13,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorType } from '../../shared/models/indicatorType';
 import { Registry } from '../../shared/models/registry';
+import { Document } from '../../shared/models/document';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
+import { RegistryService } from '../../services/registry/registry.service';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -25,14 +27,21 @@ import { IndicatorService } from '../../services/indicator/indicator.service';
 export class IndicatorDetailComponent implements OnInit {
   public indicator$: Observable<Indicator>;
   public indicator: Indicator = new Indicator();
-  private idIndicator = -1;   // Variable that will hold the value of the indicator's ID
-  router: Router;
+  public idIndicator = -1;
+  public registriesCount = 0;
 
+  router: Router;
   modalRef: BsModalRef;
 
-  constructor(router: Router,
-              private service: IndicatorService,
-    private route: ActivatedRoute, private modalService: BsModalService) {
+  public registry: Registry = null; // For EditRegistry
+  public type: number;
+  public editModalRef: BsModalRef;
+
+  constructor(private service: IndicatorService,
+    router: Router,
+    private registryService: RegistryService,
+    private route: ActivatedRoute,
+    private modalService: BsModalService) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.router = router;
   }
@@ -45,9 +54,17 @@ export class IndicatorDetailComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  openModalEditRegistry(template: TemplateRef<any>, selectedRegistry: Registry) {
+    this.registry = selectedRegistry;
+    this.type = this.indicator.type;
+    this.editModalRef = this.modalService.show(template);
+  }
+
   private getIndicator(indicatorId: number) {
     this.service.getIndicator(indicatorId).subscribe(
-      data => { this.indicator = data; },
+      data => {
+      this.indicator = data;
+      this.registriesCount = data.registries.length; },
       err => console.error(err)
     );
   }
@@ -64,7 +81,9 @@ export class IndicatorDetailComponent implements OnInit {
     if (result) {
       let removed: Registry;
       this.service.deleteRegistry(registry.registryID).subscribe(
-        data => {removed = data; },
+        data => {
+          removed = data;
+          this.registriesCount--; },
         err => console.error(err)
       );
 
@@ -72,7 +91,34 @@ export class IndicatorDetailComponent implements OnInit {
       if ( index !== -1) {
         this.indicator.registries.splice(index, 1);
       }
-      console.log(this.indicator.registries);
     }
   }
+
+  deleteDocument(registry: Registry, document: Document) {
+    const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
+    if (registry.documents.length === 1) {
+      alert('Debe existir al menos un documento de respaldo para el registro');
+      return;
+    }
+    if (result) {
+      let removed: Document;
+      this.registryService.deleteDocument(document).subscribe(
+        data => {
+          removed = data;
+        },
+        err => console.error(err)
+      );
+
+      const index: number = registry.documents.indexOf(document);
+      if (index !== -1) {
+        registry.documents.splice(index, 1);
+      }
+    }
+  }
+
+  gotoAddRegistry() {
+    this.router.navigateByUrl('/indicator-add-registry');
+  }
+
 }
+

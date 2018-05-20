@@ -63,8 +63,7 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Registries).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
@@ -100,8 +99,7 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
+            _context.Indicators.Include(x => x.Registries).ToList();
             _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
@@ -126,6 +124,43 @@ namespace think_agro_metrics.Controllers
             // Return the list with the results
             return Ok(list);
         }
+
+        // GET: api/Indicators/Calculate/2018/1
+        [Route("Calculate/{year:int}/{month:int}")]
+        public async Task<IActionResult> CalculateIndicators([FromRoute] int year, [FromRoute] int month)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Load from the DB the Indicators with its Registries, Documents, and Links
+            _context.Indicators.Include(x => x.Registries).ToList();
+            _context.LinkRegistries.Include(x => x.Links).ToList();
+
+            // Obtain the Indicators
+            List<Indicator> indicators = new List<Indicator>();
+            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+
+            // If the indicators list is empty, show NotFound
+            if (!indicators.Any())
+            {
+                return NotFound();
+            }
+
+            // List of the results of every indicator
+            List<double> list = new List<double>();
+
+            // Calculate every indicator
+            foreach (Indicator indicator in indicators) {
+                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month+1)); // The month in Angular starts in 0 and in C# starts in 1
+            }
+            
+            // Return the list with the results
+            return Ok(list);
+        }
+
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]
