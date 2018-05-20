@@ -56,6 +56,9 @@ export class FileDocumentFormComponent implements OnInit {
       else if (event.type === HttpEventType.Response)
         this.message = event.body.toString();
     });
+
+    this.router.navigateByUrl("/registry/" + this.registry.registryID);
+    window.location.reload(true);
   }
 
   closeModal() {
