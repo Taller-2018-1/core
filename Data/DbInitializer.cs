@@ -2074,14 +2074,14 @@ namespace think_agro_metrics.Data
         private static Registry[] CreateRegistries4C(DataContext context){
             var registries4c = new Registry[]
             {
-                new PercentRegistry{
+                new PercentRegistries{
                     Name = "Dole",
                     Date = DateTime.Today,
                     Percent = 25,
                     Documents = null //documents4c1
                 },
 
-                new PercentRegistry
+                new PercentRegistries
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
@@ -2094,14 +2094,14 @@ namespace think_agro_metrics.Data
         private static Registry[] CreateRegistries4D(DataContext context){
             var registries4d = new Registry[]
             {
-                new PercentRegistry{
+                new PercentRegistries{
                     Name = "Dole",
                     Date = DateTime.Today,
                     Percent = 25,
                     Documents = null //documents4d1
                 },
 
-                new PercentRegistry
+                new PercentRegistries
                 {
                     Name = "Santa Margarita",
                     Date = DateTime.Today,
@@ -2109,7 +2109,7 @@ namespace think_agro_metrics.Data
                     Documents = null //documents4d2
                 },
 
-                new PercentRegistry
+                new PercentRegistries
                 {
                     Name = "Tio Genaro",
                     Date = DateTime.Today,
