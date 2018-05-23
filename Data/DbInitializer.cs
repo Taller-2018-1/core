@@ -2071,6 +2071,7 @@ namespace think_agro_metrics.Data
             };
             return registries3b;
         }
+        /*
         private static Registry[] CreateRegistries4C(DataContext context){
             var registries4c = new Registry[]
             {
@@ -2091,6 +2092,7 @@ namespace think_agro_metrics.Data
             };
             return registries4c;
         }
+
         private static Registry[] CreateRegistries4D(DataContext context){
             var registries4d = new Registry[]
             {
@@ -2118,6 +2120,6 @@ namespace think_agro_metrics.Data
                 }
             };
             return registries4d;
-        }
+        }*/
     }
 }
