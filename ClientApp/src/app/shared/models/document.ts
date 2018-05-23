@@ -1,4 +1,5 @@
 export class Document {
+    documentID: number;
     name: string;
     documentName: string;
     extension: string;

@@ -16,6 +16,6 @@
     <!-- end head-page-section -->
     <!-- about boxes
 ================================================== -->
-<div *ngIf="indicatorGroups$ | async as indicatorGroups">
-    <app-indicator-display [indicatorGroups]="indicatorGroups"></app-indicator-display>
+<div *ngIf="indicatorGroup$ | async as indicatorGroup">
+    <app-indicator-display [indicatorGroup]="indicatorGroup"></app-indicator-display>
 </div>
