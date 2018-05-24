@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 
 // Models
 import { Indicator } from '../../shared/models/indicator';
-import { IndicatorType } from '../../shared/models/indicatorType';
 import { Router } from '@angular/router';
 import { Registry } from '../../shared/models/registry';
 import { Document } from '../../shared/models/document';
@@ -34,7 +33,7 @@ export class IndicatorDetailComponent implements OnInit {
   modalRef: BsModalRef;
 
   public registry: Registry = null; // For EditRegistry
-  public type: number;
+  public registriesType: number;
   public editModalRef: BsModalRef;
 
   constructor(private service: IndicatorService,
@@ -52,7 +51,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   openModalEditRegistry(template: TemplateRef<any>, selectedRegistry: Registry) {
     this.registry = selectedRegistry;
-    this.type = this.indicator.type;
+    this.registriesType = this.indicator.registriesType;
     this.editModalRef = this.modalService.show(template);
   }
 
@@ -64,10 +63,6 @@ export class IndicatorDetailComponent implements OnInit {
       err => console.error(err)
       );
   }
-
-  /*private editRegistry(registry: Registry) {
-    this.registry = { registry: registry, type: this.indicator.type };
-  }*/
 
   private deleteRegistry (registry: Registry) {
     const date: Date = new Date(registry.date);
@@ -121,7 +116,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   gotoRegistry() {
-    this.router.navigateByUrl('/registry-details/' + 1); //Reemplazar por ID, sacado del button
+    this.router.navigateByUrl('/registry-details/' + 1); // Reemplazar por ID, sacado del button
   }
 
 }

@@ -11,9 +11,9 @@ namespace think_agro_metrics.Models
 {
     public class Indicator
     {
-        private IndicatorType type;
+        private RegistryType registriesType;
 
-        // Don't need to be map in the DB because is assigned through the type.
+        // Don't need to be map in the DB because is assigned through the type of the registries.
         [NotMapped]
         public IIndicatorCalculator IndicatorCalculator { get; private set; }        
 
@@ -22,19 +22,21 @@ namespace think_agro_metrics.Models
         public ICollection<Registry> Registries { get; set; }
         public ICollection<Goal> Goals { get; set; }
         
-        public IndicatorType Type {
+        public RegistryType RegistriesType
+        {
             get {
-                return type;
+                return registriesType;
             }
             set {
-                type = value;
-                if (type == IndicatorType.QuantityIndicatorCalculator) {
+                registriesType = value;
+                if (registriesType == RegistryType.QuantityRegistry
+                    || registriesType == RegistryType.ActivityRegistry) {
                     this.IndicatorCalculator = new QuantityIndicatorCalculator();
                 }
-                else if (type == IndicatorType.PercentIndicatorCalculator) {
+                else if (registriesType == RegistryType.PercentRegistry) {
                     this.IndicatorCalculator = new PercentIndicatorCalculator();
                 }
-                else {
+                else { //Default and Link Registries
                     this.IndicatorCalculator = new DefaultIndicatorCalculator();
                 }
 

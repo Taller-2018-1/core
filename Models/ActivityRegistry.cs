@@ -8,7 +8,7 @@ namespace think_agro_metrics.Models
 {
     public class ActivityRegistry : Registry
     {
-        public string Activity { get; set; }
+        public long Quantity { get; set; }
 
         public ActivityRegistry() { }
     }

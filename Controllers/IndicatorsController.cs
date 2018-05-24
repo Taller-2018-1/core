@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,17 +42,20 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var indicator = await _context.Indicators.SingleOrDefaultAsync(m => m.IndicatorID == id);
+            var indicatorQuery = _context.Indicators.Where(x => x.IndicatorID == id);
+
+            await indicatorQuery.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToListAsync();
+            await _context.Indicators.Include(x => x.Goals).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+
+            var indicator = await indicatorQuery.SingleAsync();
 
             if (indicator == null)
             {
                 return NotFound();
             }
 
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.Indicators.Include(x => x.Goals).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
             return Ok(indicator);
         }
 
@@ -83,7 +87,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
             }
             
@@ -119,7 +123,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
             }
             
@@ -155,7 +159,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month+1)); // The month in Angular starts in 0 and in C# starts in 1
             }
             

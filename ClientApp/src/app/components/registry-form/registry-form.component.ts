@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { Indicator } from '../../shared/models/indicator';
-import { IndicatorType } from '../../shared/models/indicatorType';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Registry } from '../../shared/models/registry';
+import { RegistryType } from '../../shared/models/registryType';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -21,21 +21,20 @@ export class RegistryFormComponent implements OnInit {
   router: Router;
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
-  @Input() indicator:Indicator;
+  @Input() indicator: Indicator;
   onSubmit() {
-    //this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
-    this.IndicatorService.addRegistry(this.model, this.idIndicator, this.indicator.registries[0].discriminator);
+    // this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
+    this.service.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
     this.indicator.registries.push(this.model);
-    this.router.navigateByUrl('/indicator/'+this.idIndicator);
+    this.router.navigateByUrl('/indicator/' + this.idIndicator);
   }
 
   closeModal() {
     this.modalRef.hide();
     this.modalRef = null;
   }
-  
-  
-  constructor(router: Router, private IndicatorService: IndicatorService, private modalService: BsModalService) {
+
+  constructor(router: Router, private service: IndicatorService, private modalService: BsModalService) {
     this.model = new Registry();
     this.router = router;
 
