@@ -31,8 +31,7 @@ namespace think_agro_metrics.Models
                 if (type == IndicatorType.QuantityIndicatorCalculator) {
                     this.IndicatorCalculator = new QuantityIndicatorCalculator();
                 }
-                else if (type == IndicatorType.PercentIndicatorCalculator)
-                {
+                else if (type == IndicatorType.PercentIndicatorCalculator) {
                     this.IndicatorCalculator = new PercentIndicatorCalculator();
                 }
                 else {
