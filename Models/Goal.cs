@@ -8,7 +8,8 @@ namespace think_agro_metrics.Models
     public class Goal
     {
         public long GoalID { get; set; }
-        public long Year { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; } 
         public long Value { get; set; }
     }
 }

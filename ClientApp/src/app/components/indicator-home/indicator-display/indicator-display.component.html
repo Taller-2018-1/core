@@ -13,7 +13,7 @@
           <br>
           <div class="btn-group" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionYear }} <span class="caret"></span>
+              {{ selectedYearText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -28,7 +28,7 @@
           <br>
           <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionMonth }} <span class="caret"></span>
+              {{ selectedMonthText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
