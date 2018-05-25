@@ -17,6 +17,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
+import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -36,6 +37,14 @@ export class IndicatorDetailComponent implements OnInit {
   public registriesType: number;
   public editModalRef: BsModalRef;
 
+  // For filtering by years
+  private static ALL_YEARS = 'Todos los años';
+  private static YEAR = 'Año '; // Part of the string that the DropDown has to show as selected
+  allYears: string = IndicatorDetailComponent.ALL_YEARS;
+  selectionYear: string; // Dropdow year "Año 2018"
+  selectedYear: number; // Numeric value for selectionYear
+  years: number[] = []; // List of years from 2018 to CurrentYear
+
   constructor(private service: IndicatorService,
     router: Router,
     private registryService: RegistryService,
@@ -46,7 +55,27 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getIndicator(this.idIndicator);
+    const currentYear = new Date().getFullYear();
+    this.getIndicator(this.idIndicator, currentYear);
+    const baseYear = 2018;
+    for (let i = 0; i <= (currentYear - baseYear); i++) {
+      this.years[i] = baseYear + i;
+    }
+    this.selectionYear = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
+    this.selectedYear = currentYear; // 2018 (current year) is the selected year
+  }
+
+  selectRegistriesYear(year: any) {
+    if (year === IndicatorDetailComponent.ALL_YEARS) {
+      this.getIndicator(this.idIndicator); // Show all the registries
+      this.selectionYear = IndicatorDetailComponent.ALL_YEARS;
+      this.selectedYear = -1;
+    }
+    else {
+      this.getIndicator(this.idIndicator, year); // Show registries from the year selected
+      this.selectionYear = IndicatorDetailComponent.YEAR + year; // Change the text on the dropdown
+      this.selectedYear = year;
+    }
   }
 
   openModalEditRegistry(template: TemplateRef<any>, selectedRegistry: Registry) {
@@ -55,13 +84,25 @@ export class IndicatorDetailComponent implements OnInit {
     this.editModalRef = this.modalService.show(template);
   }
 
-  private getIndicator(indicatorId: number) {
-    this.service.getIndicator(indicatorId).subscribe(
-      data => {
-      this.indicator = data;
-      this.registriesCount = data.registries.length; },
-      err => console.error(err)
+  private getIndicator(indicatorId: number, year?: number) {
+    if (!year) {
+      this.service.getIndicator(indicatorId).subscribe(
+        data => {
+          this.indicator = data;
+          this.registriesCount = data.registries.length;
+        },
+        err => console.error(err)
       );
+    }
+    else {
+      this.service.getIndicatorYearRegistries(indicatorId, year).subscribe(
+        data => {
+          this.indicator.registries = data.registries;
+          this.registriesCount = data.registries.length;
+        },
+        err => console.error(err))
+    };
+    
   }
 
   private deleteRegistry (registry: Registry) {

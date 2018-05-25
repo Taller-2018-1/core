@@ -59,6 +59,49 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
+        // GET: api/Indicators/5/2018
+        [HttpGet("{id:long}/{year:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+
+            // Fails if not found
+            if (indicator == null) 
+            {
+                return NotFound();
+            }
+
+            // Include Registries and Documents and Links
+            _context.Indicators.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToList();
+            _context.LinkRegistries.Include(x => x.Links).ToList();
+
+            List<Registry> registries = new List<Registry>();
+
+            // To find those who don't match the selected year
+            foreach (Registry registry in indicator.Registries)
+            {
+                if (registry.Date.Year != year)
+                {
+                    registries.Add(registry);
+                }
+            }
+
+            // Delete from the indicator returned (not in DB) the registries that we don't want to see
+            foreach(Registry registry in registries)
+            {
+                indicator.Registries.Remove(registry);
+            }
+
+            return Ok(indicator);
+        }
+
         // GET: api/Indicators/Calculate
         [Route("Calculate")]
         public async Task<IActionResult> CalculateIndicators()
