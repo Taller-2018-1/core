@@ -288,17 +288,6 @@ namespace think_agro_metrics.Data
                 }
             };
 
-            context.Documents.AddRange(documents1a1);
-            context.Documents.AddRange(documents1a2);
-            context.Documents.AddRange(documents1a3);
-            context.Documents.AddRange(documents1a4);
-            context.Documents.AddRange(documents1a5);
-            context.Documents.AddRange(documents1a6);
-            context.Documents.AddRange(documents1a7);
-            context.Documents.AddRange(documents1a8);
-            context.Documents.AddRange(documents1a9);
-            context.Documents.AddRange(documents1a10);
-
             var registries1a = new Registry[] {
                 new DefaultRegistry{
                     Name = "Apple Inc.",
@@ -498,16 +487,6 @@ namespace think_agro_metrics.Data
                      Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents1b1);
-            context.Documents.AddRange(documents1b2);
-            context.Documents.AddRange(documents1b3);
-            context.Documents.AddRange(documents1b4);
-            context.Documents.AddRange(documents1b5);
-            context.Documents.AddRange(documents1b6);
-            context.Documents.AddRange(documents1b7);
-            context.Documents.AddRange(documents1b8);
-            context.Documents.AddRange(documents1b9);
-            context.Documents.AddRange(documents1b10);
 
             var registries1b = new Registry[]
             {
@@ -707,17 +686,6 @@ namespace think_agro_metrics.Data
                      Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents1c1);
-            context.Documents.AddRange(documents1c2);
-            context.Documents.AddRange(documents1c3);
-            context.Documents.AddRange(documents1c4);
-            context.Documents.AddRange(documents1c5);
-            context.Documents.AddRange(documents1c6);
-            context.Documents.AddRange(documents1c7);
-            context.Documents.AddRange(documents1c8);
-            context.Documents.AddRange(documents1c9);
-            context.Documents.AddRange(documents1c10);
-
             var registries1c = new QuantityRegistry[]
             {
                 new QuantityRegistry{
@@ -939,16 +907,6 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents1d1);
-            context.Documents.AddRange(documents1d2);
-            context.Documents.AddRange(documents1d3);
-            context.Documents.AddRange(documents1d4);
-            context.Documents.AddRange(documents1d5);
-            context.Documents.AddRange(documents1d6);
-            context.Documents.AddRange(documents1d7);
-            context.Documents.AddRange(documents1d8);
-            context.Documents.AddRange(documents1d9);
-            context.Documents.AddRange(documents1d10);
 
             var registries1d = new LinkRegistry[]{
                 new LinkRegistry{
@@ -1158,17 +1116,6 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents1e1);
-            context.Documents.AddRange(documents1e2);
-            context.Documents.AddRange(documents1e3);
-            context.Documents.AddRange(documents1e4);
-            context.Documents.AddRange(documents1e5);
-            context.Documents.AddRange(documents1e6);
-            context.Documents.AddRange(documents1e7);
-            context.Documents.AddRange(documents1e8);
-            context.Documents.AddRange(documents1e9);
-            context.Documents.AddRange(documents1e10);
-
             var registries1e = new Registry[]
             {
                 new DefaultRegistry{
@@ -1368,16 +1315,6 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents2a1);
-            context.Documents.AddRange(documents2a2);
-            context.Documents.AddRange(documents2a3);
-            context.Documents.AddRange(documents2a4);
-            context.Documents.AddRange(documents2a5);
-            context.Documents.AddRange(documents2a6);
-            context.Documents.AddRange(documents2a7);
-            context.Documents.AddRange(documents2a8);
-            context.Documents.AddRange(documents2a9);
-            context.Documents.AddRange(documents2a10);
 
             var registries2a = new Registry[]
            {
@@ -1577,17 +1514,7 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents2b1);
-            context.Documents.AddRange(documents2b2);
-            context.Documents.AddRange(documents2b3);
-            context.Documents.AddRange(documents2b4);
-            context.Documents.AddRange(documents2b5);
-            context.Documents.AddRange(documents2b6);
-            context.Documents.AddRange(documents2b7);
-            context.Documents.AddRange(documents2b8);
-            context.Documents.AddRange(documents2b9);
-            context.Documents.AddRange(documents2b10);
-
+            
             var registries2b = new Registry[]
             {
                 new DefaultRegistry{
@@ -1786,16 +1713,6 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents3a1);
-            context.Documents.AddRange(documents3a2);
-            context.Documents.AddRange(documents3a3);
-            context.Documents.AddRange(documents3a4);
-            context.Documents.AddRange(documents3a5);
-            context.Documents.AddRange(documents3a6);
-            context.Documents.AddRange(documents3a7);
-            context.Documents.AddRange(documents3a8);
-            context.Documents.AddRange(documents3a9);
-            context.Documents.AddRange(documents3a10);
 
             var registries3a = new Registry[]
             {
@@ -1995,16 +1912,6 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            context.Documents.AddRange(documents3b1);
-            context.Documents.AddRange(documents3b2);
-            context.Documents.AddRange(documents3b3);
-            context.Documents.AddRange(documents3b4);
-            context.Documents.AddRange(documents3b5);
-            context.Documents.AddRange(documents3b6);
-            context.Documents.AddRange(documents3b7);
-            context.Documents.AddRange(documents3b8);
-            context.Documents.AddRange(documents3b9);
-            context.Documents.AddRange(documents3b10);
 
             var registries3b = new Registry[]
             {
