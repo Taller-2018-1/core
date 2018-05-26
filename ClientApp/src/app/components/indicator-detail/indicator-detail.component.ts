@@ -19,6 +19,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
 import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -64,6 +65,14 @@ export class IndicatorDetailComponent implements OnInit {
     }
     this.selectionYear = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
     this.selectedYear = currentYear; // 2018 (current year) is the selected year
+
+    //console.log(this.indicator.registries[0].date);
+
+  }
+
+  get Date()
+  {
+    return this.indicator.registries[0].date;
   }
 
   selectRegistriesYear(year: any) {
@@ -123,8 +132,10 @@ export class IndicatorDetailComponent implements OnInit {
       const index: number = this.indicator.registries.indexOf(registry);
       if ( index !== -1) {
         this.indicator.registries.splice(index, 1);
+        
       }
     }
+    
   }
 
   deleteDocument(registry: Registry, document: Document) {
@@ -159,16 +170,15 @@ export class IndicatorDetailComponent implements OnInit {
 
   gotoRegistry() {
     this.router.navigateByUrl('/registry-details/' + 1); //Reemplazar por ID, sacado del button
+    
   }
 
 
   // lineChart
   public lineChartData:Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
-    {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
+    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Series A'}
   ];
-  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   public lineChartOptions:any = {
     responsive: true
   };
@@ -202,15 +212,105 @@ export class IndicatorDetailComponent implements OnInit {
   public lineChartType:string = 'line';
  
   public randomize():void {
+    /*let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+    for (let i = 0; i < this.lineChartData.length; i++) {
+      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
+      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
+        if(j==3)
+        {
+          _lineChartData[i].data[j] = 20;
+        }
+        else
+        {
+          _lineChartData[i].data[j] = 0;
+        }
+        //_lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+      }
+    }*/
+
+
+    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+    _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
+    
+    let cantidadAcumulada = 0;
+    let monthMin = 0;
+
+    for(let j=0; j<this.indicator.registries.length; j++)
+    {
+      //let date = this.indicator.registries[j].date;
+      let date: Date = new Date(this.indicator.registries[j].date);
+      let month = date.getMonth();
+      if(j==0)
+      {
+        monthMin = month;
+      }
+      //let month = date.getMonth();
+      let cantidad = this.indicator.registries[j].quantity;
+
+      
+      console.log("month:"+ month);
+
+      for (let i = 0; i < 12; i++) 
+      {
+        if(i>=month)
+        {         
+          
+          if(_lineChartData[0].data[i]==null)
+          {
+            if(cantidadAcumulada==0)
+            {
+              cantidadAcumulada += cantidad;
+              _lineChartData[0].data[i] = cantidadAcumulada;
+            }
+            else
+            {
+              _lineChartData[0].data[i] = cantidadAcumulada;
+            }
+          }
+          else
+          {
+            if(i==month)
+            {
+              console.log("cantidad: "+ cantidad);
+              console.log("cantidadAcumulada: "+ cantidadAcumulada);
+              cantidadAcumulada += cantidad;
+              console.log("cantidadAcumulada+=cantidad: "+ cantidadAcumulada);
+              _lineChartData[0].data[i] = cantidadAcumulada;
+            }
+            else
+            {
+              _lineChartData[0].data[i] = cantidadAcumulada;
+            }
+          }
+          //this.lineChartData[0].data[i] += cantidad;
+                  
+        }
+        else if(_lineChartData[0].data[i]==null)
+        {
+          _lineChartData[0].data[i] = 0;
+        }
+      }
+    }  
+        
+    this.lineChartData = _lineChartData;
+    console.log("largo registro: "+this.indicator.registries.length);
+    
+  }
+
+  /*public CrearGrafico():void
+  {
     let _lineChartData:Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
       _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+        if(i==3)
+        {
+          _lineChartData[i].data[j] = 20;
+        }
       }
     }
     this.lineChartData = _lineChartData;
-  }
+  }*/
  
   // events
   public chartClicked(e:any):void {
