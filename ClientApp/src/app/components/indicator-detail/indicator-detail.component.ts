@@ -65,7 +65,7 @@ export class IndicatorDetailComponent implements OnInit {
     }
     this.selectionYear = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
     this.selectedYear = currentYear; // 2018 (current year) is the selected year
-
+    
     //console.log(this.indicator.registries[0].date);
 
   }
@@ -178,40 +178,33 @@ export class IndicatorDetailComponent implements OnInit {
   public lineChartData:Array<any> = [
     {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Series A'}
   ];
-  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  public lineChartLabels:Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public lineChartOptions:any = {
-    responsive: true
+    responsive: true,
+    elements:{
+      point:{
+        radius: 5,
+        hitRadius: 5,
+        hoverRadius: 7,
+        hoverBorderWidth: 2
+      }
+    }
   };
   public lineChartColors:Array<any> = [
     { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+      backgroundColor: 'rgba(144,188,36,0.4)',
+      borderColor: 'rgba(0,149,58,1)',
+      pointBackgroundColor: 'rgba(0,149,58,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
+   
   ];
   public lineChartLegend:boolean = true;
   public lineChartType:string = 'line';
  
-  public randomize():void {
+  public randomize() {
     /*let _lineChartData:Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
       _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
