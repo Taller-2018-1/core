@@ -63,6 +63,8 @@ export class IndicatorDetailComponent implements OnInit {
     }
     this.selectionYear = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
     this.selectedYear = currentYear; // 2018 (current year) is the selected year
+
+    this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
   }
 
   selectRegistriesYear(year: any) {

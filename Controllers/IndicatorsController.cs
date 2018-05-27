@@ -66,40 +66,22 @@ namespace think_agro_metrics.Controllers
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
+            }            
 
-            // Obtain the Indicator
-            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            // Obtain the Registries
+            var registriesQuery =  _context.Registries.Where(r => r.IndicatorID == id && r.Date.Year == year);
+
+            var registries = await registriesQuery.Include(x => x.Documents).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             // Fails if not found
-            if (indicator == null) 
+            if (registries == null) 
             {
                 return NotFound();
             }
 
-            // Include Registries and Documents and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
 
-            List<Registry> registries = new List<Registry>();
-
-            // To find those who don't match the selected year
-            foreach (Registry registry in indicator.Registries)
-            {
-                if (registry.Date.Year != year)
-                {
-                    registries.Add(registry);
-                }
-            }
-
-            // Delete from the indicator returned (not in DB) the registries that we don't want to see
-            foreach(Registry registry in registries)
-            {
-                indicator.Registries.Remove(registry);
-            }
-
-            return Ok(indicator);
+            return Ok(registries);
         }
 
         // GET: api/Indicators/Calculate
