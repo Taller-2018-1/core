@@ -205,21 +205,7 @@ export class IndicatorDetailComponent implements OnInit {
   public lineChartType:string = 'line';
  
   public randomize() {
-    /*let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        if(j==3)
-        {
-          _lineChartData[i].data[j] = 20;
-        }
-        else
-        {
-          _lineChartData[i].data[j] = 0;
-        }
-        //_lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-      }
-    }*/
+  
 
 
     let _lineChartData:Array<any> = new Array(this.lineChartData.length);
@@ -273,20 +259,7 @@ export class IndicatorDetailComponent implements OnInit {
     
   }
 
-  /*public CrearGrafico():void
-  {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        if(i==3)
-        {
-          _lineChartData[i].data[j] = 20;
-        }
-      }
-    }
-    this.lineChartData = _lineChartData;
-  }*/
+  
  
   // events
   public chartClicked(e:any):void {
