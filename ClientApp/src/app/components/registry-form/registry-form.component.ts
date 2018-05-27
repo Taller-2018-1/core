@@ -45,9 +45,9 @@ export class RegistryFormComponent implements OnInit {
   }
  
   /* Para actualizar cuando registre el indicador */
-  get Actualizar()
+  Actualizar()
   {
-      return window.location.reload(true);
+      window.location.reload(true);
   }
 
 }
