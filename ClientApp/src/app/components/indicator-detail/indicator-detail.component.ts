@@ -232,67 +232,50 @@ export class IndicatorDetailComponent implements OnInit {
     let _lineChartData:Array<any> = new Array(this.lineChartData.length);
     _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
     
+    let cantidad = 0;
     let cantidadAcumulada = 0;
     let monthMin = 0;
 
-    for(let j=0; j<this.indicator.registries.length; j++)
+    /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
+    for (let i = 0; i < 12; i++) 
     {
-      //let date = this.indicator.registries[j].date;
-      let date: Date = new Date(this.indicator.registries[j].date);
+      _lineChartData[0].data[i] = 0;
+    }
+    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
+    
+    /* Ingreso de datos al arreglo provisorio de meses */
+    for(let i=0; i<this.indicator.registries.length; i++)
+    {
+      let date: Date = new Date(this.indicator.registries[i].date);
       let month = date.getMonth();
-      if(j==0)
-      {
-        monthMin = month;
-      }
-      //let month = date.getMonth();
-      let cantidad = this.indicator.registries[j].quantity;
 
-      
-      console.log("month:"+ month);
-
-      for (let i = 0; i < 12; i++) 
+      /* if si el registro es de cantidad */
+      if(this.indicator.registries[i].discriminator=="QuantityRegistry")
       {
-        if(i>=month)
-        {         
-          
-          if(_lineChartData[0].data[i]==null)
-          {
-            if(cantidadAcumulada==0)
-            {
-              cantidadAcumulada += cantidad;
-              _lineChartData[0].data[i] = cantidadAcumulada;
-            }
-            else
-            {
-              _lineChartData[0].data[i] = cantidadAcumulada;
-            }
-          }
-          else
-          {
-            if(i==month)
-            {
-              console.log("cantidad: "+ cantidad);
-              console.log("cantidadAcumulada: "+ cantidadAcumulada);
-              cantidadAcumulada += cantidad;
-              console.log("cantidadAcumulada+=cantidad: "+ cantidadAcumulada);
-              _lineChartData[0].data[i] = cantidadAcumulada;
-            }
-            else
-            {
-              _lineChartData[0].data[i] = cantidadAcumulada;
-            }
-          }
-          //this.lineChartData[0].data[i] += cantidad;
-                  
-        }
-        else if(_lineChartData[0].data[i]==null)
+        cantidad = this.indicator.registries[i].quantity;
+
+        for (let j = 0; j < 12; j++) 
         {
-          _lineChartData[0].data[i] = 0;
+          if(j>=month)
+          {
+            _lineChartData[0].data[j] += cantidad;
+          }     
+        } 
+      }
+      else //caso contrario si el registro es default o algun otro que no sea cantidad
+      {
+        cantidad = 1; 
+        for (let j = 0; j < 12; j++) 
+        {
+          if(j>=month)
+          {
+            _lineChartData[0].data[j] += cantidad;
+          } 
         }
       }
     }  
         
-    this.lineChartData = _lineChartData;
+    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
     console.log("largo registro: "+this.indicator.registries.length);
     
   }
