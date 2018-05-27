@@ -17,13 +17,10 @@
 
 
 <div class="container">
-
-
-
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-11">
           <div style="display: block;">
-          <canvas baseChart width="400" height="400"
+          <canvas baseChart width="900" height="500"
                       [datasets]="lineChartData"
                       [labels]="lineChartLabels"
                       [options]="lineChartOptions"
@@ -31,10 +28,16 @@
                       [legend]="lineChartLegend"
                       [chartType]="lineChartType"
                       (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
+                      (chartClick)="chartClicked($event)">
+          </canvas>
           </div>
         </div>
-        <div class="col-md-6" style="margin-bottom: 10px">
+    </div>
+      
+    <br>
+
+     <div class="row">
+        <div class="col-md-5" style="margin-bottom: 10px">
           <table class="table table-responsive table-condensed">
             <tr>
               <th *ngFor="let label of lineChartLabels">{{label}}</th>
@@ -145,4 +148,5 @@
 
     <!--END Modal Edit Registry-->
   </div>
+
 
