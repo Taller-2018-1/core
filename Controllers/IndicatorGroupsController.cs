@@ -135,12 +135,14 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+            
             
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -171,12 +173,13 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -207,12 +210,13 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)

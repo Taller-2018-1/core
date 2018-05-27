@@ -1,26 +1,24 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
-import { PercentPipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { PercentPipe } from '@angular/common';
 
 // Models
+import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
+import { Months } from '../../shared/models/months';
 import { Router } from '@angular/router';
 import { Registry } from '../../shared/models/registry';
-import { Document } from '../../shared/models/document';
-import { Months } from '../../shared/models/months';
-
-
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
-import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
-import { LOCALE_DATA } from '@angular/common/src/i18n/locale_data';
+
+// Ngx-Bootstrap
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -36,7 +34,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
-  public registriesCount = 0;
 
   public indicator$: Observable<Indicator>;
   router: Router;
@@ -70,7 +67,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   ngOnInit() {
     const currentYear = new Date().getFullYear();
-    this.getIndicator(this.idIndicator, currentYear);
     const baseYear = 2018;
     for (let i = 0; i <= (currentYear - baseYear); i++) {
       this.years[i] = baseYear + i;
@@ -87,7 +83,6 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
 
-
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
   }
 
@@ -95,32 +90,33 @@ export class IndicatorDetailComponent implements OnInit {
 
     if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
-        this.getIndicator(this.idIndicator); // Show all the registries
+        this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
       }
       // tslint:disable-next-line:one-line
       else {
-        this.getIndicator(this.idIndicator, year); // Show registries from the year selected
         this.selectedYearText = IndicatorDetailComponent.YEAR + year; // Change the text on the dropdown
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
+        // tslint:disable-next-line:max-line-length
+        this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear); // Show registries from the year selected
         this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
     }
     // tslint:disable-next-line:one-line
-    else{
+    else {
       if (month === IndicatorDetailComponent.ALL_MONTHS) {
         this.selectedMonth = -1; // Not selected a specific month
-        this.getIndicator(this.idIndicator, this.selectedYear);
+        this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
       }
       // tslint:disable-next-line:one-line
       else{
         this.setSelectedMonth(month);
-        this.getIndicator(this.idIndicator, this.selectedYear, this.selectedMonth);
+        this.indicator$ = this.service.getIndicatorYearMonthRegistries(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }
@@ -132,60 +128,23 @@ export class IndicatorDetailComponent implements OnInit {
     this.editModalRef = this.modalService.show(template);
   }
 
-  private getIndicator(indicatorId: number, year?: number, month?: number) {
-    if (!year) {
-      this.service.getIndicator(indicatorId).subscribe(
-        data => {
-          this.indicator = data;
-          this.registriesCount = data.registries.length;
-        },
-        err => console.error(err)
-      );
-    }
-    // tslint:disable-next-line:one-line
-    else if (year && !month) {
-      this.service.getIndicatorYearRegistries(indicatorId, year).subscribe(
-        data => {
-          this.indicator = data;
-          this.registriesCount = data.registries.length;
-        },
-        err => console.error(err)
-      );
-    }
-    // tslint:disable-next-line:one-line
-    else {
-      this.service.getIndicatorYearMonthRegistries(indicatorId, year, month).subscribe(
-        data => {
-          this.indicator = data;
-          this.registriesCount = data.registries.length;
-        },
-        err => console.error(err)
-      );
-    }
-  }
-
-  private deleteRegistry (registry: Registry) {
+  private deleteRegistry (indicator: Indicator, registry: Registry) {
     const date: Date = new Date(registry.date);
     const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
     const result = confirm('Está seguro que desea eliminar el registro: \n' + formatedDate + ' - ' + registry.name);
 
     if (result) {
-      let removed: Registry;
-      this.service.deleteRegistry(registry.registryID).subscribe(
+      this.service.deleteRegistry(registry).subscribe(
         data => {
-          removed = data;
-          this.registriesCount--; },
+          const index = this.indicator.registries.indexOf(data);
+          indicator.registries.splice(index, 1);
+        },
         err => console.error(err)
       );
-
-      const index: number = this.indicator.registries.indexOf(registry);
-      if ( index !== -1) {
-        this.indicator.registries.splice(index, 1);
-      }
     }
   }
 
-  deleteDocument(registry: Registry, document: Document) {
+  private deleteDocument(registry: Registry, document: Document) {
     const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
     if (registry.documents.length === 1) {
       alert('Debe existir al menos un documento de respaldo para el registro');
@@ -200,7 +159,7 @@ export class IndicatorDetailComponent implements OnInit {
         err => console.error(err)
       );
 
-      const index: number = registry.documents.indexOf(document);
+      const index = registry.documents.indexOf(document);
       if (index !== -1) {
         registry.documents.splice(index, 1);
       }

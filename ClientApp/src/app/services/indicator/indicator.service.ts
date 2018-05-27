@@ -54,8 +54,8 @@ export class IndicatorService {
         + discriminator, registry).subscribe();
   }
 
-  deleteRegistry(registryId: number): Observable<Registry> {
-    return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registryId);
+  deleteRegistry(registry: Registry): Observable<Registry> {
+    return this.http.delete<Registry>(IndicatorService.REGISTRIES_API + registry.registryID);
   }
 
   calculateIndicatorsYear(year: number): Observable<number[]> {
