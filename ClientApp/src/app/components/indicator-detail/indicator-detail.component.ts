@@ -20,6 +20,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
 import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
+import { LOCALE_DATA } from '@angular/common/src/i18n/locale_data';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -27,6 +28,11 @@ import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/i
   styleUrls: ['./indicator-detail.component.css'],
 })
 export class IndicatorDetailComponent implements OnInit {
+  // For filtering by years
+  private static ALL_YEARS = 'Todos los años';
+  private static YEAR = 'Año '; // Part of the string that the DropDown has to show as selected
+  // For filtering by months
+  private static ALL_MONTHS = 'Todos los meses';
 
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
@@ -39,13 +45,6 @@ export class IndicatorDetailComponent implements OnInit {
   public registry: Registry = null; // For EditRegistry
   public registriesType: number;
   public editModalRef: BsModalRef;
-
-  // For filtering by years
-  private static ALL_YEARS = 'Todos los años';
-  private static ALL_MONTHS = 'Todos los meses';
-  private static YEAR = 'Año '; // Part of the string that the DropDown has to show as selected
-  // For filtering by months
-
 
   allYears: string = IndicatorDetailComponent.ALL_YEARS;
   selectedYearText: string; // Dropdown year "Año 2018"
@@ -92,28 +91,31 @@ export class IndicatorDetailComponent implements OnInit {
 
   selectRegistries(year: any, month: string) {
 
-    if((year as string).length !== 0 ){
+    if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
         this.getIndicator(this.idIndicator); // Show all the registries
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
       }
+      // tslint:disable-next-line:one-line
       else {
         this.getIndicator(this.idIndicator, year); // Show registries from the year selected
         this.selectedYearText = IndicatorDetailComponent.YEAR + year; // Change the text on the dropdown
-        this.isMonthDisabled = false; // It's possible to select a month     
+        this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
-        this.setMonths();  
+        this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
     }
+    // tslint:disable-next-line:one-line
     else{
-      if(month == IndicatorDetailComponent.ALL_MONTHS){
-        this.selectedMonth = -1; //Not selected a specific month 
+      if (month === IndicatorDetailComponent.ALL_MONTHS) {
+        this.selectedMonth = -1; // Not selected a specific month
         this.getIndicator(this.idIndicator, this.selectedYear);
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
       }
+      // tslint:disable-next-line:one-line
       else{
         this.setSelectedMonth(month);
         this.getIndicator(this.idIndicator, this.selectedYear, this.selectedMonth);
@@ -138,25 +140,26 @@ export class IndicatorDetailComponent implements OnInit {
         err => console.error(err)
       );
     }
-    else if (year && !month){
+    // tslint:disable-next-line:one-line
+    else if (year && !month) {
       this.service.getIndicatorYearRegistries(indicatorId, year).subscribe(
         data => {
-          this.indicator.registries = data.registries;
+          this.indicator = data;
           this.registriesCount = data.registries.length;
         },
         err => console.error(err)
       );
     }
-    else{
+    // tslint:disable-next-line:one-line
+    else {
       this.service.getIndicatorYearMonthRegistries(indicatorId, year, month).subscribe(
         data => {
-          this.indicator.registries = data.registries;
+          this.indicator = data;
           this.registriesCount = data.registries.length;
         },
         err => console.error(err)
       );
     }
-    
   }
 
   private deleteRegistry (registry: Registry) {
@@ -214,7 +217,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.router.navigateByUrl('/registry-details/' + 1); // Reemplazar por ID, sacado del button
   }
 
-    // Set the list of the months (numbers) from 0 to the current month (max 11)
+  // Set the list of the months (numbers) from 0 to the current month (max 11)
   // The months depends on the selected year (this.selectedYear)
   setMonths() {
     const currentYear = new Date().getFullYear();

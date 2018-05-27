@@ -130,7 +130,7 @@ namespace think_agro_metrics.Controllers
             // To find those who don't match the selected year
             foreach (Registry registry in indicator.Registries)
             {
-                if (registry.Date.Year != year && registry.Date.Month != month)
+                if (registry.Date.Year != year || registry.Date.Month != month+1) // The month in Angular starts in 0 and in C# starts in 1
                 {
                     registries.Add(registry);
                 }
