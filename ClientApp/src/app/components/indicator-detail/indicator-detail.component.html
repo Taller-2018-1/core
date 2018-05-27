@@ -29,12 +29,27 @@
       <br>
       <div class="btn-group" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-          {{ selectionYear }} <span class="caret"></span>
+          {{ selectedYearText }} <span class="caret"></span>
         </button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
-          <li><a class="dropdown-item" (click)="selectRegistriesYear(allYears)">Todos los años</a></li>
-          <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistriesYear(year)">Año {{ year }}</a></li>
+          <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
+          <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <!--Dropdown Month Filter-->
+    <div class="col-md-6">
+      Seleccione el mes a mostrar:
+      <br>
+      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+          {{ selectedMonthText }} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li ><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>          
+          <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li>
         </ul>
       </div>
     </div>
