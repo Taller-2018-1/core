@@ -20,7 +20,7 @@ export class Registry {
     this.dateAdded = dateAdded;
     this.name = name;
     this.links = urlDocuments;
-    this.quantity = -1;
+    this.quantity = 0;
     this.percent = 0;
   }
 }
