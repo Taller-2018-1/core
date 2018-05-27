@@ -37,7 +37,7 @@ export class RegistryEditorComponent implements OnInit {
   }
 
   deleteDocument(document: Document) {
-    const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
+    const result = confirm('Está seguro que desea eliminar el documento: ' + document.documentName);
     if (this.registry.documents.length === 1) {
       alert('Debe existir al menos un documento de respaldo para el registro');
       return;

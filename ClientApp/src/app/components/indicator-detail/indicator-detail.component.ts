@@ -31,6 +31,7 @@ export class IndicatorDetailComponent implements OnInit {
   public idIndicator = -1;
   public registriesCount = 0;
 
+
   public indicator$: Observable<Indicator>;
   router: Router;
   modalRef: BsModalRef;
@@ -256,10 +257,8 @@ export class IndicatorDetailComponent implements OnInit {
         
     this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
     console.log("largo registro: "+this.indicator.registries.length);
-    
+    //window.location.reload(true);
   }
-
-  
  
   // events
   public chartClicked(e:any):void {

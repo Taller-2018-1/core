@@ -43,5 +43,11 @@ export class RegistryFormComponent implements OnInit {
 
   ngOnInit() {
   }
+ 
+  /* Para actualizar cuando registre el indicador */
+  get Actualizar()
+  {
+      return window.location.reload(true);
+  }
 
 }
