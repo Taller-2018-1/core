@@ -24,6 +24,7 @@ export class IndicatorDisplayComponent implements OnInit {
   allMonths: string = IndicatorDisplayComponent.ALL_MONTHS;
 
   @Input() indicatorGroup: IndicatorGroup;
+
   indicatorResults$: Observable<number[]>;
   selectedYearText: string; // Default selection = currentYear (defined in ngOnInit) (string shown in the dropdown)
   // tslint:disable-next-line:max-line-length
