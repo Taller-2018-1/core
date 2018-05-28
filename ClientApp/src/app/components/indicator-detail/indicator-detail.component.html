@@ -1,6 +1,6 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator">
-  <section >
+  <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
         <div class="row">
@@ -67,8 +67,8 @@
                   <td width="40%">
                     <!-- Filtros año-mes -->
                     <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-    Filtrar por Fecha
-  </button> -->
+                      Filtrar por Fecha
+                    </button> -->
                     <!--Dropdown Year Filter-->
                     <!--<div class="col-md-6">-->
                     <div class="btn-group" dropdown>
@@ -106,7 +106,7 @@
                   </td>
                 </tr>
               </table>
-          </div>
+            </div>
           </div>
           <!-- end col-md-12 -->
         </div>
@@ -140,26 +140,14 @@
               </table>
             </div>
             <!--Begin tab-->
-            <!--<app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>-->
             <!--Tabset removed because I didn't know what to do with him-->
-            <ngb-tabset>
-              <ngb-tab>
-                <ng-template ngbTabTitle>
-                  Registros
-                </ng-template>
-                <ng-template ngbTabContent>
-                  hola
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab>
-                <ng-template ngbTabTitle>
-                  Otra cosa
-                </ng-template>
-                <ng-template ngbTabContent>
-                  hola 2
-                </ng-template>
-              </ngb-tab>
-            </ngb-tabset>
+            <!--Replaced for Tab from ngx-bootstrap-->
+            <tabset>
+              <tab heading="Registros" id="tab1">
+                <app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>
+              </tab>
+              <tab heading="Diagnosticos"></tab>
+            </tabset>
           </div>
         </div>
       </div>

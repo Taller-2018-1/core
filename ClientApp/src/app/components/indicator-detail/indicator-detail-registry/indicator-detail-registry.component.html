@@ -1,4 +1,65 @@
 
+<accordion [closeOthers]="true" activeIds="static-1">
+  <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
+    <accordion-group>
+      <div accordion-heading>
+        <tr>
+          <!--Didn't find another way-->
+          <td width="50%">
+            <div fxLayout="40%">
+              {{registry.name | uppercase}}
+              <br>
+              <span class="not-bold-but-italic">{{registry.date | date: 'dd-MM-yyyy'}}</span>
+            </div>
+          </td>
+          <td width="30%" style="padding-left: 200px;">
+            <div fxLayout="57%">
+              <div class="value-box" *ngIf="registriesType === 2 || registriesType === 3">{{registry.quantity}}</div>
+              <div class="value-box" *ngIf="registriesType === 4">{{registry.percent}}</div>
+            </div>
+          </td>
+          <td style="padding-left: 200px;">
+            <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
+          </td>
+        </tr>
+      </div>
+      <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
+        <table>
+          <tbody>
+            <tr>
+              <td width="40%">
+                Nombre
+              <br> {{document.name}}
+              </td>
+              <td width="18%">
+                Fecha
+                <br> {{document.date | date: 'dd-MM-yyyy'}}
+              </td>
+              <td width="18%">
+                Extensión
+              <br> {{document.extension}}
+              </td>
+              <td>
+                <a class="btn btn-xs btn-primary">Ver</a>
+              </td>
+              <td>
+                <a class="btn btn-xs btn-primary">Editar</a>
+              </td>
+              <td>
+                <a class="btn btn-xs btn-danger" (click)="deleteDocument()">Eliminar</a>
+              </td>
+              <td>
+                <a class="btn btn-xs btn-info">Descargar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </accordion-group>
+  </ng-template>
+</accordion>
+
+
 <ngb-accordion [closeOthers]="true" activeIds="static-1">
   <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
     <ngb-panel>

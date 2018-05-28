@@ -12,6 +12,8 @@ import { IndicatorHomeComponent } from './components/indicator-home/indicator-ho
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
@@ -53,6 +55,8 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
     HttpClientModule,
     FormsModule,
     ModalModule.forRoot(),
+    TabsModule.forRoot(),
+    AccordionModule.forRoot(),
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },

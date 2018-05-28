@@ -5,7 +5,7 @@ import { RegistryType } from '../../../shared/models/registryType';
 @Component({
   selector: 'app-indicator-detail-registry',
   templateUrl: './indicator-detail-registry.component.html',
-  styleUrls: ['./indicator-detail-registry.component.scss']
+  styleUrls: ['./indicator-detail-registry.component.css']
 })
 export class IndicatorDetailRegistryComponent implements OnInit {
 
@@ -16,5 +16,8 @@ export class IndicatorDetailRegistryComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  deleteDocument() {
+    alert("delete");}
 
 }
