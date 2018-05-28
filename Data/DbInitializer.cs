@@ -18,32 +18,21 @@ namespace think_agro_metrics.Data
                 return;   // DB has been seeded
             }
 
+            // REGISTRIES 1
             var registries1a = CreateRegistries1A(context);
             var registries1b = CreateRegistries1B(context);
             var registries1c = CreateRegistries1C(context);
             var registries1d = CreateRegistries1D(context);
             var registries1e = CreateRegistries1E(context);
-            var registries2a = CreateRegistries2A(context);
-            var registries2b = CreateRegistries2B(context);
-            var registries3a = CreateRegistries3A(context);
-            var registries3b = CreateRegistries3B(context);
-            var registries4c = CreateRegistries3B(context);
-            var registries4d = CreateRegistries3B(context);
 
             context.Registries.AddRange(registries1a); 
             context.Registries.AddRange(registries1b); 
             context.Registries.AddRange(registries1c);
             context.Registries.AddRange(registries1d);
             context.Registries.AddRange(registries1e);
-            context.Registries.AddRange(registries2a);
-            context.Registries.AddRange(registries2b);
-            context.Registries.AddRange(registries3a);
-            context.Registries.AddRange(registries3b);
-            context.Registries.AddRange(registries4c);
-            context.Registries.AddRange(registries4d);
 
 
-            // GOALS
+            // GOALS 1
             var goals1a = new Goal[] {
                 new Goal { Year=2018, Month=0, Value=20 },
                 new Goal { Year=2018, Month=1, Value=21 },
@@ -142,7 +131,7 @@ namespace think_agro_metrics.Data
             context.Goals.AddRange(goals1e);
 
 
-            // INDICATORS
+            // INDICATOR 1
             var indicators1 = new Indicator[]
             {
                 new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a, Goals = goals1a},
@@ -152,24 +141,49 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e, Goals = goals1e}
             };
 
+            context.Indicators.AddRange(indicators1);
+            context.SaveChanges();
+
+            // REGISTRIES 2
+            var registries2a = CreateRegistries2A(context);
+            var registries2b = CreateRegistries2B(context);
+
+            context.Registries.AddRange(registries2a);
+            context.Registries.AddRange(registries2b);
+
+            // INDICATOR 2
             var indicators2 = new Indicator[]
             {
                 new Indicator{Name="Número de académicos que participan en actividades del CET", Registries = registries2a},
                 new Indicator{Name="Número de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET", Registries = registries2b}
             };
 
+            context.Indicators.AddRange(indicators2);
+            context.SaveChanges();
+            
+            // REGISTRIES 3
+            var registries3a = CreateRegistries3A(context);
+            var registries3b = CreateRegistries3B(context);
+
+            context.Registries.AddRange(registries3a);
+            context.Registries.AddRange(registries3b);
+
+            // INDICATOR 3
             var indicators3 = new Indicator[]
             {
                 new Indicator{Name="Número de programas de formación implementados", Registries = registries3a},
                 new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b, RegistriesType = RegistryType.ActivityRegistry }
             };
 
+            context.Indicators.AddRange(indicators3);
+            context.SaveChanges();
+
             var indicators4 = new Indicator[]
             {
                 new Indicator{Name="Número diagnósticos realizados a Pymes"},
                 new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria."},
-                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", Registries = registries4c, RegistriesType = RegistryType.PercentRegistry},
-                new Indicator{Name="Porcentaje de subsidio por empresa.", Registries = registries4d, RegistriesType = RegistryType.PercentRegistry}
+                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", RegistriesType = RegistryType.PercentRegistry},
+                new Indicator{Name="Porcentaje de subsidio por empresa.", RegistriesType = RegistryType.PercentRegistry}
 
             };
 
@@ -209,9 +223,6 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
             };
 
-            context.Indicators.AddRange(indicators1); context.SaveChanges(); // Saved here to keep the indicators in order in the DB
-            context.Indicators.AddRange(indicators2); context.SaveChanges();
-            context.Indicators.AddRange(indicators3); context.SaveChanges();
             context.Indicators.AddRange(indicators4); context.SaveChanges();
             context.Indicators.AddRange(indicators5); context.SaveChanges();
             context.Indicators.AddRange(indicators6); context.SaveChanges();
@@ -219,7 +230,6 @@ namespace think_agro_metrics.Data
             context.Indicators.AddRange(indicators8); context.SaveChanges();
             context.Indicators.AddRange(indicators9); context.SaveChanges();
             context.Indicators.AddRange(indicators10); context.SaveChanges();
-
 
             // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
@@ -237,8 +247,9 @@ namespace think_agro_metrics.Data
             };
 
             context.IndicatorGroups.AddRange(indicatorGroups);
-
             context.SaveChanges();
+
+           
         }
 
         // Registries, Documents and Links
