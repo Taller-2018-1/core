@@ -102,6 +102,37 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
+        // GET: api/Indicators/5/2018/1
+        [HttpGet("{id:long}/{year:int}/{month:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator
+            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorID == id);
+
+            // Obtain the Registries
+            // The month in Angular starts in 0 and in C# starts in 1
+            var registriesQuery = _context.Registries.Where(r => r.IndicatorID == id && r.Date.Year == year && r.Date.Month == month+1);
+
+            var indicator = await indicatorQuery.SingleAsync();
+            var registries = await registriesQuery.Include(r => r.Documents).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+
+            indicator.Registries = registries;
+
+            // Fails if not found
+            if (indicator == null) 
+            {
+                return NotFound();
+            }
+
+            return Ok(indicator);
+        }
+
         // GET: api/Indicators/Goal/1
         [HttpGet("Goals/{id:long}")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id)
@@ -123,7 +154,6 @@ namespace think_agro_metrics.Controllers
             double result = 0;
             foreach (Goal goal in goals)
             {
-                
                 result += goal.Value;
             }
             // Percent Registry
@@ -156,7 +186,6 @@ namespace think_agro_metrics.Controllers
             double result = 0;
             foreach (Goal goal in goals)
             {
-                
                 result += goal.Value;
             }
             // Percent Registry
