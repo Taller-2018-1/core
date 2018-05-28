@@ -91,6 +91,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.indicator$.subscribe(
       data => {
         this.indicator = data;
+        console.log(this.indicator.registriesType);
         this.randomize();
       }
     );
@@ -234,7 +235,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   // lineChart
   public lineChartData:Array<any> = [
-    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Catidad de Registros'}
+    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'}
   ];
   public lineChartLabels:Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public lineChartOptions:any = {
@@ -288,7 +289,7 @@ export class IndicatorDetailComponent implements OnInit {
       let month = date.getMonth();
       //console.log("entre ctm !!!!:   " + month);
       /* if si el registro es de cantidad */
-      if(this.indicator.registries[i].discriminator=="QuantityRegistry")
+      if(this.indicator.registriesType==2)
       {
         cantidad = this.indicator.registries[i].quantity;
         //console.log("Cantidad : "+cantidad);
