@@ -25,6 +25,8 @@ import { LinkDocumentFormComponent } from './components/link-document-form/link-
 
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
+import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { RegistryService } from './services/registry/registry.service';
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
-    ResultHomeComponent
+    ResultHomeComponent,
+    IndicatorGraphOptionComponent,
+    IndicatorDetailRegistryComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

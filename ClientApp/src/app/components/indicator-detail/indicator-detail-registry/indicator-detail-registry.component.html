@@ -1,0 +1,49 @@
+
+<ngb-accordion [closeOthers]="true" activeIds="static-1">
+  <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
+    <ngb-panel>
+      <ng-template ngbPanelTitle>
+        <a fxLayout="row" class="clickeable">
+          <div fxFlex="40%">
+            {{registry.name | uppercase}}
+            <br>
+            <span class="not-bold-but-italic">{{registry.date}}</span>
+          </div>
+          <div fxFlex="57%">
+            <div class="value-box">{{registry.value}}</div>
+          </div>
+          <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
+        </a>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <ng-template ngFor let-resource [ngForOf]="registry.documents" let-i="index">
+          <div fxLayout="row">
+            <div fxFlex="21%">
+              Fecha
+              <br> {{resource.date}}
+            </div>
+            <div fxFlex="21%">
+              Tipo
+              <br> {{resource.type}}
+            </div>
+            <div fxFlex="21%">
+              Descripción
+              <br> {{""}}
+            </div>
+            <div fxFlex="21%">
+              Detalle
+              <br> {{resource.rlink}}
+            </div>
+            <div fxFlex="8%">
+              <a class="btn btn-xs btn-primary">Ver</a>
+            </div>
+            <div fxFlex="8%">
+              <a class="btn btn-xs btn-info">Descargar</a>
+            </div>
+          </div>
+          <hr>
+        </ng-template>
+      </ng-template>
+    </ngb-panel>
+  </ng-template>
+</ngb-accordion>

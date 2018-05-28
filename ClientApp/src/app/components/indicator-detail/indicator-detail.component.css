@@ -1,3 +1,21 @@
-.head-page-section{
+.head-page-section {
   margin-top: 80px !important;
+}
+
+.row-number {
+  width: 30%;
+  height: 30%;
+  padding: 20px;
+}
+
+.row-h1 {
+  color: #47b475;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.shortcode {
+  background-color: #fcfcfc !important;
+  text-align: center;
+  border-radius: 0;
 }
