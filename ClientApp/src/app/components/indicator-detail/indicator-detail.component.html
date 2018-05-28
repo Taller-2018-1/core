@@ -33,6 +33,22 @@
           </ul>
         </div>
       </div>
+      <div class="col-md-6"> 
+          Seleccione el mes a mostrar: 
+          <br> 
+          <div class="btn-group" dropdown [isDisabled]="isMonthDisabled"> 
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic"> 
+              {{ selectedMonthText }} <span class="caret"></span> 
+            </button> 
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" 
+                role="menu" aria-labelledby="button-basic"> 
+              <li ><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>           
+              <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li> 
+            </ul> 
+          </div> 
+        </div>
+    </div>
+  </div> 
 
 
 <div class="container">
@@ -58,10 +74,10 @@
   <h1>    {{ indicator.name }}</h1>
   <!--h2>Tipo: {{ indicator.type }}</h2-->
   <!--<div *ngIf="indicator.type == -1">El tipo es default...</div>-->
-
-  <!--Dropdown Filters-->
+  
+  <!--Dropdown Filters
   <div class="row">
-    <!--Dropdown Year Filter-->
+    Dropdown Year Filter
     <div class="col-md-6">
       Seleccione el año a mostrar:
       <br>
@@ -74,7 +90,8 @@
           <li><a class="dropdown-item" (click)="selectRegistriesYear(allYears)">Todos los años</a></li>
           <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistriesYear(year)">Año {{ year }}</a></li>
         </ul>
-      <!--Dropdown Month Filter-->
+      </div>   
+      Dropdown Month Filter
       <div class="col-md-6"> 
         Seleccione el mes a mostrar: 
         <br> 
@@ -90,7 +107,7 @@
         </div> 
       </div>
     </div>
-
+  -->
     <div class="row">
       <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
     </div>
@@ -102,13 +119,19 @@
     <div class="panel panel-default" *ngFor="let registry of indicator.registries">
       <!-- Default panel contents -->
       <div class="panel-heading">
-        {{registry.name}} {{registry.date | date:'dd-MM-yyyy'}}  
+        {{registry.name}} {{registry.date | date:'dd-MM-yyyy'}}
         <div class="pull-right">
           <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
           <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(indicator,registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
         </div>
       </div>
       <div class="panel-body">
+        <div class="container">
+          <h6 *ngIf="indicator.registriesType == 2">Cantidad: {{registry.quantity}}</h6>
+        </div>
+        <div class="container">
+            <h6 *ngIf="indicator.registriesType == 3">Actividad: {{registry.quantity}}</h6>
+          </div>
         <div class="container">
           <h6>Documentos de respaldo</h6>
         </div>

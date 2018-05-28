@@ -61,7 +61,7 @@
     </div>
     -->
     <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
-      <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid">Editar</button>
+      <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid" (click)="Actualizar()">Editar</button>
     </div>
   </form>
 </div>

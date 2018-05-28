@@ -36,6 +36,12 @@ export class RegistryEditorComponent implements OnInit {
     this.editModalRef = null;
   }
 
+  /* Para actualizar cuando registre el indicador */
+  Actualizar()
+  {
+      window.location.reload(true);
+  }
+
   deleteDocument(document: Document) {
     const result = confirm('Está seguro que desea eliminar el documento: ' + document.documentName);
     if (this.registry.documents.length === 1) {

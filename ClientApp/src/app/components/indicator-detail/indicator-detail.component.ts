@@ -91,7 +91,6 @@ export class IndicatorDetailComponent implements OnInit {
     this.indicator$.subscribe(
       data => {
         this.indicator = data;
-        console.log(this.indicator.registriesType);
         this.randomize();
       }
     );
