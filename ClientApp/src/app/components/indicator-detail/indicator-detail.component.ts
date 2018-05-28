@@ -87,6 +87,15 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = -1; // It's not selected a specific month yet
 
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
+
+    this.indicator$.subscribe(
+      data => {
+        this.indicator = data;
+        this.randomize();
+      }
+    );
+    
+    
   }
 
   selectRegistries(year: any, month: string) {
@@ -225,7 +234,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   // lineChart
   public lineChartData:Array<any> = [
-    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Series A'}
+    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Catidad de Registros'}
   ];
   public lineChartLabels:Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public lineChartOptions:any = {
@@ -254,8 +263,8 @@ export class IndicatorDetailComponent implements OnInit {
   public lineChartType:string = 'line';
  
   public randomize() {
-  
-
+    
+    
 
     let _lineChartData:Array<any> = new Array(this.lineChartData.length);
     _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
@@ -272,15 +281,17 @@ export class IndicatorDetailComponent implements OnInit {
     this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
     
     /* Ingreso de datos al arreglo provisorio de meses */
+    //console.log("largo" + this.indicator.registries.length);
     for(let i=0; i<this.indicator.registries.length; i++)
     {
       let date: Date = new Date(this.indicator.registries[i].date);
       let month = date.getMonth();
-
+      //console.log("entre ctm !!!!:   " + month);
       /* if si el registro es de cantidad */
       if(this.indicator.registries[i].discriminator=="QuantityRegistry")
       {
         cantidad = this.indicator.registries[i].quantity;
+        //console.log("Cantidad : "+cantidad);
 
         for (let j = 0; j < 12; j++) 
         {
