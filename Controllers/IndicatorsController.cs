@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,17 +42,82 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var indicator = await _context.Indicators.SingleOrDefaultAsync(m => m.IndicatorID == id);
+            var indicatorQuery = _context.Indicators.Where(x => x.IndicatorID == id);
+
+            await indicatorQuery.Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).ToListAsync();
+            await _context.Indicators.Include(x => x.Goals).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+
+            var indicator = await indicatorQuery.SingleAsync();
 
             if (indicator == null)
             {
                 return NotFound();
             }
 
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.Indicators.Include(x => x.Goals).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            return Ok(indicator);
+        }
+
+        // GET: api/Indicators/5/2018
+        [HttpGet("{id:long}/{year:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator
+            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorID == id);
+
+            // Obtain the Registries
+            var registriesQuery =  _context.Registries.Where(r => r.IndicatorID == id && r.Date.Year == year);
+
+            var indicator = await indicatorQuery.SingleAsync();
+            var registries = await registriesQuery.Include(r => r.Documents).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+
+            indicator.Registries = registries;
+
+            // Fails if not found
+            if (indicator == null) 
+            {
+                return NotFound();
+            }
+
+
+            return Ok(indicator);
+        }
+
+        // GET: api/Indicators/5/2018/1
+        [HttpGet("{id:long}/{year:int}/{month:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator
+            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorID == id);
+
+            // Obtain the Registries
+            // The month in Angular starts in 0 and in C# starts in 1
+            var registriesQuery = _context.Registries.Where(r => r.IndicatorID == id && r.Date.Year == year && r.Date.Month == month+1);
+
+            var indicator = await indicatorQuery.SingleAsync();
+            var registries = await registriesQuery.Include(r => r.Documents).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+
+            indicator.Registries = registries;
+
+            // Fails if not found
+            if (indicator == null) 
+            {
+                return NotFound();
+            }
+
             return Ok(indicator);
         }
 
@@ -64,13 +130,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Load from the DB the Indicators with its Registries
+            var indicators = await _context.Indicators.Include(x => x.Registries).ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -83,7 +144,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
             }
             
@@ -100,13 +161,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Load from the DB the Indicators with its Registries
+            var indicators = await _context.Indicators.Include(x => x.Registries).ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -119,7 +175,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
             }
             
@@ -136,13 +192,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Load from the DB the Indicators with its Registries
+            var indicators = await _context.Indicators.Include(x => x.Registries).ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -155,7 +206,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month+1)); // The month in Angular starts in 0 and in C# starts in 1
             }
             

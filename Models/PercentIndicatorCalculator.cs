@@ -11,9 +11,14 @@ namespace think_agro_metrics.Models
         {
             double sum = 0;
             double quantity = 0;
-            foreach (Registry registry in registries) {               
-                sum += (registry as PercentRegistry).Percent;
-                quantity++;                
+            foreach (Registry registry in registries) {
+                if(registry is PercentRegistry)
+                {
+                    sum += (registry as PercentRegistry).Percent;
+                    quantity++;
+                }
+                else
+                    throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
                 return sum / quantity;
@@ -28,10 +33,12 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry.Date.Year == year) {
+                if(registry is PercentRegistry && registry.Date.Year == year) {
                     sum += (registry as PercentRegistry).Percent;
                     quantity++;
                 }
+                else
+                    throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
                 return sum / quantity;
@@ -46,10 +53,12 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry.Date.Year == year && registry.Date.Month == month) {
+                if(registry is PercentRegistry && registry.Date.Year == year && registry.Date.Month == month) {
                     sum += (registry as PercentRegistry).Percent;
                     quantity++;
                 }
+                else
+                    throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
                 return sum / quantity;

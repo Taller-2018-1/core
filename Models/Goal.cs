@@ -11,5 +11,7 @@ namespace think_agro_metrics.Models
         public int Year { get; set; }
         public int Month { get; set; } 
         public long Value { get; set; }
+
+        public long IndicatorID { get; set; }
     }
 }

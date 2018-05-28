@@ -24,6 +24,7 @@ export class IndicatorDisplayComponent implements OnInit {
   allMonths: string = IndicatorDisplayComponent.ALL_MONTHS;
 
   @Input() indicatorGroup: IndicatorGroup;
+
   indicatorResults$: Observable<number[]>;
   selectedYearText: string; // Default selection = currentYear (defined in ngOnInit) (string shown in the dropdown)
   // tslint:disable-next-line:max-line-length
@@ -62,7 +63,8 @@ export class IndicatorDisplayComponent implements OnInit {
   }
 
   // Only specify the year or the month, depending on which one is changed, the other value must be an empty string ('')
-  calculateIndicators(year: any, month: string) { // The 'year' is of type 'any' because it's used as 'int' and 'string'
+  calculateIndicators(year: any, month: string) { // The 'year' is of type 'any' because it's used as 'int' and 'string'}
+    const currentYear = new Date().getFullYear();
     // The change is in the year
     if ((year as string).length !== 0) {
       // ALL_YEARS selected
@@ -80,6 +82,7 @@ export class IndicatorDisplayComponent implements OnInit {
         this.selectedYearText = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
+        this.setMonths();
       }
       this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS;
     }
@@ -105,8 +108,31 @@ export class IndicatorDisplayComponent implements OnInit {
     }
   }
 
+  // Set the list of the months (numbers) from 0 to the current month (max 11)
+  // The months depends on the selected year (this.selectedYear)
+  setMonths() {
+    const currentYear = new Date().getFullYear();
+    if (this.selectedYear < currentYear) {
+      this.months = [];
+      for (let i = 0; i <= 11; i++) { // Months from January (0) to December (11)
+        this.months[i] = i;
+      }
+    }
+    // tslint:disable-next-line:one-line
+    else {
+      this.months = [];
+      console.log(this.months);
+      const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = Decembery
+      for (let i = 0; i <= currentMonth; i++) {
+        this.months[i] = i;
+      }
+    }
+    this.setMonthsOfTheYear();
+  }
+
   // Sets the names of the months of the selected year
   setMonthsOfTheYear() {
+    this.monthsOfTheYear = [];
     this.months.forEach(month => {
       this.monthsOfTheYear[month] = Months[month];
     });

@@ -47,8 +47,8 @@ namespace think_agro_metrics.Data
             modelBuilder.Entity<Indicator>(indicator =>
             {
                 modelBuilder.Entity<Indicator>()
-                .Property(i => i.Type)
-                .HasField("type");
+                .Property(i => i.RegistriesType)
+                .HasField("registriesType");
             });
 
             modelBuilder.Entity<DefaultRegistry>();
