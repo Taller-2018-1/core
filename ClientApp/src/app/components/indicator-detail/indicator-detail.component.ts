@@ -328,5 +328,15 @@ export class IndicatorDetailComponent implements OnInit {
     console.log(e);
   }
 
+  /* Para actualizar cuando elimine un registro */
+  Actualizar()
+  {
+      window.location.reload(true);
+  }
+
+
+
+
+
 }
 
