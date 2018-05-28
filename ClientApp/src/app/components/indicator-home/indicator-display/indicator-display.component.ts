@@ -4,6 +4,7 @@ import { DecimalPipe } from '@angular/common';
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
+import { Months } from '../../../shared/models/months';
 
 // Service
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
@@ -23,15 +24,15 @@ export class IndicatorDisplayComponent implements OnInit {
   allMonths: string = IndicatorDisplayComponent.ALL_MONTHS;
 
   @Input() indicatorGroup: IndicatorGroup;
+
   indicatorResults$: Observable<number[]>;
-  selectionYear: string; // Default selection = currentYear (defined in ngOnInit) (string shown in the dropdown)
+  selectedYearText: string; // Default selection = currentYear (defined in ngOnInit) (string shown in the dropdown)
   // tslint:disable-next-line:max-line-length
-  selectionMonth: string = IndicatorDisplayComponent.ALL_MONTHS; // Default selection (string shown in the dropdown)
+  selectedMonthText: string = IndicatorDisplayComponent.ALL_MONTHS; // Default selection (string shown in the dropdown)
   selectedYear: number; // The current selected year (number), by default = currentYear (defined in ngOnInit)
   selectedMonth: number; // The current selected month (number), depends of the name of the month in spanish.
   years: number[] = []; // List of the years from baseYear to currentYear (defined in ngOnInit)
   // tslint:disable-next-line:max-line-length
-  monthsNames: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
@@ -48,11 +49,16 @@ export class IndicatorDisplayComponent implements OnInit {
     for (let i = 0; i <= (currentYear - baseYear); i++) {
         this.years[i] = baseYear + i;
     }
-    this.selectionYear = IndicatorDisplayComponent.YEAR + currentYear; // By default the current year is shown
+    this.selectedYearText = IndicatorDisplayComponent.YEAR + currentYear; // By default the current year is shown
     this.selectedYear = currentYear; // The number of the selected year (by default the current year)
 
-    this.setMonths(); // Set the list of the months (numbers) and the monthsOfTheYear (names of the months)
-    this.selectionMonth = IndicatorDisplayComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
+    const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
+    // List of the months (numbers) from 0 to the current month (max 11)
+    for (let i = 0; i <= currentMonth; i++) {
+      this.months[i] = i;
+    }
+    this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
+    this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
   }
 
@@ -64,7 +70,7 @@ export class IndicatorDisplayComponent implements OnInit {
       // ALL_YEARS selected
       if (year === IndicatorDisplayComponent.ALL_YEARS) {
         this.indicatorResults$ = this.service.calculateIndicatorGroup(this.indicatorGroup.indicatorGroupID); // Calculate for all the years
-        this.selectionYear = IndicatorDisplayComponent.ALL_YEARS; // Change the value shown in the dropdown
+        this.selectedYearText = IndicatorDisplayComponent.ALL_YEARS; // Change the value shown in the dropdown
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1; // Not selected a specific year
       }
@@ -73,12 +79,12 @@ export class IndicatorDisplayComponent implements OnInit {
       else {
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, year); // Calculate for the specific year
-        this.selectionYear = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
+        this.selectedYearText = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
         this.setMonths();
       }
-      this.selectionMonth = IndicatorDisplayComponent.ALL_MONTHS;
+      this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS;
     }
     // The change is in the month
     // tslint:disable-next-line:one-line
@@ -88,7 +94,7 @@ export class IndicatorDisplayComponent implements OnInit {
         this.selectedMonth = -1; // Not selected a specific month
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, this.selectedYear); // Calculate for the already selected year
-        this.selectionMonth = IndicatorDisplayComponent.ALL_MONTHS; // Change the value shown in the dropdown
+        this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // Change the value shown in the dropdown
       }
       // Selected a specific month of the already selected year
       // tslint:disable-next-line:one-line
@@ -97,7 +103,7 @@ export class IndicatorDisplayComponent implements OnInit {
         // Do the calculation for the already selected year and month
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
-        this.selectionMonth = this.monthsNames[this.selectedMonth]; // Change the value shown in the dropdown
+        this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }
   }
@@ -128,17 +134,12 @@ export class IndicatorDisplayComponent implements OnInit {
   setMonthsOfTheYear() {
     this.monthsOfTheYear = [];
     this.months.forEach(month => {
-      this.monthsOfTheYear[month] = this.monthsNames[month];
+      this.monthsOfTheYear[month] = Months[month];
     });
   }
 
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
-    for (let index = 0; index < this.monthsNames.length; index++) {
-      if (month === this.monthsNames[index]) {
-        this.selectedMonth = index;
-        return;
-      }
-    }
+    this.selectedMonth = Months[month];
   }
 }

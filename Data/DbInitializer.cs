@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,60 +18,172 @@ namespace think_agro_metrics.Data
                 return;   // DB has been seeded
             }
 
+            // REGISTRIES 1
             var registries1a = CreateRegistries1A(context);
             var registries1b = CreateRegistries1B(context);
             var registries1c = CreateRegistries1C(context);
             var registries1d = CreateRegistries1D(context);
             var registries1e = CreateRegistries1E(context);
-            var registries2a = CreateRegistries2A(context);
-            var registries2b = CreateRegistries2B(context);
-            var registries3a = CreateRegistries3A(context);
-            var registries3b = CreateRegistries3B(context);
-            var registries4c = CreateRegistries3B(context);
-            var registries4d = CreateRegistries3B(context);
 
-            context.Registries.AddRange(registries1a); context.SaveChanges();
-            context.Registries.AddRange(registries1b); context.SaveChanges();
-            context.Registries.AddRange(registries1c); context.SaveChanges();
-            context.Registries.AddRange(registries1d); context.SaveChanges();
-            context.Registries.AddRange(registries1e); context.SaveChanges();
-            context.Registries.AddRange(registries2a); context.SaveChanges();
-            context.Registries.AddRange(registries2b); context.SaveChanges();
-            context.Registries.AddRange(registries3a); context.SaveChanges();
-            context.Registries.AddRange(registries3b); context.SaveChanges();
-            context.Registries.AddRange(registries4c); context.SaveChanges();
-            context.Registries.AddRange(registries4d); context.SaveChanges();
+            context.Registries.AddRange(registries1a); 
+            context.Registries.AddRange(registries1b); 
+            context.Registries.AddRange(registries1c);
+            context.Registries.AddRange(registries1d);
+            context.Registries.AddRange(registries1e);
 
 
+            // GOALS 1
+            var goals1a = new Goal[] {
+                new Goal { Year=2018, Month=0, Value=20 },
+                new Goal { Year=2018, Month=1, Value=21 },
+                new Goal { Year=2018, Month=2, Value=22 },
+                new Goal { Year=2018, Month=3, Value=23 },
+                new Goal { Year=2018, Month=4, Value=24 },
+                new Goal { Year=2018, Month=5, Value=25 },
+                new Goal { Year=2018, Month=6, Value=25 },
+                new Goal { Year=2018, Month=7, Value=25 },
+                new Goal { Year=2018, Month=8, Value=26 },
+                new Goal { Year=2018, Month=9, Value=26 },
+                new Goal { Year=2018, Month=10, Value=28 },
+                new Goal { Year=2018, Month=11, Value=29 },
+                new Goal { Year=2019, Month=0, Value=30 },
+                new Goal { Year=2019, Month=1, Value=31 },
+                new Goal { Year=2019, Month=2, Value=32 },
+                new Goal { Year=2019, Month=3, Value=33 }
+            };
+            var goals1b = new Goal[] {
+                new Goal { Year=2018, Month=0, Value=10 },
+                new Goal { Year=2018, Month=1, Value=11 },
+                new Goal { Year=2018, Month=2, Value=12 },
+                new Goal { Year=2018, Month=3, Value=13 },
+                new Goal { Year=2018, Month=4, Value=14 },
+                new Goal { Year=2018, Month=5, Value=15 },
+                new Goal { Year=2018, Month=6, Value=15 },
+                new Goal { Year=2018, Month=7, Value=15 },
+                new Goal { Year=2018, Month=8, Value=16 },
+                new Goal { Year=2018, Month=9, Value=16 },
+                new Goal { Year=2018, Month=10, Value=18 },
+                new Goal { Year=2018, Month=11, Value=19 },
+                new Goal { Year=2019, Month=0, Value=20 },
+                new Goal { Year=2019, Month=1, Value=21 },
+                new Goal { Year=2019, Month=2, Value=22 },
+                new Goal { Year=2019, Month=3, Value=23 }
+            };
+            var goals1c = new Goal[] {
+                new Goal { Year=2018, Month=0, Value=50 },
+                new Goal { Year=2018, Month=1, Value=51 },
+                new Goal { Year=2018, Month=2, Value=52 },
+                new Goal { Year=2018, Month=3, Value=53 },
+                new Goal { Year=2018, Month=4, Value=54 },
+                new Goal { Year=2018, Month=5, Value=55 },
+                new Goal { Year=2018, Month=6, Value=55 },
+                new Goal { Year=2018, Month=7, Value=55 },
+                new Goal { Year=2018, Month=8, Value=56 },
+                new Goal { Year=2018, Month=9, Value=56 },
+                new Goal { Year=2018, Month=10, Value=58 },
+                new Goal { Year=2018, Month=11, Value=59 },
+                new Goal { Year=2019, Month=0, Value=60 },
+                new Goal { Year=2019, Month=1, Value=61 },
+                new Goal { Year=2019, Month=2, Value=62 },
+                new Goal { Year=2019, Month=3, Value=63 }
+            };
+            var goals1d = new Goal[] {
+                new Goal { Year=2018, Month=0, Value=15 },
+                new Goal { Year=2018, Month=1, Value=16 },
+                new Goal { Year=2018, Month=2, Value=16 },
+                new Goal { Year=2018, Month=3, Value=17 },
+                new Goal { Year=2018, Month=4, Value=17 },
+                new Goal { Year=2018, Month=5, Value=18 },
+                new Goal { Year=2018, Month=6, Value=18 },
+                new Goal { Year=2018, Month=7, Value=19 },
+                new Goal { Year=2018, Month=8, Value=19 },
+                new Goal { Year=2018, Month=9, Value=20 },
+                new Goal { Year=2018, Month=10, Value=21 },
+                new Goal { Year=2018, Month=11, Value=22 },
+                new Goal { Year=2019, Month=0, Value=25 },
+                new Goal { Year=2019, Month=1, Value=25 },
+                new Goal { Year=2019, Month=2, Value=30 },
+                new Goal { Year=2019, Month=3, Value=35 }
+            };
+            var goals1e = new Goal[] {
+                new Goal { Year=2018, Month=0, Value=10 },
+                new Goal { Year=2018, Month=1, Value=12 },
+                new Goal { Year=2018, Month=2, Value=12 },
+                new Goal { Year=2018, Month=3, Value=14 },
+                new Goal { Year=2018, Month=4, Value=14 },
+                new Goal { Year=2018, Month=5, Value=15 },
+                new Goal { Year=2018, Month=6, Value=15 },
+                new Goal { Year=2018, Month=7, Value=15 },
+                new Goal { Year=2018, Month=8, Value=20 },
+                new Goal { Year=2018, Month=9, Value=20 },
+                new Goal { Year=2018, Month=10, Value=22 },
+                new Goal { Year=2018, Month=11, Value=24 },
+                new Goal { Year=2019, Month=0, Value=26 },
+                new Goal { Year=2019, Month=1, Value=30 },
+                new Goal { Year=2019, Month=2, Value=32 },
+                new Goal { Year=2019, Month=3, Value=33 }
+            };
+            
+            context.Goals.AddRange(goals1a);
+            context.Goals.AddRange(goals1b);
+            context.Goals.AddRange(goals1c);
+            context.Goals.AddRange(goals1d);
+            context.Goals.AddRange(goals1e);
 
-            // INDICATORS
+
+            // INDICATOR 1
             var indicators1 = new Indicator[]
             {
-                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a},
-                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b},
-                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Type = IndicatorType.QuantityIndicatorCalculator},
-                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d},
-                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e}
+                new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a, Goals = goals1a},
+                new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b, Goals = goals1b},
+                new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Goals = goals1c, RegistriesType = RegistryType.QuantityRegistry},
+                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d, Goals = goals1d, RegistriesType = RegistryType.LinkRegistry},
+                new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e, Goals = goals1e}
             };
 
+            context.Indicators.AddRange(indicators1);
+            context.SaveChanges();
+
+            // REGISTRIES 2
+            var registries2a = CreateRegistries2A(context);
+            var registries2b = CreateRegistries2B(context);
+
+            context.Registries.AddRange(registries2a);
+            context.Registries.AddRange(registries2b);
+
+            // INDICATOR 2
             var indicators2 = new Indicator[]
             {
                 new Indicator{Name="Número de académicos que participan en actividades del CET", Registries = registries2a},
                 new Indicator{Name="Número de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET", Registries = registries2b}
             };
 
+            context.Indicators.AddRange(indicators2);
+            context.SaveChanges();
+            
+            // REGISTRIES 3
+            var registries3a = CreateRegistries3A(context);
+            var registries3b = CreateRegistries3B(context);
+
+            context.Registries.AddRange(registries3a);
+            context.Registries.AddRange(registries3b);
+
+            // INDICATOR 3
             var indicators3 = new Indicator[]
             {
                 new Indicator{Name="Número de programas de formación implementados", Registries = registries3a},
-                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b, Type=IndicatorType.QuantityIndicatorCalculator}
+                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b, RegistriesType = RegistryType.ActivityRegistry }
             };
+
+            context.Indicators.AddRange(indicators3);
+            context.SaveChanges();
 
             var indicators4 = new Indicator[]
             {
                 new Indicator{Name="Número diagnósticos realizados a Pymes"},
                 new Indicator{Name="Número de empresas asesoradas individualmente o en proceso de asesoria."},
-                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", Registries = registries4c, Type=IndicatorType.PercentIndicatorCalculator},
-                new Indicator{Name="Porcentaje de subsidio por empresa.", Registries = registries4d, Type =IndicatorType.PercentIndicatorCalculator}
+                new Indicator{Name="Porcentaje de intervenciones efectivamente realizadas", RegistriesType = RegistryType.PercentRegistry},
+                new Indicator{Name="Porcentaje de subsidio por empresa.", RegistriesType = RegistryType.PercentRegistry}
 
             };
 
@@ -111,9 +223,6 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
             };
 
-            context.Indicators.AddRange(indicators1); context.SaveChanges(); // Saved here to keep the indicators in order in the DB
-            context.Indicators.AddRange(indicators2); context.SaveChanges();
-            context.Indicators.AddRange(indicators3); context.SaveChanges();
             context.Indicators.AddRange(indicators4); context.SaveChanges();
             context.Indicators.AddRange(indicators5); context.SaveChanges();
             context.Indicators.AddRange(indicators6); context.SaveChanges();
@@ -121,7 +230,6 @@ namespace think_agro_metrics.Data
             context.Indicators.AddRange(indicators8); context.SaveChanges();
             context.Indicators.AddRange(indicators9); context.SaveChanges();
             context.Indicators.AddRange(indicators10); context.SaveChanges();
-
 
             // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
@@ -139,8 +247,9 @@ namespace think_agro_metrics.Data
             };
 
             context.IndicatorGroups.AddRange(indicatorGroups);
-
             context.SaveChanges();
+
+           
         }
 
         // Registries, Documents and Links
@@ -287,6 +396,17 @@ namespace think_agro_metrics.Data
                      Link = "www.utalca.cl"
                 }
             };
+
+            context.Documents.AddRange(documents1a1);
+            context.Documents.AddRange(documents1a2);
+            context.Documents.AddRange(documents1a3);
+            context.Documents.AddRange(documents1a4);
+            context.Documents.AddRange(documents1a5);
+            context.Documents.AddRange(documents1a6);
+            context.Documents.AddRange(documents1a7);
+            context.Documents.AddRange(documents1a8);
+            context.Documents.AddRange(documents1a9);
+            context.Documents.AddRange(documents1a10);
 
             var registries1a = new Registry[] {
                 new DefaultRegistry{
@@ -487,6 +607,16 @@ namespace think_agro_metrics.Data
                      Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents1b1);
+            context.Documents.AddRange(documents1b2);
+            context.Documents.AddRange(documents1b3);
+            context.Documents.AddRange(documents1b4);
+            context.Documents.AddRange(documents1b5);
+            context.Documents.AddRange(documents1b6);
+            context.Documents.AddRange(documents1b7);
+            context.Documents.AddRange(documents1b8);
+            context.Documents.AddRange(documents1b9);
+            context.Documents.AddRange(documents1b10);
 
             var registries1b = new Registry[]
             {
@@ -686,6 +816,17 @@ namespace think_agro_metrics.Data
                      Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents1c1);
+            context.Documents.AddRange(documents1c2);
+            context.Documents.AddRange(documents1c3);
+            context.Documents.AddRange(documents1c4);
+            context.Documents.AddRange(documents1c5);
+            context.Documents.AddRange(documents1c6);
+            context.Documents.AddRange(documents1c7);
+            context.Documents.AddRange(documents1c8);
+            context.Documents.AddRange(documents1c9);
+            context.Documents.AddRange(documents1c10);
+
             var registries1c = new QuantityRegistry[]
             {
                 new QuantityRegistry{
@@ -907,6 +1048,16 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents1d1);
+            context.Documents.AddRange(documents1d2);
+            context.Documents.AddRange(documents1d3);
+            context.Documents.AddRange(documents1d4);
+            context.Documents.AddRange(documents1d5);
+            context.Documents.AddRange(documents1d6);
+            context.Documents.AddRange(documents1d7);
+            context.Documents.AddRange(documents1d8);
+            context.Documents.AddRange(documents1d9);
+            context.Documents.AddRange(documents1d10);
 
             var registries1d = new LinkRegistry[]{
                 new LinkRegistry{
@@ -1116,6 +1267,17 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents1e1);
+            context.Documents.AddRange(documents1e2);
+            context.Documents.AddRange(documents1e3);
+            context.Documents.AddRange(documents1e4);
+            context.Documents.AddRange(documents1e5);
+            context.Documents.AddRange(documents1e6);
+            context.Documents.AddRange(documents1e7);
+            context.Documents.AddRange(documents1e8);
+            context.Documents.AddRange(documents1e9);
+            context.Documents.AddRange(documents1e10);
+
             var registries1e = new Registry[]
             {
                 new DefaultRegistry{
@@ -1315,6 +1477,16 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents2a1);
+            context.Documents.AddRange(documents2a2);
+            context.Documents.AddRange(documents2a3);
+            context.Documents.AddRange(documents2a4);
+            context.Documents.AddRange(documents2a5);
+            context.Documents.AddRange(documents2a6);
+            context.Documents.AddRange(documents2a7);
+            context.Documents.AddRange(documents2a8);
+            context.Documents.AddRange(documents2a9);
+            context.Documents.AddRange(documents2a10);
 
             var registries2a = new Registry[]
            {
@@ -1514,7 +1686,17 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
-            
+            context.Documents.AddRange(documents2b1);
+            context.Documents.AddRange(documents2b2);
+            context.Documents.AddRange(documents2b3);
+            context.Documents.AddRange(documents2b4);
+            context.Documents.AddRange(documents2b5);
+            context.Documents.AddRange(documents2b6);
+            context.Documents.AddRange(documents2b7);
+            context.Documents.AddRange(documents2b8);
+            context.Documents.AddRange(documents2b9);
+            context.Documents.AddRange(documents2b10);
+
             var registries2b = new Registry[]
             {
                 new DefaultRegistry{
@@ -1713,6 +1895,16 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents3a1);
+            context.Documents.AddRange(documents3a2);
+            context.Documents.AddRange(documents3a3);
+            context.Documents.AddRange(documents3a4);
+            context.Documents.AddRange(documents3a5);
+            context.Documents.AddRange(documents3a6);
+            context.Documents.AddRange(documents3a7);
+            context.Documents.AddRange(documents3a8);
+            context.Documents.AddRange(documents3a9);
+            context.Documents.AddRange(documents3a10);
 
             var registries3a = new Registry[]
             {
@@ -1912,64 +2104,74 @@ namespace think_agro_metrics.Data
                     Link = "www.utalca.cl"
                 }
             };
+            context.Documents.AddRange(documents3b1);
+            context.Documents.AddRange(documents3b2);
+            context.Documents.AddRange(documents3b3);
+            context.Documents.AddRange(documents3b4);
+            context.Documents.AddRange(documents3b5);
+            context.Documents.AddRange(documents3b6);
+            context.Documents.AddRange(documents3b7);
+            context.Documents.AddRange(documents3b8);
+            context.Documents.AddRange(documents3b9);
+            context.Documents.AddRange(documents3b10);
 
             var registries3b = new Registry[]
             {
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Manejos pecuarios",
                     Date = DateTime.Today,
                     Quantity = 2,
                     Documents = documents3b1
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Reproducción animal",
                     Date = new DateTime(2019,09,12),
                     Quantity = 4,
                     Documents = documents3b2
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Producción lechera",
                     Date = new DateTime(2019,10,13),
                     Quantity = 6,
                     Documents = documents3b3
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Sanidad y bienestar animal",
                     Date = new DateTime(2019,11,14),
                     Quantity = 8,
                     Documents = documents3b4
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Cultivo de praderas y forrajes",
                     Date = new DateTime(2019,12,15),
                     Quantity = 12,
                     Documents = documents3b5
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Viticultura",
                     Date = new DateTime(2020,01,16),
                     Quantity = 14,
                     Documents = documents3b6
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Cosecha y transporte de vides",
                     Date = new DateTime(2020,02,17),
                     Quantity = 16,
                     Documents = documents3b7
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Elaboración de vinos.",
                     Date = new DateTime(2020,03,18),
                     Quantity = 18,
                     Documents = documents3b8
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Envasado y maquinaria vitivinícola",
                     Date = new DateTime(2020,04,19),
                     Quantity = 20,
                     Documents = documents3b9
                 },
-                new QuantityRegistry{
+                new ActivityRegistry{
                     Name = "Manejo de bodegas vitivinícolas.",
                     Date = new DateTime(2020,05,20),
                     Quantity = 22,
