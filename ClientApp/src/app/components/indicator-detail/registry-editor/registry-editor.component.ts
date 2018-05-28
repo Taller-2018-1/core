@@ -18,7 +18,7 @@ export class RegistryEditorComponent implements OnInit {
   public registry: Registry;
 
   @Input()
-  public type: number;
+  public registriesType: number;
 
   @Input()
   public editModalRef: BsModalRef;
@@ -30,7 +30,7 @@ export class RegistryEditorComponent implements OnInit {
   ngOnInit() {  }
 
   editRegistry() {
-    this.service.editRegistry(this.registry, this.type).subscribe();
+    this.service.editRegistry(this.registry, this.registriesType).subscribe();
     this.editModalRef.hide();
     // this.registry = null;
     this.editModalRef = null;

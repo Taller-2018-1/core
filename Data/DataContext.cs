@@ -18,6 +18,7 @@ namespace think_agro_metrics.Data
         public DbSet<Registry> Registries { get; set; }
         public DbSet<LinkRegistry> LinkRegistries { get; set; } // This DbSet don't create a new table en the DB, but it's necessary to load the links
         public DbSet<LinkWrapper> Links { get; set; }
+        public DbSet<Goal> Goals { get; set; }
 
         public DataContext() : base()
         {
@@ -46,8 +47,8 @@ namespace think_agro_metrics.Data
             modelBuilder.Entity<Indicator>(indicator =>
             {
                 modelBuilder.Entity<Indicator>()
-                .Property(i => i.Type)
-                .HasField("type");
+                .Property(i => i.RegistriesType)
+                .HasField("registriesType");
             });
 
             modelBuilder.Entity<DefaultRegistry>();
