@@ -25,6 +25,9 @@ export class RegistryDetailsComponent implements OnInit {
 
   public registry: Registry;
   modalRef: BsModalRef;
+
+  public document: Document = null; // For EditDocument
+
   idRegistry = -1;
 
   constructor(private router: Router,
@@ -59,4 +62,32 @@ export class RegistryDetailsComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
+
+  deleteDocument(registry: Registry, document: Document) {
+    const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
+    if (registry.documents.length === 1) {
+      alert('Debe existir al menos un documento de respaldo para el registro');
+      return;
+    }
+    if (result) {
+      let removed: Document;
+      this.service.deleteDocument(document).subscribe(
+        data => {
+          removed = data;
+        },
+        err => console.error(err)
+      );
+
+      const index: number = registry.documents.indexOf(document);
+      if (index !== -1) {
+        registry.documents.splice(index, 1);
+      }
+    }
+  }
+
+  openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
+    this.document = selectedDocument;
+    this.modalRef = this.modalService.show(template);
+  }
+
 }

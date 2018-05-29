@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { catchError, retry } from 'rxjs/operators';
 
 //Models
 import { Document } from '../../shared/models/document';
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class FileService {
@@ -17,4 +19,16 @@ export class FileService {
         saveAs(blob, document.name)
     })
   }
+
+  //Workink in editDocument
+  /*editDocument(document: Document, type: number): Observable<Document> {
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/json');
+
+
+    return this.http.put<Document>(FileService.FILES_API + document.documentID, document, { headers: headers })
+      .pipe(
+      retry(5) // retry a failed request up to 3 times, but don't handle errros
+      );
+  }*/
 }
