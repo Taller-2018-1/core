@@ -61,12 +61,14 @@
                   <div class="statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     <div class="fact">
 
-                      <div *ngIf="indicator.type == 2; else noPercent">
-                        <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%</span>
-                      </div>
-                      <ng-template #noPercent>
-                         <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}</span>
-                      </ng-template>
+                      <div *ngIf="goals$ | async as goals">
+                        <div *ngIf="indicator.type == 2; else noPercent">
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%/{{ goals[i] | number:'.0-2' }}</span>
+                        </div>
+                        <ng-template #noPercent>
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}/{{ goals[i] | number:'.0-2' }}</span>
+                        </ng-template>
+                      </div>                      
                       
                       <p>{{ indicator.name }}</p>
                     </div>
