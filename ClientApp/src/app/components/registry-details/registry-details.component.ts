@@ -27,6 +27,7 @@ export class RegistryDetailsComponent implements OnInit {
   modalRef: BsModalRef;
 
   public document: Document = null; // For EditDocument
+  public discriminator: string;
 
   idRegistry = -1;
 
@@ -64,7 +65,7 @@ export class RegistryDetailsComponent implements OnInit {
   }
 
   deleteDocument(registry: Registry, document: Document) {
-    const result = confirm('Est· seguro que desea elimianr el documento: ' + document.documentName);
+    const result = confirm('Est√° seguro que desea elimianr el documento: ' + document.documentName);
     if (registry.documents.length === 1) {
       alert('Debe existir al menos un documento de respaldo para el registro');
       return;
@@ -88,6 +89,7 @@ export class RegistryDetailsComponent implements OnInit {
   openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
     this.document = selectedDocument;
     this.modalRef = this.modalService.show(template);
+    this.discriminator = this.registry.discriminator;
   }
 
 }

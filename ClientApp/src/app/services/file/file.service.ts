@@ -20,15 +20,15 @@ export class FileService {
     })
   }
 
-  //Workink in editDocument
-  /*editDocument(document: Document, type: number): Observable<Document> {
+  editDocument(document: Document, discriminator: string): Observable<Document> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json');
 
 
-    return this.http.put<Document>(FileService.FILES_API + document.documentID, document, { headers: headers })
+    return this.http.put<Document>(
+      FileService.FILES_API + document.documentID, document, { headers: headers })
       .pipe(
       retry(5) // retry a failed request up to 3 times, but don't handle errros
       );
-  }*/
+  }
 }

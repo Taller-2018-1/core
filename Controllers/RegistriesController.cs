@@ -467,45 +467,8 @@ namespace think_agro_metrics.Controllers
 			return Ok(document);
 
 		}
-        /*
-         * Working in editDocument
-        private bool DocumentExists(long id)
-        {
-            return _context.Documents.Any(e => e.DocumentID == id);
-        }
         
-        // PUT: api/Registries/Documents/5
-        [HttpPut("Documents/{id}")]
-        public async Task<IActionResult> PutDocument([FromRoute] long id, [FromBody] Document document)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            if (id != document.DocumentID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(document).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DocumentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return Ok();
-        }*/
+        
     }
 }

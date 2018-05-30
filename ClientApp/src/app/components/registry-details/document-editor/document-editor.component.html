@@ -1,0 +1,60 @@
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Editar document</h4>
+  <button type="button" class="close pull-right" aria-label="close" (click)="editModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="editDocument()" #documentEditForm="ngForm">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" class="form-control" id="name" required [(ngModel)]="document.name" name="name" #name="ngModel" />
+      <div [hidden]="name.valid || name.pristine"
+            class="alert alert-danger">
+        Nombre no puede estar vacio
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Fecha</label>
+      <input type="date" class="form-control" id="date" required [(ngModel)]="document.date" name="date" #date="ngModel" />
+      <div [hidden]="(date.valid || date.pristine)"
+            class="alert alert-danger">
+        Fecha es requerida
+      </div>
+    </div>
+
+    <!--Corresponde a indicador con subida de links-->
+    <div class="form-group" *ngIf="discriminator === 'LinkRegistry'">
+      <label for="link">Link</label>
+      <input type="text" class="form-control" id="link" required [(ngModel)]="document.link" name="link" #percent="ngModel" />
+      <div [hidden]="(link.valid || link.pristine)"
+            class="alert alert-danger">
+        Link es requerido
+      </div>
+    </div>
+    <div class="form-group" *ngIf="document.extension !== 'link'">
+      <input #file type="file" /> {{document.documentname}}
+    </div>
+
+
+    <div class="form-group">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
+
+      <!--Si es un documento con un archivo incluido, al presionar editar debe subirlo a la aplicacion-->
+        <div class="form-group" *ngIf="document.extension == 'link'; else fileButton">
+          <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
+        </div>
+      <ng-template #fileButton>
+        <button type="submit" class="btn btn-success pull-right" (click)="upload(file.files)" [disabled]="!documentEditForm.form.valid">Editar</button>
+      </ng-template>
+    </div>
+  </form>
+</div>
+

@@ -25,6 +25,7 @@ import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+import { DocumentEditorComponent } from './components/registry-details/document-editor/document-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { FileService } from './services/file/file.service';
 
@@ -42,6 +43,7 @@ import { FileService } from './services/file/file.service';
     LinkDocumentFormComponent,
     RegistryDetailsComponent,
     RegistryEditorComponent,
+    DocumentEditorComponent,
     ResultDisplayComponent,
     ResultHomeComponent,
     RegistryFormComponent,

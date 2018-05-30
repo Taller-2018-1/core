@@ -3,14 +3,13 @@
       <div class="container">
           <h1>    Nombre registro: {{ registry.name }}</h1>
           <div style="float:right">
-            <button *ngIf="registry.discriminator == 'LinkRegistry'; else file_link"
+            <button *ngIf="registry.discriminator == 'LinkRegistry'"
                     type="button" (click)="openModal(linkModal)" class="btn btn-success">
               Agregar desde link
             </button>
 
-            <ng-template #file_link>
               <button type="button" (click)="openModal(fileModal)" class="btn btn-success">Agregar desde archivo</button>
-            </ng-template>
+
           </div>
       </div>
     </div>
@@ -50,7 +49,7 @@
         </ng-template>
         <td>
           <div class="pull-right">
-            <button href="#" class="btn btn-success btn"> <span class="glyphicon glyphicon-pencil">  </span>  </button></div>
+            <button href="#" class="btn btn-success btn" (click)="openModalEditDocument(editDocument, document)"> <span class="glyphicon glyphicon-pencil">  </span>  </button></div>
         </td>
         <td>
           <div class="pull-right">
@@ -89,8 +88,6 @@
   </div>
 </ng-template>
 
-<!-- Working in editDocument
 <ng-template #editDocument>
-  <app-docmuent-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-docmuent-editor>
+  <app-document-editor [document]="document" [discriminator]="discriminator" [editModalRef]="editModalRef" #editDocument></app-document-editor>
 </ng-template>
--->
