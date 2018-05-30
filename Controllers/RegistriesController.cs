@@ -300,6 +300,43 @@ namespace think_agro_metrics.Controllers
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/PercentRegistry")]
+        public async Task<IActionResult> PercentRegistry([FromRoute] long indicatorId,
+            [FromBody] PercentRegistry registry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
+
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/LinkRegistry")]
         public async Task<IActionResult> LinkRegistry([FromRoute] long indicatorId,
             [FromBody] LinkRegistry registry)

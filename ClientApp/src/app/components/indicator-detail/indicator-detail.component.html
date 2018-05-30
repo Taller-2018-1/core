@@ -132,8 +132,8 @@
                   </td>
                   <td style="padding-left: 200px;">
                     <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-            Añadir registro
-          </button>-->
+                      Añadir registro
+                    </button>-->
                     <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
                   </td>
                 </tr>
@@ -141,18 +141,33 @@
             </div>
             <!--Begin tab-->
             <!--Tabset removed because I didn't know what to do with him-->
-            <!--Replaced for Tab from ngx-bootstrap-->
-            <tabset>
-              <tab heading="Registros" id="tab1">
                 <app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>
-              </tab>
-              <tab heading="Diagnosticos"></tab>
-            </tabset>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+
+
+  <!--MODALS-->
+
+  <ng-template #addRegistry>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+    </div>
+  </ng-template>
+
+  <!--Modal Edit Registry-->
+  <ng-template #editRegistry>
+    <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+  </ng-template>
 
 </div>
 

@@ -55,6 +55,25 @@ namespace think_agro_metrics.Controllers
             return Ok(indicatorGroup);
         }
 
+        // GET: api/IndicatorsGroups/Name/5
+        [HttpGet("/Name/{id}")]
+        public async Task<IActionResult> GetIndicatorGroupName([FromRoute] long id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(x => x.IndicatorGroupID == id);
+            
+            if (indicatorGroup == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(indicatorGroup.Name);
+        }
+
         // PUT: api/IndicatorGroups/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutIndicatorGroup([FromRoute] long id, [FromBody] IndicatorGroup indicatorGroup)

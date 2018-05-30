@@ -1,108 +1,48 @@
-
-<accordion [closeOthers]="true" activeIds="static-1">
+<ngb-accordion [closeOthers]="true" activeIds="static-1">
   <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
-    <accordion-group>
-      <div accordion-heading>
+    <ngb-panel>
+      <ng-template ngbPanelTitle style="padding: 1em; border-radius: 0.5em; font-size: 14px; border: 5px solid #c4c4c4 !important; font-weight: bolder;">
         <tr>
           <!--Didn't find another way-->
           <td width="50%">
-            <div fxLayout="40%">
               {{registry.name | uppercase}}
               <br>
               <span class="not-bold-but-italic">{{registry.date | date: 'dd-MM-yyyy'}}</span>
-            </div>
           </td>
           <td width="30%" style="padding-left: 200px;">
-            <div fxLayout="57%">
-              <div class="value-box" *ngIf="registriesType === 2 || registriesType === 3">{{registry.quantity}}</div>
-              <div class="value-box" *ngIf="registriesType === 4">{{registry.percent}}</div>
-            </div>
+              <div class="value-box" *ngIf="registry.discriminator === 'QuantityRegistry' || registry.discriminator === 'ActivityRegistry'">{{registry.quantity}}</div>
+              <div class="value-box" *ngIf="registry.discriminator === 'PercentRegistry' ">{{registry.percent}}%</div>
           </td>
           <td style="padding-left: 200px;">
             <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
           </td>
         </tr>
-      </div>
-      <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
-        <table>
-          <tbody>
-            <tr>
-              <td width="40%">
-                Nombre
-              <br> {{document.name}}
-              </td>
-              <td width="18%">
-                Fecha
-                <br> {{document.date | date: 'dd-MM-yyyy'}}
-              </td>
-              <td width="18%">
-                Extensión
-              <br> {{document.extension}}
-              </td>
-              <td>
-                <a class="btn btn-xs btn-primary">Ver</a>
-              </td>
-              <td>
-                <a class="btn btn-xs btn-primary">Editar</a>
-              </td>
-              <td>
-                <a class="btn btn-xs btn-danger" (click)="deleteDocument()">Eliminar</a>
-              </td>
-              <td>
-                <a class="btn btn-xs btn-info">Descargar</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </ng-template>
-    </accordion-group>
-  </ng-template>
-</accordion>
-
-
-<ngb-accordion [closeOthers]="true" activeIds="static-1">
-  <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
-    <ngb-panel>
-      <ng-template ngbPanelTitle>
-        <a fxLayout="row" class="clickeable">
-          <div fxFlex="40%">
-            {{registry.name | uppercase}}
-            <br>
-            <span class="not-bold-but-italic">{{registry.date}}</span>
-          </div>
-          <div fxFlex="57%">
-            <div class="value-box">{{registry.value}}</div>
-          </div>
-          <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
-        </a>
       </ng-template>
       <ng-template ngbPanelContent>
-        <ng-template ngFor let-resource [ngForOf]="registry.documents" let-i="index">
-          <div fxLayout="row">
-            <div fxFlex="21%">
-              Fecha
-              <br> {{resource.date}}
-            </div>
-            <div fxFlex="21%">
-              Tipo
-              <br> {{resource.type}}
-            </div>
-            <div fxFlex="21%">
-              Descripción
-              <br> {{""}}
-            </div>
-            <div fxFlex="21%">
-              Detalle
-              <br> {{resource.rlink}}
-            </div>
-            <div fxFlex="8%">
-              <a class="btn btn-xs btn-primary">Ver</a>
-            </div>
-            <div fxFlex="8%">
-              <a class="btn btn-xs btn-info">Descargar</a>
-            </div>
-          </div>
-          <hr>
+        <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td width="40%">
+                  Nombre
+                  <br> {{document.name}}
+                </td>
+                <td width="28%">
+                  Fecha
+                  <br> {{document.date | date: 'dd-MM-yyyy'}}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-primary">Editar</a>
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-danger" (click)="deleteDocument(registry,document)">Eliminar</a>
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info">Descargar</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </ng-template>
       </ng-template>
     </ngb-panel>
