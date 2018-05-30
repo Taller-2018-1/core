@@ -25,6 +25,9 @@ import { LinkDocumentFormComponent } from './components/link-document-form/link-
 
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
+import { AuthService } from './services/auth/AuthService';
+import { CanActivateUser } from './services/auth/CanActivateService';
+import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { RegistryService } from './services/registry/registry.service';
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
-    ResultHomeComponent
+    ResultHomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -56,11 +60,11 @@ import { RegistryService } from './services/registry/registry.service';
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'home',        component: ResultHomeComponent },
-      { path: '',            component: ResultHomeComponent },
+      { path: '',            component: WelcomeComponent },
       { path: '**',          component: ResultHomeComponent },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

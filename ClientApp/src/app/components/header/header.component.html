@@ -11,8 +11,25 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
           <li><a class="active" href="index.html">Inicio</a></li>
-          <li><a  href="#">Iniciar Sesión</a></li>
+          <li [class.hidden]="isLogged" ><a (click)="openModal(template)"  href="#">Iniciar Sesión</a></li>
+          <li [class.hidden]="!isLogged" ><a (click)="logOut()"  href="#">Cerrar Sesión</a></li>
       </ul>
+
+      <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Iniciar Sesión</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input class="cred" (keyup.enter)="authorize()" [(ngModel)]="email" type="email" name="email" minLength="4" required placeholder="email">
+          <br>
+          <input class="cred" (keyup.enter)="authorize()" [(ngModel)]="password" type="password" name="password" minLength="4" required placeholder="contraseña">
+          <br>
+          <button type="button" (click)="authorize()" class="btn cred2 btn-primary"> Ingresar </button>
+        </div>
+      </ng-template>
     </div> <!-- end navbar-collapse -->
   </div>
 </nav>

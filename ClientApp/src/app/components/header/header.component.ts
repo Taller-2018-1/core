@@ -1,4 +1,6 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AuthService } from '../../services/auth/AuthService';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +9,39 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @HostBinding('class') classes = 'clearfix'; // This adds a class to the host container
-  constructor() { }
+  modalRef: BsModalRef;
+  config = {
+    animated: true
+  };
+  email: string;
+  password: string;
+
+  authorize() {
+    this.auth.auth({
+      email: this.email,
+      password: this.password
+    }).subscribe(item => {
+      console.log('ok');
+      this.modalRef.hide()
+    }, error => {
+      this.email = "";
+      this.password = "";
+    });
+  }
+
+  constructor(private modalService: BsModalService, private auth: AuthService) { }
 
   ngOnInit() {
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  logOut() {
+    this.auth.signOut().subscribe();
+  }
+  get isLogged(): boolean {
+    return this.auth.getUser() !== false;
+  }
 }

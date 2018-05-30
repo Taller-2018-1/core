@@ -101,6 +101,12 @@
                 <e p="result-home.component.spec.ts" t="Include" />
                 <e p="result-home.component.ts" t="Include" />
               </e>
+              <e p="welcome-component" t="Include">
+                <e p="welcome-component.component.css" t="Include" />
+                <e p="welcome-component.component.html" t="Include" />
+                <e p="welcome-component.component.spec.ts" t="Include" />
+                <e p="welcome-component.component.ts" t="Include" />
+              </e>
             </e>
             <e p="demo" t="Include">
               <e p="counter" t="Include">
@@ -126,6 +132,10 @@
               </e>
             </e>
             <e p="services" t="Include">
+              <e p="auth" t="Include">
+                <e p="AuthService.ts" t="Include" />
+                <e p="CanActivateService.ts" t="Include" />
+              </e>
               <e p="indicator" t="Include">
                 <e p="indicator.service.spec.ts" t="Include" />
                 <e p="indicator.service.ts" t="Include" />

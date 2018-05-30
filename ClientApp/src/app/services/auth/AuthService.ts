@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import {HttpClient} from "@angular/common/http";
+import {Indicator} from "../../shared/models/indicator";
+import {IndicatorService} from "../indicator/indicator.service";
+import {Router} from "@angular/router";
+
 
 export interface Credentials {
   email: string;
@@ -9,7 +13,9 @@ export interface Credentials {
 
 @Injectable()
 export class AuthService {
-  constructor(public http: Http) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
+  private static AUTHORIZATION_API = "/api/auth/";
 
   public auth(credentials: Credentials): Observable<boolean> {
     return Observable.create(observer => {
@@ -25,13 +31,22 @@ export class AuthService {
       //     observer.complete();
       //   }
       // );
-      if (credentials.email === 'taller2018@utalca.cl' && credentials.password === 'password') {
-        observer.next(true);
-        observer.complete();
-      } else {
-        observer.error(new Error('usuario inválido'));
-        observer.complete();
-      }
+      return this.http.post<any>(AuthService.AUTHORIZATION_API, credentials).subscribe(
+        (data: any) => {
+          // success path
+          observer.next(true);
+          localStorage.setItem('user', JSON.stringify(credentials));
+          observer.complete();
+          this.router.navigate(['/home']);
+
+        },
+        error => {
+          // error path
+          this.router.navigate(['/welcome']);
+          observer.error(new Error('usuario inválido'));
+          observer.complete();
+        }
+      );
     });
   }
 
@@ -43,12 +58,12 @@ export class AuthService {
     });
   }
 
-  public getUser() {
+  public getUser() : Credentials | boolean {
     const object = JSON.parse(localStorage.getItem('user'));
     if (object == null) {
       return false;
     }
-    return JSON.parse(localStorage.getItem('user')).user.user;
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   private parseJwt(token) {

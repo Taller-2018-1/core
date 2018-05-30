@@ -23,11 +23,10 @@ export class CanActivateUser implements CanActivate {
     // this is wrong in so many levels, but works. Why?
     // because if the user is not authenticated, then
     // it returns an error code though the http call
-    return this.auth.auth({email: 'taller2018@utalca.cl', password: 'password'}).map(response => {
-      return true;
-    }).catch(err => {
-      this.router.navigate(['/sign-in'], { queryParams: { returnUrl: state.url }});
+    if (this.auth.getUser() === false) {
+      return Observable.of(true);
+    } else {
       return Observable.of(false);
-    });
+    }
   }
 }
