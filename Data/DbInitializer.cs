@@ -141,11 +141,7 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e, Goals = goals1e}
             };
 
-            context.Indicators.AddRange(indicators1);            
-
-            var indicatorGroup1 = new IndicatorGroup { Name = "Vinculación con entidades nacionales e internacionales", Indicators = indicators1 };
-            context.IndicatorGroups.Add(indicatorGroup1);
-
+            context.Indicators.AddRange(indicators1);
             context.SaveChanges();
 
             // REGISTRIES 2
@@ -163,12 +159,8 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators2);
-            
-            var indicatorGroup2 = new IndicatorGroup { Name = "Vinculación con académicos y estudiantes", Indicators = indicators2 };
-            context.IndicatorGroups.Add(indicatorGroup2);
-
             context.SaveChanges();
-
+            
             // REGISTRIES 3
             var registries3a = CreateRegistries3A(context);
             var registries3b = CreateRegistries3B(context);
@@ -180,14 +172,10 @@ namespace think_agro_metrics.Data
             var indicators3 = new Indicator[]
             {
                 new Indicator{Name="Número de programas de formación implementados", Registries = registries3a},
-                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b, RegistriesType = RegistryType.ActivityRegistry }
+                new Indicator{Name="Número de extensionistas y profesionales del Centro formados", Registries = registries3b, RegistriesType = RegistryType.QuantityRegistry }
             };
 
             context.Indicators.AddRange(indicators3);
-
-            var indicatorGroup3 = new IndicatorGroup { Name = "Formación de los profesionales extensionistas e integrantes del equipo de gestión, en ámbitos relacionados al extensionismo tecnológico", Indicators = indicators3 };
-            context.IndicatorGroups.Add(indicatorGroup3);
-
             context.SaveChanges();
 
             var indicators4 = new Indicator[]
@@ -235,13 +223,13 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
             };
 
-            context.Indicators.AddRange(indicators4);
-            context.Indicators.AddRange(indicators5);            
-            context.Indicators.AddRange(indicators6);
-            context.Indicators.AddRange(indicators7);
-            context.Indicators.AddRange(indicators8);
-            context.Indicators.AddRange(indicators9);
-            context.Indicators.AddRange(indicators10);
+            context.Indicators.AddRange(indicators4); context.SaveChanges();
+            context.Indicators.AddRange(indicators5); context.SaveChanges();
+            context.Indicators.AddRange(indicators6); context.SaveChanges();
+            context.Indicators.AddRange(indicators7); context.SaveChanges();
+            context.Indicators.AddRange(indicators8); context.SaveChanges();
+            context.Indicators.AddRange(indicators9); context.SaveChanges();
+            context.Indicators.AddRange(indicators10); context.SaveChanges();
 
             // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
@@ -2126,61 +2114,61 @@ namespace think_agro_metrics.Data
 
             var registries3b = new Registry[]
             {
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Manejos pecuarios",
                     Date = DateTime.Today,
                     Quantity = 2,
                     Documents = documents3b1
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Reproducción animal",
                     Date = new DateTime(2019,09,12),
                     Quantity = 4,
                     Documents = documents3b2
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Producción lechera",
                     Date = new DateTime(2019,10,13),
                     Quantity = 6,
                     Documents = documents3b3
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Sanidad y bienestar animal",
                     Date = new DateTime(2019,11,14),
                     Quantity = 8,
                     Documents = documents3b4
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Cultivo de praderas y forrajes",
                     Date = new DateTime(2019,12,15),
                     Quantity = 12,
                     Documents = documents3b5
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Viticultura",
                     Date = new DateTime(2020,01,16),
                     Quantity = 14,
                     Documents = documents3b6
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Cosecha y transporte de vides",
                     Date = new DateTime(2020,02,17),
                     Quantity = 16,
                     Documents = documents3b7
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Elaboración de vinos.",
                     Date = new DateTime(2020,03,18),
                     Quantity = 18,
                     Documents = documents3b8
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Envasado y maquinaria vitivinícola",
                     Date = new DateTime(2020,04,19),
                     Quantity = 20,
                     Documents = documents3b9
                 },
-                new ActivityRegistry{
+                new QuantityRegistry{
                     Name = "Manejo de bodegas vitivinícolas.",
                     Date = new DateTime(2020,05,20),
                     Quantity = 22,

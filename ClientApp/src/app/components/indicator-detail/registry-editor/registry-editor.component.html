@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <label for="date">Fecha</label>
-      <input type="date" class="form-control" id="date" required [(ngModel)]="registry.date" name="date" #date="ngModel" />
+      <input type="date" class="form-control" id="date" required [ngModel]="registry.date | date:'yyyy-MM-dd'" (ngModelChange)="registry.date = $event" name="date" #date="ngModel" />
       <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
@@ -61,7 +61,7 @@
     </div>
     -->
     <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
-      <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid">Editar</button>
+      <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid" (click)="Actualizar()">Editar</button>
     </div>
   </form>
 </div>
