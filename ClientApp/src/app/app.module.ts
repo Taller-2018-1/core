@@ -59,7 +59,7 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
     AccordionModule.forRoot(),
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
+      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },

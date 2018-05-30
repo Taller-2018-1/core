@@ -75,5 +75,4 @@ export class IndicatorService {
   calculateIndicatorsYear(year: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
   }
-  
 }

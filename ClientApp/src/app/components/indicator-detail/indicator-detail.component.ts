@@ -15,6 +15,7 @@ import { Registry } from '../../shared/models/registry';
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
+import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -31,6 +32,9 @@ export class IndicatorDetailComponent implements OnInit {
   private static YEAR = 'Año '; // Part of the string that the DropDown has to show as selected
   // For filtering by months
   private static ALL_MONTHS = 'Todos los meses';
+
+  private idIndicatorGroup: number;
+  public indicatorGroupName$: Observable<string>;
 
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
@@ -60,9 +64,11 @@ export class IndicatorDetailComponent implements OnInit {
   constructor(private service: IndicatorService,
     router: Router,
     private registryService: RegistryService,
+    private indicatorGroupService: IndicatorGroupService,
     private route: ActivatedRoute,
     private modalService: BsModalService) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
+    this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
     this.router = router;
   }
 
@@ -83,7 +89,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
     this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
-
+    this.indicatorGroupName$ = this.indicatorGroupService.getIndicatorGroupName(this.idIndicatorGroup);
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
   }

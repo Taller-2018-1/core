@@ -56,16 +56,16 @@ namespace think_agro_metrics.Controllers
         }
 
         // GET: api/IndicatorsGroups/Name/5
-        [HttpGet("/Name/{id}")]
+        [HttpGet("Name/{id}")]
         public async Task<IActionResult> GetIndicatorGroupName([FromRoute] long id)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(x => x.IndicatorGroupID == id);
             
+            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(x => x.IndicatorGroupID == id);
+
             if (indicatorGroup == null)
             {
                 return NotFound();

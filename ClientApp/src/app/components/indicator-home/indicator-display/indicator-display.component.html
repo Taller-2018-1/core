@@ -56,7 +56,7 @@
             <div *ngIf="(i%3===0) && (i>0)" class="col-md-12" style="border: 15px solid transparent;"></div>
             <!-- end col-xs-6 col-sm-3 col-md-3 -->
             <div class="col-xs-6 col-sm-3 col-md-4">
-              <a class="active" href="/indicator/{{ indicator.indicatorID }}">
+              <a class="active" href="/indicator/{{indicatorGroup.indicatorGroupID}}/{{ indicator.indicatorID }}">
                 <div class="services-content">
                   <div class="statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     <div class="fact">
