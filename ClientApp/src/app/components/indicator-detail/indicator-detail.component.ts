@@ -34,8 +34,9 @@ export class IndicatorDetailComponent implements OnInit {
 
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
-
+  
   public indicator$: Observable<Indicator>;
+  public goal$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
 
@@ -84,6 +85,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = -1; // It's not selected a specific month yet
 
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
+    this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
   }
 
   selectRegistries(year: any, month: string) {
@@ -91,6 +93,7 @@ export class IndicatorDetailComponent implements OnInit {
     if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
         this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
+        this.goal$ = this.service.getGoal(this.idIndicator)//shows all goals
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
@@ -102,6 +105,7 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedYear = year;
         // tslint:disable-next-line:max-line-length
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear); // Show registries from the year selected
+        this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
         this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
@@ -112,11 +116,13 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedMonth = -1; // Not selected a specific month
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
+        this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
       }
       // tslint:disable-next-line:one-line
       else{
         this.setSelectedMonth(month);
         this.indicator$ = this.service.getIndicatorYearMonthRegistries(this.idIndicator, this.selectedYear, this.selectedMonth);
+        this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }

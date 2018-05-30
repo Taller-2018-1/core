@@ -192,7 +192,11 @@
     </div> <!-- end container -->
   </div>
 
-  <div class="container">
+  <div *ngIf="goal$ | async as goal">
+    <h1>{{ goal }}</h1>
+  </div>
+
+  <div class="container">  
     <!--Dropdown Filters-->
     <div class="row" style="margin-top: 20px; margin-bottom: 20px">
 
