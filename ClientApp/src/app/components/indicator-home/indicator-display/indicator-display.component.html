@@ -9,11 +9,11 @@
       <div class="row">
         <!--Dropdown Year Filter-->
         <div class="col-md-6">          
-          Seleccione los años a calcular:
+          Seleccione el año a calcular:
           <br>
           <div class="btn-group" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionYear }} <span class="caret"></span>
+              {{ selectedYearText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -24,11 +24,11 @@
         </div>
         <!--Dropdown Month Filter-->
         <div class="col-md-6">
-          Seleccione los meses a calcular:
+          Seleccione el mes a calcular:
           <br>
           <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionMonth }} <span class="caret"></span>
+              {{ selectedMonthText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -61,12 +61,14 @@
                   <div class="statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     <div class="fact">
 
-                      <div *ngIf="indicator.type == 2; else noPercent">
-                        <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%</span>
-                      </div>
-                      <ng-template #noPercent>
-                         <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}</span>
-                      </ng-template>
+                      <div *ngIf="goals$ | async as goals">
+                        <div *ngIf="indicator.type == 2; else noPercent">
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%/{{ goals[i] | number:'.0-2' }}</span>
+                        </div>
+                        <ng-template #noPercent>
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}/{{ goals[i] | number:'.0-2' }}</span>
+                        </ng-template>
+                      </div>                      
                       
                       <p>{{ indicator.name }}</p>
                     </div>

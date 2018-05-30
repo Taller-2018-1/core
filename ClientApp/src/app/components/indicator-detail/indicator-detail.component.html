@@ -1,99 +1,128 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<ng-template #loading>
-  <div class="container">
-    <h2>Cargando datos...</h2>
-  </div>
-</ng-template>
-
-<ng-template #noRegistries>
-    <h2>Aún no se han cargado registros.</h2>
-</ng-template>
-
-
-
-<div class="container">
-  <h1>    {{ indicator.name }}</h1>
-  <!--h2>Tipo: {{ indicator.type }}</h2-->
-  <!--<div *ngIf="indicator.type == -1">El tipo es default...</div>-->
-  
-
-  <div class="heading-block" *ngIf="registriesCount != 0; else noRegistries">
-    <h2>Detalle de Registros</h2>
+<div *ngIf="indicator$ | async as indicator; else loading">
+  <!--Title-->
+  <div id="head-page-section" class="l-grey-bg head-page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-7">
+          <div class="head-title">
+            <h1>
+              {{ indicator.name }}
+            </h1>              
+          </div> <!-- end subsection-text -->
+        </div> <!-- end col-md-8 -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
   </div>
 
-  <div class="panel panel-default" *ngFor="let registry of indicator.registries">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-      {{registry.name}}
-      <div class="pull-right">
-        <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
-        <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
+  <div *ngIf="goal$ | async as goal">
+    <h1>{{ goal }}</h1>
+  </div>
+
+  <div class="container">  
+    <!--Dropdown Filters-->
+    <div class="row" style="margin-top: 20px; margin-bottom: 20px">
+
+      <!--Dropdown Year Filter-->
+      <div class="col-md-6">
+        Seleccione el año a mostrar:
+        <br>
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+            {{ selectedYearText }} <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
+            <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!--Dropdown Month Filter-->
+      <div class="col-md-6"> 
+        Seleccione el mes a mostrar: 
+        <br> 
+        <div class="btn-group" dropdown [isDisabled]="isMonthDisabled"> 
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic"> 
+            {{ selectedMonthText }} <span class="caret"></span> 
+          </button> 
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" 
+              role="menu" aria-labelledby="button-basic"> 
+            <li ><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>           
+            <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li> 
+          </ul> 
+        </div> 
       </div>
     </div>
-    <div class="panel-body">
+
+    <div class="row">
+      <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
+    </div>
+
+    <div class="heading-block" *ngIf="indicator.registries.length != 0; else noRegistries">
+      <h2>Detalle de Registros</h2>
+    </div>
+
+    <div class="panel panel-default" *ngFor="let registry of indicator.registries">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        {{registry.name}}
+        <div class="pull-right">
+          <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
+          <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(indicator,registry)"> <span class="glyphicon glyphicon-trash"> </span> </button>
+        </div>
+      </div>
+      <div class="panel-body">
         <div class="container">
-            <h6>Datos registro</h6>
-        </div>
-      <!-- Table -->
-      <table class="table">
-        <tr><td><b>Fecha ingreso de registro</b></td><td></td><td></td><td>{{registry.date | date:'dd-MM-yyyy'}}</td></tr>
-        <tr *ngIf="indicator.type == 1"><td><b>Cantidad</b></td><td></td><td></td><td>{{registry.quantity}}</td></tr>
-        <tr *ngIf="indicator.type == 2"><td><b>Porcentaje</b></td><td></td><td></td><td>{{registry.percent}}%</td></tr>
-      </table>
-      <div class="container">
           <h6>Documentos de respaldo</h6>
+        </div>
+        <table class="table">
+          <tr *ngFor="let document of registry.documents">
+            <td><b>{{document.name}}</b></td>
+            <td>{{document.date | date: 'dd-MM-yyyy'}}</td>
+            <td><a href="{{ document.link }}">Descargar</a></td>
+            <td><button class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(registry,document)"> <span class="glyphicon glyphicon-trash"> </span> </button></td>
+          </tr>
+        </table>
       </div>
-      <table class="table">
-        <tr *ngFor = "let document of registry.documents">
-          <td><b>{{document.name}}</b></td>
-          <td>{{document.date | date: 'dd-MM-yyyy'}}</td>
-          <td><a href="{{ document.link }}">Descargar</a></td>
-          <td><button class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(registry,document)" > <span class="glyphicon glyphicon-trash"> </span> </button></td>
-        </tr>
-      </table>
-      <!--
-      <table class="table">
-        <thead>
-            <tr><td><b>Documentos de respaldo</b></td><td></td><td></td></tr>
-        <p *ngIf="registry.documents.length == 0"><em> No hay documentos</em></p>
-            
-        </thead>
-        <tbody>
-            <tr *ngFor = "let document of registry.documents">
-                <td><b>{{document.name}}</b></td>
-                <td><a href={{document.link}}>Descargar</a></td>
-                <td><button href="#" class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(document)" > <span class="glyphicon glyphicon-trash"> </span> </button></td>
-              </tr>
-        </tbody>
-      </table>
-      -->
     </div>
-  </div>
 
-
-
-  <button type="button" class="btn btn-primary" (click)="openModal(template)">Añadir registro</button>
-    <ng-template #template>
-        <div class="modal-header">
-            <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
-            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
-        </div>
+    
+    <ng-template #addRegistry>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+      </div>
     </ng-template>
 
     <!--Modal Edit Registry-->
     <ng-template #editRegistry>
-        <app-registry-editor [registry]="registry" [type]="type" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+        <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
     </ng-template>
-
-  <!--END Modal Edit Registry-->
+  </div>
 </div>
+
+<ng-template #loading>
+  <div id="head-page-section" class="l-grey-bg head-page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-7">
+          <div class="head-title">
+            <h2>
+              Cargando...
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noRegistries>
+  <h2>Aún no se han cargado registros.</h2>         
+</ng-template>

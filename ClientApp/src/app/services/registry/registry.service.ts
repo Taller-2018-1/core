@@ -16,8 +16,8 @@ export class RegistryService {
   private static LINK = 'LinkRegistry/';
   private static ACTIVITY = 'ActivityRegistry/';
   public static REGISTRIES_API = '/api/Registries/';
-  public static ADD_FILE_DOCUMENT_METHOD = "/AddFileDocument";
-  public static ADD_LINK_DOCUMENT_METHOD = "/AddLinkDocument";
+  public static ADD_FILE_DOCUMENT_METHOD = '/AddFileDocument';
+  public static ADD_LINK_DOCUMENT_METHOD = '/AddLinkDocument';
   private static DOCUMENTS = 'Documents/';
 
   constructor(public http: HttpClient) { }

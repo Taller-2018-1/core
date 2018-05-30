@@ -26,7 +26,8 @@ namespace think_agro_metrics.Controllers
         [HttpGet]
         public IEnumerable<IndicatorGroup> GetIndicatorGroups()
         {
-            _context.IndicatorGroups.Include(x => x.Indicators).ToList();
+            _context.IndicatorGroups.Include(x => x.Indicators).
+                ThenInclude(x => x.Goals).ToList();
             return _context.IndicatorGroups;
         }
 
@@ -39,14 +40,18 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(x => x.IndicatorGroupID == id);
+
+            await indicatorGroupQuery.Include(x => x.Indicators).
+                ThenInclude(x => x.Goals).ToListAsync();
+
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
 
             if (indicatorGroup == null)
             {
                 return NotFound();
             }
 
-            _context.IndicatorGroups.Include(x => x.Indicators).ToList();
             return Ok(indicatorGroup);
         }
 
@@ -130,12 +135,14 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
+            
             
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -149,7 +156,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator of the group
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
             }
 
@@ -166,12 +173,13 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -185,7 +193,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator of the group
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
             }
 
@@ -202,12 +210,13 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators, Registries, Documents, and Links
-            _context.IndicatorGroups.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
+            // Load from the DB the IndicatorGroups with its Indicators, Registries and Links
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
 
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(m => m.IndicatorGroupID == id);
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Registries).ToListAsync();
+            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -221,8 +230,124 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator of the group
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month + 1)); // The month in Angular starts in 0 and in C# starts in 1
+            }
+
+            // Return the list with the results
+            return Ok(list);
+        }
+
+        // GET: api/IndicatorGroups/Goals/1 (group= 1)
+        [Route("Goals/{id:long}")]
+        public async Task<IActionResult> GetGoalsIndicators([FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Load from the DB the IndicatorGroups with its Indicators and Goals
+            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
+
+            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            await indicatorGroupQuery.Include(x => x.Indicators)
+                .ThenInclude(x => x.Goals).ToListAsync();
+
+            // If the specified indicator group doesn't exist, show NotFound
+            if (indicatorGroup == null)
+            {
+                return NotFound();
+            }
+
+            // List of the sums of goals of every indicator of the group
+            List<double> list = new List<double>();
+
+            // Sum the goals of every indicator of the group
+            foreach (Indicator indicator in indicatorGroup.Indicators)
+            {
+                double sum = 0;
+                foreach (Goal goal in indicator.Goals)
+                {
+                    sum += goal.Value;
+                }
+                list.Add(sum);
+            }
+
+            // Return the list with the results
+            return Ok(list);
+        }
+
+
+        // GET: api/IndicatorGroups/Goals/1/2018 (group = 1, year = 2018)
+        [Route("Goals/{id:long}/{year:int}")]
+        public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Load from the DB the Indicators 
+            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorGroupID == id);
+
+            var indicators = await indicatorQuery.Include(i => i.Goals).ToListAsync();
+
+            // If the specified indicator doesn't exist, show NotFound
+            if (indicators == null)
+            {
+                return NotFound();
+            }
+
+            // Sum the goals of every indicator of the group of the specified year
+            List<double> list = new List<double>();            
+            foreach (Indicator indicator in indicators)
+            {
+                double sum = 0;
+                foreach (Goal goal in indicator.Goals)
+                {
+                    if(goal.Year == year)
+                        sum += goal.Value;
+                }
+                list.Add(sum);
+            }
+
+            // Return the list with the results
+            return Ok(list);
+        }
+
+        // GET: api/IndicatorGroups/Goals/1/2018 (group = 1, year = 2018)
+        [Route("Goals/{id:long}/{year:int}/{month:int}")]
+        public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Load from the DB the Indicators 
+            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorGroupID == id);
+
+            var indicators = await indicatorQuery.Include(i => i.Goals).ToListAsync();
+
+            // If the specified indicator doesn't exist, show NotFound
+            if (indicators == null)
+            {
+                return NotFound();
+            }
+
+            // The goals of every indicator of the group of the specified year and month
+            List<double> list = new List<double>();
+            foreach (Indicator indicator in indicators)
+            {
+                foreach (Goal goal in indicator.Goals)
+                {
+                    if (goal.Year == year && goal.Month == month+1)
+                    {
+                        list.Add(goal.Value);
+                        continue;
+                    }                        
+                }                
             }
 
             // Return the list with the results
