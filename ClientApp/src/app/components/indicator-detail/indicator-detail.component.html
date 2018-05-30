@@ -1,5 +1,5 @@
 <!-- Head page section================================================== -->
-<div *ngIf="indicator$ | async as indicator">
+<div *ngIf="indicator$ | async as indicator else loading;">
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
@@ -26,7 +26,7 @@
               <div class="col-sm-6">
                 Valor Meta
                 <div class="row-number row-h1" *ngIf="goal$ | async as goal">
-                    {{ goal }}
+                  {{ goal }}
                 </div>
               </div>
             </div>
@@ -141,7 +141,7 @@
             </div>
             <!--Begin tab-->
             <!--Tabset removed because I didn't know what to do with him-->
-                <app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>
+            <app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>
           </div>
         </div>
       </div>
@@ -169,15 +169,17 @@
     <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
   </ng-template>
 
+
+
+
 </div>
 
 
 <!------------------------------------------------------------------------------------------>
-<!-- OLD DESIGN -->
+<!-- OLD DESIGN
 <h1> OLD DESIGN </h1>
 
 <div *ngIf="indicator$ | async as indicator; else loading">
-  <!--Title-->
   <div id="head-page-section" class="l-grey-bg head-page-section">
     <div class="container">
       <div class="row">
@@ -186,19 +188,17 @@
             <h1>
               {{ indicator.name }}
             </h1>
-          </div> <!-- end subsection-text -->
-        </div> <!-- end col-md-8 -->
-      </div> <!-- end row -->
-    </div> <!-- end container -->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  
 
-  <div class="container">  
-    <!--Dropdown Filters-->
+
+  <div class="container">
     <div class="row" style="margin-top: 20px; margin-bottom: 20px">
 
-      <!--Dropdown Year Filter-->
       <div class="col-md-6">
         Seleccione el año a mostrar:
         <br>
@@ -214,7 +214,6 @@
         </div>
       </div>
 
-      <!--Dropdown Month Filter-->
       <div class="col-md-6">
         Seleccione el mes a mostrar:
         <br>
@@ -240,7 +239,6 @@
     </div>
 
     <div class="panel panel-default" *ngFor="let registry of indicator.registries">
-      <!-- Default panel contents -->
       <div class="panel-heading">
         {{registry.name}}
         <div class="pull-right">
@@ -276,12 +274,12 @@
       </div>
     </ng-template>
 
-    <!--Modal Edit Registry-->
-    <ng-template #editRegistry>
-      <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
-    </ng-template>
+<ng-template #editRegistry>
+  <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+</ng-template>
   </div>
 </div>
+    -->
 
 <ng-template #loading>
   <div id="head-page-section" class="l-grey-bg head-page-section">
