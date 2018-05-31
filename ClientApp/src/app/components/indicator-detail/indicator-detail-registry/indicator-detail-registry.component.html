@@ -13,10 +13,10 @@
             <div class="value-box" *ngIf="registry.discriminator === 'PercentRegistry' ">{{registry.percent}}%</div>
           </div>
           <div fxFlex="15%">
-            <button class="btn btn-xs btn-primary btn-size-text" (click)="preventToggle($event)" >Modificar</button>
+            <button class="btn btn-xs btn-primary btn-size-text" (click)="openModalEditRegistry(editRegistry,registry)">Modificar</button>
           </div>
           <div fxFlex="20%">
-            <button class="btn btn-xs btn-danger btn-size-text">Eliminar</button>
+            <button class="btn btn-xs btn-danger btn-size-text" (click)="deleteRegistry(registry)">Eliminar</button>
           </div>
           <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
         </div>
@@ -51,3 +51,10 @@
     </ngb-panel>
   </ng-template>
 </ngb-accordion>
+
+
+
+<!--Modal Edit Registry-->
+<ng-template #editRegistry>
+  <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+</ng-template>

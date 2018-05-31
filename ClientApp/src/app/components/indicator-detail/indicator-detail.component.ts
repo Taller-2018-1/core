@@ -45,11 +45,7 @@ export class IndicatorDetailComponent implements OnInit {
   public goal$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
-
-  public registry: Registry = null; // For EditRegistry
-  public registriesType: number;
-  public editModalRef: BsModalRef;
-
+  
   allYears: string = IndicatorDetailComponent.ALL_YEARS;
   selectedYearText: string; // Dropdown year "Año 2018"
   selectedYear: number; // Numeric value for selectionYear
@@ -144,58 +140,7 @@ export class IndicatorDetailComponent implements OnInit {
       }
     }
   }
-
-  openModalEditRegistry(template: TemplateRef<any>, selectedRegistry: Registry) {
-    this.registry = selectedRegistry;
-    this.registriesType = this.indicator.registriesType;
-    this.editModalRef = this.modalService.show(template);
-  }
-
-  private deleteRegistry (indicator: Indicator, registry: Registry) {
-    const date: Date = new Date(registry.date);
-    const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
-    const result = confirm('Está seguro que desea eliminar el registro: \n' + formatedDate + ' - ' + registry.name);
-
-    if (result) {
-      this.service.deleteRegistry(registry).subscribe(
-        data => {
-          const index = this.indicator.registries.indexOf(data);
-          indicator.registries.splice(index, 1);
-        },
-        err => console.error(err)
-      );
-
-      const index: number = this.indicator.registries.indexOf(registry);
-      if ( index !== -1) {
-        this.indicator.registries.splice(index, 1);
-        this.randomize();
-      }
-    }
-    
-  }
-
-  private deleteDocument(registry: Registry, document: Document) {
-    const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
-    if (registry.documents.length === 1) {
-      alert('Debe existir al menos un documento de respaldo para el registro');
-      return;
-    }
-    if (result) {
-      let removed: Document;
-      this.registryService.deleteDocument(document).subscribe(
-        data => {
-          removed = data;
-        },
-        err => console.error(err)
-      );
-
-      const index = registry.documents.indexOf(document);
-      if (index !== -1) {
-        registry.documents.splice(index, 1);
-      }
-    }
-  }
-
+  
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
@@ -340,14 +285,11 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   /* Para actualizar cuando elimine un registro */
-  /*Actualizar()
+  Actualizar()
   {
       window.location.reload(true);
   }
-  */
-
-
-
+  
 
 }
 

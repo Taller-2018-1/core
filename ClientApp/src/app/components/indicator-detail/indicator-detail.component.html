@@ -152,7 +152,8 @@
             </div>
             <!--Begin tab-->
             <!--Tabset removed because I didn't know what to do with him-->
-            <app-indicator-detail-registry [registries]="indicator.registries"></app-indicator-detail-registry>
+            <!--Registries list and RegistriesType (from indicator) are needed-->
+            <app-indicator-detail-registry [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
           </div>
         </div>
       </div>
@@ -173,11 +174,6 @@
     <div class="modal-body">
       <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
     </div>
-  </ng-template>
-
-  <!--Modal Edit Registry-->
-  <ng-template #editRegistry>
-    <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
   </ng-template>
 
 

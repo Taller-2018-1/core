@@ -22,7 +22,7 @@ export class RegistryEditorComponent implements OnInit {
 
   @Input()
   public editModalRef: BsModalRef;
-
+  
   public bsValue;
 
   constructor(private service: RegistryService) {  }
@@ -63,4 +63,5 @@ export class RegistryEditorComponent implements OnInit {
       }
     }
   }
+
 }
