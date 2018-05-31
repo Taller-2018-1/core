@@ -142,6 +142,9 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators1);
+            var indicatorGroup1 = new IndicatorGroup{Name = "Vinculación con entidades nacionales e internacionales ", Indicators = indicators1 };
+            context.IndicatorGroups.Add(indicatorGroup1);
+
             context.SaveChanges();
 
             // REGISTRIES 2
@@ -159,6 +162,9 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators2);
+            var indicatorGroup2 = new IndicatorGroup{Name = "Vinculación con academicos y estudiantes ", Indicators = indicators2 };
+            context.IndicatorGroups.Add(indicatorGroup2);
+
             context.SaveChanges();
             
             // REGISTRIES 3
@@ -176,8 +182,10 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators3);
-            context.SaveChanges();
+            var indicatorGroup3 = new IndicatorGroup{Name = "Formación de los profecionales extensionistas e integrantes del equipo de gestión, en ámbitos relacionados al extensionismo tecnológicos ", Indicators = indicators3 };
+            context.IndicatorGroups.Add(indicatorGroup3);
 
+            context.SaveChanges();
             var indicators4 = new Indicator[]
             {
                 new Indicator{Name="Número diagnósticos realizados a Pymes"},
@@ -223,13 +231,14 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
             };
 
-            context.Indicators.AddRange(indicators4); context.SaveChanges();
-            context.Indicators.AddRange(indicators5); context.SaveChanges();
-            context.Indicators.AddRange(indicators6); context.SaveChanges();
-            context.Indicators.AddRange(indicators7); context.SaveChanges();
-            context.Indicators.AddRange(indicators8); context.SaveChanges();
-            context.Indicators.AddRange(indicators9); context.SaveChanges();
-            context.Indicators.AddRange(indicators10); context.SaveChanges();
+            context.Indicators.AddRange(indicators4); 
+            context.Indicators.AddRange(indicators5); 
+            context.Indicators.AddRange(indicators6);
+            context.Indicators.AddRange(indicators7); 
+            context.Indicators.AddRange(indicators8); 
+            context.Indicators.AddRange(indicators9); 
+            context.Indicators.AddRange(indicators10); 
+            
 
             // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
