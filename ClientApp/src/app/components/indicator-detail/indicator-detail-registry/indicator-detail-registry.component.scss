@@ -4,12 +4,13 @@
   display: none;
   padding-top: 10px;
 }
-
-
+// This stuff matters!
 .show {
   overflow: hidden;
-  transition: transform 2s ease-out !important;
-  transform: scaleY(1);
+  transition: transform 2s ease-out !important; // note that we're transitioning transform, not height!
+  height: 100%;
+  transform: scaleY(1); // implicit, but good to specify explicitly
+  transform-origin: top; // keep the top of the element in the same place. this is optional.
 }
 
 .card-header {
@@ -18,12 +19,10 @@
   font-size: 14px;
   border: 1px solid #c4c4c4;
   font-weight: bolder;
-  a
 
-{
-  color: black;
-}
-
+  a {
+    color: black;
+  }
 }
 
 .card {
@@ -41,7 +40,7 @@
 
 .value-box {
   height: 1.8em;
-  background: #47b475;
+  //background: #47b475;
   width: 3em;
   padding: 1px;
   text-align: center;
@@ -50,4 +49,10 @@
 .not-bold-but-italic {
   font-weight: lighter;
   font-style: italic;
+}
+
+.btn-size-text {
+  text-transform: uppercase !important;
+  text-align: center;
+  color: #ffffff !important;
 }

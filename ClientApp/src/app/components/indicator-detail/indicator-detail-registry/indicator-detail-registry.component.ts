@@ -3,6 +3,7 @@ import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
 import { RegistryService } from '../../../services/registry/registry.service';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-indicator-detail-registry',
@@ -43,5 +44,4 @@ export class IndicatorDetailRegistryComponent implements OnInit {
       }
     }
   }
-
 }

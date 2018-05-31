@@ -18,13 +18,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
 import { ChartsModule } from 'ng2-charts';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
 import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
-
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
@@ -58,6 +58,7 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
+    FlexLayoutModule,
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },

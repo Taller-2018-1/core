@@ -168,7 +168,7 @@ export class IndicatorDetailComponent implements OnInit {
       const index: number = this.indicator.registries.indexOf(registry);
       if ( index !== -1) {
         this.indicator.registries.splice(index, 1);
-        
+        this.randomize();
       }
     }
     
@@ -340,11 +340,11 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   /* Para actualizar cuando elimine un registro */
-  Actualizar()
+  /*Actualizar()
   {
       window.location.reload(true);
   }
-
+  */
 
 
 
