@@ -326,6 +326,74 @@ namespace think_agro_metrics.Controllers
             return Ok(list);
         }
 
+        // GET: api/Indicators/Calculate/5 // Calculate Indicator with ID 5 for all years
+        [Route("Calculate/{id:long}")]
+        public async Task<ActionResult> CalculateIndicator([FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            _context.Indicators.Include(i => i.Registries).ToList();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/Calculate/5/2018 // Calculate Indicator with ID 5 for a selected year
+        [Route("Calculate/{id:long}/{year:int}")]
+        public async Task<ActionResult> CalculateIndicatorByYear([FromRoute] long id, [FromRoute] int year)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            _context.Indicators.Include(i => i.Registries).ToList();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/Calculate/5/2018/0 // Calculate Indicator with ID 5 for a selected year and selected month
+        [Route("Calculate/{id:long}/{year:int}/{month:int}")]
+        public async Task<ActionResult> CalculateIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            _context.Indicators.Include(i => i.Registries).ToList();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month + 1);
+
+            return Ok(value);
+        }
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]

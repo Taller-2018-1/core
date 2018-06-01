@@ -43,6 +43,7 @@ export class IndicatorDetailComponent implements OnInit {
   
   public indicator$: Observable<Indicator>;
   public goal$: Observable<number>;
+  public value$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
   
@@ -89,6 +90,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = -1; // It's not selected a specific month yet
     this.indicatorGroupName$ = this.indicatorGroupService.getIndicatorGroupName(this.idIndicatorGroup);
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
+    // Calculate indicator
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
 
     this.indicator$.subscribe(
@@ -106,6 +108,7 @@ export class IndicatorDetailComponent implements OnInit {
     if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
         this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
+        // Calculate indicator all years
         this.goal$ = this.service.getGoal(this.idIndicator)//shows all goals
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
@@ -118,6 +121,7 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedYear = year;
         // tslint:disable-next-line:max-line-length
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear); // Show registries from the year selected
+        // Calculate Indicator Selected Year
         this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
         this.setMonths();
         }
@@ -128,6 +132,7 @@ export class IndicatorDetailComponent implements OnInit {
       if (month === IndicatorDetailComponent.ALL_MONTHS) {
         this.selectedMonth = -1; // Not selected a specific month
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
+        // Calculate Indicator All MONTHS
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
         this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
       }
@@ -135,6 +140,7 @@ export class IndicatorDetailComponent implements OnInit {
       else{
         this.setSelectedMonth(month);
         this.indicator$ = this.service.getIndicatorYearMonthRegistries(this.idIndicator, this.selectedYear, this.selectedMonth);
+        // Calculate Indicator selected MONTH
         this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
