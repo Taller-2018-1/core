@@ -37,9 +37,11 @@ export class IndicatorDisplayComponent implements OnInit {
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
 
+  goals$: Observable<number[]>;
+
   constructor(private service: IndicatorGroupService) {
   }
-
+  
   ngOnInit() {
     const currentYear = new Date().getFullYear();
     this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, currentYear);
@@ -60,6 +62,7 @@ export class IndicatorDisplayComponent implements OnInit {
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
     this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
+    this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
   }
 
   // Only specify the year or the month, depending on which one is changed, the other value must be an empty string ('')
@@ -70,6 +73,7 @@ export class IndicatorDisplayComponent implements OnInit {
       // ALL_YEARS selected
       if (year === IndicatorDisplayComponent.ALL_YEARS) {
         this.indicatorResults$ = this.service.calculateIndicatorGroup(this.indicatorGroup.indicatorGroupID); // Calculate for all the years
+        this.goals$ = this.service.getGoals(this.indicatorGroup.indicatorGroupID);
         this.selectedYearText = IndicatorDisplayComponent.ALL_YEARS; // Change the value shown in the dropdown
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1; // Not selected a specific year
@@ -79,6 +83,7 @@ export class IndicatorDisplayComponent implements OnInit {
       else {
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, year); // Calculate for the specific year
+        this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, year);
         this.selectedYearText = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
@@ -94,6 +99,7 @@ export class IndicatorDisplayComponent implements OnInit {
         this.selectedMonth = -1; // Not selected a specific month
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, this.selectedYear); // Calculate for the already selected year
+        this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
         this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // Change the value shown in the dropdown
       }
       // Selected a specific month of the already selected year
@@ -103,6 +109,7 @@ export class IndicatorDisplayComponent implements OnInit {
         // Do the calculation for the already selected year and month
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
+        this.goals$ = this.service.getGoalsYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }
