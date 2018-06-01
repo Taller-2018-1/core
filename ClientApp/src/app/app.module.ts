@@ -15,7 +15,7 @@ import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
-
+import { ChartsModule } from 'ng2-charts';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
@@ -52,6 +52,7 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ChartsModule,
     ModalModule.forRoot(),
 
     RouterModule.forRoot([

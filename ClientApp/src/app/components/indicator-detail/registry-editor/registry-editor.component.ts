@@ -36,8 +36,14 @@ export class RegistryEditorComponent implements OnInit {
     this.editModalRef = null;
   }
 
+  /* Para actualizar cuando registre el indicador */
+  Actualizar()
+  {
+      window.location.reload(true);
+  }
+
   deleteDocument(document: Document) {
-    const result = confirm('Está seguro que desea elimianr el documento: ' + document.documentName);
+    const result = confirm('Está seguro que desea eliminar el documento: ' + document.documentName);
     if (this.registry.documents.length === 1) {
       alert('Debe existir al menos un documento de respaldo para el registro');
       return;

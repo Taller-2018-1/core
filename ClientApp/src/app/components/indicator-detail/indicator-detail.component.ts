@@ -15,6 +15,8 @@ import { Registry } from '../../shared/models/registry';
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
+import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
+import { $ } from 'protractor';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -34,8 +36,9 @@ export class IndicatorDetailComponent implements OnInit {
 
   public indicator: Indicator = new Indicator();
   public idIndicator = -1;
-
+  
   public indicator$: Observable<Indicator>;
+  public goal$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
 
@@ -84,6 +87,16 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = -1; // It's not selected a specific month yet
 
     this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
+    this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+
+    this.indicator$.subscribe(
+      data => {
+        this.indicator = data;
+        this.randomize();
+      }
+    );
+    
+    
   }
 
   selectRegistries(year: any, month: string) {
@@ -91,6 +104,7 @@ export class IndicatorDetailComponent implements OnInit {
     if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
         this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
+        this.goal$ = this.service.getGoal(this.idIndicator)//shows all goals
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
@@ -102,6 +116,7 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedYear = year;
         // tslint:disable-next-line:max-line-length
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear); // Show registries from the year selected
+        this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
         this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
@@ -112,11 +127,13 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedMonth = -1; // Not selected a specific month
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
+        this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
       }
       // tslint:disable-next-line:one-line
       else{
         this.setSelectedMonth(month);
         this.indicator$ = this.service.getIndicatorYearMonthRegistries(this.idIndicator, this.selectedYear, this.selectedMonth);
+        this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }
@@ -141,7 +158,14 @@ export class IndicatorDetailComponent implements OnInit {
         },
         err => console.error(err)
       );
+
+      const index: number = this.indicator.registries.indexOf(registry);
+      if ( index !== -1) {
+        this.indicator.registries.splice(index, 1);
+        
+      }
     }
+    
   }
 
   private deleteDocument(registry: Registry, document: Document) {
@@ -212,5 +236,112 @@ export class IndicatorDetailComponent implements OnInit {
   setSelectedMonth(month: string) {
     this.selectedMonth = Months[month];
   }
+
+  // lineChart
+  public lineChartData:Array<any> = [
+    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'}
+  ];
+  public lineChartLabels:Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  public lineChartOptions:any = {
+    responsive: true,
+    elements:{
+      point:{
+        radius: 5,
+        hitRadius: 5,
+        hoverRadius: 7,
+        hoverBorderWidth: 2
+      }
+    }
+  };
+  public lineChartColors:Array<any> = [
+    { // grey
+      backgroundColor: 'rgba(144,188,36,0.4)',
+      borderColor: 'rgba(0,149,58,1)',
+      pointBackgroundColor: 'rgba(0,149,58,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+   
+  ];
+  public lineChartLegend:boolean = true;
+  public lineChartType:string = 'line';
+ 
+  public randomize() {
+    
+    
+
+    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+    _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
+    
+    let cantidad = 0;
+    let cantidadAcumulada = 0;
+    let monthMin = 0;
+
+    /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
+    for (let i = 0; i < 12; i++) 
+    {
+      _lineChartData[0].data[i] = 0;
+    }
+    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
+    
+    /* Ingreso de datos al arreglo provisorio de meses */
+    //console.log("largo" + this.indicator.registries.length);
+    for(let i=0; i<this.indicator.registries.length; i++)
+    {
+      let date: Date = new Date(this.indicator.registries[i].date);
+      let month = date.getMonth();
+      //console.log("entre ctm !!!!:   " + month);
+      /* if si el registro es de cantidad */
+      if(this.indicator.registriesType==2)
+      {
+        cantidad = this.indicator.registries[i].quantity;
+        //console.log("Cantidad : "+cantidad);
+
+        for (let j = 0; j < 12; j++) 
+        {
+          if(j>=month)
+          {
+            _lineChartData[0].data[j] += cantidad;
+          }     
+        } 
+      }
+      else //caso contrario si el registro es default o algun otro que no sea cantidad
+      {
+        cantidad = 1; 
+        for (let j = 0; j < 12; j++) 
+        {
+          if(j>=month)
+          {
+            _lineChartData[0].data[j] += cantidad;
+          } 
+        }
+      }
+    }  
+        
+    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
+    //console.log("largo registro: "+this.indicator.registries.length);
+    //window.location.reload(true);
+  }
+ 
+  // events
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+ 
+  public chartHovered(e:any):void {
+    console.log(e);
+  }
+
+  /* Para actualizar cuando elimine un registro */
+  Actualizar()
+  {
+      window.location.reload(true);
+  }
+
+
+
+
+
 }
 
