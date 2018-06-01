@@ -46,13 +46,15 @@ export class RegistryService {
     if (type === 0) {
       discriminator = RegistryService.DEFAULT;
     } else if (type === 1) {
-      discriminator = RegistryService.QUANTITY;
+      discriminator = RegistryService.LINK;
     } else if (type === 2) {
-      discriminator = RegistryService.PERCENT;
+      discriminator = RegistryService.QUANTITY;
     } else if (type === 3) {
-      alert('Tipo no definido'); // LinkRegistry and ActivityRegistry types aren't defined yet - link is 3 or 4?
+      discriminator = RegistryService.ACTIVITY;
+      //alert('Tipo no definido'); // LinkRegistry and ActivityRegistry types aren't defined yet - link is 3 or 4?
     } else if (type === 4) {
-      alert ('Tipo no definido');
+      //alert ('Tipo no definido');
+      discriminator = RegistryService.PERCENT;
     }
 
     return this.http.put<Registry>(RegistryService.BASE_URL + discriminator + registry.registryID , registry, { headers: headers })
