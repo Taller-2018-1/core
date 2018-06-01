@@ -32,15 +32,13 @@ export class FileDocumentFormComponent implements OnInit {
     console.log(this.model);
     this.model.extension = "file";
     this.RegistryService.addFileDocument(this.model, this.idRegistry);
-    //this.registry.documents.push(this.model);
     this.closeModal();
-    this.router.navigateByUrl('/registry/' + this.idRegistry);
   }
 
   upload(files) {
     if (files.length === 0)
       return;
-
+    
     const formData = new FormData();
 
     for (let file of files)
@@ -54,11 +52,8 @@ export class FileDocumentFormComponent implements OnInit {
       if (event.type === HttpEventType.UploadProgress)
         this.progress = Math.round(100 * event.loaded / event.total);
       else if (event.type === HttpEventType.Response)
-        this.message = event.body.toString();
+        this.registry.documents.push(new Document().fromJSON(event.body));
     });
-
-    this.router.navigateByUrl("/registry/" + this.registry.registryID);
-    window.location.reload(true);
   }
 
   closeModal() {

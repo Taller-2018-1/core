@@ -417,7 +417,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD FileDocument: api/Registries/5/AddFileDocument
         [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
-        public ActionResult AddFileDocument([FromRoute] long id)
+        public async Task<IActionResult> AddFileDocument([FromRoute] long id)
         {
             try
             {
@@ -431,11 +431,18 @@ namespace think_agro_metrics.Controllers
                 _context.Entry(registry).State = EntityState.Modified;
                 _context.SaveChanges();
 
-                return Json("Upload Successful.");
+				var response = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+
+				if (response == null)
+				{
+					return NotFound();
+				}
+
+				return Ok(response);
             }
             catch (System.Exception ex)
             {
-                return Json("Upload Failed: " + ex.Message);
+				throw ex;
             }
         }
 
