@@ -24,11 +24,14 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups
         [HttpGet]
-        public IEnumerable<IndicatorGroup> GetIndicatorGroups()
+        public async Task<IActionResult> GetIndicatorGroups()
         {
-            _context.IndicatorGroups.Include(x => x.Indicators).
-                ThenInclude(x => x.Goals).ToList();
-            return _context.IndicatorGroups;
+            var indicatorGroups = await _context.IndicatorGroups
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Goals)
+                .ToListAsync();
+
+            return Ok(indicatorGroups);
         }
 
         // GET: api/IndicatorGroups/5
@@ -40,12 +43,11 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var indicatorGroupQuery = _context.IndicatorGroups.Where(x => x.IndicatorGroupID == id);
-
-            await indicatorGroupQuery.Include(x => x.Indicators).
-                ThenInclude(x => x.Goals).ToListAsync();
-
-            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
+            var indicatorGroup = await _context.IndicatorGroups
+                .Where(g => g.IndicatorGroupID == id)
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Goals)
+                .SingleAsync();            
 
             if (indicatorGroup == null)
             {
@@ -64,7 +66,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
             
-            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(x => x.IndicatorGroupID == id);
+            var indicatorGroup = await _context.IndicatorGroups.SingleAsync(x => x.IndicatorGroupID == id);
 
             if (indicatorGroup == null)
             {
@@ -155,12 +157,11 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the IndicatorGroups with its Indicators and Registries
-            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
-
-            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
-            await indicatorGroupQuery.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToListAsync();
-            
+            var indicatorGroup = await _context.IndicatorGroups
+                .Where(g => g.IndicatorGroupID == id)
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Registries)
+                .SingleAsync();            
             
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -192,11 +193,11 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the IndicatorGroups with its Indicators and Registries
-            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
-
-            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
-            await indicatorGroupQuery.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToListAsync();
+            var indicatorGroup = await _context.IndicatorGroups
+                .Where(g => g.IndicatorGroupID == id)
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Registries)
+                .SingleAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -227,12 +228,15 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators and Registries
-            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
 
-            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
-            await indicatorGroupQuery.Include(x => x.Indicators)
-                .ThenInclude(x => x.Registries).ToListAsync();
+            // Load from the DB the IndicatorGroups with its Indicators and Registries
+            var indicatorGroup = await _context.IndicatorGroups
+                .Where(g => g.IndicatorGroupID == id)
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Registries)
+                .SingleAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -247,7 +251,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month + 1)); // The month in Angular starts in 0 and in C# starts in 1
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month));
             }
 
             // Return the list with the results
@@ -263,15 +267,14 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the IndicatorGroups with its Indicators and Goals
-            var indicatorGroupQuery = _context.IndicatorGroups.Where(g => g.IndicatorGroupID == id);
+            // Load from the DB the Indicators 
+            var indicators = await _context.Indicators
+                .Where(i => i.IndicatorGroupID == id)
+                .Include(i => i.Goals)
+                .ToListAsync();            
 
-            var indicatorGroup = await indicatorGroupQuery.SingleAsync();
-            await indicatorGroupQuery.Include(x => x.Indicators)
-                .ThenInclude(x => x.Goals).ToListAsync();
-
-            // If the specified indicator group doesn't exist, show NotFound
-            if (indicatorGroup == null)
+            // If the specified indicator group don't have indicators, show NotFound
+            if (!indicators.Any())
             {
                 return NotFound();
             }
@@ -280,7 +283,7 @@ namespace think_agro_metrics.Controllers
             List<double> list = new List<double>();
 
             // Sum the goals of every indicator of the group
-            foreach (Indicator indicator in indicatorGroup.Indicators)
+            foreach (Indicator indicator in indicators)
             {
                 double sum = 0;
                 foreach (Goal goal in indicator.Goals)
@@ -305,12 +308,13 @@ namespace think_agro_metrics.Controllers
             }
 
             // Load from the DB the Indicators 
-            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorGroupID == id);
+            var indicators = await _context.Indicators
+                .Where(i => i.IndicatorGroupID == id)
+                .Include(i => i.Goals)
+                .ToListAsync();
 
-            var indicators = await indicatorQuery.Include(i => i.Goals).ToListAsync();
-
-            // If the specified indicator doesn't exist, show NotFound
-            if (indicators == null)
+            // If the specified indicator group don't have indicators, show NotFound
+            if (!indicators.Any())
             {
                 return NotFound();
             }
@@ -341,13 +345,17 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
+
             // Load from the DB the Indicators 
-            var indicatorQuery = _context.Indicators.Where(i => i.IndicatorGroupID == id);
+            var indicators = await _context.Indicators
+                .Where(i => i.IndicatorGroupID == id)
+                .Include(i => i.Goals)
+                .ToListAsync();
 
-            var indicators = await indicatorQuery.Include(i => i.Goals).ToListAsync();
-
-            // If the specified indicator doesn't exist, show NotFound
-            if (indicators == null)
+            // If the specified indicator group don't have indicators, show NotFound
+            if (!indicators.Any())
             {
                 return NotFound();
             }
@@ -358,7 +366,7 @@ namespace think_agro_metrics.Controllers
             {
                 foreach (Goal goal in indicator.Goals)
                 {
-                    if (goal.Year == year && goal.Month == month+1)
+                    if (goal.Year == year && goal.Month == month)
                     {
                         list.Add(goal.Value);
                         continue;

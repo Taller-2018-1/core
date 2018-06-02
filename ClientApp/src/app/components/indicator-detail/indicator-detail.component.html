@@ -20,10 +20,10 @@
               <div class="col-sm-6">
                 <div class="inline" style="text-align: center;">Valor Indicador</div>
                 <div class="row-number row-h1 inline" *ngIf="value$ | async as value else zero;">
-                  <div *ngIf="indicator.registriesType == 4">
+                  <div *ngIf="indicator.registriesType == 2">
                     {{ value }}%
                   </div>
-                  <div *ngIf="indicator.registriesType != 4">
+                  <div *ngIf="indicator.registriesType != 2">
                     {{ value }}
                   </div>
                 </div>
@@ -183,10 +183,10 @@
 
   <ng-template #zero>
     <div class="row-number row-h1 inline">
-      <div *ngIf="indicator.registriesType == 4">
+      <div *ngIf="indicator.registriesType == 2">
         0%
       </div>
-      <div *ngIf="indicator.registriesType != 4">
+      <div *ngIf="indicator.registriesType != 2">
         0
       </div>
     </div>

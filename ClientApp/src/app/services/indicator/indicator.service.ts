@@ -15,7 +15,7 @@ export class IndicatorService {
 
   public static INDICATORS_API = '/api/Indicators/';
   public static GOALS_API = '/api/Indicators/Goals/';
-  public static CALCULATE_API = 'api/Indicators/Calculate/'
+  public static CALCULATE_API = '/api/Indicators/Calculate/';
   public static REGISTRIES_API = '/api/Registries/';
   public static PERCENT_REGISTRY = '/PercentRegistry';
   public static QUANTITY_REGISTRY = '/QuantityRegistry';
