@@ -29,6 +29,9 @@ import { RegistryEditorComponent } from './components/indicator-detail/registry-
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
+import { AuthService } from './services/auth/AuthService';
+import { CanActivateUser } from './services/auth/CanActivateService';
+import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +47,10 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
-    ResultHomeComponent,
     IndicatorGraphOptionComponent,
-    IndicatorDetailRegistryComponent
+    IndicatorDetailRegistryComponent,
+    ResultHomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -66,11 +70,11 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'home',        component: ResultHomeComponent },
-      { path: '',            component: ResultHomeComponent },
+      { path: '',            component: WelcomeComponent },
       { path: '**',          component: ResultHomeComponent },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
