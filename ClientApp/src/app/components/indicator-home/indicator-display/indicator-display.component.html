@@ -62,8 +62,8 @@
                     <div class="fact">
 
                       <div *ngIf="goals$ | async as goals">
-                        <div *ngIf="indicator.type == 2; else noPercent">
-                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%/{{ goals[i] | number:'.0-2' }}</span>
+                        <div *ngIf="indicator.registriesType == 2; else noPercent">
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%/{{ goals[i] | number:'.0-2' }}%</span>
                         </div>
                         <ng-template #noPercent>
                           <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}/{{ goals[i] | number:'.0-2' }}</span>

@@ -17,9 +17,7 @@ export class IndicatorService {
   public static GOALS_API = '/api/Indicators/Goals/';
   public static REGISTRIES_API = '/api/Registries/';
   public static PERCENT_REGISTRY = '/PercentRegistry';
-  public static ACTIVITY_REGISTRY = '/ActivityRegistry';
   public static QUANTITY_REGISTRY = '/QuantityRegistry';
-  public static LINK_REGISTRY = '/LinkRegistry';
   public static DEFAULT_REGISTRY = '/DefaultRegistry/';
 
   constructor(public http: HttpClient) { }
@@ -59,10 +57,6 @@ export class IndicatorService {
         discriminator = IndicatorService.QUANTITY_REGISTRY;
     } else if (registriesType === 'PercentRegistry') {
         discriminator = IndicatorService.PERCENT_REGISTRY;
-    } else if (registriesType === 'ActivityRegistry') {
-        discriminator = IndicatorService.ACTIVITY_REGISTRY;
-    } else if (registriesType === 'LinkRegistry') {
-        discriminator = IndicatorService.LINK_REGISTRY;
     }
     this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
         + discriminator, registry).subscribe();

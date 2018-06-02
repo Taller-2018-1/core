@@ -13,8 +13,6 @@ namespace think_agro_metrics.Models
             foreach (Registry registry in registries) {
                 if(registry is QuantityRegistry)
                     sum += (registry as QuantityRegistry).Quantity;
-                else if(registry is ActivityRegistry)
-                    sum += (registry as ActivityRegistry).Quantity;
                 else
                     throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
             }
@@ -28,8 +26,6 @@ namespace think_agro_metrics.Models
                 if(registry.Date.Year == year) {
                     if(registry is QuantityRegistry)
                         sum += (registry as QuantityRegistry).Quantity;
-                    else if (registry is ActivityRegistry)
-                        sum += (registry as ActivityRegistry).Quantity;
                     else
                         throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
                 }
@@ -44,8 +40,6 @@ namespace think_agro_metrics.Models
                 if(registry.Date.Year == year && registry.Date.Month == month) {
                     if(registry is QuantityRegistry)
                         sum += (registry as QuantityRegistry).Quantity;
-                    else if(registry is ActivityRegistry)
-                        sum += (registry as ActivityRegistry).Quantity;
                     else
                         throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
                 }

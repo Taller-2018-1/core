@@ -29,7 +29,6 @@ namespace think_agro_metrics.Controllers
             _context.Indicators.Include(x => x.Registries)
                 .ThenInclude(x => x.Documents).ToList();
             _context.Indicators.Include(x => x.Goals).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
             return _context.Indicators;
         }
 
@@ -47,7 +46,6 @@ namespace think_agro_metrics.Controllers
             await indicatorQuery.Include(x => x.Registries)
                 .ThenInclude(x => x.Documents).ToListAsync();
             await _context.Indicators.Include(x => x.Goals).ToListAsync();
-            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             var indicator = await indicatorQuery.SingleAsync();
 
@@ -77,10 +75,9 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
-            // Include Registries and Documents and Links
+            // Include Registries and Documents
             _context.Indicators.Include(x => x.Registries)
                 .ThenInclude(x => x.Documents).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
 
             List<Registry> registries = new List<Registry>();
 
@@ -120,7 +117,6 @@ namespace think_agro_metrics.Controllers
 
             var indicator = await indicatorQuery.SingleAsync();
             var registries = await registriesQuery.Include(r => r.Documents).ToListAsync();
-            await _context.LinkRegistries.Include(x => x.Links).ToListAsync();
 
             indicator.Registries = registries;
 
@@ -227,9 +223,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
+            // Load from the DB the Indicators with its Registries
             _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
             List<Indicator> indicators = new List<Indicator>();
@@ -263,9 +258,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
+            // Load from the DB the Indicators with its Registries
             _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
             List<Indicator> indicators = new List<Indicator>();
@@ -299,9 +293,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
+            // Load from the DB the Indicators with its Registries
             _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
 
             // Obtain the Indicators
             List<Indicator> indicators = new List<Indicator>();

@@ -33,7 +33,7 @@ export class IndicatorGroupService {
   }
 
   calculateIndicatorGroupYearMonth(indicatorGroup: number, year: number, month: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroup + '/' + year + '/' + month);
+    return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup + '/' + year + '/' + month);
   }
 
   getGoals(indicatorGroupId: number): Observable<number[]> {

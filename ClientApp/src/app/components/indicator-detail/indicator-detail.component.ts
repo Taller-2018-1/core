@@ -250,7 +250,7 @@ export class IndicatorDetailComponent implements OnInit {
       let month = date.getMonth();
       //console.log("entre ctm !!!!:   " + month);
       /* if si el registro es de cantidad */
-      if(this.indicator.registriesType==2)
+      if(this.indicator.registriesType === 1)
       {
         cantidad = this.indicator.registries[i].quantity;
         //console.log("Cantidad : "+cantidad);

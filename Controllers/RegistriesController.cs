@@ -152,76 +152,6 @@ namespace think_agro_metrics.Controllers
             return Ok();
         }
 
-        // PUT: api/Registries/LinkRegistry/5
-        [HttpPut("LinkRegistry/{id}")]
-        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] LinkRegistry registry)
-        {   
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != registry.RegistryID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(registry).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
-        // PUT: api/Registries/ActivityRegistry/5
-        [HttpPut("ActivityRegistry/{id}")]
-        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] ActivityRegistry registry)
-        {   
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != registry.RegistryID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(registry).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
        // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/DefaultRegistry")]
         public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
@@ -336,42 +266,6 @@ namespace think_agro_metrics.Controllers
             return NoContent();
         }
 
-        // ADD REGISTRY: api/Indicators/5/AddRegistry
-        [HttpPost("{indicatorId}/LinkRegistry")]
-        public async Task<IActionResult> LinkRegistry([FromRoute] long indicatorId,
-            [FromBody] LinkRegistry registry)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
-            //Registry registry = new DefaultRegistry();
-            //registry.Name = name;
-
-            indicator.Registries.Add(registry);
-
-            _context.Entry(indicator).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!IndicatorExists(indicatorId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // DELETE: api/Registries/Documents/5
         [HttpDelete("Documents/{id}")]

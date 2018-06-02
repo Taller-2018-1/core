@@ -13,8 +13,6 @@ export class RegistryService {
   private static DEFAULT = 'DefaultRegistry/';
   private static QUANTITY = 'QuantityRegistry/';
   private static PERCENT = 'PercentRegistry/';
-  private static LINK = 'LinkRegistry/';
-  private static ACTIVITY = 'ActivityRegistry/';
   public static REGISTRIES_API = '/api/Registries/';
   public static ADD_FILE_DOCUMENT_METHOD = '/AddFileDocument';
   public static ADD_LINK_DOCUMENT_METHOD = '/AddLinkDocument';
@@ -38,22 +36,16 @@ export class RegistryService {
   }*/
 
 
-  editRegistry(registry: Registry, type: number): Observable<Registry> {
+  editRegistry(registry: Registry, registriesType: number): Observable<Registry> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json');
 
     let discriminator: string = RegistryService.DEFAULT;
-    if (type === 0) {
+    if (registriesType === 0) {
       discriminator = RegistryService.DEFAULT;
-    } else if (type === 1) {
-      discriminator = RegistryService.LINK;
-    } else if (type === 2) {
+    } else if (registriesType === 1) {
       discriminator = RegistryService.QUANTITY;
-    } else if (type === 3) {
-      discriminator = RegistryService.ACTIVITY;
-      //alert('Tipo no definido'); // LinkRegistry and ActivityRegistry types aren't defined yet - link is 3 or 4?
-    } else if (type === 4) {
-      //alert ('Tipo no definido');
+    } else if (registriesType === 2) {
       discriminator = RegistryService.PERCENT;
     }
 
