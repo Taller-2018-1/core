@@ -235,3 +235,6 @@ _Pvt_Extensions
 # MacOSX
 **/*.DS_Store
 **/*node_modules
+
+#Die core.sln
+core.sln
