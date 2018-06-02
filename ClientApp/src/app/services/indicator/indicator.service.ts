@@ -15,6 +15,7 @@ export class IndicatorService {
 
   public static INDICATORS_API = '/api/Indicators/';
   public static GOALS_API = '/api/Indicators/Goals/';
+  public static CALCULATE_API = 'api/Indicators/Calculate/'
   public static REGISTRIES_API = '/api/Registries/';
   public static PERCENT_REGISTRY = '/PercentRegistry';
   public static ACTIVITY_REGISTRY = '/ActivityRegistry';
@@ -34,6 +35,18 @@ export class IndicatorService {
 
   getIndicatorYearMonthRegistries(indicatorId: number, year: number, month: number): Observable<Indicator> {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId + '/' + year + '/' + month);
+  }
+
+  getIndicatorValue(indicatorId: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId);
+  }
+
+  getIndicatorValueYear(indicatorId: number, year: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId + '/' + year);
+  }
+
+  getIndicatorValueYearMonth(indicatorId: number, year: number, month: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId + '/' + year + '/' + month);
   }
 
   getGoal(indicatorId: number): Observable<number>

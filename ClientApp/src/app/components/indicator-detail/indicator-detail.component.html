@@ -19,13 +19,18 @@
             <div class="head-title">
               <div class="col-sm-6">
                 <div class="inline" style="text-align: center;">Valor Indicador</div>
-                <div class="row-number row-h1 inline">
-                  %%
+                <div class="row-number row-h1 inline" *ngIf="value$ | async as value else zero;">
+                  <div *ngIf="indicator.registriesType == 4">
+                    {{ value }}%
+                  </div>
+                  <div *ngIf="indicator.registriesType != 4">
+                    {{ value }}
+                  </div>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="inline" style="text-align: center;">Valor Meta</div>
-                <div class="row-number row-h1" *ngIf="goal$ | async as goal">
+                <div class="row-number row-h1" *ngIf="goal$ | async as goal else na;">
                   {{ goal }}
                 </div>
               </div>
@@ -112,26 +117,24 @@
         </div>
         <!-- end row -->
         <!--graph row ======================================== -->
-        
         <!-- end row -->
         <!--details files row ======================================== -->
-        
+
         <div class="row">
           <div class="col-md-11">
             <div style="display: block;">
-            <canvas baseChart width="900" height="500"
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [options]="lineChartOptions"
-                        [colors]="lineChartColors"
-                        [legend]="lineChartLegend"
-                        [chartType]="lineChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
-            </canvas>
+              <canvas baseChart width="900" height="500"
+                      [datasets]="lineChartData"
+                      [labels]="lineChartLabels"
+                      [options]="lineChartOptions"
+                      [colors]="lineChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"></canvas>
             </div>
           </div>
-      </div>
+        </div>
 
         <div class="row">
           <div class="col-md-12 pad-bt-60">
@@ -176,8 +179,24 @@
     </div>
   </ng-template>
 
+  <!--UX-->
 
+  <ng-template #zero>
+    <div class="row-number row-h1 inline">
+      <div *ngIf="indicator.registriesType == 4">
+        0%
+      </div>
+      <div *ngIf="indicator.registriesType != 4">
+        0
+      </div>
+    </div>
+  </ng-template>
 
+  <ng-template #na>
+    <div class="row-number row-h1 inline">
+      N/A
+    </div>
+  </ng-template>
 
 </div>
 
@@ -239,3 +258,4 @@
 <ng-template #noRegistries>
   <h2>Aún no se han cargado registros.</h2>
 </ng-template>
+
