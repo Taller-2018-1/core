@@ -1,5 +1,6 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
+  {{ this.showGraph(indicator) }}
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">

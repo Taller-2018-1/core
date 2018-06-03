@@ -18,12 +18,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class IndicatorDetailRegistryComponent implements OnInit {
 
-  customClass: string = "card-header";
+  customClass = 'card-header';
 
   @Input()
   public registries: Registry[];
-
-
 
   @Input()
   public registriesType: number;
@@ -60,12 +58,20 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     }
   }
 
-  openModalEditRegistry(template: TemplateRef<any>, selectedRegistry: Registry) {
+  openModalEditRegistry($event: any, template: TemplateRef<any>, selectedRegistry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
     this.registry = selectedRegistry;
     this.editModalRef = this.modalService.show(template);
   }
 
-  private deleteRegistry(registry: Registry) {
+  private deleteRegistry($event: any, registry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
     const date: Date = new Date(registry.date);
     const formatedDate: string = date.getDate() + '-' + (+date.getMonth() + 1) + '-' + date.getFullYear();
     const result = confirm('Está seguro que desea eliminar el registro: \n' + formatedDate + ' - ' + registry.name);
@@ -75,11 +81,9 @@ export class IndicatorDetailRegistryComponent implements OnInit {
         data => {
           const index = this.registries.indexOf(registry);
           this.registries.splice(index, 1);
-          window.location.reload(true);
         },
         err => console.error(err)
       );
-      
     }
   }
 }

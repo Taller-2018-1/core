@@ -38,15 +38,14 @@ export class IndicatorDetailComponent implements OnInit {
   private idIndicatorGroup: number;
   public indicatorGroupName$: Observable<string>;
 
-  public indicator: Indicator = new Indicator();
   public idIndicator = -1;
-  
+
   public indicator$: Observable<Indicator>;
   public goal$: Observable<number>;
   public value$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
-  
+
   allYears: string = IndicatorDetailComponent.ALL_YEARS;
   selectedYearText: string; // Dropdown year "Año 2018"
   selectedYear: number; // Numeric value for selectionYear
@@ -58,6 +57,38 @@ export class IndicatorDetailComponent implements OnInit {
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
+
+    // lineChart
+    public lineChartData: Array<any> = [
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'}
+    ];
+
+    public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+      'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    public lineChartOptions: any = {
+      responsive: true,
+      elements: {
+        point: {
+          radius: 5,
+          hitRadius: 5,
+          hoverRadius: 7,
+          hoverBorderWidth: 2
+        }
+      }
+    };
+    public lineChartColors: Array<any> = [
+      { // grey
+        backgroundColor: 'rgba(144,188,36,0.4)',
+        borderColor: 'rgba(0,149,58,1)',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      }
+
+    ];
+    public lineChartLegend = true;
+    public lineChartType = 'line';
 
 
   constructor(private service: IndicatorService,
@@ -94,14 +125,6 @@ export class IndicatorDetailComponent implements OnInit {
     this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
 
-    this.indicator$.subscribe(
-      data => {
-        this.indicator = data;
-        this.randomize();
-      }
-    );
-    
-    
   }
 
   selectRegistries(year: any, month: string) {
@@ -111,7 +134,7 @@ export class IndicatorDetailComponent implements OnInit {
         this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
         // Calculate indicator all years
         this.value$ = this.service.getIndicatorValue(this.idIndicator);
-        this.goal$ = this.service.getGoal(this.idIndicator)//shows all goals
+        this.goal$ = this.service.getGoal(this.idIndicator); // shows all goals
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
@@ -151,7 +174,7 @@ export class IndicatorDetailComponent implements OnInit {
       }
     }
   }
-  
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
@@ -199,108 +222,63 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = Months[month];
   }
 
-  // lineChart
-  public lineChartData:Array<any> = [
-    {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'}
-  ];
-  public lineChartLabels:Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  public lineChartOptions:any = {
-    responsive: true,
-    elements:{
-      point:{
-        radius: 5,
-        hitRadius: 5,
-        hoverRadius: 7,
-        hoverBorderWidth: 2
-      }
-    }
-  };
-  public lineChartColors:Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(144,188,36,0.4)',
-      borderColor: 'rgba(0,149,58,1)',
-      pointBackgroundColor: 'rgba(0,149,58,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-   
-  ];
-  public lineChartLegend:boolean = true;
-  public lineChartType:string = 'line';
- 
-  public randomize() {
-    
-    
+  public showGraph(indicator: Indicator) {
 
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+    const _lineChartData: Array<any> = new Array(this.lineChartData.length);
     _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
-    
+
     let cantidad = 0;
-    let cantidadAcumulada = 0;
-    let monthMin = 0;
+    const cantidadAcumulada = 0;
+    const monthMin = 0;
 
     /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
-    for (let i = 0; i < 12; i++) 
-    {
+    for (let i = 0; i < 12; i++) {
       _lineChartData[0].data[i] = 0;
     }
-    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
-    
-    /* Ingreso de datos al arreglo provisorio de meses */
-    //console.log("largo" + this.indicator.registries.length);
-    for(let i=0; i<this.indicator.registries.length; i++)
-    {
-      let date: Date = new Date(this.indicator.registries[i].date);
-      let month = date.getMonth();
-      //console.log("entre ctm !!!!:   " + month);
-      /* if si el registro es de cantidad */
-      if(this.indicator.registriesType === 1)
-      {
-        cantidad = this.indicator.registries[i].quantity;
-        //console.log("Cantidad : "+cantidad);
 
-        for (let j = 0; j < 12; j++) 
-        {
-          if(j>=month)
-          {
+    this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
+
+    /* Ingreso de datos al arreglo provisorio de meses */
+    // console.log("largo" + this.indicator.registries.length);
+    for (let i = 0; i < indicator.registries.length; i++) {
+      const date: Date = new Date(indicator.registries[i].date);
+      const month = date.getMonth();
+      // console.log("entre ctm !!!!:   " + month);
+      /* if si el registro es de cantidad */
+      if (indicator.registriesType === 1) {
+        cantidad = indicator.registries[i].quantity;
+        // console.log("Cantidad : "+cantidad);
+
+        for (let j = 0; j < 12; j++) {
+          if (j >= month) {
             _lineChartData[0].data[j] += cantidad;
-          }     
-        } 
-      }
-      else //caso contrario si el registro es default o algun otro que no sea cantidad
-      {
-        cantidad = 1; 
-        for (let j = 0; j < 12; j++) 
-        {
-          if(j>=month)
-          {
+          }
+        }
+      } else { // c aso contrario si el registro es default o algun otro que no sea cantidad
+        cantidad = 1;
+        for (let j = 0; j < 12; j++) {
+          if (j >= month) {
             _lineChartData[0].data[j] += cantidad;
-          } 
+          }
         }
       }
-    }  
-        
-    this.lineChartData = _lineChartData;//se ingresa los datos del arreglo provisorio al arreglo de meses original
-    //console.log("largo registro: "+this.indicator.registries.length);
-    //window.location.reload(true);
+    }
+
+    this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
+    // console.log("largo registro: "+this.indicator.registries.length);
+    // window.location.reload(true);
   }
- 
+
   // events
-  public chartClicked(e:any):void {
-    console.log(e);
-  }
- 
-  public chartHovered(e:any):void {
+  public chartClicked(e: any): void {
     console.log(e);
   }
 
-  /* Para actualizar cuando elimine un registro */
-  Actualizar()
-  {
-      window.location.reload(true);
+  public chartHovered(e: any): void {
+    console.log(e);
   }
-  
+
+
 
 }
 
