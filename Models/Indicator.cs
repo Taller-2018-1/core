@@ -20,6 +20,7 @@ namespace think_agro_metrics.Models
         public long IndicatorID { get; set; }
         public long IndicatorGroupID { get; set; }
         public string Name { get; set; }
+        public string RegistriesName { get; set; }
         public ICollection<Registry> Registries { get; set; }
         public ICollection<Goal> Goals { get; set; }
         
@@ -30,14 +31,13 @@ namespace think_agro_metrics.Models
             }
             set {
                 registriesType = value;
-                if (registriesType == RegistryType.QuantityRegistry
-                    || registriesType == RegistryType.ActivityRegistry) {
+                if (registriesType == RegistryType.QuantityRegistry) {
                     this.IndicatorCalculator = new QuantityIndicatorCalculator();
                 }
                 else if (registriesType == RegistryType.PercentRegistry) {
                     this.IndicatorCalculator = new PercentIndicatorCalculator();
                 }
-                else { //Default and Link Registries
+                else if (registriesType == RegistryType.DefaultRegistry) {
                     this.IndicatorCalculator = new DefaultIndicatorCalculator();
                 }
 

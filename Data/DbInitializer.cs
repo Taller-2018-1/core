@@ -137,11 +137,14 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Número de nuevas entidades internacionales vinculadas al CET", Registries = registries1a, Goals = goals1a},
                 new Indicator{Name="Número de nuevas entidades nacionales vinculadas al CET", Registries = registries1b, Goals = goals1b},
                 new Indicator{Name="Número de empresas participantes en actividades de capacitación asociativas", Registries = registries1c, Goals = goals1c, RegistriesType = RegistryType.QuantityRegistry},
-                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d, Goals = goals1d, RegistriesType = RegistryType.LinkRegistry},
+                new Indicator{Name="Número de apariciones en prensa digital y escrita", Registries = registries1d, Goals = goals1d},
                 new Indicator{Name="Número de actividades de difusión en la que el CET participa", Registries = registries1e, Goals = goals1e}
             };
 
             context.Indicators.AddRange(indicators1);
+            var indicatorGroup1 = new IndicatorGroup{Name = "Vinculación con entidades nacionales e internacionales ", Indicators = indicators1 };
+            context.IndicatorGroups.Add(indicatorGroup1);
+
             context.SaveChanges();
 
             // REGISTRIES 2
@@ -159,6 +162,9 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators2);
+            var indicatorGroup2 = new IndicatorGroup{Name = "Vinculación con academicos y estudiantes ", Indicators = indicators2 };
+            context.IndicatorGroups.Add(indicatorGroup2);
+
             context.SaveChanges();
             
             // REGISTRIES 3
@@ -176,8 +182,10 @@ namespace think_agro_metrics.Data
             };
 
             context.Indicators.AddRange(indicators3);
-            context.SaveChanges();
+            var indicatorGroup3 = new IndicatorGroup{Name = "Formación de los profecionales extensionistas e integrantes del equipo de gestión, en ámbitos relacionados al extensionismo tecnológicos ", Indicators = indicators3 };
+            context.IndicatorGroups.Add(indicatorGroup3);
 
+            context.SaveChanges();
             var indicators4 = new Indicator[]
             {
                 new Indicator{Name="Número diagnósticos realizados a Pymes"},
@@ -223,20 +231,18 @@ namespace think_agro_metrics.Data
                 new Indicator{Name="Porcentaje de aumento de inversión de los clientes asesorados"}
             };
 
-            context.Indicators.AddRange(indicators4); context.SaveChanges();
-            context.Indicators.AddRange(indicators5); context.SaveChanges();
-            context.Indicators.AddRange(indicators6); context.SaveChanges();
-            context.Indicators.AddRange(indicators7); context.SaveChanges();
-            context.Indicators.AddRange(indicators8); context.SaveChanges();
-            context.Indicators.AddRange(indicators9); context.SaveChanges();
-            context.Indicators.AddRange(indicators10); context.SaveChanges();
+            context.Indicators.AddRange(indicators4); 
+            context.Indicators.AddRange(indicators5); 
+            context.Indicators.AddRange(indicators6);
+            context.Indicators.AddRange(indicators7); 
+            context.Indicators.AddRange(indicators8); 
+            context.Indicators.AddRange(indicators9); 
+            context.Indicators.AddRange(indicators10); 
+            
 
             // INDICATOR GROUPS
             var indicatorGroups = new IndicatorGroup[]
             {
-                new IndicatorGroup{Name="Vinculación con entidades nacionales e internacionales", Indicators=indicators1},
-                new IndicatorGroup{Name="Vinculación con académicos y estudiantes", Indicators=indicators2},
-                new IndicatorGroup{Name="Formación de los profesionales extensionistas e integrantes del equipo de gestión, en ámbitos relacionados al extensionismo tecnológico", Indicators=indicators3},
                 new IndicatorGroup{Name="Prestación de servicios de extensionismo tecnológico a empresas", Indicators=indicators4},
                 new IndicatorGroup{Name="Satisfacción de empresas por servicios prestados", Indicators=indicators5},
                 new IndicatorGroup{Name="Estimación del aumento de productividad en empresas", Indicators=indicators6},
@@ -896,18 +902,6 @@ namespace think_agro_metrics.Data
 
         private static Registry[] CreateRegistries1D(DataContext context)
         {
-            LinkWrapper link1 = new LinkWrapper { Value = "www.comunicando.com.es" };
-            LinkWrapper link2 = new LinkWrapper { Value = "interactivadigital.com" };
-            LinkWrapper link3 = new LinkWrapper { Value = "www.marketingnews.es" };
-            LinkWrapper link4 = new LinkWrapper { Value = "www.utalca.cl" };
-            LinkWrapper link5 = new LinkWrapper { Value = "www.jtaer.com" };
-            LinkWrapper link6 = new LinkWrapper { Value = "ingenieria.utalca.cl" };
-            LinkWrapper link7 = new LinkWrapper { Value = "www.elpublicista.es" };
-            LinkWrapper link8 = new LinkWrapper { Value = "www.adtitudtv.com" };
-            LinkWrapper link9 = new LinkWrapper { Value = "www.adlatina.com" };
-            LinkWrapper link10 = new LinkWrapper { Value = "www.portalpublicitario.com" };
-            context.Links.AddRange(link1, link2, link3, link4, link5, link6, link7, link8, link9, link10);
-
             var documents1d1 = new Document[]{
                 new Document{
                     Name = "Artículo de la Revista de la Universidad de Talca 1d11",
@@ -1059,66 +1053,56 @@ namespace think_agro_metrics.Data
             context.Documents.AddRange(documents1d9);
             context.Documents.AddRange(documents1d10);
 
-            var registries1d = new LinkRegistry[]{
-                new LinkRegistry{
+            var registries1d = new DefaultRegistry[]{
+                new DefaultRegistry{
                     Name = "ThinkAgro: Una ayuda a la innovacion.",
                     Date = new DateTime(2020,12,01),
-                    Documents = documents1d1,
-                    Links = new LinkWrapper[]{link1}
+                    Documents = documents1d1
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "A la vanguardia: ThinkAgro se asoma como opcion de crecimiento.",
                     Date = new DateTime(2017,01,02),
-                    Documents = documents1d2,
-                    Links = new LinkWrapper[]{link2}
+                    Documents = documents1d2
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "Campaña de lanzamiento de ThinkAgro.",
                     Date = new DateTime(2017,02,03),
-                    Documents = documents1d3,
-                    Links = new LinkWrapper[]{link3}
+                    Documents = documents1d3
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "Una mirada al interior de ThinkAgro.",
                     Date = new DateTime(2017,03,04),
-                    Documents = documents1d4,
-                    Links = new LinkWrapper[]{link4}
+                    Documents = documents1d4
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "Tomandose un cafe con ThinkAgro.",
                     Date = new DateTime(2017,04,05),
-                    Documents = documents1d5,
-                    Links = new LinkWrapper[]{link5}
+                    Documents = documents1d5
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "ThinkAgro: Un proceso de crecimiento actual.",
                     Date = new DateTime(2017,05,06),
-                    Documents = documents1d6,
-                    Links = new LinkWrapper[]{link6}
+                    Documents = documents1d6
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "El gran aporte de ThinkAgro a la comunidad local.",
                     Date = new DateTime(2017,06,07),
-                    Documents = documents1d7,
-                    Links = new LinkWrapper[]{link7}
+                    Documents = documents1d7
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "Top 10 de empresas vanguardistas: ThinkAgro a la cabeza.",
                     Date = new DateTime(2017,07,08),
-                    Documents = documents1d8,
-                    Links = new LinkWrapper[]{link8}
+                    Documents = documents1d8
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "Revelando la identidad de ThinkAgro.",
                     Date = new DateTime(2017,08,09),
-                    Documents = documents1d9,
-                    Links = new LinkWrapper[]{link9}
+                    Documents = documents1d9
                 },
-                new LinkRegistry{
+                new DefaultRegistry{
                     Name = "La comunidad se suma a la campaña de ThinkAgro.",
                     Date = new DateTime(2017,09,10),
-                    Documents = documents1d10,
-                    Links = new LinkWrapper[]{link10}
+                    Documents = documents1d10
                 }
             };
 

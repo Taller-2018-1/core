@@ -15,11 +15,10 @@ export class IndicatorService {
 
   public static INDICATORS_API = '/api/Indicators/';
   public static GOALS_API = '/api/Indicators/Goals/';
+  public static CALCULATE_API = '/api/Indicators/Calculate/';
   public static REGISTRIES_API = '/api/Registries/';
   public static PERCENT_REGISTRY = '/PercentRegistry';
-  public static ACTIVITY_REGISTRY = '/ActivityRegistry';
   public static QUANTITY_REGISTRY = '/QuantityRegistry';
-  public static LINK_REGISTRY = '/LinkRegistry';
   public static DEFAULT_REGISTRY = '/DefaultRegistry/';
 
   constructor(public http: HttpClient) { }
@@ -34,6 +33,18 @@ export class IndicatorService {
 
   getIndicatorYearMonthRegistries(indicatorId: number, year: number, month: number): Observable<Indicator> {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId + '/' + year + '/' + month);
+  }
+
+  getIndicatorValue(indicatorId: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId);
+  }
+
+  getIndicatorValueYear(indicatorId: number, year: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId + '/' + year);
+  }
+
+  getIndicatorValueYearMonth(indicatorId: number, year: number, month: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId + '/' + year + '/' + month);
   }
 
   getGoal(indicatorId: number): Observable<number>
@@ -59,10 +70,6 @@ export class IndicatorService {
         discriminator = IndicatorService.QUANTITY_REGISTRY;
     } else if (registriesType === 'PercentRegistry') {
         discriminator = IndicatorService.PERCENT_REGISTRY;
-    } else if (registriesType === 'ActivityRegistry') {
-        discriminator = IndicatorService.ACTIVITY_REGISTRY;
-    } else if (registriesType === 'LinkRegistry') {
-        discriminator = IndicatorService.LINK_REGISTRY;
     }
     this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
         + discriminator, registry).subscribe();
@@ -75,5 +82,4 @@ export class IndicatorService {
   calculateIndicatorsYear(year: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
   }
-  
 }

@@ -16,8 +16,6 @@ namespace think_agro_metrics.Data
         public DbSet<Indicator> Indicators { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Registry> Registries { get; set; }
-        public DbSet<LinkRegistry> LinkRegistries { get; set; } // This DbSet don't create a new table en the DB, but it's necessary to load the links
-        public DbSet<LinkWrapper> Links { get; set; }
         public DbSet<Goal> Goals { get; set; }
 
         public DataContext() : base()
@@ -54,10 +52,8 @@ namespace think_agro_metrics.Data
             modelBuilder.Entity<IndicatorGroup>();
 
             modelBuilder.Entity<DefaultRegistry>();
-            modelBuilder.Entity<ActivityRegistry>();
             modelBuilder.Entity<QuantityRegistry>();
             modelBuilder.Entity<PercentRegistry>();
-            modelBuilder.Entity<LinkRegistry>();
         }
 
     }

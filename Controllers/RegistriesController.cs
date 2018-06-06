@@ -23,9 +23,10 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries
         [HttpGet]
-        public IEnumerable<Registry> GetRegistries()
+        public async Task<IActionResult> GetRegistries()
         {
-            return _context.Registries;
+            var registries = await _context.Registries.Include(r => r.Documents).ToListAsync();
+            return Ok(registries);
         }
 
         // GET: api/Registries/5
@@ -37,7 +38,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var registry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == id);
+            var registry = await _context.Registries.SingleAsync(m => m.RegistryID == id);
 
             if (registry == null)
             {
@@ -152,76 +153,6 @@ namespace think_agro_metrics.Controllers
             return Ok();
         }
 
-        // PUT: api/Registries/LinkRegistry/5
-        [HttpPut("LinkRegistry/{id}")]
-        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] LinkRegistry registry)
-        {   
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != registry.RegistryID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(registry).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
-        // PUT: api/Registries/ActivityRegistry/5
-        [HttpPut("ActivityRegistry/{id}")]
-        public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] ActivityRegistry registry)
-        {   
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != registry.RegistryID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(registry).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
        // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/DefaultRegistry")]
         public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
@@ -232,10 +163,8 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
-            //Registry registry = new DefaultRegistry();
-            //registry.Name = name;
-
+            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
+            
             indicator.Registries.Add(registry);
 
             _context.Entry(indicator).State = EntityState.Modified;
@@ -256,7 +185,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
          private bool IndicatorExists(long id)
         {
@@ -272,9 +201,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
-            //Registry registry = new DefaultRegistry();
-            //registry.Name = name;
+            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
 
@@ -296,22 +223,20 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
-        [HttpPost("{indicatorId}/LinkRegistry")]
-        public async Task<IActionResult> LinkRegistry([FromRoute] long indicatorId,
-            [FromBody] LinkRegistry registry)
+        [HttpPost("{indicatorId}/PercentRegistry")]
+        public async Task<IActionResult> PercentRegistry([FromRoute] long indicatorId,
+            [FromBody] PercentRegistry registry)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
-            //Registry registry = new DefaultRegistry();
-            //registry.Name = name;
+            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
 
@@ -333,8 +258,9 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
+
 
         // DELETE: api/Registries/Documents/5
         [HttpDelete("Documents/{id}")]
@@ -345,7 +271,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var document = await _context.Documents.SingleOrDefaultAsync(d => d.DocumentID == id );
+            var document = await _context.Documents.SingleAsync(d => d.DocumentID == id );
             
             if(document == null)
             {
@@ -353,7 +279,7 @@ namespace think_agro_metrics.Controllers
             }
             
             // Every documents belongs to a Registry, it's not necessary to validate
-            var registry = await _context.Registries.SingleOrDefaultAsync(r => r.RegistryID == document.RegistryID);
+            var registry = await _context.Registries.SingleAsync(r => r.RegistryID == document.RegistryID);
 
             registry.Documents.Remove(document); // Delete Document from model
 
@@ -374,25 +300,21 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var registry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == id);
+            var registry = await _context.Registries.SingleAsync(m => m.RegistryID == id);
+
             if (registry == null)
             {
                 return NotFound();
             }
             
-            var documents = registry.Documents;
-            foreach (Document document in documents) // Remove documents from model
-            {
-                registry.Documents.Remove(document);
-            }
+            // Remove documents from model
+            registry.Documents = new List<Document>();
 
             var docsDB = _context.Documents.Where(d => d.RegistryID == id);
-            foreach (Document document in docsDB)  // Remove documents from database
-            {
-                _context.Documents.Remove(document);
-            }
+            // Remove documents from database            
+            _context.Documents.RemoveRange(docsDB);            
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             _context.Registries.Remove(registry);
             await _context.SaveChangesAsync();
@@ -415,7 +337,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Registry registry = _context.Registries.First(i => i.RegistryID == id);
+            Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
 
             registry.Documents.Add(document);
 
@@ -437,7 +359,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
     
     }

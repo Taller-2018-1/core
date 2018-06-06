@@ -10,19 +10,13 @@
     <input type="date" required [(ngModel)]="model.date" name="date" #name="ngModel">
   </div>
 
-  <div class="form-group" *ngIf="indicator.registriesType === 2 || indicator.registriesType === 3">
+  <div class="form-group" *ngIf="indicator.registriesType === 1">
     <label class="sr-only">Ingrese Cantidad</label>
     <input type ="number" id="quantity" class="form-control" placeholder="Cantidad"
     required [(ngModel)]="model.quantity" name="quantity" #name="ngModel">
   </div>
 
-  <div class="form-group" *ngIf="indicator.registriesType === 1">
-    <label class="sr-only">Ingrese Link</label>
-    <input type ="text" id="link" class="form-control" placeholder="Link"
-    required [(ngModel)]="model.link" name="link" #name="ngModel">
-  </div>
-
-  <div class="form-group" *ngIf="indicator.registriesType === 4">
+  <div class="form-group" *ngIf="indicator.registriesType === 2">
     <label class="sr-only">Ingrese Porcentaje</label>
     <input type ="number" id="percent" class="form-control" placeholder="Porcentaje"
     required [(ngModel)]="model.percent" name="percent" #name="ngModel">
@@ -33,5 +27,5 @@
     <input type="file" id="files" multiple name="photo" id="select" />
   </div>
   <!--<button type="submit" class="btn btn-primary" (click)="closeModal()">Registrar</button>-->
-  <button type="submit" class="btn btn-primary" (click)="closeModal()" (click)="Actualizar()" >Registrar</button>
+  <button type="submit" class="btn btn-primary" (click)="closeModal()">Registrar</button>
 </form>

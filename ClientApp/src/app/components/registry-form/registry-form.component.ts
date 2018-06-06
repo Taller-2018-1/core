@@ -26,7 +26,7 @@ export class RegistryFormComponent implements OnInit {
     // this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
     this.service.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
     this.indicator.registries.push(this.model);
-    this.router.navigateByUrl('/indicator/' + this.idIndicator);
+    // this.router.navigateByUrl('/indicator/' + this.idIndicator);
   }
 
   closeModal() {
@@ -41,12 +41,6 @@ export class RegistryFormComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
- 
-  /* Para actualizar cuando registre el indicador */
-  Actualizar()
-  {
-      window.location.reload(true);
   }
 
 }

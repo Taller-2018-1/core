@@ -12,19 +12,23 @@ import { IndicatorHomeComponent } from './components/indicator-home/indicator-ho
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
 import { ChartsModule } from 'ng2-charts';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
 import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
-
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
+import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
@@ -43,6 +47,8 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
+    IndicatorGraphOptionComponent,
+    IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent
   ],
@@ -54,9 +60,12 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
     FormsModule,
     ChartsModule,
     ModalModule.forRoot(),
+    TabsModule.forRoot(),
+    AccordionModule.forRoot(),
+    FlexLayoutModule,
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
+      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'registry-details/:id', component: RegistryDetailsComponent },

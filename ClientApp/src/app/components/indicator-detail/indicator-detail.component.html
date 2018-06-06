@@ -1,65 +1,130 @@
-<div *ngIf="indicator$ | async as indicator; else loading">
-  <!--Title-->
-  <div id="head-page-section" class="l-grey-bg head-page-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-sm-7">
-          <div class="head-title">
-            <h1>
-              {{ indicator.name }}
-            </h1>              
-          </div> <!-- end subsection-text -->
-        </div> <!-- end col-md-8 -->
-      </div> <!-- end row -->
-    </div> <!-- end container -->
-  </div>
-
-  <div *ngIf="goal$ | async as goal">
-    <h1>{{ goal }}</h1>
-  </div>
-
-  <div class="container">  
-    <!--Dropdown Filters-->
-    <div class="row" style="margin-top: 20px; margin-bottom: 20px">
-
-      <!--Dropdown Year Filter-->
-      <div class="col-md-6">
-        Seleccione el año a mostrar:
-        <br>
-        <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-            {{ selectedYearText }} <span class="caret"></span>
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-              role="menu" aria-labelledby="button-basic">
-            <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
-            <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
-          </ul>
+<!-- Head page section================================================== -->
+<div *ngIf="indicator$ | async as indicator else loading;">
+  {{ this.showGraph(indicator) }}
+  <section>
+    <div id="head-page-section" class="l-grey-bg head-page-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="head-title">
+              <h5>{{selectedYearText}}</h5>
+              <h4 *ngIf="indicatorGroupName$ | async as indicatorGroup">{{indicatorGroup}}</h4>
+              <h1>
+                {{ indicator.name }}
+              </h1>
+            </div>
+            <!-- end subsection-text -->
+          </div>
+          <!-- end col-sm-8 -->
+          <div class="col-sm-4">
+            <div class="head-title">
+              <div class="col-sm-6">
+                <div class="inline" style="text-align: center;">Valor Indicador</div>
+                <div class="row-number row-h1 inline" *ngIf="value$ | async as value else zero;">
+                  <div *ngIf="indicator.registriesType == 2">
+                    {{ value }}%
+                  </div>
+                  <div *ngIf="indicator.registriesType != 2">
+                    {{ value }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="inline" style="text-align: center;">Valor Meta</div>
+                <div class="row-number row-h1" *ngIf="goal$ | async as goal else na;">
+                  {{ goal }}
+                </div>
+              </div>
+            </div>
+            <!-- end subsection-text -->
+          </div>
+          <!-- end col-sm-4 -->
         </div>
+        <!-- end row -->
       </div>
-      <div class="col-md-6"> 
-          Seleccione el mes a mostrar: 
-          <br> 
-          <div class="btn-group" dropdown [isDisabled]="isMonthDisabled"> 
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic"> 
-              {{ selectedMonthText }} <span class="caret"></span> 
-            </button> 
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" 
-                role="menu" aria-labelledby="button-basic"> 
-              <li ><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>           
-              <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li> 
-            </ul> 
-          </div> 
-        </div>
+      <!-- end container -->
     </div>
-  </div> 
+  </section>
+  <!-- end head-page-section -->
+  <section>
+    <div>
+      <ol class="breadcrumb shortcode" style="">
+        <li><a href="index.html">Modificar Meta</a></li>
+        <li><a href="index.html#portfolio-section">Modificar Indicador</a></li>
+      </ol>
+    </div>
+  </section>
+  <!-- about boxes
+  ================================================== -->
+  <section style="margin-top: -70px;">
+    <div class="page-section pad-sec">
+      <div class="container">
+        <!--subtitle row ===================================== -->
+        <div class="row">
+          <div class="col-md-12 pad-bt-60">
+            <div class="heading-block">
+              <table border="0">
+                <tr>
+                  <td width="40%">Seleccione año a mostrar</td>
+                  <td width="30%">Seleccione mes a mostrar</td>
+                  <td style="padding-left: 200px;"><span>Mostrar Gráfico</span></td>
+                </tr>
+                <tr>
+                  <td width="40%">
+                    <!-- Filtros año-mes -->
+                    <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
+                      Filtrar por Fecha
+                    </button> -->
+                    <!--Dropdown Year Filter-->
+                    <!--<div class="col-md-6">-->
+                    <div class="btn-group" dropdown>
+                      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                        {{ selectedYearText }} <span class="caret"></span>
+                      </button>
+                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
+                        <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
+                      </ul>
+                    </div>
+                    <!--</div>-->
+                  </td>
+                  <td width="30%">
 
+                    <!--Dropdown Month Filter-->
+                    <!--<div class="col-md-6">-->
+                    <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                        {{ selectedMonthText }} <span class="caret"></span>
+                      </button>
+                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>
+                        <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li>
+                      </ul>
+                    </div>
+                    <!--</div>-->
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-11">
-          <div style="display: block;">
-          <canvas baseChart width="900" height="500"
+                  </td>
+                  <td style="padding-left: 200px;">
+                    <app-indicator-graph-option></app-indicator-graph-option>
+                    <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <!-- end col-md-12 -->
+        </div>
+        <!-- end row -->
+        <!--graph row ======================================== -->
+        <!-- end row -->
+        <!--details files row ======================================== -->
+
+        <div class="row">
+          <div class="col-md-11">
+            <div style="display: block;">
+              <canvas baseChart width="900" height="500"
                       [datasets]="lineChartData"
                       [labels]="lineChartLabels"
                       [options]="lineChartOptions"
@@ -67,90 +132,96 @@
                       [legend]="lineChartLegend"
                       [chartType]="lineChartType"
                       (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)">
-          </canvas>
+                      (chartClick)="chartClicked($event)"></canvas>
+            </div>
           </div>
         </div>
-    </div>
-      
-    <br>
 
-  <h1>    {{ indicator.name }}</h1>
-  <!--h2>Tipo: {{ indicator.type }}</h2-->
-  <!--<div *ngIf="indicator.type == -1">El tipo es default...</div>-->
-  
-  <!--Dropdown Filters
-  <div class="row">
-    Dropdown Year Filter
-    <div class="col-md-6">
-      Seleccione el año a mostrar:
-      <br>
-      <div class="btn-group" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-          {{ selectionYear }} <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li><a class="dropdown-item" (click)="selectRegistriesYear(allYears)">Todos los años</a></li>
-          <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistriesYear(year)">Año {{ year }}</a></li>
-        </ul>
-      </div>   
-      Dropdown Month Filter
-      <div class="col-md-6"> 
-        Seleccione el mes a mostrar: 
-        <br> 
-        <div class="btn-group" dropdown [isDisabled]="isMonthDisabled"> 
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic"> 
-            {{ selectedMonthText }} <span class="caret"></span> 
-          </button> 
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" 
-              role="menu" aria-labelledby="button-basic"> 
-            <li ><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>           
-            <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li> 
-          </ul> 
-        </div> 
-      </div>
-    </div>
-  -->
-    <div class="row">
-      <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
-    </div>
-
-    <div class="heading-block" *ngIf="indicator.registries.length != 0; else noRegistries">
-      <h2>Detalle de Registros</h2>
-    </div>
-
-    <div class="panel panel-default" *ngFor="let registry of indicator.registries">
-      <!-- Default panel contents -->
-      <div class="panel-heading">
-        {{registry.name}} {{registry.date | date:'dd-MM-yyyy'}}
-        <div class="pull-right">
-          <button href="#" class="btn btn-success btn-xs" (click)="openModalEditRegistry(editRegistry,registry)"> <span class="glyphicon glyphicon-pencil">  </span>  </button>
-          <button href="#" class="btn btn-danger btn-xs" (click)="deleteRegistry(indicator,registry)" (click)="Actualizar()" > <span class="glyphicon glyphicon-trash"> </span> </button>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="container">
-          <h6 *ngIf="indicator.registriesType == 2">Cantidad: {{registry.quantity}}</h6>
-        </div>
-        <div class="container">
-            <h6 *ngIf="indicator.registriesType == 3">Actividad: {{registry.quantity}}</h6>
+        <div class="row">
+          <div class="col-md-12 pad-bt-60">
+            <div class="heading-block">
+              <table border="0">
+                <tr>
+                  <td width="70%">
+                    <h2>Descripción</h2>
+                  </td>
+                  <td style="padding-left: 200px;">
+                    <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
+                      Añadir registro
+                    </button>-->
+                    <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!--Begin tab-->
+            <!--Tabset removed because I didn't know what to do with him-->
+            <!--Registries list and RegistriesType (from indicator) are needed-->
+            <app-indicator-detail-registry [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
           </div>
-        <div class="container">
-          <h6>Documentos de respaldo</h6>
         </div>
-        <table class="table">
-          <tr *ngFor="let document of registry.documents">
-            <td><b>{{document.name}}</b></td>
-            <td>{{document.date | date: 'dd-MM-yyyy'}}</td>
-            <td><a href="{{ document.link }}">Descargar</a></td>
-            <td><button class="btn btn-danger btn-xs pull-right" (click)="deleteDocument(registry,document)"> <span class="glyphicon glyphicon-trash"> </span> </button></td>
-          </tr>
-        </table>
       </div>
     </div>
+  </section>
 
-    
+
+
+  <!--MODALS-->
+
+  <ng-template #addRegistry>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+    </div>
+  </ng-template>
+
+  <!--UX-->
+
+  <ng-template #zero>
+    <div class="row-number row-h1 inline">
+      <div *ngIf="indicator.registriesType == 2">
+        0%
+      </div>
+      <div *ngIf="indicator.registriesType != 2">
+        0
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #na>
+    <div class="row-number row-h1 inline">
+      N/A
+    </div>
+  </ng-template>
+
+</div>
+
+
+<!------------------------------------------------------------------------------------------>
+<!-- OLD DESIGN
+<h1> OLD DESIGN </h1>
+
+<div *ngIf="indicator$ | async as indicator; else loading">
+  <div id="head-page-section" class="l-grey-bg head-page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-7">
+          <div class="head-title">
+            <h1>
+              {{ indicator.name }}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
+
     <ng-template #addRegistry>
       <div class="modal-header">
         <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
@@ -163,12 +234,11 @@
       </div>
     </ng-template>
 
-    <!--Modal Edit Registry-->
-    <ng-template #editRegistry>
-        <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
-    </ng-template>
-  </div>
-</div>
+<ng-template #editRegistry>
+  <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+</ng-template>
+
+  
 
 <ng-template #loading>
   <div id="head-page-section" class="l-grey-bg head-page-section">
@@ -187,5 +257,6 @@
 </ng-template>
 
 <ng-template #noRegistries>
-  <h2>Aún no se han cargado registros.</h2>         
+  <h2>Aún no se han cargado registros.</h2>
 </ng-template>
+
