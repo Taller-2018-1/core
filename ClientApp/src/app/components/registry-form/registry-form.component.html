@@ -9,26 +9,23 @@
     <!--<input name="fecha" id="email" class="form-control" placeholder="Fecha">-->
     <input type="date" required [(ngModel)]="model.date" name="date" #name="ngModel">
   </div>
-  <div class="form-group"  *ngIf="indicator.registries[0].discriminator==='DefaultRegistry'">
-    <label class="sr-only">Recurso</label>
-    <input name="recurso" id="recurso" class="form-control" placeholder="Recurso">
-  </div>
 
-  <div class="form-group" *ngIf="indicator.registries[0].discriminator==='QuantityRegistry'">
-    <label class="sr-only">Ingrese Numero</label>
-    <input type ="number" id="quantity" class="form-control" placeholder="cantidad de empresas asistentes"
+  <div class="form-group" *ngIf="indicator.registriesType === 1">
+    <label class="sr-only">Ingrese Cantidad</label>
+    <input type ="number" id="quantity" class="form-control" placeholder="Cantidad"
     required [(ngModel)]="model.quantity" name="quantity" #name="ngModel">
   </div>
 
-  <div class="form-group" *ngIf="indicator.registries[0].discriminator==='LinkRegistry'">
-    <label class="sr-only">Ingrese Link</label>
-    <input type ="text" id="link" class="form-control" placeholder="Ingrese Link"
-    required [(ngModel)]="model.link" name="link" #name="ngModel">
+  <div class="form-group" *ngIf="indicator.registriesType === 2">
+    <label class="sr-only">Ingrese Porcentaje</label>
+    <input type ="number" id="percent" class="form-control" placeholder="Porcentaje"
+    required [(ngModel)]="model.percent" name="percent" #name="ngModel">
   </div>
 
   <div class="form-group">
     <label for="select" class="btn btn-sm btn-clean-2">Seleccionar Documento</label>
     <input type="file" id="files" multiple name="photo" id="select" />
   </div>
+  <!--<button type="submit" class="btn btn-primary" (click)="closeModal()">Registrar</button>-->
   <button type="submit" class="btn btn-primary" (click)="closeModal()">Registrar</button>
 </form>

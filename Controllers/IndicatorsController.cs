@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,33 +24,37 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators
         [HttpGet]
-        public IEnumerable<Indicator> GetIndicators()
+        public async Task<IActionResult> GetIndicators()
         {
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-            return _context.Indicators;
+            var indicators = await _context.Indicators
+                .Include(x => x.Goals)
+                .Include(x => x.Registries)                
+                .ThenInclude(x => x.Documents).ToListAsync();
+
+            return Ok(indicators);
         }
 
         // GET: api/Indicators/5
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetIndicator([FromRoute] long id)
-        {
+        {            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var indicator = await _context.Indicators.SingleOrDefaultAsync(m => m.IndicatorID == id);
+            var indicatorQuery = _context.Indicators.Where(x => x.IndicatorID == id);
+
+            var indicator = await indicatorQuery
+                .Include(x => x.Goals)
+                .Include(x => x.Registries)
+                .ThenInclude(x => x.Documents).SingleAsync();
 
             if (indicator == null)
             {
                 return NotFound();
             }
 
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
             return Ok(indicator);
         }
 
@@ -62,38 +67,148 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the Indicator
-            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            // Obtain the Registries
+            var registries = await _context.Registries
+                .Where(r => r.IndicatorID == id && r.Date.Year == year)
+                .Include(r => r.Documents)
+                .ToArrayAsync();
 
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals)
+                .SingleAsync();
+            
             // Fails if not found
-            if (indicator == null) 
+            if (indicator == null)
             {
                 return NotFound();
             }
 
-            // Include Registries and Documents and Links
-            _context.Indicators.Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            List<Registry> registries = new List<Registry>();
-
-            // To find those who don't match the selected year
-            foreach (Registry registry in indicator.Registries)
-            {
-                if (registry.Date.Year != year)
-                {
-                    registries.Add(registry);
-                }
-            }
-
-            // Delete from the indicator returned (not in DB) the registries that we don't want to see
-            foreach(Registry registry in registries)
-            {
-                indicator.Registries.Remove(registry);
-            }
+            indicator.Registries = registries;
 
             return Ok(indicator);
+        }
+
+        // GET: api/Indicators/5/2018/1
+        [HttpGet("{id:long}/{year:int}/{month:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
+
+            // Obtain the Registries
+            var registries = await _context.Registries
+                .Where(r => r.IndicatorID == id && r.Date.Year == year && r.Date.Month == month)
+                .Include(r => r.Documents)
+                .ToArrayAsync();
+
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals)
+                .SingleAsync();
+
+            // Fails if not found
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.Registries = registries;
+
+            return Ok(indicator);
+        }
+
+        // GET: api/Indicators/Goal/1
+        [HttpGet("Goals/{id:long}")]
+        public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Goals
+            var goals = await _context.Goals.Where(g => g.IndicatorID == id).ToListAsync();
+
+            // Fails if not found
+            if (goals == null) 
+            {
+                return NotFound();
+            }
+
+            double result = 0;
+            foreach (Goal goal in goals)
+            {
+                result += goal.Value;
+            }
+            // Percent Registry
+            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
+            if (indicator.RegistriesType == RegistryType.PercentRegistry){
+                result /= goals.Count;
+            }
+
+            return Ok(result);
+        }
+
+        // GET: api/Indicators/Goal/1/2018
+        [HttpGet("Goals/{id:long}/{year:int}")]
+        public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Goals
+            var goals = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year).ToListAsync();
+
+            // Fails if not found
+            if (goals == null) 
+            {
+                return NotFound();
+            }
+
+            double result = 0;
+            foreach (Goal goal in goals)
+            {
+                result += goal.Value;
+            }
+            // Percent Registry
+            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
+            if (indicator.RegistriesType == RegistryType.PercentRegistry){
+                result /= goals.Count;
+            }
+
+            return Ok(result);
+        }
+
+        // GET: api/Indicators/Goal/1/2018/0 (indicator 1, year 2018, month January)
+        [HttpGet("Goals/{id:long}/{year:int}/{month:int}")]
+        public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
+
+            // Obtain the Goal
+            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();
+
+            // Fails if not found
+            if (goal == null) 
+            {
+                return NotFound();
+            }
+
+            return Ok(goal.Value);
         }
 
         // GET: api/Indicators/Calculate
@@ -105,13 +220,10 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Obtain the Indicators with its Registries
+            var indicators = await _context.Indicators
+                .Include(i => i.Registries)
+                .ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -124,7 +236,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
             }
             
@@ -141,13 +253,10 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Obtain the Indicators with its Registries
+            var indicators = await _context.Indicators
+                .Include(i => i.Registries)
+                .ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -160,7 +269,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
                 list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
             }
             
@@ -177,13 +286,10 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Load from the DB the Indicators with its Registries, Documents, and Links
-            _context.Indicators.Include(x => x.Registries).ToList();
-            _context.LinkRegistries.Include(x => x.Links).ToList();
-
-            // Obtain the Indicators
-            List<Indicator> indicators = new List<Indicator>();
-            await _context.Indicators.ForEachAsync(x => indicators.Add(x));
+            // Obtain the Indicators with its Registries
+            var indicators = await _context.Indicators
+                .Include(i => i.Registries)
+                .ToListAsync();
 
             // If the indicators list is empty, show NotFound
             if (!indicators.Any())
@@ -191,19 +297,102 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
+
             // List of the results of every indicator
             List<double> list = new List<double>();
 
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
-                indicator.Type = indicator.Type; // Assign the IndicatorCalculator according to the Indicator's Type
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month+1)); // The month in Angular starts in 0 and in C# starts in 1
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month));
             }
             
             // Return the list with the results
             return Ok(list);
         }
 
+        // GET: api/Indicators/Calculate/5 // Calculate Indicator with ID 5 for all years
+        [Route("Calculate/{id:long}")]
+        public async Task<ActionResult> CalculateIndicator([FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator with its Registries
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Registries)
+                .SingleAsync();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/Calculate/5/2018 // Calculate Indicator with ID 5 for a selected year
+        [Route("Calculate/{id:long}/{year:int}")]
+        public async Task<ActionResult> CalculateIndicatorByYear([FromRoute] long id, [FromRoute] int year)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator with its Registries
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Registries)
+                .SingleAsync();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/Calculate/5/2018/0 // Calculate Indicator with ID 5 for a selected year and selected month
+        [Route("Calculate/{id:long}/{year:int}/{month:int}")]
+        public async Task<ActionResult> CalculateIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month = month + 1;
+
+            // Obtain the Indicator with its Registries
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Registries)
+                .SingleAsync();
+
+            if (indicator == null)
+            {
+                return NotFound();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month);
+
+            return Ok(value);
+        }
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]

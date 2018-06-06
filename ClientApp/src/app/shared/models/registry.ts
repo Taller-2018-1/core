@@ -4,7 +4,6 @@ export class Registry {
   dateAdded: Date;
   date: Date;
   name: string;
-  value: number;
   links: string[];
   indicatorID: number;
   documents: Document [] = new Array<Document>();
@@ -14,6 +13,13 @@ export class Registry {
   activity: string;
   percent: number;
 
-  constructor() {
+  constructor(dateAdded?: Date, date?: Date, name?: string,
+     urlDocuments?: string[], quantity?: number, percent?: number ) {
+    this.date = date;
+    this.dateAdded = dateAdded;
+    this.name = name;
+    this.links = urlDocuments;
+    this.quantity = 0;
+    this.percent = 0;
   }
 }

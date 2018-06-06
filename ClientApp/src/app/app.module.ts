@@ -16,16 +16,22 @@ import { RegistryDetailsComponent } from './components/registry-details/registry
 import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
-
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
-
+import { ChartsModule } from 'ng2-charts';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
-
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
 import { RegistryService } from './services/registry/registry.service';
+import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
+import { AuthService } from './services/auth/AuthService';
+import { CanActivateUser } from './services/auth/CanActivateService';
+import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
 import { FileService } from './services/file/file.service';
 
 @NgModule({
@@ -43,11 +49,10 @@ import { FileService } from './services/file/file.service';
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
+    IndicatorGraphOptionComponent,
+    IndicatorDetailRegistryComponent,
     ResultHomeComponent,
-    RegistryFormComponent,
-    RegistryDetailsComponent,
-    FileDocumentFormComponent,
-    LinkDocumentFormComponent
+    WelcomeComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -56,19 +61,27 @@ import { FileService } from './services/file/file.service';
     HttpClientModule,
     ModalModule.forRoot(),
     FormsModule,
+    ChartsModule,
     ModalModule.forRoot(),
+    TabsModule.forRoot(),
+    AccordionModule.forRoot(),
+    FlexLayoutModule,
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicator', component: IndicatorDetailComponent },
-      { path: 'indicator-add-registry', component: RegistryFormComponent },
-      { path: 'registry/:id', component: RegistryDetailsComponent },
+      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
+      { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'home',        component: ResultHomeComponent },
-      { path: '',            component: ResultHomeComponent },
+      { path: '',            component: WelcomeComponent },
       { path: '**',          component: ResultHomeComponent },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, FileService],
+  providers: [IndicatorService, 
+    IndicatorGroupService, 
+    RegistryService, 
+    AuthService, 
+    CanActivateUser, 
+    FileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

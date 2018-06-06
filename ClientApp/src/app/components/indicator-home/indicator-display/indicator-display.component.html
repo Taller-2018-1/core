@@ -13,7 +13,7 @@
           <br>
           <div class="btn-group" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionYear }} <span class="caret"></span>
+              {{ selectedYearText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -28,7 +28,7 @@
           <br>
           <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectionMonth }} <span class="caret"></span>
+              {{ selectedMonthText }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -56,17 +56,19 @@
             <div *ngIf="(i%3===0) && (i>0)" class="col-md-12" style="border: 15px solid transparent;"></div>
             <!-- end col-xs-6 col-sm-3 col-md-3 -->
             <div class="col-xs-6 col-sm-3 col-md-4">
-              <a class="active" href="/indicator/{{ indicator.indicatorID }}">
+              <a class="active" href="/indicator/{{indicatorGroup.indicatorGroupID}}/{{ indicator.indicatorID }}">
                 <div class="services-content">
                   <div class="statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     <div class="fact">
 
-                      <div *ngIf="indicator.type == 2; else noPercent">
-                        <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%</span>
-                      </div>
-                      <ng-template #noPercent>
-                         <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}</span>
-                      </ng-template>
+                      <div *ngIf="goals$ | async as goals">
+                        <div *ngIf="indicator.registriesType == 2; else noPercent">
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}%/{{ goals[i] | number:'.0-2' }}%</span>
+                        </div>
+                        <ng-template #noPercent>
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}/{{ goals[i] | number:'.0-2' }}</span>
+                        </ng-template>
+                      </div>                      
                       
                       <p>{{ indicator.name }}</p>
                     </div>
