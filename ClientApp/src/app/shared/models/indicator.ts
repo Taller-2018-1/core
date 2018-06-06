@@ -8,6 +8,7 @@ export class Indicator {
     registriesType: number;
     registries:  Registry [] = new Array<Registry>();
     goals: Goal[] = new Array<Goal>();
+    isExternal = false;
 
   constructor() { }
 
