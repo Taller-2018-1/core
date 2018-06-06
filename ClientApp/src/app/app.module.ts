@@ -32,6 +32,8 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import { SessionService } from './services/session/session.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
+    StorageServiceModule ,
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
@@ -74,7 +77,7 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
       { path: '**',          component: ResultHomeComponent },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
