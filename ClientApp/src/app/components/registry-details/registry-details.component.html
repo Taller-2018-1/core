@@ -3,8 +3,13 @@
       <div class="container">
           <h1>    Nombre registro: {{ registry.name }}</h1>
           <div style="float:right">
-            <button (click)="openModal(linkModal)" class="btn btn-primary btn-lg">Agregar desde link</button>
-            <button (click)="openModal(fileModal)" class="btn btn-primary btn-lg">Agregar desde archivo</button>
+            <button *ngIf="registry.discriminator == 'LinkRegistry'"
+                    type="button" (click)="openModal(linkModal)" class="btn btn-success">
+              Agregar desde link
+            </button>
+
+              <button type="button" (click)="openModal(fileModal)" class="btn btn-success">Agregar desde archivo</button>
+
           </div>
       </div>
     </div>
@@ -20,6 +25,7 @@
         <td>Fecha</td>
         <td>Código</td>
         <td>Descargar</td>
+        <td>Modificar</td>
         <td>Eliminar</td>
       </tr>
     </thead>
@@ -41,7 +47,15 @@
               <i class="glyphicon glyphicon-download-alt"></i>
             </button>
         </ng-template>
-        <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+        <td>
+          <div class="pull-right">
+            <button href="#" class="btn btn-success btn" (click)="openModalEditDocument(editDocument, document)"> <span class="glyphicon glyphicon-pencil">  </span>  </button></div>
+        </td>
+        <td>
+          <div class="pull-right">
+           <button href="#" class="btn btn-danger btn" (click)="deleteDocument(registry,document)"> <span class="glyphicon glyphicon-trash"> </span> </button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -72,4 +86,8 @@
   <div class="modal-body">
     <app-file-document-form [registry]="registry" [idRegistry]="idRegistry" [modalRef]="modalRef"></app-file-document-form>
   </div>
+</ng-template>
+
+<ng-template #editDocument>
+  <app-document-editor [document]="document" [discriminator]="discriminator" [editModalRef]="editModalRef" #editDocument></app-document-editor>
 </ng-template>

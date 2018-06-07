@@ -26,6 +26,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+import { DocumentEditorComponent } from './components/registry-details/document-editor/document-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
@@ -48,6 +49,7 @@ import { FileService } from './services/file/file.service';
     LinkDocumentFormComponent,
     RegistryDetailsComponent,
     RegistryEditorComponent,
+    DocumentEditorComponent,
     ResultDisplayComponent,
     IndicatorGraphOptionComponent,
     IndicatorDetailRegistryComponent,
