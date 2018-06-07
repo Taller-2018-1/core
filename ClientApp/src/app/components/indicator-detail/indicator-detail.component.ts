@@ -62,7 +62,8 @@ export class IndicatorDetailComponent implements OnInit {
     public counter = 0;
 
     public lineChartData: Array<any> = [
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'promedio', lineTension: 0}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
@@ -78,23 +79,48 @@ export class IndicatorDetailComponent implements OnInit {
         }
       },
       scales: {
+        /*
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          ticks:{
+            min: 0,
+            max: 11,
+            stepSize: 1
+          }
+        }],
+        */
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                min: 0,
+                max: 100,
+                stepSize: 10
             }
         }]
       },
       maintainAspectRatio: false
     };
     public lineChartColors: Array<any> = [
+      
       { // grey
-        backgroundColor: 'rgba(144,188,36,0.4)',
+        //backgroundColor: 'rgba(144,188,36,0.4)',
+        backgroundColor: 'transparent',
         borderColor: 'rgba(0,149,58,1)',
         pointBackgroundColor: 'rgba(0,149,58,1)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      },
+      { // grey
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(0,149,58,1)',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: 'transparent',
+        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       }
+
 
     ];
     public lineChartLegend = true;
@@ -110,6 +136,8 @@ export class IndicatorDetailComponent implements OnInit {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
     this.router = router;
+    this.lineChartColors[0].borderColor = 'transparent';
+   
   }
 
   ngOnInit() {
@@ -236,7 +264,21 @@ export class IndicatorDetailComponent implements OnInit {
     if (this.counter++ % 200 === 0) {
       const _lineChartData: Array<any> = new Array(this.lineChartData.length);
       _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
-
+      if (indicator.registriesType == 2){
+        _lineChartData[0] = {data: new Array(), label: this.lineChartData[0].label};
+        for(let i = 0; i < indicator.registries.length; i++){
+          const date: Date = new Date(indicator.registries[i].date);
+          const month = date.getMonth();
+          let percent = indicator.registries[i].percent;
+          let datos = {x: this.lineChartLabels[month], y:percent};
+          _lineChartData[0].data.push(datos);
+        }
+        _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.lineChartData[1].label};
+        for (let i = 0; i < 12; i++){
+          _lineChartData[1].data[i] = 50;
+        }
+      }
+      else{
       let cantidad = 0;
       const cantidadAcumulada = 0;
       const monthMin = 0;
@@ -271,7 +313,7 @@ export class IndicatorDetailComponent implements OnInit {
           }
         }
       }
-
+      }
       this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
     }
   }
