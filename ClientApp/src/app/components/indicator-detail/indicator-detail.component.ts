@@ -62,8 +62,8 @@ export class IndicatorDetailComponent implements OnInit {
     public counter = 0;
 
     public lineChartData: Array<any> = [
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'promedio', lineTension: 0}
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'promedio', lineTension: 0}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
@@ -79,23 +79,15 @@ export class IndicatorDetailComponent implements OnInit {
         }
       },
       scales: {
-        /*
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          ticks:{
-            min: 0,
-            max: 11,
-            stepSize: 1
-          }
-        }],
-        */
         yAxes: [{
             ticks: {
                 beginAtZero: true,
+                /*
                 min: 0,
                 max: 100,
                 stepSize: 10
+                */
+
             }
         }]
       },
@@ -104,24 +96,23 @@ export class IndicatorDetailComponent implements OnInit {
     public lineChartColors: Array<any> = [
       
       { // grey
-        //backgroundColor: 'rgba(144,188,36,0.4)',
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(144,188,36,0.4)',
         borderColor: 'rgba(0,149,58,1)',
         pointBackgroundColor: 'rgba(0,149,58,1)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       },
+      /*
       { // grey
         backgroundColor: 'transparent',
         borderColor: 'rgba(0,149,58,1)',
         pointBackgroundColor: 'rgba(0,149,58,1)',
-        pointBorderColor: 'transparent',
+        pointBorderColor: '#fff',
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       }
-
-
+      */
     ];
     public lineChartLegend = true;
     public lineChartType = 'line';
@@ -136,7 +127,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
     this.router = router;
-    this.lineChartColors[0].borderColor = 'transparent';
+    //this.lineChartColors[0].borderColor = 'transparent';
    
   }
 
@@ -260,10 +251,29 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = Months[month];
   }
 
+  public showDispersionGraph(indicator: Indicator){
+    if (this.counter++ % 200 == 0){
+      const _lineChartData: Array<any> = new Array(this.lineChartData.length);
+      _lineChartData[0] = {data: new Array(), label: this.lineChartData[0].label};
+      for(let i = 0; i < indicator.registries.length; i++){
+        const date: Date = new Date(indicator.registries[i].date);
+        const month = date.getMonth();
+        let percent = indicator.registries[i].percent;
+        let datos = {x: this.lineChartLabels[month], y:percent};
+        _lineChartData[0].data.push(datos);
+      }
+      _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.lineChartData[1].label};
+      for (let i = 0; i < 12; i++){
+        _lineChartData[1].data[i] = 50;
+      }
+    }
+  }
+
   public showGraph(indicator: Indicator) {
     if (this.counter++ % 200 === 0) {
       const _lineChartData: Array<any> = new Array(this.lineChartData.length);
       _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
+      /*
       if (indicator.registriesType == 2){
         _lineChartData[0] = {data: new Array(), label: this.lineChartData[0].label};
         for(let i = 0; i < indicator.registries.length; i++){
@@ -278,43 +288,43 @@ export class IndicatorDetailComponent implements OnInit {
           _lineChartData[1].data[i] = 50;
         }
       }
-      else{
-      let cantidad = 0;
-      const cantidadAcumulada = 0;
-      const monthMin = 0;
+      */
+        let cantidad = 0;
+        const cantidadAcumulada = 0;
+        const monthMin = 0;
 
-      /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
-      for (let i = 0; i < 12; i++) {
-        _lineChartData[0].data[i] = 0;
-      }
+        /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
+        for (let i = 0; i < 12; i++) {
+          _lineChartData[0].data[i] = 0;
+        }
 
-      /* Ingreso de datos al arreglo provisorio de meses */
-      // console.log("largo" + this.indicator.registries.length);
-      for (let i = 0; i < indicator.registries.length; i++) {
-        const date: Date = new Date(indicator.registries[i].date);
-        const month = date.getMonth();
-        // console.log("entre ctm !!!!:   " + month);
-        /* if si el registro es de cantidad */
-        if (indicator.registriesType === 1) {
-          cantidad = indicator.registries[i].quantity;
-          // console.log("Cantidad : "+cantidad);
+        /* Ingreso de datos al arreglo provisorio de meses */
+        // console.log("largo" + this.indicator.registries.length);
+        for (let i = 0; i < indicator.registries.length; i++) {
+          const date: Date = new Date(indicator.registries[i].date);
+          const month = date.getMonth();
+          // console.log("entre ctm !!!!:   " + month);
+          /* if si el registro es de cantidad */
+          if (indicator.registriesType === 1) {
+            cantidad = indicator.registries[i].quantity;
+            // console.log("Cantidad : "+cantidad);
 
-          for (let j = 0; j < 12; j++) {
-            if (j >= month) {
-              _lineChartData[0].data[j] += cantidad;
+            for (let j = 0; j < 12; j++) {
+              if (j >= month) {
+                _lineChartData[0].data[j] += cantidad;
+              }
             }
-          }
-        } else { // caso contrario si el registro es default o algun otro que no sea cantidad
-          cantidad = 1;
-          for (let j = 0; j < 12; j++) {
-            if (j >= month) {
-              _lineChartData[0].data[j] += cantidad;
+          } else { // caso contrario si el registro es default o algun otro que no sea cantidad
+            cantidad = 1;
+            for (let j = 0; j < 12; j++) {
+              if (j >= month) {
+                _lineChartData[0].data[j] += cantidad;
+              }
             }
           }
         }
-      }
-      }
       this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
+      console.log(this.lineChartData);
     }
   }
 
