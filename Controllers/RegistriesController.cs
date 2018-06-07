@@ -394,37 +394,6 @@ namespace think_agro_metrics.Controllers
 				throw ex;
             }
         }
-
-		// DELETE: api/Registries/Documents/5
-		[HttpDelete("Documents/{id}")]
-		public async Task<IActionResult> DeleteDocument([FromRoute] long id)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var document = await _context.Documents.SingleOrDefaultAsync(d => d.DocumentID == id);
-
-			if (document == null)
-			{
-				return NotFound();
-			}
-
-			// Every documents belongs to a Registry, it's not necessary to validate
-			var registry = await _context.Registries.SingleOrDefaultAsync(r => r.RegistryID == document.RegistryID);
-
-			registry.Documents.Remove(document); // Delete Document from model
-
-			_context.Documents.Remove(document); // Delete Document from Database
-
-			await _context.SaveChangesAsync();
-
-			return Ok(document);
-
-		}
-        
-
-        
+                
     }
 }
