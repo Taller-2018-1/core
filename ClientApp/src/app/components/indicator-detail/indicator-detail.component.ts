@@ -64,20 +64,32 @@ export class IndicatorDetailComponent implements OnInit {
     public lineChartData: Array<any> = [
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
       //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio', lineTension: 0}
+      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio', lineTension: 0}
+    ];
+
+    public DispersionChartData: Array<any> = [
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'},
+      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio'}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
       'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
     public lineChartOptions: any = {
       responsive: true,
+      
       elements: {
         point: {
           radius: 5,
           hitRadius: 5,
           hoverRadius: 7,
           hoverBorderWidth: 2
+        },
+        line: {
+          tension:0
         }
+
       },
       scales: {
         yAxes: [{
@@ -265,23 +277,34 @@ export class IndicatorDetailComponent implements OnInit {
 
   public showDispersionGraph(indicator: Indicator){
     if (this.counter++ % 200 == 0){
+
+      let promedio = 0;
       
-      const _lineChartData: Array<any> = new Array(this.lineChartData.length);
-      _lineChartData[0] = {data: new Array(), label: this.lineChartData[0].label};
+      const _lineChartData: Array<any> = new Array(this.DispersionChartData.length);
+      _lineChartData[0] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[0].label};
+      
       for(let i = 0; i < indicator.registries.length; i++){
+        
         const date: Date = new Date(indicator.registries[i].date);
         const month = date.getUTCMonth();
         let percent = indicator.registries[i].percent;
+        console.log("Fecha: "+this.lineChartLabels[month]);
         let datos = {x: this.lineChartLabels[month], y:percent};
+        //_lineChartData[0].data[month]=percent;
+        //this.lineChartOptions.tooltips.callbacks.tittle('Mayo');
+        //_lineChartData.push(datos);
+        promedio +=percent; 
         _lineChartData[0].data.push(datos);
       }      
-      
-      _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.lineChartData[1].label};
+      promedio = promedio / indicator.registries.length;
+      _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[1].label};
       for (let i = 0; i < 12; i++){
-        _lineChartData[1].data[i] = 50;
+        let datos = {x: this.lineChartLabels[i], y:promedio};
+        _lineChartData[1].data.push(datos);
+        //_lineChartData[1].data[i]=50;
       }
       
-      this.lineChartData = _lineChartData;
+      this.DispersionChartData = _lineChartData;
       console.log("colores: "+this.lineChartColors[0].borderColor);
       console.log(this.lineChartData);
     }
