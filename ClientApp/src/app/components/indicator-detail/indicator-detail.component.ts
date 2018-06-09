@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
 import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,6 @@ import { PercentPipe } from '@angular/common';
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
-import { Router } from '@angular/router';
 import { Registry } from '../../shared/models/registry';
 
 // Services

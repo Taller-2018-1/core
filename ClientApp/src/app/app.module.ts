@@ -32,6 +32,7 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
+import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { WelcomeComponent } from './components/welcome-component/welcome-compone
     IndicatorGraphOptionComponent,
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    NavigationButtonsComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

@@ -238,3 +238,7 @@ _Pvt_Extensions
 
 #Die core.sln
 core.sln
+*.sln
+
+#Die .idea files
+\.idea/
