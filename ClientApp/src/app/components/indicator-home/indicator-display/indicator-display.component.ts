@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DecimalPipe } from '@angular/common';
+import { Router } from "@angular/router";
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
@@ -39,9 +40,13 @@ export class IndicatorDisplayComponent implements OnInit {
 
   goals$: Observable<number[]>;
 
-  constructor(private service: IndicatorGroupService) {
+  private router: Router;
+
+  constructor(private service: IndicatorGroupService,
+    router: Router) {
+    this.router = router;
   }
-  
+
   ngOnInit() {
     const currentYear = new Date().getFullYear();
     this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, currentYear);
@@ -148,5 +153,9 @@ export class IndicatorDisplayComponent implements OnInit {
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
     this.selectedMonth = Months[month];
+  }
+
+  gotoIndicator(idIndicatorGroup: number, idIndicator: number) {
+    this.router.navigateByUrl("/indicator/" + idIndicatorGroup + "/" + idIndicator);
   }
 }
