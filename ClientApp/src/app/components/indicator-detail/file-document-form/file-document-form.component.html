@@ -1,14 +1,14 @@
 <h3>Ingrese un nuevo registro</h3>
 <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
   <div class="form-group">
-    <label>Nombre registro: </label>
+    <!-- <label>Nombre registro: </label>
     <input type="text" class="form-control"
            id="name"
            placeholder="Registro X"
            required
            [(ngModel)]="model.name"
            name="name"
-           #name="ngModel">
+           #name="ngModel"> -->
     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
       Ingrese un nombre
     </div>
@@ -16,10 +16,10 @@
     <input #file type="file" />
     <br />
     
-    <label>Fecha: </label>
+    <!-- <label>Fecha: </label>
     <input type="date"
            [(ngModel)]="model.date"
-           value="{{ date | date: 'yyyy-MM-dd' }}">
+           value="{{ date | date: 'yyyy-MM-dd' }}"> -->
   </div>
   <input type="submit" class="btn btn-primary" (click)="upload(file.files)">
 </form>
