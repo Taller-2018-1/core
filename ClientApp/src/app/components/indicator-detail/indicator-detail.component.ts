@@ -58,6 +58,9 @@ export class IndicatorDetailComponent implements OnInit {
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
 
+  selectedTypeChart : string;
+  typesChart : string[] = [];
+
     // lineChart
     public counter = 0;
 
@@ -135,6 +138,9 @@ export class IndicatorDetailComponent implements OnInit {
     this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
 
+    this.selectedTypeChart = 'Gráfico de linea'; // default chart type
+    this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
+
   }
 
   selectRegistries(year: any, month: string) {
@@ -182,6 +188,19 @@ export class IndicatorDetailComponent implements OnInit {
         this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
+    }
+  }
+
+  selectChart(type: string, indicator: Indicator){
+    if (type === 'Gráfico de barra'){
+      this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
+      this.lineChartColors[0].backgroundColor = 'rgba(0,149,58,1)'; // change the bar colors
+      this.lineChartType = 'bar'; // now the type is barchart
+    }
+    else{
+      this.selectedTypeChart = 'Gráfico de linea'; // change the dropdownlist text
+      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
+      this.lineChartType = 'line'; // the type now is linechart
     }
   }
 
