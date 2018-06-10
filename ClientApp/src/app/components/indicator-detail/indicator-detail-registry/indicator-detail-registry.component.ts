@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation, TemplateRef } from '@angular/core';
+import {Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter} from '@angular/core';
 import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
@@ -25,6 +25,9 @@ export class IndicatorDetailRegistryComponent implements OnInit {
 
   @Input()
   public registriesType: number;
+
+  @Output()
+  private updateEvent = new EventEmitter();
 
   public registry: Registry = null; // For EditRegistry
   public editModalRef: BsModalRef;
@@ -81,9 +84,11 @@ export class IndicatorDetailRegistryComponent implements OnInit {
         data => {
           const index = this.registries.indexOf(registry);
           this.registries.splice(index, 1);
+          this.updateEvent.emit("Registry Deleted");
         },
         err => console.error(err)
       );
+
     }
   }
 }
