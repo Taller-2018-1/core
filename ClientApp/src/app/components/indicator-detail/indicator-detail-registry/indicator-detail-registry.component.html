@@ -43,10 +43,26 @@
               <br /> {{document.extension}}
             </div>
             <div fxFlex="10%">
-              <a class="btn btn-xs btn-primary">Ver</a>
+              <button *ngIf="document.extension=='link'; else viewFileTemplate" 
+              type="button" (click)="goToLinkBlank(document.link)" class="btn btn-xs btn-primary">
+                Ver
+              </button>
+              <ng-template #viewFileTemplate>
+                  <button type="button" class="btn btn-xs btn-primary disabled">
+                    Ver
+                  </button>
+              </ng-template>
             </div>
             <div fxFlex="15%">
-              <a class="btn btn-xs btn-info btn-size-text">Descargar</a>
+              <button *ngIf="document.extension=='link'; else downloadFileTemplate" 
+              type="button" (click)="goToLink(document.link)" class="btn btn-xs btn-info btn-size-text">
+                Descargar
+              </button>
+              <ng-template #downloadFileTemplate>
+                <button type="button" (click)="download(document)"  class="btn btn-xs btn-info btn-size-text">
+                  Descargar
+                </button>
+              </ng-template>
             </div>
             <div fxFlex="12%">
               <a class="btn btn-xs btn-primary" (click)="openModalEditDocument(editDocument, document)">Modificar</a>
@@ -55,6 +71,8 @@
               <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteDocument(registry,document)">Eliminar</a>
             </div>
           </div>
+          
+          
         </ng-template>
       </ng-template>
     </ngb-panel>
@@ -68,26 +86,6 @@
   <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
 </ng-template>
 
-            <div fxFlex="10%">
-              <button *ngIf="document.extension=='link'; else viewFileTemplate" 
-              type="button" (click)="goToLinkBlank(document.link)" class="btn btn-xs btn-primary">
-                Ver
-              </button>
-              <ng-template #viewFileTemplate>
-                  <button type="button" class="btn btn-xs btn-primary disabled">
-                    Ver
-                  </button>
-              </ng-template>
-            <div fxFlex="15%">
-                <button *ngIf="document.extension=='link'; else downloadFileTemplate" 
-                type="button" (click)="goToLink(document.link)" class="btn btn-xs btn-info btn-size-text">
-                  Descargar
-                </button>
-                <ng-template #downloadFileTemplate>
-                    <button type="button" (click)="download(document)"  class="btn btn-xs btn-info btn-size-text">
-                      Descargar
-                    </button>
-                </ng-template>
 <!-- Modals para agregar documentos -->
 <ng-template #linkModal>
   <div class="modal-header">
@@ -114,6 +112,8 @@
 </ng-template>
 <!-- FIN Modals para agregar documentos-->
 <!--Modal Edit Document-->
-<ng-template #editDocument>
-  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
+<ng-template #editDocument>
+
+  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
+
 </ng-template>

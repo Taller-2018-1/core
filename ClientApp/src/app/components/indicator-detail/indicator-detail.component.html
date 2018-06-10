@@ -221,18 +221,6 @@
   </div>
 -->
 
-    <ng-template #addRegistry>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
-      </div>
-    </ng-template>
-
 <ng-template #editRegistry>
   <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
 </ng-template>
