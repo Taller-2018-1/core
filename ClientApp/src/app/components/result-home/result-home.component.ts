@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, HostBinding } from '@angular/core';
+import { Component, Inject, OnInit, HostBinding,TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Model
@@ -6,6 +6,10 @@ import { IndicatorGroup } from '../../shared/models/indicatorGroup';
 
 // Service
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
+
+// Ngx-Bootstrap
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component(
 {
@@ -18,11 +22,18 @@ export class ResultHomeComponent implements OnInit {
 
   public indicatorGroups$: Observable<IndicatorGroup[]>;
 
-  constructor(private service: IndicatorGroupService) {
+  modalRef: BsModalRef;
+
+
+  constructor(private service: IndicatorGroupService,private modalService: BsModalService) {
   }
 
   ngOnInit() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
 
