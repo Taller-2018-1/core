@@ -141,6 +141,16 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedTypeChart = 'Gráfico de linea'; // default chart type
     this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
 
+    this.indicator$.subscribe(
+      data => {
+        let indicator : Indicator = data;
+        if (indicator.registriesType === 2){
+          this.selectedTypeChart = 'Gráfico de dispersión';
+          this.typesChart = ['Gráfico de dispersión'];
+        }
+      }
+    );
+
   }
 
   selectRegistries(year: any, month: string) {
@@ -192,16 +202,24 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   selectChart(type: string, indicator: Indicator){
+
+
     if (type === 'Gráfico de barra'){
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
       this.lineChartColors[0].backgroundColor = 'rgba(0,149,58,1)'; // change the bar colors
       this.lineChartType = 'bar'; // now the type is barchart
+
     }
-    else{
+    else if (type == 'Gráfico de linea'){
       this.selectedTypeChart = 'Gráfico de linea'; // change the dropdownlist text
       this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
       this.lineChartType = 'line'; // the type now is linechart
     }
+    else{
+      this.selectedTypeChart = 'Gráfico de dispersión';
+    }
+
+    
   }
 
   openModal(template: TemplateRef<any>) {
