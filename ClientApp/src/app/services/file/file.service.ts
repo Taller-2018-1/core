@@ -20,7 +20,7 @@ export class FileService {
     })
   }
 
-  editDocument(document: Document, discriminator: string): Observable<Document> {
+  editDocument(document: Document): Observable<Document> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json');
 

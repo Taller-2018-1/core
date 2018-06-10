@@ -90,6 +90,8 @@ export class IndicatorDetailComponent implements OnInit {
     public lineChartLegend = true;
     public lineChartType = 'line';
 
+    public document: Document = null; // For EditDocument
+
 
   constructor(private service: IndicatorService,
     router: Router,
@@ -174,6 +176,11 @@ export class IndicatorDetailComponent implements OnInit {
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
       }
     }
+  }
+
+  openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
+    this.document = selectedDocument;
+    this.modalRef = this.modalService.show(template);
   }
 
   openModal(template: TemplateRef<any>) {

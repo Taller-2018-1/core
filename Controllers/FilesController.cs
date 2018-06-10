@@ -48,8 +48,8 @@ namespace ThinkAgroMetrics.Controllers
             return _context.Documents.Any(e => e.DocumentID == id);
         }
 
-        // PUT: api/Registries/Documents/5
-        [HttpPut("Documents/{id}")]
+        // PUT: api/Files/5
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutDocument([FromRoute] long id, [FromBody] Document document)
         {
             if (!ModelState.IsValid)
@@ -82,4 +82,5 @@ namespace ThinkAgroMetrics.Controllers
             return Ok();
         }
     }
+
 }
