@@ -32,7 +32,6 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   public modalRef: BsModalRef; // For Documents
 
   public document: Document = null; // For EditDocument
-  public discriminator: string;
 
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,
@@ -130,6 +129,5 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
     this.document = selectedDocument;
     this.editModalRef = this.modalService.show(template);
-    this.discriminator = this.registry.discriminator;
   }
 }

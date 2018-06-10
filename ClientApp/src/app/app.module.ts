@@ -32,6 +32,8 @@ import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
 import { FileService } from './services/file/file.service';
+import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { FileService } from './services/file/file.service';
     IndicatorGraphOptionComponent,
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    DocumentEditorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
