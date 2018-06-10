@@ -8,7 +8,7 @@
                 <h1>
                   Resultados
                 </h1>
-                <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(generator)">Generar informe <span class="glyphicon glyphicon-file"> </span></button>
+                <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(generator,content)">Generar informe <span class="glyphicon glyphicon-file"> </span></button>
               </div> <!-- end subsection-text -->
             </div> <!-- end col-md-8 -->
           </div> <!-- end row -->
@@ -22,6 +22,12 @@
   <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
 </div>
 
+<div hidden id="content" #content>
+    <h1 >Titulo</h1>
+    
+    <p>dsfsdfsdfsdfsdf</p>
+</div>
+
 <ng-template #generator>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Generador de informes de todos los indicadores</h4>
@@ -30,9 +36,8 @@
     </button>
   </div>
   <div class="modal-body">
+      <button type="button" class="btn cred2 btn-primary" (click)="downloadPDF()"> Descargar </button>
       <!--<app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form> -->
-    <app-report-generator >
-
-    </app-report-generator>
+    <!--<app-report-generator></app-report-generator>-->
   </div>
 </ng-template>

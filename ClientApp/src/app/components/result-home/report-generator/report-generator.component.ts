@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 
 import * as jsPDF from 'jspdf';
 
@@ -10,6 +10,9 @@ import * as jsPDF from 'jspdf';
 export class ReportGeneratorComponent implements OnInit {
 
   @ViewChild('content') content: ElementRef;
+  //@Input() content : ElementRef;
+
+
   public downloadPDF()
   {
       let doc = new jsPDF();
@@ -36,6 +39,8 @@ export class ReportGeneratorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.content);
+    console.log(this.content.nativeElement.innerHTML);
   }
 
   public PDFGenerator(){

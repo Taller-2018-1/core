@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, HostBinding,TemplateRef } from '@angular/core';
+import { Component, Inject, OnInit, HostBinding,TemplateRef, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Model
@@ -10,6 +10,8 @@ import { IndicatorGroupService } from '../../services/indicator-group/indicator-
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import * as jsPDF from 'jspdf';
 
 @Component(
 {
@@ -23,6 +25,8 @@ export class ResultHomeComponent implements OnInit {
   public indicatorGroups$: Observable<IndicatorGroup[]>;
 
   modalRef: BsModalRef;
+  @ViewChild('content') content: ElementRef;
+  
 
 
   constructor(private service: IndicatorGroupService,private modalService: BsModalService) {
@@ -34,6 +38,26 @@ export class ResultHomeComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  downloadPDF(){
+    let doc = new jsPDF();
+
+      let specialElementHandlers = {
+          '#editor': function(element, renderer){
+            return true;
+          }
+      };
+
+      let content = this.content.nativeElement;
+
+      doc.fromHTML(content.innerHTML, 15, 15, {
+        'with':190,
+        'elementHandlers':specialElementHandlers
+      });
+
+      doc.save('test.pdf');
+
   }
 
 
