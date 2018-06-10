@@ -8,11 +8,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 //Models
-import { Registry } from '../../shared/models/registry';
-import { Document } from '../../shared/models/document';
+import { Registry } from '../../../shared/models/registry';
+import { Document } from '../../../shared/models/document';
 
 //Services
-import { RegistryService } from '../../services/registry/registry.service';
+import { RegistryService } from '../../../services/registry/registry.service';
 
 @Component({
   selector: 'app-link-document-form',
@@ -27,11 +27,13 @@ export class LinkDocumentFormComponent implements OnInit {
   @Input() registry: Registry;
 
   onSubmit() {
-    console.log(this.model);
     this.model.extension = "link";
-    this.RegistryService.addLinkDocument(this.model, this.idRegistry);
-    this.registry.documents.push(this.model);
-    this.router.navigateByUrl('/registry/' + this.idRegistry);
+    this.RegistryService.addLinkDocument(this.model, this.idRegistry).subscribe(
+      data =>{
+      this.registry.documents.push(data);
+      this.closeModal();
+    });
+    
   }
 
   showFormControls(form: any) {

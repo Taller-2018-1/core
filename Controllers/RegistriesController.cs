@@ -339,16 +339,20 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
+			try
+			{
+				Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
 
-            registry.Documents.Add(document);
+				registry.Documents.Add(document);
 
-            _context.Entry(registry).State = EntityState.Modified;
+				_context.Entry(registry).State = EntityState.Modified;
+				
+				await _context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
+				var response = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+
+				return Ok(response);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!RegistryExists(id))
@@ -360,8 +364,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Ok();
         }
 
         // ADD FileDocument: api/Registries/5/AddFileDocument

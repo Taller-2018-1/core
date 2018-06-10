@@ -8,11 +8,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 //Models
-import { Registry } from '../../shared/models/registry';
-import { Document } from '../../shared/models/document';
+import { Registry } from '../../../shared/models/registry';
+import { Document } from '../../../shared/models/document';
 
 //Services
-import { RegistryService } from '../../services/registry/registry.service';
+import { RegistryService } from '../../../services/registry/registry.service';
 
 @Component({
   selector: 'app-file-document-form',
@@ -27,13 +27,6 @@ export class FileDocumentFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idRegistry;
   @Input() registry: Registry;
-
-  onSubmit() {
-    console.log(this.model);
-    this.model.extension = "file";
-    this.RegistryService.addFileDocument(this.model, this.idRegistry);
-    this.closeModal();
-  }
 
   upload(files) {
     if (files.length === 0)
@@ -54,6 +47,8 @@ export class FileDocumentFormComponent implements OnInit {
       else if (event.type === HttpEventType.Response)
         this.registry.documents.push(new Document().fromJSON(event.body));
     });
+
+    this.closeModal();
   }
 
   closeModal() {

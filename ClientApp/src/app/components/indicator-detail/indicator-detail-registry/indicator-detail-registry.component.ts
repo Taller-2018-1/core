@@ -4,6 +4,7 @@ import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
 import { RegistryService } from '../../../services/registry/registry.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
+import { FileService } from '../../../services/file/file.service';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 // Ngx-Bootstrap
@@ -28,9 +29,11 @@ export class IndicatorDetailRegistryComponent implements OnInit {
 
   public registry: Registry = null; // For EditRegistry
   public editModalRef: BsModalRef;
+  public modalRef: BsModalRef; // For Documents
 
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,
+    private fileService: FileService,
     private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -65,6 +68,40 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     }
     this.registry = selectedRegistry;
     this.editModalRef = this.modalService.show(template);
+  }
+
+  openModalFileDocument($event: any, template: TemplateRef<any>, selectedRegistry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.registry = selectedRegistry;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  openModalLinkDocument($event: any, template: TemplateRef<any>, selectedRegistry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.registry = selectedRegistry;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  goToLink(link: string) {
+    //window.location.pathname = link;
+    var url = "http://" + link;
+    window.location.href = url;
+  }
+
+  goToLinkBlank(link: string) {
+    //window.location.pathname = link;
+    var url = "http://" + link;
+    window.open(url, '_blank');
+  }
+
+  download(document: Document) {
+    this.fileService.downloadFile(document);
   }
 
   private deleteRegistry($event: any, registry: Registry) {

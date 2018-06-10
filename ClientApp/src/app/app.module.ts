@@ -12,9 +12,8 @@ import { IndicatorHomeComponent } from './components/indicator-home/indicator-ho
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
-import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
-import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
-import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
+import { FileDocumentFormComponent } from './components/indicator-detail/file-document-form/file-document-form.component';
+import { LinkDocumentFormComponent } from './components/indicator-detail/link-document-form/link-document-form.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -26,7 +25,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
-import { DocumentEditorComponent } from './components/registry-details/document-editor/document-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
@@ -47,9 +45,7 @@ import { FileService } from './services/file/file.service';
     RegistryFormComponent,
     FileDocumentFormComponent,
     LinkDocumentFormComponent,
-    RegistryDetailsComponent,
     RegistryEditorComponent,
-    DocumentEditorComponent,
     ResultDisplayComponent,
     IndicatorGraphOptionComponent,
     IndicatorDetailRegistryComponent,
@@ -71,7 +67,6 @@ import { FileService } from './services/file/file.service';
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
-      { path: 'registry-details/:id', component: RegistryDetailsComponent },
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
       { path: 'home',        component: ResultHomeComponent },
       { path: '',            component: WelcomeComponent },
