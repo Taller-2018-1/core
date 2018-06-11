@@ -78,6 +78,9 @@ export class IndicatorDetailComponent implements OnInit {
           hitRadius: 5,
           hoverRadius: 7,
           hoverBorderWidth: 2
+        },
+        line: {
+            tension: 0
         }
       },
       scales: {
@@ -230,7 +233,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     if (type === 'Gráfico de barra'){
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
-      this.lineChartColors[0].backgroundColor = 'rgba(0,149,58,1)'; // change the bar colors
+      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
       this.lineChartType = 'bar'; // now the type is barchart
 
     }
