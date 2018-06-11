@@ -238,3 +238,7 @@ _Pvt_Extensions
 
 #Die core.sln
 core.sln
+
+#Repository Data
+wwwroot/Repository
+wwwroot/Repository/*
