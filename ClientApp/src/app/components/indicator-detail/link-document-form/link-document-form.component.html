@@ -27,7 +27,7 @@
     <label>Fecha: </label>
     <input type="date"
            [(ngModel)]="model.date"
-           value="{{ date | date: 'yyyy-MM-dd' }}">
+           value="{{ model.date | date: 'yyyy-MM-dd' }}">
   </div>
   <input type="submit" class="btn btn-primary">
 </form>
