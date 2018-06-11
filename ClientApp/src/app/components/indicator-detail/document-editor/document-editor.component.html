@@ -26,7 +26,7 @@
     </div>
 
     <!--Corresponde a indicador con subida de links-->
-    <div class="form-group">
+    <div class="form-group" *ngIf="document.extension == 'link'">
       <label for="link">Link</label>
       <input type="text" class="form-control" id="link" required [(ngModel)]="document.link" name="link" #percent="ngModel" />
       <div [hidden]="(link.valid || link.pristine)"
@@ -34,9 +34,9 @@
         Link es requerido
       </div>
     </div>
-    <div class="form-group" *ngIf="document.extension !== 'link'">
+    <!--<div class="form-group" *ngIf="document.extension !== 'link'">
       <input #file type="file" /> {{document.documentname}}
-    </div>
+    </div>-->
 
 
     <div class="form-group">
@@ -52,7 +52,8 @@
           <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
         </div>
       <ng-template #fileButton>
-        <button type="submit" class="btn btn-success pull-right" (click)="upload(file.files)" [disabled]="!documentEditForm.form.valid">Editar</button>
+        <!--<button type="submit" class="btn btn-success pull-right" (click)="upload(file.files)" [disabled]="!documentEditForm.form.valid">Editar</button>-->
+        <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
       </ng-template>
     </div>
   </form>
