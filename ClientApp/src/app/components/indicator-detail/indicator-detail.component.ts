@@ -139,16 +139,6 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedTypeChart = 'Gráfico de linea'; // default chart type
     this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
 
-    this.indicator$.subscribe(
-      data => {
-        let indicator : Indicator = data;
-        if (indicator.registriesType === 2){
-          this.selectedTypeChart = 'Gráfico de dispersión';
-          this.typesChart = ['Gráfico de dispersión'];
-        }
-      }
-    );
-
 
     if (this.selectedYear === -1) {
       this.isMonthDisabled = true;
