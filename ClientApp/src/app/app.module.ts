@@ -33,7 +33,9 @@ import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
 import { FileService } from './services/file/file.service';
 import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
-
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import { SessionService } from './services/session/session.service';
+import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,8 @@ import { DocumentEditorComponent } from './components/indicator-detail/document-
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
-    DocumentEditorComponent
+    DocumentEditorComponent,
+    NavigationButtonsComponent,
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -67,6 +70,7 @@ import { DocumentEditorComponent } from './components/indicator-detail/document-
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
+    StorageServiceModule ,
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
@@ -76,12 +80,7 @@ import { DocumentEditorComponent } from './components/indicator-detail/document-
       { path: '**',          component: ResultHomeComponent },
     ])
   ],
-  providers: [IndicatorService, 
-    IndicatorGroupService, 
-    RegistryService, 
-    AuthService, 
-    CanActivateUser, 
-    FileService],
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
