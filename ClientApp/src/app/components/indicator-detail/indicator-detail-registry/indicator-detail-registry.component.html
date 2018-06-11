@@ -114,6 +114,6 @@
 <!--Modal Edit Document-->
 <ng-template #editDocument>
 
-  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
+  <app-document-editor [document]="document" [documents]= "registry.documents" [editModalRef]="editModalRef" #editDocument></app-document-editor>
 
 </ng-template>

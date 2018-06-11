@@ -9,7 +9,7 @@
   <form (ngSubmit)="editDocument()" #documentEditForm="ngForm">
     <div class="form-group">
       <label for="name">Nombre</label>
-      <input type="text" class="form-control" id="name" required [(ngModel)]="document.name" name="name" #name="ngModel" />
+      <input type="text" class="form-control" id="name" required [(ngModel)]="newDocument.name" name="name" #name="ngModel" />
       <div [hidden]="name.valid || name.pristine"
             class="alert alert-danger">
         Nombre no puede estar vacio
@@ -19,7 +19,7 @@
     <div class="form-group">
       <label for="date">Fecha</label>
       <input type="date" class="form-control" id="date" required [(ngModel)]="document.date" name="date" #date="ngModel" />
-      <div [hidden]="date.valid || date.pristine"
+      <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
       </div>
@@ -28,7 +28,7 @@
     <!--Corresponde a indicador con subida de links-->
     <div class="form-group" *ngIf="document.extension == 'link'">
       <label for="link">Link</label>
-      <input type="text" class="form-control" id="link" required [(ngModel)]="document.link" name="link" #percent="ngModel" />
+      <input type="text" class="form-control" id="link" required [(ngModel)]="newDocument.link" name="link" #percent="ngModel" />
       <div [hidden]="(link.valid || link.pristine)"
             class="alert alert-danger">
         Link es requerido
@@ -60,3 +60,9 @@
   </form>
 </div>
 
+
+      <input type="date" class="form-control" id="date" required [(ngModel)]="newDocument.date" name="date" #date="ngModel" />
+      <div [hidden]="(date.valid || date.pristine)"
+
+      <!--Si es un documento con un archivo incluido, al presionar editar debe subirlo a la aplicacion-->
+          <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
