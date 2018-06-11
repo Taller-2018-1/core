@@ -23,7 +23,12 @@ export class CanActivateUser implements CanActivate {
     // this is wrong in so many levels, but works. Why?
     // because if the user is not authenticated, then
     // it returns an error code though the http call
-    if (this.auth.getUser() === false) {
+
+    // Editor's note: As of 2018 06 11, That was no longer true, for some reason now it works as it should.
+    // If we found an user we allow the pass into the component. Otherwise we don't.
+    // I have no idea why it works now, but ¯\_(ツ)_/¯.
+    
+    if (this.auth.getUser() !== false) {
       return Observable.of(true);
     } else {
       return Observable.of(false);
