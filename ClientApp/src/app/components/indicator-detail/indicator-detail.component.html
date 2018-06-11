@@ -107,7 +107,7 @@
                     <!--</div>-->
 
                   </td>
-                  <td style="padding-left: 200px;">
+                  <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
 
@@ -120,6 +120,23 @@
                         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                             role="menu" aria-labelledby="button-basic">
                           <li *ngFor="let typeChart of typesChart"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
+                        </ul>
+                      </div>
+                      <!--</div>-->
+                  </td>
+                  <td *ngIf="indicator.registriesType == 2" style="padding-left: 200px;">
+                    <!--<app-indicator-graph-option></app-indicator-graph-option>-->
+                    <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
+
+                      <!--Dropdown Month Filter-->
+                      <!--<div class="col-md-6">-->
+                      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                          Gráfico de dispersión <span class="caret"></span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic">
+                          <li *ngFor="let typeChart of typeDispersion"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
                         </ul>
                       </div>
                       <!--</div>-->

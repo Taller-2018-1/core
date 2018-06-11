@@ -60,6 +60,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   selectedTypeChart : string;
   typesChart : string[] = [];
+  typeDispersion : string[] = [];
 
     // lineChart
     public counter = 0;
@@ -144,6 +145,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     this.selectedTypeChart = 'Gráfico de linea'; // default chart type
     this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
+    this.typeDispersion = ['Gráfico de dispersión'];
 
 
     if (this.selectedYear === -1) {
