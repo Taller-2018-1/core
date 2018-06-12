@@ -65,7 +65,7 @@
               </ng-template>
             </div>
             <div fxFlex="15%">
-              <a class="btn btn-xs btn-primary" (click)="openModalEditDocument(editDocument, document)">Modificar</a>
+              <a class="btn btn-xs btn-primary" (click)="openModalEditDocument($event, editDocument, document)">Modificar</a>
             </div>
             <div fxFlex="12%">
               <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteDocument(registry,document)">Eliminar</a>
@@ -114,6 +114,6 @@
 <!--Modal Edit Document-->
 <ng-template #editDocument>
 
-  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
+  <app-document-editor [document]="document" (updateEvent)="updateData()" [editModalRef]="editModalRef" #editDocument></app-document-editor>
 
 </ng-template>
