@@ -36,7 +36,7 @@ export class DocumentEditorComponent implements OnInit {
     this.newDocument= JSON.parse(JSON.stringify(this.document)); // To create a clone of the selected document (this.document)
   }
 
-  editDocument(document: Document) {
+  editDocument() {
     try {
       notDeepEqual(this.document, this.newDocument); // If document and newDcoument are not equal, just close the modal
       
