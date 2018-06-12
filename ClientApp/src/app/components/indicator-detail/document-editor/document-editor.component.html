@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Editar document</h4>
+  <h4 class="modal-title pull-left">Editar documento</h4>
   <button type="button" class="close pull-right" aria-label="close" (click)="editModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -18,7 +18,7 @@
 
     <div class="form-group">
       <label for="date">Fecha</label>
-      <input type="date" class="form-control" id="date" required [(ngModel)]="document.date" name="date" #date="ngModel" />
+      <input type="date" class="form-control" id="date" required [(ngModel)]="newDocument.date" name="date" #date="ngModel" />
       <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
@@ -47,22 +47,7 @@
     </div>
 
     <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
-
-      <!--Si es un documento con un archivo incluido, al presionar editar debe subirlo a la aplicacion-->
-        <div class="form-group" *ngIf="document.extension == 'link'; else fileButton">
-          <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
-        </div>
-      <ng-template #fileButton>
-        <!--<button type="submit" class="btn btn-success pull-right" (click)="upload(file.files)" [disabled]="!documentEditForm.form.valid">Editar</button>-->
         <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
-      </ng-template>
     </div>
   </form>
 </div>
-
-
-      <input type="date" class="form-control" id="date" required [(ngModel)]="newDocument.date" name="date" #date="ngModel" />
-      <div [hidden]="(date.valid || date.pristine)"
-
-      <!--Si es un documento con un archivo incluido, al presionar editar debe subirlo a la aplicacion-->
-          <button type="submit" class="btn btn-success pull-right" [disabled]="!documentEditForm.form.valid">Editar</button>
