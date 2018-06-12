@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, ViewEncapsulation, TemplateRef } from '@angular/core';
+import {Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter} from '@angular/core';
 import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
 import { RegistryService } from '../../../services/registry/registry.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
+import { FileService } from '../../../services/file/file.service';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 // Ngx-Bootstrap
@@ -26,11 +27,18 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   @Input()
   public registriesType: number;
 
+  @Output()
+  private updateEvent = new EventEmitter();
+
   public registry: Registry = null; // For EditRegistry
   public editModalRef: BsModalRef;
+  public modalRef: BsModalRef; // For Documents
+
+  public document: Document = null; // For EditDocument
 
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,
+    private fileService: FileService,
     private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -67,6 +75,40 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     this.editModalRef = this.modalService.show(template);
   }
 
+  openModalFileDocument($event: any, template: TemplateRef<any>, selectedRegistry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.registry = selectedRegistry;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  openModalLinkDocument($event: any, template: TemplateRef<any>, selectedRegistry: Registry) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.registry = selectedRegistry;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  goToLink(link: string) {
+    //window.location.pathname = link;
+    var url = "http://" + link;
+    window.location.href = url;
+  }
+
+  goToLinkBlank(link: string) {
+    //window.location.pathname = link;
+    var url = "http://" + link;
+    window.open(url, '_blank');
+  }
+
+  download(document: Document) {
+    this.fileService.downloadFile(document);
+  }
+
   private deleteRegistry($event: any, registry: Registry) {
     if ($event) {
       $event.stopPropagation();
@@ -81,9 +123,16 @@ export class IndicatorDetailRegistryComponent implements OnInit {
         data => {
           const index = this.registries.indexOf(registry);
           this.registries.splice(index, 1);
+          this.updateEvent.emit("Registry Deleted");
         },
         err => console.error(err)
       );
+
     }
+  }
+
+  openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
+    this.document = selectedDocument;
+    this.editModalRef = this.modalService.show(template);
   }
 }

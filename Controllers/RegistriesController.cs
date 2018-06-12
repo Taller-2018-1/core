@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using think_agro_metrics.Data;
@@ -15,10 +15,12 @@ namespace think_agro_metrics.Controllers
     public class RegistriesController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public RegistriesController(DataContext context)
+        public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Registries
@@ -44,7 +46,7 @@ namespace think_agro_metrics.Controllers
             {
                 return NotFound();
             }
-
+            _context.Registries.Include(x => x.Documents).ToList();
             return Ok(registry);
         }
 
@@ -337,16 +339,20 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
+			try
+			{
+				Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
 
-            registry.Documents.Add(document);
+				registry.Documents.Add(document);
 
-            _context.Entry(registry).State = EntityState.Modified;
+				_context.Entry(registry).State = EntityState.Modified;
+				
+				await _context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
+				var response = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+
+				return Ok(response);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!RegistryExists(id))
@@ -358,9 +364,38 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Ok();
         }
-    
+
+        // ADD FileDocument: api/Registries/5/AddFileDocument
+        [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
+        public async Task<IActionResult> AddFileDocument([FromRoute] long id)
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+				var fileDocumentFactory = new FileDocumentFactory(file, _hostingEnvironment);
+				
+				var document = fileDocumentFactory.CreateDocument();
+                Registry registry = _context.Registries.First(i => i.RegistryID == id);
+                
+                registry.Documents.Add(document);
+                _context.Entry(registry).State = EntityState.Modified;
+                _context.SaveChanges();
+
+				var response = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+
+				if (response == null)
+				{
+					return NotFound();
+				}
+
+				return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+				throw ex;
+            }
+        }
+                
     }
 }

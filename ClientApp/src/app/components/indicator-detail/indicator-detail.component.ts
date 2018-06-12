@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
 import { Http, Response, Headers, RequestOptions,  } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,6 @@ import { PercentPipe } from '@angular/common';
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
-import { Router } from '@angular/router';
 import { Registry } from '../../shared/models/registry';
 
 // Services
@@ -18,6 +17,7 @@ import { RegistryService } from '../../services/registry/registry.service';
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
 import { IndicatorDisplayComponent } from '../indicator-home/indicator-display/indicator-display.component';
 import { $ } from 'protractor';
+import { SessionService } from '../../services/session/session.service';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -57,7 +57,11 @@ export class IndicatorDetailComponent implements OnInit {
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
-  indicator : Indicator;
+
+  selectedTypeChart : string;
+  typesChart : string[] = [];
+  typeDispersion : string[] = [];
+
     // lineChart
     public counter = 0;
 
@@ -130,13 +134,16 @@ export class IndicatorDetailComponent implements OnInit {
     public lineChartLegend = true;
     public lineChartType = 'line';
 
+    public document: Document = null; // For EditDocument
+
 
   constructor(private service: IndicatorService,
     router: Router,
     private registryService: RegistryService,
     private indicatorGroupService: IndicatorGroupService,
     private route: ActivatedRoute,
-    private modalService: BsModalService) {
+    private modalService: BsModalService,
+    private sessionStorage: SessionService) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
     this.router = router;
@@ -146,13 +153,15 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.indicator$ = this.service.getIndicator(this.idIndicator);
     const currentYear = new Date().getFullYear();
     const baseYear = 2018;
     for (let i = 0; i <= (currentYear - baseYear); i++) {
       this.years[i] = baseYear + i;
     }
-    this.selectedYearText = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
-    this.selectedYear = currentYear; // 2018 (current year) is the selected year
+    
+    this.selectedYearText = this.sessionStorage.getYearText(IndicatorDetailComponent.YEAR + currentYear);
+    this.selectedYear = this.sessionStorage.getYear(currentYear);
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
@@ -160,28 +169,38 @@ export class IndicatorDetailComponent implements OnInit {
       this.months[i] = i;
     }
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
-    this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
-    this.selectedMonth = -1; // It's not selected a specific month yet
+    this.selectedMonthText = this.sessionStorage.getMonthText(IndicatorDetailComponent.ALL_MONTHS);
+    this.selectedMonth = this.sessionStorage.getMonth(-1);
     this.indicatorGroupName$ = this.indicatorGroupService.getIndicatorGroupName(this.idIndicatorGroup);
-    this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
-    // Calculate indicator
-    this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
-    this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
-    this.indicator$.subscribe(
-      data =>{
-        this.indicator = data;
-        if (this.indicator.registriesType === 2){
-          this.lineChartColors[0].backgroundColor = 'transparent';
-          this.lineChartColors[0].borderColor = 'transparent';
-        }
-      }
-    );
 
+    this.selectedTypeChart = 'Gráfico de linea'; // default chart type
+    this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
+    this.typeDispersion = ['Gráfico de dispersión'];
+
+
+    if (this.selectedYear === -1) {
+      this.isMonthDisabled = true;
+    }
+    
+    this.loadDataByFilters();
 
   }
 
-  selectRegistries(year: any, month: string) {
+  loadDataByFilters() {
+    if (this.isMonthDisabled === true) {
+      if (this.selectedYear === -1) {
+        this.selectRegistries(IndicatorDetailComponent.ALL_YEARS, '');
+      }
+      else {
+        this.selectRegistries(this.selectedYear, '');
+      }
+    }
+    else {
+      this.selectRegistries('', this.selectedMonthText);
+    }
+  }
 
+  selectRegistries(year: any, month: string) {
     if ((year as string).length !== 0 ) {
       if (year === IndicatorDetailComponent.ALL_YEARS) {
         this.indicator$ = this.service.getIndicator(this.idIndicator); // Show all the registries
@@ -189,14 +208,18 @@ export class IndicatorDetailComponent implements OnInit {
         this.value$ = this.service.getIndicatorValue(this.idIndicator);
         this.goal$ = this.service.getGoal(this.idIndicator); // shows all goals
         this.selectedYearText = IndicatorDetailComponent.ALL_YEARS;
+        this.sessionStorage.setYearText(this.selectedYearText);
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1;
+        this.sessionStorage.setYear(this.selectedYear);
       }
       // tslint:disable-next-line:one-line
       else {
         this.selectedYearText = IndicatorDetailComponent.YEAR + year; // Change the text on the dropdown
+        this.sessionStorage.setYearText(this.selectedYearText);
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
+        this.sessionStorage.setYear(this.selectedYear);
         // tslint:disable-next-line:max-line-length
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear); // Show registries from the year selected
         // Calculate Indicator Selected Year
@@ -205,15 +228,18 @@ export class IndicatorDetailComponent implements OnInit {
         this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
+      this.sessionStorage.setMonthText(this.selectedMonthText);
     }
     // tslint:disable-next-line:one-line
     else {
       if (month === IndicatorDetailComponent.ALL_MONTHS) {
         this.selectedMonth = -1; // Not selected a specific month
+        this.sessionStorage.setMonth(this.selectedMonth);
         this.indicator$ = this.service.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
         // Calculate Indicator All MONTHS
         this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
         this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
+        this.sessionStorage.setMonthText(this.selectedMonthText);
         this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
       }
       // tslint:disable-next-line:one-line
@@ -224,20 +250,47 @@ export class IndicatorDetailComponent implements OnInit {
         this.value$ = this.service.getIndicatorValueYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
+        this.sessionStorage.setMonthText(this.selectedMonthText);
       }
     }
+  }
+
+  openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
+    this.document = selectedDocument;
+    this.modalRef = this.modalService.show(template);
+  }
+  
+  selectChart(type: string, indicator: Indicator){
+
+
+    if (type === 'Gráfico de barra'){
+      this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
+      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
+      this.lineChartType = 'bar'; // now the type is barchart
+
+    }
+    else if (type == 'Gráfico de linea'){
+      this.selectedTypeChart = 'Gráfico de linea'; // change the dropdownlist text
+      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
+      this.lineChartType = 'line'; // the type now is linechart
+    }
+    else{
+      this.selectedTypeChart = 'Gráfico de dispersión';
+    }
+
+    
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
+  
+  gotoRegistry(registryID: number) {
+    this.router.navigateByUrl('/registry/' + registryID);
+  } 
 
   gotoAddRegistry() {
     this.router.navigateByUrl('/indicator-add-registry');
-  }
-
-  gotoRegistry() {
-    this.router.navigateByUrl('/registry-details/' + 1); // Reemplazar por ID, sacado del button
   }
 
   // Set the list of the months (numbers) from 0 to the current month (max 11)
@@ -273,6 +326,7 @@ export class IndicatorDetailComponent implements OnInit {
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
     this.selectedMonth = Months[month];
+    this.sessionStorage.setMonth(this.selectedMonth);
   }
 
   public showDispersionGraph(indicator: Indicator){

@@ -197,7 +197,7 @@ namespace think_agro_metrics.Data
 
             var indicators5 = new Indicator[]
             {
-                new Indicator{Name="Porcentaje de satisfacción de empresas frutícolas", RegistriesType = RegistryType.PercentRegistry},
+                new Indicator{Name="Porcentaje de satisfacción de empresas frutícolas",RegistriesType = RegistryType.PercentRegistry},
                 new Indicator{Name="Porcentaje de satisfacción de empresas agroindustriales",RegistriesType = RegistryType.PercentRegistry}
             };
 
