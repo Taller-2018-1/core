@@ -73,11 +73,11 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     StorageServiceModule ,
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent },
-      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent },
-      { path: 'home',        component: ResultHomeComponent },
+      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
+      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
+      { path: 'home',        component: ResultHomeComponent, canActivate:[CanActivateUser] },
       { path: '',            component: WelcomeComponent },
-      { path: '**',          component: ResultHomeComponent },
+      { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
     ])
   ],
   providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
