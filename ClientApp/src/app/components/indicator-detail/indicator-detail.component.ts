@@ -60,6 +60,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   selectedTypeChart : string;
   typesChart : string[] = [];
+  typeDispersion : string[] = [];
 
     // lineChart
     public counter = 0;
@@ -78,6 +79,9 @@ export class IndicatorDetailComponent implements OnInit {
           hitRadius: 5,
           hoverRadius: 7,
           hoverBorderWidth: 2
+        },
+        line: {
+            tension: 0
         }
       },
       scales: {
@@ -141,6 +145,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     this.selectedTypeChart = 'Gráfico de linea'; // default chart type
     this.typesChart = ['Gráfico de barra','Gráfico de linea']; // array options chart type
+    this.typeDispersion = ['Gráfico de dispersión'];
 
 
     if (this.selectedYear === -1) {
@@ -230,7 +235,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     if (type === 'Gráfico de barra'){
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
-      this.lineChartColors[0].backgroundColor = 'rgba(0,149,58,1)'; // change the bar colors
+      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
       this.lineChartType = 'bar'; // now the type is barchart
 
     }
