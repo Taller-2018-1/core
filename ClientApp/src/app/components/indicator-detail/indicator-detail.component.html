@@ -56,8 +56,8 @@
   <section>
     <div>
       <ol class="breadcrumb shortcode">
-        <li><a (click)="openModal(editGoalModal)">Modificar Meta</a></li>
-        <li><a href="#">Modificar Indicador</a></li>
+        <button class="btn btn-xs btn-default" (click)="openModal(editGoalModal)"><a>Modificar Meta</a></button>
+        <button class="btn btn-xs btn-default"><a>Modificar Indicador</a></button>
       </ol>
     </div>
   </section>
@@ -113,12 +113,11 @@
                     <!--</div>-->
 
                   </td>
+
+                  <!-- Graph Type Dropdown (no PercentRegistry) -->
                   <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-
-                      <!--Dropdown Month Filter-->
-                      <!--<div class="col-md-6">-->
                       <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
                           {{ selectedTypeChart }} <span class="caret"></span>
@@ -130,13 +129,12 @@
                       </div>
                       <!--</div>-->
                   </td>
+
+                  <!-- Graph Type Dropdown (PercentRegistry) -->
                   <td *ngIf="indicator.registriesType == 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-
-                      <!--Dropdown Month Filter-->
-                      <!--<div class="col-md-6">-->
-                      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                      <div class="btn-group" dropdown>
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
                           Gráfico de dispersión <span class="caret"></span>
                         </button>

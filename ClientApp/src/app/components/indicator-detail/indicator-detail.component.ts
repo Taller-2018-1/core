@@ -164,8 +164,8 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedMonth = this.sessionStorage.getMonth(-1);
     this.indicatorGroupName$ = this.indicatorGroupService.getIndicatorGroupName(this.idIndicatorGroup);
 
-    this.selectedTypeChart = 'Gráfico de linea'; // default chart type
-    this.typesChart = ['Gráfico de barra', 'Gráfico de linea']; // array options chart type
+    this.selectedTypeChart = 'Gráfico de línea'; // default chart type
+    this.typesChart = ['Gráfico de barra', 'Gráfico de línea']; // array options chart type
     this.typeDispersion = ['Gráfico de dispersión'];
 
 
@@ -256,8 +256,8 @@ export class IndicatorDetailComponent implements OnInit {
       this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
       this.lineChartType = 'bar'; // now the type is barchart
 
-    } else if (type === 'Gráfico de linea') {
-      this.selectedTypeChart = 'Gráfico de linea'; // change the dropdownlist text
+    } else if (type === 'Gráfico de línea') {
+      this.selectedTypeChart = 'Gráfico de línea'; // change the dropdownlist text
       this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
       this.lineChartType = 'line'; // the type now is linechart
     } else {

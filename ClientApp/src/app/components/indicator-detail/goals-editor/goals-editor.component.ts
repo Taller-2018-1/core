@@ -17,7 +17,7 @@ import { IndicatorService } from '../../../services/indicator/indicator.service'
 export class GoalsEditorComponent implements OnInit {
 
   @Input() public indicator: Indicator = new Indicator();
-  @Input() public editGoalModalRef: BsModalRef;
+  @Input() public modalRef: BsModalRef;
 
   public goals: Goal[] = [];
   public years: number[] = [];
