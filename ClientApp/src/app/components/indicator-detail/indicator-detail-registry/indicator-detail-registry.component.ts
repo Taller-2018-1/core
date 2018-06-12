@@ -45,7 +45,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   private deleteDocument(registry: Registry, document: Document) {
-    const result = confirm('Está seguro que desea elimianr el documento: ' + document.name);
+    const result = confirm('Está seguro que desea eliminar el documento: ' + document.name);
     if (registry.documents.length === 1) {
       alert('Debe existir al menos un documento de respaldo para el registro');
       return;
@@ -131,8 +131,17 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     }
   }
 
-  openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
+  openModalEditDocument($event: any, template: TemplateRef<any>, selectedDocument: Document) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
     this.document = selectedDocument;
     this.editModalRef = this.modalService.show(template);
   }
+
+  updateData() {
+    this.updateEvent.emit("Document modified");
+  }
+
 }
