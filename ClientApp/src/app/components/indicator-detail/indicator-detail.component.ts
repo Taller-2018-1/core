@@ -43,6 +43,8 @@ export class IndicatorDetailComponent implements OnInit {
   public registriesType: number;
   public editModalRef: BsModalRef;
 
+  public editGoalModalRef: BsModalRef;
+
   allYears: string = IndicatorDetailComponent.ALL_YEARS;
   selectedYearText: string; // Dropdown year "Año 2018"
   selectedYear: number; // Numeric value for selectionYear
@@ -168,6 +170,10 @@ export class IndicatorDetailComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  openEditGoalModal(template: TemplateRef<any>) {
+    this.editGoalModalRef = this.modalService.show(template);
   }
 
   gotoAddRegistry() {

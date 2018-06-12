@@ -1,0 +1,61 @@
+<div class="container col-md-12 modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modificar metas</h4>
+    <button type="button" class="close pull-right" aria-label="close" (click)="editGoalModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">  
+  
+    <div class="row">
+      <div class="col-md-6">    
+        <label>Seleccione un año:</label> <br>
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
+            Año <span class="caret"></span><!-- selectedYearText -->
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li *ngFor="let year of years"><a class="dropdown-item" >Año {{ year }}</a></li>
+          </ul>
+        </div>
+      </div>
+    
+      <div class="col-md-6">    
+        <label>Seleccione un mes:</label> <br>
+        <div class="btn-group" dropdown> <!-- [isDisabled]="isMonthDisabled" -->
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
+            Mes <span class="caret"></span><!-- selectedYearText -->
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li *ngFor="let monthText of monthsText"><a class="dropdown-item" >{{ monthText }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      
+    </div>
+
+    <div class="row">      
+      <div class="col-md-6">
+          <label for="value">Valor de la meta:</label>
+          <input id="valueForm" name="valueForm" class="form-control"
+          pattern="[0-9]{1,}"
+       [(ngModel)]="value" #valueForm="ngModel" >
+        <div [hidden]="(valueForm.valid || valueForm.pristine)"
+          class="alert alert-danger">
+          Cantidad deber ser un número entero
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="submit" (click)="editGoal()" class="btn btn-primary pull-right">Editar</button>
+  </div>
+</div>
+  
+
+ 

@@ -18,6 +18,10 @@
     <!--Dropdown Filters-->
     <div class="row" style="margin-top: 20px; margin-bottom: 20px">
 
+      <!-- Goals Editor -->
+      <li><a (click)="openEditGoalModal(editGoalModal)">Modificar Meta</a></li>
+
+
       <!--Dropdown Year Filter-->
       <div class="col-md-6">
         Seleccione el año a mostrar:
@@ -100,6 +104,12 @@
     <ng-template #editRegistry>
         <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
     </ng-template>
+
+    <!-- Modal Edit Goal -->
+    <ng-template #editGoalModal>
+        <app-goals-editor [indicator]="indicator" [editGoalModalRef]="editGoalModalRef"></app-goals-editor>
+    </ng-template>
+
   </div>
 </div>
 

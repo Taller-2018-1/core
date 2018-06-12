@@ -15,15 +15,15 @@ import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultHomeComponent } from './components/result-home/result-home.component';
 import { ResultDisplayComponent } from './components/result-home/result-display/result-display.component';
-
-import { IndicatorService } from './services/indicator/indicator.service';
-import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 import { RegistryDetailsComponent } from './components/registry-details/registry-details.component';
 import { FileDocumentFormComponent } from './components/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/link-document-form/link-document-form.component';
-
+import { GoalsEditorComponent } from './components/indicator-detail/goals-editor/goals-editor.component';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+
+import { IndicatorService } from './services/indicator/indicator.service';
+import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryService } from './services/registry/registry.service';
 
 @NgModule({
@@ -40,7 +40,8 @@ import { RegistryService } from './services/registry/registry.service';
     RegistryDetailsComponent,
     RegistryEditorComponent,
     ResultDisplayComponent,
-    ResultHomeComponent
+    ResultHomeComponent,
+    GoalsEditorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

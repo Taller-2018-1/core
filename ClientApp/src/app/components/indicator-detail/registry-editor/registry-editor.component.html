@@ -35,7 +35,7 @@
 
     <div class="form-group" *ngIf="registriesType === 4">
       <label for="percent">Porcentaje</label>
-      <input type="text" pattern="[0-9]{1,}[\.]{0,1}[0-9]{1,}" class="form-control" id="percent" required [(ngModel)]="registry.percent" name="percent" #percent="ngModel" />
+      <input type="text" pattern="[0-9]{1,}([\.][0-9]{1,2}){0,1}" class="form-control" id="percent" required [(ngModel)]="registry.percent" name="percent" #percent="ngModel" />
       <div [hidden]="(percent.valid || percent.pristine)"
             class="alert alert-danger">
         Porcentaje debe ser un número entero o decimal (punto "." es separador de decimales)
