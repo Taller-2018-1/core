@@ -8,7 +8,7 @@
   <form (ngSubmit)="editRegistry()" #registryEditForm="ngForm">
     <div class="form-group">
       <label for="name">Nombre</label>
-      <input type="text" class="form-control" id="name" required [(ngModel)]="registry.name" name="name" #name="ngModel" />
+      <input type="text" class="form-control" id="name" required [(ngModel)]="newRegistry.name" name="name" #name="ngModel" />
       <div [hidden]="name.valid || name.pristine"
             class="alert alert-danger">
         Nombre no puede estar vacio
@@ -17,23 +17,23 @@
 
     <div class="form-group">
       <label for="date">Fecha</label>
-      <input type="date" class="form-control" id="date" required [(ngModel)]="registry.date" name="date" #date="ngModel" />
+      <input type="date" class="form-control" id="date" required [ngModel]="newRegistry.date | date:'yyyy-MM-dd'" (ngModelChange)="newRegistry.date = $event" name="date" #date="ngModel" />
       <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
       </div>
     </div>
 
-    <div class="form-group" *ngIf="registriesType === 2 || registriesType === 3">
+    <div class="form-group" *ngIf="registriesType === 1">
       <label for="quantity">Cantidad</label>
-      <input type="text" pattern="[0-9]{1,}" class="form-control" id="quantity" required [(ngModel)]="registry.quantity" name="quantity" #quantity="ngModel" />
+      <input type="text" pattern="[0-9]{1,}" class="form-control" id="quantity" required [(ngModel)]="newRegistry.quantity" name="quantity" #quantity="ngModel" />
       <div [hidden]="(quantity.valid || quantity.pristine)"
             class="alert alert-danger">
         Cantidad deber ser un número entero
       </div>
     </div>
 
-    <div class="form-group" *ngIf="registriesType === 4">
+    <div class="form-group" *ngIf="registriesType === 2">
       <label for="percent">Porcentaje</label>
       <input type="text" pattern="[0-9]{1,}([\.][0-9]{1,2}){0,1}" class="form-control" id="percent" required [(ngModel)]="registry.percent" name="percent" #percent="ngModel" />
       <div [hidden]="(percent.valid || percent.pristine)"
@@ -42,28 +42,9 @@
       </div>
     </div>
     
-    <!--Documents section deleted/commented because Design will do this in another way
-    <div class="heading-block">
-      <h4>Documentos</h4>
-    </div>
-    <div class="panel panel-default">
-      <table class="table">
-        <thead><tr><td>Nombre</td><td></td></tr></thead>
-        <tbody>
-          <tr *ngFor="let document of registry.registry.documents">
-            <td>{{ document.name }}</td>
-            <td>
-              <button href="#" class="btn btn-danger btn-xs" (click)="deleteDocument(document)" > <span class="glyphicon glyphicon-trash"> </span> </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    -->
     <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
       <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid">Editar</button>
     </div>
   </form>
 </div>
 
-    

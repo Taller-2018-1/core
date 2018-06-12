@@ -11,6 +11,8 @@ export class IndicatorGroupService {
 
   public static API_URL = 'api/IndicatorGroups/';
   public static CALCULATE = IndicatorGroupService.API_URL + 'Calculate/';
+  public static GOALS = IndicatorGroupService.API_URL + 'Goals/';
+  public static NAME = IndicatorGroupService.API_URL + 'Name/';
 
   constructor(public http: HttpClient) { }
 
@@ -34,4 +36,19 @@ export class IndicatorGroupService {
     return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup + '/' + year + '/' + month);
   }
 
+  getGoals(indicatorGroupId: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId);
+  }
+
+  getGoalsYear(indicatorGroupId: number, year: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId + '/' + year);
+  }
+
+  getGoalsYearMonth(indicatorGroupId: number, year: number, month: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId + '/' + year + '/' + month);
+  }
+
+  getIndicatorGroupName(indicatorId: number): Observable<string> {
+    return this.http.get<string>(IndicatorGroupService.NAME + indicatorId);
+  }
 }

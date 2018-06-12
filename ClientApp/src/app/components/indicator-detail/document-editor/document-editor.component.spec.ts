@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistryDetailsComponent } from './registry-details.component';
+import { DocumentEditorComponent } from './document-editor.component';
 
-describe('RegistryDetailsComponent', () => {
-  let component: RegistryDetailsComponent;
-  let fixture: ComponentFixture<RegistryDetailsComponent>;
+describe('DocumentEditorComponent', () => {
+  let component: DocumentEditorComponent;
+  let fixture: ComponentFixture<DocumentEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegistryDetailsComponent ]
+      declarations: [ DocumentEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegistryDetailsComponent);
+    fixture = TestBed.createComponent(DocumentEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

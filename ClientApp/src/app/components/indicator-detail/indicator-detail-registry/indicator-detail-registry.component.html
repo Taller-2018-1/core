@@ -1,0 +1,119 @@
+<ngb-accordion [closeOthers]="true" activeIds="static-1">
+  <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
+    <ngb-panel>
+      <ng-template ngbPanelTitle style="padding: 1em; border-radius: 0.5em; font-size: 14px; border: 5px solid #c4c4c4 !important; font-weight: bolder;">
+        <div fxLayout="row" class="clickeable">
+          <div fxFlex="30%">
+            {{registry.name | uppercase}}
+            <br>
+            <span class="not-bold-but-italic">{{registry.date | date: 'dd-MM-yyyy'}}</span>
+          </div>
+          <div fxFlex="42%">
+            <div class="value-box" *ngIf="registry.discriminator === 'QuantityRegistry'">{{registry.quantity}}</div>
+            <div class="value-box" *ngIf="registry.discriminator === 'PercentRegistry' ">{{registry.percent}}%</div>
+          </div>       
+          <div fxFlex="15%">
+            <button class="btn btn-xs btn-primary btn-size-text" (click)="openModalEditRegistry($event, editRegistry,registry)">Modificar</button>
+          </div>
+          <div fxFlex="20%">
+            <button class="btn btn-xs btn-danger btn-size-text" (click)="deleteRegistry($event, registry)">Eliminar</button>
+          </div>
+          <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
+        </div>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalFileDocument($event, fileModal, registry)">Agregar archivo</button>
+          <span class="pull-right">&nbsp;</span>
+          <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalLinkDocument($event, linkModal, registry)">Agregar link</button>
+        </div>
+        <br/>
+        <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
+          <div fxLayout="row">
+            <div fxFlex="40%">
+              <b>Nombre</b>
+              <br /> {{document.name}}
+            </div>
+            <div fxFlex="10%">
+              <b>Fecha</b>
+              <br />  {{document.date | date: 'dd-MM-yyyy'}}
+            </div>
+            <div fxFlex="10%">
+              <b>Tipo</b>
+              <br /> {{document.extension}}
+            </div>
+            <div fxFlex="10%">
+              <button *ngIf="document.extension=='link'; else viewFileTemplate" 
+              type="button" (click)="goToLinkBlank(document.link)" class="btn btn-xs btn-primary">
+                Ver
+              </button>
+              <ng-template #viewFileTemplate>
+                  <button type="button" class="btn btn-xs btn-primary disabled">
+                    Ver
+                  </button>
+              </ng-template>
+            </div>
+            <div fxFlex="15%">
+              <button *ngIf="document.extension=='link'; else downloadFileTemplate" 
+              type="button" (click)="goToLink(document.link)" class="btn btn-xs btn-info btn-size-text">
+                Descargar
+              </button>
+              <ng-template #downloadFileTemplate>
+                <button type="button" (click)="download(document)"  class="btn btn-xs btn-info btn-size-text">
+                  Descargar
+                </button>
+              </ng-template>
+            </div>
+            <div fxFlex="15%">
+              <a class="btn btn-xs btn-primary" (click)="openModalEditDocument(editDocument, document)">Modificar</a>
+            </div>
+            <div fxFlex="12%">
+              <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteDocument(registry,document)">Eliminar</a>
+            </div>
+          </div>
+          
+          
+        </ng-template>
+      </ng-template>
+    </ngb-panel>
+  </ng-template>
+</ngb-accordion>
+
+
+
+<!--Modal Edit Registry-->
+<ng-template #editRegistry>
+  <app-registry-editor [registry]="registry" [registries]="registries" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
+</ng-template>
+
+<!-- Modals para agregar documentos -->
+<ng-template #linkModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un link externo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-link-document-form [registry]="registry" [idRegistry]="registry.registryID" [modalRef]="modalRef"></app-link-document-form>
+  </div>
+</ng-template>
+
+<ng-template #fileModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un documento de respaldo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-file-document-form [registry]="registry" [idRegistry]="registry.registryID" [modalRef]="modalRef"></app-file-document-form>
+  </div>
+</ng-template>
+<!-- FIN Modals para agregar documentos-->
+<!--Modal Edit Document-->
+<ng-template #editDocument>
+
+  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
+
+</ng-template>

@@ -24,6 +24,15 @@ namespace ThinkAgroMetrics
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+//            
+            // Database connection string.
+            // Make sure to update the Password value below from "Your_password123" to your actual password.
+//            var connection = @"Server=127.0.0.1,1433;Database=master;Integrated Security=False;User=sa;Password=Password1;MultipleActiveResultSets=True;";
+
+            // This line uses 'UseSqlServer' in the 'options' parameter
+            // with the connection string defined above.
+//            services.AddDbContext<DataContext>(
+//                options => options.UseSqlServer(connection));
             
             services.AddMvc();
             services.AddRouteAnalyzer();
