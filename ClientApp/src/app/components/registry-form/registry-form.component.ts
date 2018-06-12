@@ -7,11 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-registry-form',
@@ -25,10 +22,11 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
-
   onSubmit() {
-    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
+    // this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
+    this.service.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
     this.indicator.registries.push(this.model);
+    // this.router.navigateByUrl('/indicator/' + this.idIndicator);
   }
 
   closeModal() {
@@ -36,17 +34,12 @@ export class RegistryFormComponent implements OnInit {
     this.modalRef = null;
   }
 
-  constructor(router: Router, private indicatorService: IndicatorService, private modalService: BsModalService) {
+  constructor(router: Router, private service: IndicatorService, private modalService: BsModalService) {
     this.model = new Registry();
     this.router = router;
+
   }
 
-  private getIndicator(indicatorId: number) {
-    this.indicatorService.getIndicator(indicatorId).subscribe(
-      data => { this.indicator = data; },
-      err => console.error(err)
-    );
-  }
   ngOnInit() {
   }
 
