@@ -22,6 +22,7 @@ import { $ } from 'protractor';
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { Trimesters } from '../../shared/models/trimesters';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -34,6 +35,7 @@ export class IndicatorDetailComponent implements OnInit {
   private static YEAR = 'Año '; // Part of the string that the DropDown has to show as selected
   // For filtering by months
   private static ALL_MONTHS = 'Todos los meses';
+  private static TRIMESTER = 'Trimestre';
 
   private idIndicatorGroup: number;
   public indicatorGroupName$: Observable<string>;
@@ -50,6 +52,12 @@ export class IndicatorDetailComponent implements OnInit {
   selectedYearText: string; // Dropdown year "Año 2018"
   selectedYear: number; // Numeric value for selectionYear
   years: number[] = []; // List of years from 2018 to CurrentYear
+
+  //allTrimesters: string = IndicatorDetailComponent.
+  selectedTrimesterText: string = IndicatorDetailComponent.TRIMESTER;
+  selectedTrimester: number;
+  trimesters: number[] = [];
+  trimestersOfTheYear: string[] = [];
 
   allMonths: string = IndicatorDetailComponent.ALL_MONTHS;
   selectedMonthText: string = IndicatorDetailComponent.ALL_MONTHS; // Default selection (string shown in the dropdown)
@@ -111,12 +119,15 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedYearText = IndicatorDetailComponent.YEAR + currentYear; // Show Año 2018 on dropdown
     this.selectedYear = currentYear; // 2018 (current year) is the selected year
 
+    const currentTrimester = new Date().getMonth();
+    this.selectedTrimester = -1; // Trimester Not selected.  
+
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
     for (let i = 0; i <= currentMonth; i++) {
       this.months[i] = i;
     }
-    this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
+    this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)    
     this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
     this.selectedMonth = -1; // It's not selected a specific month yet
     this.indicatorGroupName$ = this.indicatorGroupService.getIndicatorGroupName(this.idIndicatorGroup);
@@ -207,6 +218,25 @@ export class IndicatorDetailComponent implements OnInit {
       }
     }
     this.setMonthsOfTheYear();
+  }
+
+  //set names to all four trimester of the year
+  setTrimesters()
+  {
+    this.trimestersOfTheYear = [];
+    this.trimestersOfTheYear.forEach(trimester => {
+      this.trimestersOfTheYear[trimester] = Trimesters[trimester]
+    });
+  }
+/*
+  detectTrimester(month: number)
+  {
+    
+  }*/
+
+  setSelectedTrimester(trimester: string)
+  {
+    this.selectedTrimester = Trimesters[trimester];
   }
 
   // Sets the names of the months of the selected year

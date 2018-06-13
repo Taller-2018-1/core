@@ -20,8 +20,10 @@ export class IndicatorDisplayComponent implements OnInit {
   private static ALL_MONTHS = 'Todos los meses';
   private static YEAR = 'Año '; // In the front of the selected year (e.g.: 'Año 2018')
   // Used in the html to keep the consistency
+  private static TRIMESTER = 'Trimestre';
   allYears: string = IndicatorDisplayComponent.ALL_YEARS;
   allMonths: string = IndicatorDisplayComponent.ALL_MONTHS;
+  allTrimester: string = IndicatorDisplayComponent.TRIMESTER;
 
   @Input() indicatorGroup: IndicatorGroup;
 
@@ -29,12 +31,15 @@ export class IndicatorDisplayComponent implements OnInit {
   selectedYearText: string; // Default selection = currentYear (defined in ngOnInit) (string shown in the dropdown)
   // tslint:disable-next-line:max-line-length
   selectedMonthText: string = IndicatorDisplayComponent.ALL_MONTHS; // Default selection (string shown in the dropdown)
+  selectedTrimesterText: string;
   selectedYear: number; // The current selected year (number), by default = currentYear (defined in ngOnInit)
+  selectedTrimester: number // The current selected trimester
   selectedMonth: number; // The current selected month (number), depends of the name of the month in spanish.
   years: number[] = []; // List of the years from baseYear to currentYear (defined in ngOnInit)
   // tslint:disable-next-line:max-line-length
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
+  trimesters: string[] = []; // List of the four timester of the year.
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
 
   goals$: Observable<number[]>;
@@ -53,6 +58,9 @@ export class IndicatorDisplayComponent implements OnInit {
     }
     this.selectedYearText = IndicatorDisplayComponent.YEAR + currentYear; // By default the current year is shown
     this.selectedYear = currentYear; // The number of the selected year (by default the current year)
+
+    const defaultTrimester = 0;
+    this.selectedTrimester = -1;
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
