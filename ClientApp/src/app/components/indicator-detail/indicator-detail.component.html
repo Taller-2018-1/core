@@ -56,7 +56,7 @@
   <section>
     <div>
       <ol class="breadcrumb shortcode">
-        <button class="btn btn-xs btn-default" (click)="openModal(editGoalModal)"><a>Modificar Meta</a></button>
+        <button class="btn btn-xs btn-default" (click)="openModal(editGoalModal)"><a>Modificar Metas</a></button>
         <button class="btn btn-xs btn-default"><a>Modificar Indicador</a></button>
       </ol>
     </div>
@@ -118,7 +118,7 @@
                   <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-                      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                      <div class="btn-group" dropdown>
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
                           {{ selectedTypeChart }} <span class="caret"></span>
                         </button>

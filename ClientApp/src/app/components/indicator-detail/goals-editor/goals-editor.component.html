@@ -1,47 +1,48 @@
-<div class="container col-md-12 modal-content">
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Modificar metas</h4>
-    <button type="button" class="close pull-right" aria-label="close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">  
-  
-    <div class="row">
-      <div class="col-md-6">    
-        <label>Seleccione un año:</label> <br>
-        <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
-            Año <span class="caret"></span><!-- selectedYearText -->
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-              role="menu" aria-labelledby="button-basic">
-            <li *ngFor="let year of years"><a class="dropdown-item" >Año {{ year }}</a></li>
-          </ul>
-        </div>
-      </div>
-    
-      <div class="col-md-6">    
-        <label>Seleccione un mes:</label> <br>
-        <div class="btn-group" dropdown> <!-- [isDisabled]="isMonthDisabled" -->
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
-            Mes <span class="caret"></span><!-- selectedYearText -->
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-              role="menu" aria-labelledby="button-basic">
-            <li *ngFor="let monthText of monthsText"><a class="dropdown-item" >{{ monthText }}</a></li>
-          </ul>
-        </div>
-      </div>
 
-      
-      
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Editor de Metas</h4>
+  <button type="button" class="close pull-right" aria-label="close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form #goalsForm="ngForm">
+    <div class="row"> 
+      <div class="col-md-12" *ngFor="let goalByMonth of goalsByYearMonth; index as i">
+        <h4 class="head-project-title">
+          Año {{years[i]}}:
+        </h4>
+        <div *ngFor="let val of goalByMonth; index as j" class="form-group col-sm-4">
+          <label>{{Months[j % 12]}}:</label>
+          <input class="form-control" type="text" [value]="val">          
+        </div>
+      </div>
     </div>
 
+    <div class="row" style="padding-bottom: 10px">
+      <div class="col-md-12">
+        <button (click)="addGoal()" class="btn btn-xs btn-default pull-right"><a><i class="glyphicon glyphicon-plus"></i> Nueva Meta</a></button>
+      </div>      
+    </div>    
+    
+    <div class="modal-footer">
+      <button type="submit" (click)="saveChanges()" class="btn btn-primary pull-right">Guardar</button>
+    </div>
+  </form>
+</div>
+
+<!-- <input class="form-control" type="text" [ngModel]="val" name="goalValue" #goalValue="ngModel" required pattern="[0-9]{1,}">
+          <div [hidden]="goalValue.valid || goalValue.pristine" class="alert alert-danger">
+            Cantidad deber ser un número entero
+          </div> -->
+
+    
+<!-- 
     <div class="row">      
       <div class="col-md-6">
           <label for="value">Valor de la meta:</label>
-          <input id="valueForm" name="valueForm" class="form-control"
+          <input id="valueForm" name="valueForm" ng-value="hola" class="form-control"
           pattern="[0-9]{1,}"
        [(ngModel)]="value" #valueForm="ngModel" >
         <div [hidden]="(valueForm.valid || valueForm.pristine)"
@@ -50,12 +51,39 @@
         </div>
       </div>
     </div>
+ -->
 
-  </div>
-  <div class="modal-footer">
-    <button type="submit" (click)="editGoal()" class="btn btn-primary pull-right">Editar</button>
-  </div>
-</div>
+
+
   
 
- 
+<!-- <div class="row">
+    <div class="col-md-6">    
+      <label>Seleccione un año:</label> <br>
+      <div class="btn-group" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
+          Año <span class="caret"></span> --><!-- selectedYearText -->
+        <!-- </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li *ngFor="let year of years"><a class="dropdown-item" >Año {{ year }}</a></li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="col-md-6">    
+      <label>Seleccione un mes:</label> <br>
+      <div class="btn-group" dropdown> --> <!-- [isDisabled]="isMonthDisabled" -->
+        <!-- <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
+          Mes <span class="caret"></span> --><!-- selectedYearText -->
+       <!--  </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li *ngFor="let monthText of monthsText"><a class="dropdown-item" >{{ monthText }}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    
+    
+  </div> -->

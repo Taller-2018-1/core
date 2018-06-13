@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Indicator } from '../../shared/models/indicator';
 import { Registry } from '../../shared/models/registry';
 import { Router } from '@angular/router';
+import { Goal } from '../../shared/models/goal';
 
 
 @Injectable()
@@ -15,6 +16,8 @@ export class IndicatorService {
 
   public static INDICATORS_API = '/api/Indicators/';
   public static GOALS_API = '/api/Indicators/Goals/';
+  public static GOALSLIST = '/GoalsList';
+  public static GOAL = 'Goal';
   public static CALCULATE_API = '/api/Indicators/Calculate/';
   public static REGISTRIES_API = '/api/Registries/';
   public static PERCENT_REGISTRY = '/PercentRegistry';
@@ -47,16 +50,15 @@ export class IndicatorService {
     return this.http.get<number>(IndicatorService.CALCULATE_API + indicatorId + '/' + year + '/' + month);
   }
 
-  getGoal(indicatorId: number): Observable<number>
-  {
+  getGoal(indicatorId: number): Observable<number> {
     return this.http.get<number>(IndicatorService.GOALS_API + indicatorId);
   }
-  getGoalYear(indicatorId: number, year: number): Observable<number>
-  {
-    return this.http.get<number>(IndicatorService.GOALS_API + indicatorId+ '/' + year);
+
+  getGoalYear(indicatorId: number, year: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.GOALS_API + indicatorId + '/' + year);
   }
-  getGoalYearMonth(indicatorId: number, year: number, month: number): Observable<number>
-  {
+
+  getGoalYearMonth(indicatorId: number, year: number, month: number): Observable<number> {
     return this.http.get<number>(IndicatorService.GOALS_API + indicatorId + '/' + year + '/' + month);
   }
 
@@ -81,5 +83,17 @@ export class IndicatorService {
 
   calculateIndicatorsYear(year: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
+  }
+
+  getGoalsList(indicatorId: number): Observable<Goal[]> {
+    return this.http.get<Goal[]>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALSLIST);
+  }
+
+  postGoals(indicatorId: number, goals: Goal[]): Observable<Goal[]> {
+    return this.http.post<Goal[]>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALSLIST, goals);
+  }
+
+  putGoal(goal: Goal) {
+    this.http.put(IndicatorService.INDICATORS_API + IndicatorService.GOAL + '/' + goal.goalID, goal).subscribe();
   }
 }
