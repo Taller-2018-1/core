@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, HostBinding,TemplateRef, ElementRef, ViewChild, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute } from '@angular/router';
 
 // Model
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
@@ -29,7 +30,9 @@ export class ResultHomeComponent implements OnInit {
   public indicatorGroups$: Observable<IndicatorGroup[]>;
   indicatorGroups : IndicatorGroup[];
 
-  
+  public idIndicator:number = -1;
+
+  public indicator:Indicator;
 
   modalRef: BsModalRef;
   @ViewChild('content') content: ElementRef;
@@ -45,24 +48,23 @@ export class ResultHomeComponent implements OnInit {
 
   public indicators: Indicator[] = [];
 
-  constructor(private service: IndicatorGroupService, private serviceIndicator: IndicatorService , private modalService: BsModalService) {
+  public cantidadIndicador = 0;
+
+  constructor(private service: IndicatorGroupService, private serviceIndicator: IndicatorService , 
+    private modalService: BsModalService, private route: ActivatedRoute) {
+
+      const currentYear = new Date().getFullYear();
+      this.selectedYear = currentYear;
+
+    //this.idIndicator = this.route.snapshot.params.idIndicator;
+
+    this.cantidadIndicador = this.serviceIndicator.getIndicator.length;
+
+
+   
+    
 
     
-    this.service.getIndicatorGroup(1).subscribe(g => {
-      g.indicators.forEach(indicator => {
-        this.serviceIndicator.getIndicator(indicator.indicatorID).subscribe(i => {
-          this.indicators.push(i);
-          
-        });
-      });
-    });
-
-    console.log(this.indicators);
-
-
-    this.indicators.forEach(indicator => {
-      console.log(indicator);
-      });
   }
 
   
@@ -73,19 +75,96 @@ export class ResultHomeComponent implements OnInit {
     this.selectedYear = currentYear;
     this.indicatorGroups$ = this.service.getIndicatorGroups();
 
+    this.idIndicator = 1;
+
+    this.indicator$ = this.serviceIndicator.getIndicatorYearRegistries(this.idIndicator, this.selectedYear);
     
+
+    
+
+    
+
+
+    
+
+    //console.log(this.indicators.length);
+    
+   
+    /*this.indicators.forEach(indicator => {
+      console.log(indicator);
+      }); */
+
     //this.indicatorID=this.indicatorGroup.indicatorGroupID;
     //console.log("indicatorGroup"+this.indicatorGroups$);
 
     
 
     //this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
+
+    /*this.indicator = this.serviceIndicator.getIndicator(0);
+
+    for(let i=0; i<this.cantidadIndicador;i++)
+    {
+      this.indicators.push();    
+    } */
+
+   
+    
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
+  GenerarIndicadores(cant:number, num:number)
+  {
+    /*let cont = 0;
+    this.indicators.sort(function(a,b)
+    {
+      //console.log("b.indicatorID: "+b.indicatorID);
+      //console.log("a.indicatorID: "+a.indicatorID);
+      cont++;
+      return a.indicatorID - b.indicatorID; 
+    }); */
+
+
+    //console.log(this.indicators);
+
+    console.log("num: "+num);
+    if(num==0)
+    {
+      console.log("cantidad grupos: "+cant);
+      //for(let i=1; i<2;i++)
+      //{    
+      
+        /*this.service.getIndicatorGroup(1).subscribe(g => {
+          g.indicators.forEach(indicator => {
+            this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
+              this.indicators.push(j);
+              
+            });
+          });
+        });
+      //}*/
+  
+      //console.log(this.indicators);
+  
+      console.log("cantidad indicadores: "+this.indicators.length);
+      for(let i=0;i<this.indicators.length;i++)
+      {
+        console.log("indicador n° "+ i +" cantidad registro: "+ this.indicators[i].registries.length);
+      }
+    }
+    
+  }
+
+  IndicadorID(id:number)
+  {
+    
+    //console.log("ID: "+id);
+    this.idIndicator=id;
+    
+  }
   
 
   cantidadMetaIndicatorGroup(indicatorGroups : IndicatorGroup[], j: number, y: number){
@@ -107,29 +186,137 @@ export class ResultHomeComponent implements OnInit {
     return cantidad;
   }
 
-  cantidadIndicatorGroup(indicatorGroups : IndicatorGroup[], j: number, y: number){
+  cantidadIndicatorGroup(indicatorGroups : IndicatorGroup[], indicator: Indicator,j: number){
     this.indicatorGroups = indicatorGroups;
     let cantidad= 0;
-    //console.log("j: "+j+" y: "+y);
-    //console.log("J: "+j);
-    //console.log("y: "+y);
 
-    for(let i=0;i<12;i++)
-    {
-      if(j==0)
-      {
+    this.indicator= indicator;
+
+    console.log("J: "+j);
+
+    //console.log(this.indicator);
+
+    //for(let i=0;i<12;i++)
+    //{
+      //if(j==0)
+      //{
         //console.log(this.indicatorGroups);
         //console.log("entra");
         //console.log("indicatorGroup registros: "+ this.indicatorGroups[j].indicators[y].registries.length);
-        cantidad = this.indicatorGroups[j].indicators[y].registries.length;
-      }
-    }
+        cantidad = this.indicators[j].registries.length;
+      //}
+    //}
     //console.log("cantidad registros: "+ cantidad);
     
     return cantidad;
   }
 
-  downloadPDF(){
+  Indicator(indicator: Indicator)
+  {
+    //console.log(indicator);
+  }
+
+  OrdernarArregloIndicators()
+  {
+    console.log("Entra");
+    this.indicators.sort(
+      function(a,b)
+      {
+        return a.indicatorID - b.indicatorID;
+      });
+
+    
+  }
+
+
+  downloadPDF(indicatorGroups : IndicatorGroup[]){
+
+    this.indicatorGroups = indicatorGroups;
+
+    for(let i=1; i<indicatorGroups.length+1;i++)
+    {    
+      
+      this.service.getIndicatorGroup(i).subscribe(g => {
+        g.indicators.forEach(indicator => {
+          this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
+            this.indicators.push(j);
+            
+          });
+        });
+
+      });
+
+      
+    }
+
+    this.OrdernarArregloIndicators();
+
+    console.log(this.indicatorGroups);
+
+    console.log(this.indicators);
+
+    let doc = new jsPDF();
+
+    let y = 25;
+
+   
+
+    //console.log("largo indicator group: "+this.indicatorGroups.length);
+
+    let n = this.indicatorGroups.length;
+
+    for(let i=0; i<n; i++)
+    {
+      doc.setFontSize(15);
+
+      doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name);
+      //console.log("this.indicatorGroups[i].indicators.length: "+this.indicatorGroups[i].indicators.length);
+      y=y+5;
+      for(let j=0; j<this.indicatorGroups[i].indicators.length; j++)
+      {
+        y=y+5;
+        doc.setFontSize(10);
+        doc.text(20,y,(j+1)+".- "+this.indicators[j].name);
+        y=y+5;
+        let meta = 0;
+        for(let y=0; y<this.indicators[j].goals.length; y++)
+        {
+          meta += this.indicators[j].goals[y].value;
+        }
+        
+        let cantidadRegistro = 0;
+        if(this.indicators[j].registriesType==1)
+        {
+          for(let z=0;z < this.indicators[j].registries.length; z++)
+          {
+            cantidadRegistro+=this.indicators[j].registries[z].quantity;
+          }        
+        }
+        else
+        {
+          cantidadRegistro = this.indicators[j].registries.length;
+        }
+
+        doc.text(20,y," Meta: "+meta+" Cantidad Registros: "+ cantidadRegistro);          
+        
+        //console.log("indicators[j].name"+this.indicators[j].name);
+
+        //console.log("j: "+j);
+
+        
+      }
+      y=y+10;
+      //console.log("i: "+i);
+      
+    }
+
+    
+
+    doc.save('test.pdf');
+
+  
+    
+    /*
     let doc = new jsPDF();
 
       let specialElementHandlers = {
@@ -145,9 +332,11 @@ export class ResultHomeComponent implements OnInit {
         'elementHandlers':specialElementHandlers
       });
 
-      doc.save('test.pdf');
+      doc.save('test.pdf');*/
 
   }
+
+  
 
 
 

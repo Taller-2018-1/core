@@ -18,33 +18,44 @@
     <!-- end head-page-section -->
     <!-- about boxes
 ================================================== -->
-<div *ngIf="indicatorGroups$ | async as indicatorGroups">
-  
-  <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
-  
-  <div hidden id="content" #content> 
-      <h1 >Informe Indicadores</h1>
-      <div *ngFor="let indicatorgroup of indicatorGroups; let i=index" >
-          
-        <h3>{{indicatorgroup.name}}</h3>
-        <ol>
+<div *ngIf="indicator$ | async as indicator1">
+  <div *ngIf="indicatorGroups$ | async as indicatorGroups">
+      
+    <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
+    
+   <!--<div hidden id="content" #content >
 
-          
-            <li *ngFor="let indicator of indicatorgroup.indicators; let j=index ">
+    {{GenerarIndicadores(indicatorGroups.length,0)}} 
+        
+        <h1 >Informe Indicadores</h1>
+        <div *ngFor="let indicatorgroup of indicatorGroups; let i=index" >
+
+            
+            
+          <h3>{{indicatorgroup.name}}</h3>
+          <ol>
+
+            
+              <li *ngFor="let indicator of indicatorgroup.indicators; let j=index ">
+                  
+                  {{indicator.name}}
+                  
+                  Meta: {{cantidadMetaIndicatorGroup(indicatorGroups, i, j)}} 
+
+                  Cantidad Actual: {{cantidadIndicatorGroup(indicatorGroups, indicator1,i+j)}} 
                 
-                {{indicator.name}}
-                 
-                <p>Meta: {{cantidadMetaIndicatorGroup(indicatorGroups, i, j)}} </p>
+                  
+                
+              </li>
 
-                <p>Cantidad Actual: {{cantidadIndicatorGroup(indicatorGroups, i, j)}} </p>
-               
-            </li>
+        </ol> 
+      </div>
+  </div> -->
 
-      </ol>
-    </div>
- </div> 
-  
 </div>
+</div>
+    
+  
 
 
 
@@ -55,9 +66,11 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-      <button type="button" class="btn cred2 btn-primary" (click)="downloadPDF()"> Descargar </button>       
+  <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
+      <button type="button" class="btn cred2 btn-primary" (click)="downloadPDF(indicatorGroups)"> Descargar </button>       
       <!--<app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form> -->
 
   </div>
 </ng-template>
+
+
