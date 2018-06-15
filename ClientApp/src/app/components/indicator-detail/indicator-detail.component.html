@@ -164,12 +164,11 @@
               <canvas baseChart 
                       [datasets]="DispersionChartData"
                       [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
+                      [options]="dispersionChartOptions"
+                      [colors]="dispersionChartColors"
                       [legend]="lineChartLegend"
                       [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
+                      ></canvas>
             </div>
             <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
               <canvas baseChart 

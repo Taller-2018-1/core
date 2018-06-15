@@ -72,9 +72,9 @@ export class IndicatorDetailComponent implements OnInit {
     ];
 
     public DispersionChartData: Array<any> = [
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'},
+      {data: new Array(), label: 'Cantidad de Registros'},
       //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio'}
+      {data: new Array(), label: 'Promedio'}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
@@ -82,13 +82,12 @@ export class IndicatorDetailComponent implements OnInit {
 
     public lineChartOptions: any = {
       responsive: true,
-      
       elements: {
         point: {
           radius: 5,
-          hitRadius: 5,
-          hoverRadius: 7,
-          hoverBorderWidth: 2
+          hitRadius: 0,
+          hoverRadius: 5,
+          hoverBorderWidth: 0
         },
         line: {
           tension:0
@@ -99,17 +98,53 @@ export class IndicatorDetailComponent implements OnInit {
         yAxes: [{
             ticks: {
                 beginAtZero: true,
-                /*
+            }
+        }]
+      },
+      maintainAspectRatio: false
+    };
+
+    public dispersionChartOptions : any = {
+      responsive: true,
+      tooltips: {
+        callbacks: {
+            title: function(tooltipItem, data){
+              var datasetIndex = tooltipItem[0].datasetIndex;
+              var dispersionData = data.datasets[datasetIndex];
+              var index = tooltipItem[0].index;
+              var title = dispersionData.data[index].x;
+              console.log(tooltipItem);
+              return title;
+            }
+        }
+      },
+      elements: {
+        point: {
+          radius: 5,
+          hitRadius: 0,
+          hoverRadius: 5,
+          hoverBorderWidth: 0
+        },
+        line: {
+          tension:0
+        }
+
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
                 min: 0,
                 max: 100,
                 stepSize: 10
-                */
+                
 
             }
         }]
       },
       maintainAspectRatio: false
     };
+
     public lineChartColors: Array<any> = [
       
       { // grey
@@ -131,6 +166,27 @@ export class IndicatorDetailComponent implements OnInit {
       }
       
     ];
+
+    public dispersionChartColors : Array<any> = [
+      { // grey
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      },
+      
+      { // grey
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(0,149,58,1)',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      }
+    ];
+
     public lineChartLegend = true;
     public lineChartType = 'line';
 
@@ -334,33 +390,41 @@ export class IndicatorDetailComponent implements OnInit {
 
       let promedio = 0;
       
-      const _lineChartData: Array<any> = new Array(this.DispersionChartData.length);
-      _lineChartData[0] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[0].label};
-      
+      //let _lineChartData: Array<any> = new Array(this.DispersionChartData.length);
+      //let labelDispersion = this.DispersionChartData[0].label;
+      //_lineChartData[0] = {data: new Array(), label: labelDispersion};
+      //console.log(_lineChartData[0].label);
+      //console.log("largo registro "+indicator.registries);
+      this.DispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label};
       for(let i = 0; i < indicator.registries.length; i++){
-        
+        //console.log("length: "+indicator.registries.length);
         const date: Date = new Date(indicator.registries[i].date);
+        //console.log(date);
         const month = date.getUTCMonth();
         let percent = indicator.registries[i].percent;
-        console.log("Fecha: "+this.lineChartLabels[month]);
+        //console.log("month: "+month);
+        //console.log("Fecha: "+this.lineChartLabels[month]);
         let datos = {x: this.lineChartLabels[month], y:percent};
-        //_lineChartData[0].data[month]=percent;
-        //this.lineChartOptions.tooltips.callbacks.tittle('Mayo');
-        //_lineChartData.push(datos);
-        promedio +=percent; 
-        _lineChartData[0].data.push(datos);
-      }      
+        promedio += percent; 
+        this.DispersionChartData[0].data.push(datos);
+      }
+
       promedio = promedio / indicator.registries.length;
-      _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[1].label};
-      for (let i = 0; i < 12; i++){
+      
+      this.DispersionChartData[1] = {data: new Array(), label: this.DispersionChartData[1].label};
+      let months = 12;
+      for (let i = 0; i < months; i++){
         let datos = {x: this.lineChartLabels[i], y:promedio};
-        _lineChartData[1].data.push(datos);
+        this.DispersionChartData[1].data.push(datos);
         //_lineChartData[1].data[i]=50;
       }
       
-      this.DispersionChartData = _lineChartData;
-      console.log("colores: "+this.lineChartColors[0].borderColor);
-      console.log(this.lineChartData);
+      //this.DispersionChartData[0] = _lineChartData;
+      //this.DispersionChartData[0].label = labelDispersion;
+      //console.log("colores: "+this.lineChartColors[0].borderColor);
+      //console.log(labelDispersion);
+      //console.log(this.DispersionChartData);
+      
     }
   }
 
@@ -410,11 +474,11 @@ export class IndicatorDetailComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
 
