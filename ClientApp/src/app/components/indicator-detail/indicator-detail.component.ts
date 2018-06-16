@@ -108,14 +108,18 @@ export class IndicatorDetailComponent implements OnInit {
       responsive: true,
       tooltips: {
         callbacks: {
-            title: function(tooltipItem, data){
-              var datasetIndex = tooltipItem[0].datasetIndex;
-              var dispersionData = data.datasets[datasetIndex];
-              var index = tooltipItem[0].index;
-              var title = dispersionData.data[index].x;
-              console.log(tooltipItem);
-              return title;
-            }
+          // function that modify the tooltip title
+          title: function(tooltipItem, data){
+            // get the dataset of point
+            var datasetIndex = tooltipItem[0].datasetIndex;
+            // get the data array 
+            var dispersionData = data.datasets[datasetIndex];
+            // get the index 
+            var index = tooltipItem[0].index;
+            // tooltip title
+            var title = dispersionData.data[index].x;
+            return title;
+          }
         }
       },
       elements: {
@@ -385,45 +389,38 @@ export class IndicatorDetailComponent implements OnInit {
     this.sessionStorage.setMonth(this.selectedMonth);
   }
 
+  // show the dispersion chart
   public showDispersionGraph(indicator: Indicator){
     if (this.counter++ % 200 == 0){
 
       let promedio = 0;
       
-      //let _lineChartData: Array<any> = new Array(this.DispersionChartData.length);
-      //let labelDispersion = this.DispersionChartData[0].label;
-      //_lineChartData[0] = {data: new Array(), label: labelDispersion};
-      //console.log(_lineChartData[0].label);
-      //console.log("largo registro "+indicator.registries);
-      this.DispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label};
+      let _dispersionChartData : Array<any> = new Array(this.DispersionChartData.length);
+      _dispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label}
+
       for(let i = 0; i < indicator.registries.length; i++){
-        //console.log("length: "+indicator.registries.length);
         const date: Date = new Date(indicator.registries[i].date);
-        //console.log(date);
         const month = date.getUTCMonth();
         let percent = indicator.registries[i].percent;
-        //console.log("month: "+month);
-        //console.log("Fecha: "+this.lineChartLabels[month]);
+        percent = Number(percent); // convert string to number
         let datos = {x: this.lineChartLabels[month], y:percent};
         promedio += percent; 
-        this.DispersionChartData[0].data.push(datos);
+        _dispersionChartData[0].data.push(datos);
       }
 
       promedio = promedio / indicator.registries.length;
       
-      this.DispersionChartData[1] = {data: new Array(), label: this.DispersionChartData[1].label};
+      _dispersionChartData[1] = {data: new Array(), label:this.DispersionChartData[1].label};
+
       let months = 12;
       for (let i = 0; i < months; i++){
+        promedio = Number(promedio); // convert string to number
         let datos = {x: this.lineChartLabels[i], y:promedio};
-        this.DispersionChartData[1].data.push(datos);
-        //_lineChartData[1].data[i]=50;
+        _dispersionChartData[1].data.push(datos);
       }
       
-      //this.DispersionChartData[0] = _lineChartData;
-      //this.DispersionChartData[0].label = labelDispersion;
-      //console.log("colores: "+this.lineChartColors[0].borderColor);
-      //console.log(labelDispersion);
-      //console.log(this.DispersionChartData);
+      this.DispersionChartData = _dispersionChartData;
+      console.log(this.DispersionChartData);
       
     }
   }
