@@ -39,6 +39,7 @@ export class PdfgeneratorComponent implements OnInit {
   { 
     const currentYear = new Date().getFullYear();
     this.selectedYear = currentYear;
+    
   }
 
   ngOnInit() {
@@ -53,20 +54,20 @@ export class PdfgeneratorComponent implements OnInit {
   GeneraIndicadores()
   {
 
-      for(let i=1; i<this.indicatorGroups.length+1;i++)
-      {    
-        
-        this.service.getIndicatorGroup(i).subscribe(g => {
-          g.indicators.forEach(indicator => {
-            this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
-              this.indicators.push(j);
-              
-            });
+    for(let i=1; i<this.indicatorGroups.length+1;i++)
+    {    
+      
+      this.service.getIndicatorGroup(i).subscribe(g => {
+        g.indicators.forEach(indicator => {
+          this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
+            this.indicators.push(j);
+            
           });
-  
         });
-  
-      }
+
+      });
+
+    }
     
     
   } 
@@ -115,13 +116,45 @@ export class PdfgeneratorComponent implements OnInit {
 
     let empJ=0;
 
+    doc.setFontSize(25);
+
+    doc.text(50,y,"Informe General "+this.selectedYear);
+
+    y=y+15;
+
     for(let i=0; i<n; i++)
     {
       doc.setFontSize(15);
 
-      doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name);
+      
+
+      let largoNombreGrupo = this.indicatorGroups[i].name.length;
+      if(largoNombreGrupo>75)
+      {
+        if(this.indicatorGroups[i].name[75]==' ')
+        {
+          doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name.substr(0,75));
+          y=y+7;        
+          doc.text(15,y,this.indicatorGroups[i].name.substr(75,largoNombreGrupo));
+        }
+        else
+        {
+          doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name.substr(0,75)+"_");
+          y=y+7;        
+          doc.text(15,y,this.indicatorGroups[i].name.substr(75,largoNombreGrupo));
+        }
+        
+      }
+      else
+      {
+        doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name);
+      }
+
+      
 
       console.log("grupo: "+this.indicatorGroups[i].name);
+
+      console.log("tamaño grupo: "+this.indicatorGroups[i].name.length);
       //console.log("this.indicatorGroups[i].indicators.length: "+this.indicatorGroups[i].indicators.length);
       y=y+5;
 
@@ -130,7 +163,32 @@ export class PdfgeneratorComponent implements OnInit {
         //console.log("empiezaJ: "+empiezaJ);
         y=y+5;
         doc.setFontSize(10);
-        doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
+
+        //doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
+        
+        let largoNombreIndicador = this.indicators[empiezaJ].name.length;
+        if(largoNombreIndicador>100)
+        {
+          if(this.indicatorGroups[i].name[100]==' ')
+          {
+            doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name.substr(0,100));
+            y=y+5;        
+            doc.text(25,y,this.indicators[empiezaJ].name.substr(100,largoNombreIndicador));
+          }
+          else
+          {
+            doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name.substr(0,100)+"_");
+            y=y+5;        
+            doc.text(25,y,this.indicators[empiezaJ].name.substr(100,largoNombreIndicador));
+          }
+          
+        }
+        else
+        {
+          doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
+        }
+
+
         y=y+5;
         let meta = 0;
         //console.log("Año: "+this.selectedYear);
@@ -178,9 +236,11 @@ export class PdfgeneratorComponent implements OnInit {
 
       y=y+10;
 
-      console.log("y: "+y+ " y%285: "+y%285);
+      console.log("y: "+y+ " y%270: "+y%270);
 
-      if(y%285==0)
+     
+
+      if( (y%270>=0) && (y%270)<=50)
       {
         y=25;
         doc.addPage();
@@ -188,8 +248,7 @@ export class PdfgeneratorComponent implements OnInit {
       
     }
 
-
-    doc.save('test.pdf');
+    doc.save('Informe.pdf');
 
 
     /*
