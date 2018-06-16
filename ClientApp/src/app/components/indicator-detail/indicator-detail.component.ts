@@ -420,7 +420,33 @@ export class IndicatorDetailComponent implements OnInit {
       }
       
       this.DispersionChartData = _dispersionChartData;
-      console.log(this.DispersionChartData);
+
+      // get callbacks properties
+      let callbacks = this.dispersionChartOptions.tooltips.callbacks;
+      // add new attribute to callbacks functions
+      callbacks["label"] = function(tooltipItem,data){
+        
+        var datasetIndex = tooltipItem.datasetIndex;
+        var dispersionData = data.datasets[datasetIndex];
+        var index = tooltipItem.index;
+        // solo puntos dispersion
+        if (datasetIndex == 0){
+          var registryName = indicator.registries[index].name;
+          var percent = dispersionData.data[index].y; 
+          var label = registryName+": "+percent+"%";
+          return label;
+        }
+        // solo linea promedio
+        if (datasetIndex == 1){
+          var label = "promedio: "+promedio;
+          return label;
+        }
+        
+        
+      }
+
+      //console.log(this.DispersionChartData);
+      //console.log(this.dispersionChartOptions.tooltips);
       
     }
   }
