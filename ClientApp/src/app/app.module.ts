@@ -32,7 +32,7 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
-import { ReportGeneratorComponent } from './components/result-home/report-generator/report-generator.component';
+import { PdfgeneratorComponent } from './components/result-home/pdfgenerator/pdfgenerator.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { ReportGeneratorComponent } from './components/result-home/report-genera
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
-    ReportGeneratorComponent
+    PdfgeneratorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

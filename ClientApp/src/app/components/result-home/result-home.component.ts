@@ -15,6 +15,7 @@ import { IndicatorService } from '../../services/indicator/indicator.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+//Importa libreria PDF
 import * as jsPDF from 'jspdf';
 
 @Component(
@@ -49,6 +50,8 @@ export class ResultHomeComponent implements OnInit {
   public indicators: Indicator[] = [];
 
   public cantidadIndicador = 0;
+
+  public isClicked: Boolean = false;
 
   constructor(private service: IndicatorGroupService, private serviceIndicator: IndicatorService , 
     private modalService: BsModalService, private route: ActivatedRoute) {
@@ -216,6 +219,27 @@ export class ResultHomeComponent implements OnInit {
     //console.log(indicator);
   }
 
+  GeneraIndicadores(indicatorGroups : IndicatorGroup[])
+  {
+
+      for(let i=1; i<indicatorGroups.length+1;i++)
+      {    
+        
+        this.service.getIndicatorGroup(i).subscribe(g => {
+          g.indicators.forEach(indicator => {
+            this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
+              this.indicators.push(j);
+              
+            });
+          });
+  
+        });
+  
+      }
+    
+    
+  } 
+
   OrdernarArregloIndicators()
   {
     console.log("Entra");
@@ -229,24 +253,19 @@ export class ResultHomeComponent implements OnInit {
   }
 
 
-  downloadPDF(indicatorGroups : IndicatorGroup[]){
+  downloadPDF(indicatorGroups : IndicatorGroup[])
+  {
 
-    this.indicatorGroups = indicatorGroups;
 
-    for(let i=1; i<indicatorGroups.length+1;i++)
-    {    
-      
-      this.service.getIndicatorGroup(i).subscribe(g => {
-        g.indicators.forEach(indicator => {
-          this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
-            this.indicators.push(j);
-            
-          });
-        });
 
-      });
+    /*this.indicatorGroups = indicatorGroups;
 
-      
+    if(!this.isClicked)
+    {
+      this.isClicked = true;
+
+      this.GeneraIndicadores(indicatorGroups);
+
     }
 
     this.OrdernarArregloIndicators();
@@ -259,42 +278,63 @@ export class ResultHomeComponent implements OnInit {
 
     let y = 25;
 
-   
-
     //console.log("largo indicator group: "+this.indicatorGroups.length);
 
     let n = this.indicatorGroups.length;
+
+    console.log("n: "+n);
+
+    let empiezaJ = 0;
+
+    let empJ=0;
 
     for(let i=0; i<n; i++)
     {
       doc.setFontSize(15);
 
       doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name);
+
+      console.log("grupo: "+this.indicatorGroups[i].name);
       //console.log("this.indicatorGroups[i].indicators.length: "+this.indicatorGroups[i].indicators.length);
       y=y+5;
+
       for(let j=0; j<this.indicatorGroups[i].indicators.length; j++)
       {
+        //console.log("empiezaJ: "+empiezaJ);
         y=y+5;
         doc.setFontSize(10);
-        doc.text(20,y,(j+1)+".- "+this.indicators[j].name);
+        doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
         y=y+5;
         let meta = 0;
-        for(let y=0; y<this.indicators[j].goals.length; y++)
+        //console.log("Año: "+this.selectedYear);
+        for(let y=0; y<this.indicators[empiezaJ].goals.length; y++)
         {
-          meta += this.indicators[j].goals[y].value;
+          if(this.indicators[empiezaJ].goals[y].year == this.selectedYear)
+          {
+            meta += this.indicators[empiezaJ].goals[y].value;
+            //console.log("this.indicators[j].goals[y].value: "+this.indicators[j].goals[y].value);
+            //console.log("meta: "+meta);
+          }
         }
         
         let cantidadRegistro = 0;
-        if(this.indicators[j].registriesType==1)
+        if(this.indicators[empiezaJ].registriesType==1)
         {
-          for(let z=0;z < this.indicators[j].registries.length; z++)
+          for(let z=0;z < this.indicators[empiezaJ].registries.length; z++)
           {
-            cantidadRegistro+=this.indicators[j].registries[z].quantity;
+            cantidadRegistro+=this.indicators[empiezaJ].registries[z].quantity;
+          }        
+        }
+        else if(this.indicators[empiezaJ].registriesType==2)
+        {
+          for(let z=0;z < this.indicators[empiezaJ].registries.length; z++)
+          {
+            cantidadRegistro+=this.indicators[empiezaJ].registries[z].percent;
           }        
         }
         else
         {
-          cantidadRegistro = this.indicators[j].registries.length;
+          cantidadRegistro = this.indicators[empiezaJ].registries.length;
         }
 
         doc.text(20,y," Meta: "+meta+" Cantidad Registros: "+ cantidadRegistro);          
@@ -303,19 +343,28 @@ export class ResultHomeComponent implements OnInit {
 
         //console.log("j: "+j);
 
+        empiezaJ++;
         
       }
+
+      console.log("i: "+i);
+
       y=y+10;
-      //console.log("i: "+i);
+
+      console.log("y: "+y+ " y%285: "+y%285);
+
+      if(y%285==0)
+      {
+        y=25;
+        doc.addPage();
+      }
       
     }
 
-    
 
     doc.save('test.pdf');
 
-  
-    
+
     /*
     let doc = new jsPDF();
 

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReportGeneratorComponent } from './report-generator.component';
+import { PdfgeneratorComponent } from './pdfgenerator.component';
 
-describe('ReportGeneratorComponent', () => {
-  let component: ReportGeneratorComponent;
-  let fixture: ComponentFixture<ReportGeneratorComponent>;
+describe('PdfgeneratorComponent', () => {
+  let component: PdfgeneratorComponent;
+  let fixture: ComponentFixture<PdfgeneratorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReportGeneratorComponent ]
+      declarations: [ PdfgeneratorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportGeneratorComponent);
+    fixture = TestBed.createComponent(PdfgeneratorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
