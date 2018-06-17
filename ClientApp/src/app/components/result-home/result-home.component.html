@@ -18,47 +18,13 @@
     <!-- end head-page-section -->
     <!-- about boxes
 ================================================== -->
-<div *ngIf="indicator$ | async as indicator1">
-  <div *ngIf="indicatorGroups$ | async as indicatorGroups">
-      
-    <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
+
+<div *ngIf="indicatorGroups$ | async as indicatorGroups">
     
-   <!--<div hidden id="content" #content >
+  <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
 
-    {{GenerarIndicadores(indicatorGroups.length,0)}} 
-        
-        <h1 >Informe Indicadores</h1>
-        <div *ngFor="let indicatorgroup of indicatorGroups; let i=index" >
-
-            
-            
-          <h3>{{indicatorgroup.name}}</h3>
-          <ol>
-
-            
-              <li *ngFor="let indicator of indicatorgroup.indicators; let j=index ">
-                  
-                  {{indicator.name}}
-                  
-                  Meta: {{cantidadMetaIndicatorGroup(indicatorGroups, i, j)}} 
-
-                  Cantidad Actual: {{cantidadIndicatorGroup(indicatorGroups, indicator1,i+j)}} 
-                
-                  
-                
-              </li>
-
-        </ol> 
-      </div>
-  </div> -->
-
-</div>
-</div>
-    
+</div>  
   
-
-
-
 <ng-template #generator>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Generador de informes de todos los indicadores</h4>
@@ -67,8 +33,6 @@
     </button>
   </div>
   <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
-      <!--<button type="button" class="btn cred2 btn-primary" (click)="downloadPDF(indicatorGroups)"> Descargar </button> -->      
-      <!--<app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form> -->
     <app-pdfgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-pdfgenerator>
   </div>
 </ng-template>

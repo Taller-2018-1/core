@@ -68,8 +68,7 @@ export class PdfgeneratorComponent implements OnInit {
       });
 
     }
-    
-    
+
   } 
 
   OrdernarArregloIndicators()
@@ -87,15 +86,6 @@ export class PdfgeneratorComponent implements OnInit {
   downloadPDF()
   {
 
-
-    /*if(!this.isClicked)
-    {
-      this.isClicked = true;
-
-      this.GeneraIndicadores(indicatorGroups);
-
-    }*/
-
     this.OrdernarArregloIndicators();
 
     console.log(this.indicatorGroups);
@@ -106,11 +96,7 @@ export class PdfgeneratorComponent implements OnInit {
 
     let y = 25;
 
-    //console.log("largo indicator group: "+this.indicatorGroups.length);
-
     let n = this.indicatorGroups.length;
-
-    console.log("n: "+n);
 
     let empiezaJ = 0;
 
@@ -118,15 +104,13 @@ export class PdfgeneratorComponent implements OnInit {
 
     doc.setFontSize(25);
 
-    doc.text(50,y,"Informe General "+this.selectedYear);
+    doc.text(60,y,"Informe General "+this.selectedYear);
 
     y=y+15;
 
     for(let i=0; i<n; i++)
     {
       doc.setFontSize(15);
-
-      
 
       let largoNombreGrupo = this.indicatorGroups[i].name.length;
       if(largoNombreGrupo>75)
@@ -139,9 +123,16 @@ export class PdfgeneratorComponent implements OnInit {
         }
         else
         {
-          doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name.substr(0,75)+"_");
+          let num=75;
+          while(this.indicatorGroups[i].name[num]!=' ')
+          {
+            num--;
+          }
+
+          doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name.substr(0,num));
+         
           y=y+7;        
-          doc.text(15,y,this.indicatorGroups[i].name.substr(75,largoNombreGrupo));
+          doc.text(15,y,this.indicatorGroups[i].name.substr(num,largoNombreGrupo));
         }
         
       }
@@ -150,21 +141,12 @@ export class PdfgeneratorComponent implements OnInit {
         doc.text(10,y,(i+1)+".- "+this.indicatorGroups[i].name);
       }
 
-      
-
-      console.log("grupo: "+this.indicatorGroups[i].name);
-
-      console.log("tamaño grupo: "+this.indicatorGroups[i].name.length);
-      //console.log("this.indicatorGroups[i].indicators.length: "+this.indicatorGroups[i].indicators.length);
       y=y+5;
 
       for(let j=0; j<this.indicatorGroups[i].indicators.length; j++)
       {
-        //console.log("empiezaJ: "+empiezaJ);
         y=y+5;
         doc.setFontSize(10);
-
-        //doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
         
         let largoNombreIndicador = this.indicators[empiezaJ].name.length;
         if(largoNombreIndicador>100)
@@ -177,9 +159,14 @@ export class PdfgeneratorComponent implements OnInit {
           }
           else
           {
-            doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name.substr(0,100)+"_");
+            let num=100;
+            while(this.indicators[empiezaJ].name[num] != ' ')
+            {
+              num--;
+            }
+            doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name.substr(0,num));
             y=y+5;        
-            doc.text(25,y,this.indicators[empiezaJ].name.substr(100,largoNombreIndicador));
+            doc.text(25,y,this.indicators[empiezaJ].name.substr(num,largoNombreIndicador));
           }
           
         }
@@ -188,17 +175,15 @@ export class PdfgeneratorComponent implements OnInit {
           doc.text(20,y,(j+1)+".- "+this.indicators[empiezaJ].name);
         }
 
-
         y=y+5;
+
         let meta = 0;
-        //console.log("Año: "+this.selectedYear);
+
         for(let y=0; y<this.indicators[empiezaJ].goals.length; y++)
         {
           if(this.indicators[empiezaJ].goals[y].year == this.selectedYear)
           {
             meta += this.indicators[empiezaJ].goals[y].value;
-            //console.log("this.indicators[j].goals[y].value: "+this.indicators[j].goals[y].value);
-            //console.log("meta: "+meta);
           }
         }
         
@@ -223,20 +208,16 @@ export class PdfgeneratorComponent implements OnInit {
         }
 
         doc.text(20,y," Meta: "+meta+" Cantidad Registros: "+ cantidadRegistro);          
-        
-        //console.log("indicators[j].name"+this.indicators[j].name);
-
-        //console.log("j: "+j);
 
         empiezaJ++;
         
       }
 
-      console.log("i: "+i);
+      //console.log("i: "+i);
 
       y=y+10;
 
-      console.log("y: "+y+ " y%270: "+y%270);
+      //console.log("y: "+y+ " y%270: "+y%270);
 
      
 
@@ -249,25 +230,6 @@ export class PdfgeneratorComponent implements OnInit {
     }
 
     doc.save('Informe.pdf');
-
-
-    /*
-    let doc = new jsPDF();
-
-      let specialElementHandlers = {
-          '#editor': function(element, renderer){
-            return true;
-          }
-      };
-
-      let content = this.content.nativeElement;
-
-      doc.fromHTML(content.innerHTML, 15, 15, {
-        'with':190,
-        'elementHandlers':specialElementHandlers
-      });
-
-      doc.save('test.pdf');*/
 
   }
 
