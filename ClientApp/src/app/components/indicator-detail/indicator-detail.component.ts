@@ -62,6 +62,9 @@ export class IndicatorDetailComponent implements OnInit {
   typesChart : string[] = [];
   typeDispersion : string[] = [];
 
+  devStandar : number = 0;
+  varianza : number = 0;
+
     // lineChart
     public counter = 0;
 
@@ -438,10 +441,16 @@ export class IndicatorDetailComponent implements OnInit {
         }
         // solo linea promedio
         if (datasetIndex == 1){
-          var label = "promedio: "+promedio;
+          var prom = dispersionData.data[index].y;
+          var label = "promedio: "+prom+"%";
           return label;
         }
         
+        
+      }
+
+      if (promedio != 0){
+        this.calculateVariationIndicator(promedio);
         
       }
 
@@ -504,7 +513,31 @@ export class IndicatorDetailComponent implements OnInit {
     //console.log(e);
   }
 
+  // method to calculate the varianza and standard desviation
+  calculateVariationIndicator(promedio: number) : void{
+    let data = this.DispersionChartData[0].data;
+    let n = data.length;
+    let sum = 0;
+    for (let i = 0; i < n; i++){
+      let x = data[i].y; // get the percent
+      sum = sum + Math.pow(x-promedio,2);
+    }
+    // caso cuando hay un solo dato (n = 1 - 1 igual 0) division por cero igual NaN
+    if (n - 1 != 0){
+      let varianza = sum/(n-1);
+      this.varianza = Number(varianza.toFixed(2));
+    
+      let dev = Math.sqrt(sum/(n-1));
 
+      this.devStandar = Number(dev.toFixed(2));
+    }
+    
+    
+
+
+    
+    
+  }
 
 }
 
