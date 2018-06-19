@@ -7,7 +7,70 @@
 </div>
 
 <div class="modal-body">
-  <form #goalsForm="ngForm">
+
+  <h4 class="head-project-title">Información Básica</h4>
+
+  <div class="col-sm-6">
+    <!-- Dropdown of years -->
+    <p>Seleccione el año de las metas:</p>
+  </div>
+  <div class="col-sm-6">
+    <div class="btn-group" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+        {{ selectedYearText }} <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+        <li *ngFor="let year of years; let i = index">
+          <a class="dropdown-item" (click)="setSelectedYear(i)">{{yearText}}{{year}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+
+  <div class="row" style="padding-bottom: 10px">
+    <div class="col-md-12">
+      <button (click)="addGoal()" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i> Nueva Meta</button>
+    </div>      
+  </div>  
+
+  <!-- Form -->
+  <div class="row">
+    <form [formGroup]="form">
+      <div formArrayName="monthlyGoals">
+
+        <div *ngFor="let f of monthlyGoals.controls; let i = index" [formGroupName]="i">          
+          <div *ngIf="initialYear + Math.floor(i/12) === selectedYear">
+            <div class="form-group col-sm-3 col-xs-6">
+              <label for="month">{{Months[i % 12]}}:</label>
+              <input class="form-control" formControlName="month" id="month" type="text">            
+              <div *ngIf="!f.controls.month.valid" class="alert alert-danger">
+                <div *ngIf="f.controls.month.errors.required">{{requiredError}}</div>
+                <div *ngIf="f.controls.month.errors.pattern && indicator.registriesType != 2">{{patternErrorNatural}}</div>
+                <div *ngIf="f.controls.month.errors.pattern && indicator.registriesType == 2">{{patternErrorDecimal}}</div>  
+              </div>
+            </div>
+            <div *ngIf="(i + 1) % 4 === 0">
+                <div class="clearfix visible-md visible-lg"></div>
+            </div>                      
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  
+
+  <div class="modal-footer">
+    <button type="button" (click)="closeModal()" class="btn btn-sm btn-clean-2">CANCELAR</button>
+    <button [disabled]="form.pristine || !form.valid" type="submit" (click)="saveChanges()" class="btn btn-sm btn-primary">Guardar</button>
+  </div>
+
+  
+
+
+
+  <!-- <form #goalsForm="ngForm">
     <div class="row"> 
       <div class="col-md-12" *ngFor="let goalByMonth of goalsByYearMonth; index as i">
         <h4 class="head-project-title">
@@ -26,11 +89,9 @@
       </div>      
     </div>    
     
-    <div class="modal-footer">
-      <button type="submit" (click)="saveChanges()" class="btn btn-primary pull-right">Guardar</button>
-    </div>
+    
   </form>
-</div>
+</div> -->
 
 <!-- <input class="form-control" type="text" [ngModel]="val" name="goalValue" #goalValue="ngModel" required pattern="[0-9]{1,}">
           <div [hidden]="goalValue.valid || goalValue.pristine" class="alert alert-danger">
@@ -53,37 +114,3 @@
     </div>
  -->
 
-
-
-  
-
-<!-- <div class="row">
-    <div class="col-md-6">    
-      <label>Seleccione un año:</label> <br>
-      <div class="btn-group" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
-          Año <span class="caret"></span> --><!-- selectedYearText -->
-        <!-- </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li *ngFor="let year of years"><a class="dropdown-item" >Año {{ year }}</a></li>
-        </ul>
-      </div>
-    </div>
-  
-    <div class="col-md-6">    
-      <label>Seleccione un mes:</label> <br>
-      <div class="btn-group" dropdown> --> <!-- [isDisabled]="isMonthDisabled" -->
-        <!-- <button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-default dropdown-toggle" aria-controls="dropdown-basic">
-          Mes <span class="caret"></span> --><!-- selectedYearText -->
-       <!--  </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li *ngFor="let monthText of monthsText"><a class="dropdown-item" >{{ monthText }}</a></li>
-        </ul>
-      </div>
-    </div>
-
-    
-    
-  </div> -->

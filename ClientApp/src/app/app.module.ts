@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -67,6 +67,7 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     HttpClientModule,
     ModalModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
     ChartsModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),
