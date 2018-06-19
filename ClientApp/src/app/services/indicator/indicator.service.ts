@@ -92,13 +92,7 @@ export class IndicatorService {
         'Pagina': 1,
         'ResultadosPorPagina': 12,
         'OrdenarPor': 'Nombre',
-        'Filtros': '[
-          {
-            \'Campo\': \'Estado\',
-            \'Valor\': \'3\',
-            \'Tipo\': \'MayorIgualQue\'
-          }
-        ]'
+        'Filtros': '[{ \'Campo\': \'Estado\', \'Valor\': \'3\', \'Tipo\': \'MayorIgualQue\'}]'
       }
     }
   );

@@ -11,6 +11,7 @@ import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
 import { Router } from '@angular/router';
 import { Registry } from '../../shared/models/registry';
+import { ExternalIndicator } from '../../shared/models/externalIndicator';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -124,6 +125,12 @@ export class IndicatorDetailComponent implements OnInit {
     // Calculate indicator
     this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+
+
+
+    this.service.getExternalIndicator().subscribe((data) => {
+      console.log(data);
+    });
 
   }
 
