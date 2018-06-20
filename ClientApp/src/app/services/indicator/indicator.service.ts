@@ -20,6 +20,7 @@ export class IndicatorService {
   public static PERCENT_REGISTRY = '/PercentRegistry';
   public static QUANTITY_REGISTRY = '/QuantityRegistry';
   public static DEFAULT_REGISTRY = '/DefaultRegistry/';
+  public static REGISTRY_NAME_VERIFICATION = '/RegistryNameExists';
 
   constructor(public http: HttpClient) { }
 
@@ -81,5 +82,9 @@ export class IndicatorService {
 
   calculateIndicatorsYear(year: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
+  }
+
+  registryNameExists(indicatorId: number, name: string): Observable<boolean> {
+    return this.http.post<boolean>(IndicatorService.BASE_URL + indicatorId + IndicatorService.REGISTRY_NAME_VERIFICATION, name);
   }
 }

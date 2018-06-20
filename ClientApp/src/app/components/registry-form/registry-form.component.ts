@@ -27,8 +27,20 @@ export class RegistryFormComponent implements OnInit {
   @Input() indicator: Indicator;
 
   onSubmit() {
-    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
-    this.indicator.registries.push(this.model);
+    let nameVerification: boolean = false;
+
+    this.indicatorService.registryNameExists(this.idIndicator,this.model.name).subscribe((data) => {
+      nameVerification = data;
+    });
+
+    if(nameVerification) {
+      this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
+      this.indicator.registries.push(this.model);
+    } else {
+      this.duplicateNameAlert();
+    }
+
+
   }
 
   closeModal() {
@@ -50,4 +62,8 @@ export class RegistryFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  private duplicateNameAlert()
+  {
+    alert("El nuevo registro no ha logrado ser añadido.\nYa existe un registro con el nombre: " + this.model.name);
+  }
 }

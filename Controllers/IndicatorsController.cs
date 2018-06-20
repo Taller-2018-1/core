@@ -58,6 +58,30 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
+        // POST: api/Indicators/5/ValidateName
+        [HttpPost("{id:long}/RegistryNameExists")] // True if the there is a regsitry with the same name, false otherwise
+        public async Task<IActionResult> ValidateNameIndicator([FromRoute] long id, [FromBody] string name)
+        {
+            try
+            {
+                var registry = await _context.Registries.SingleAsync(r => r.IndicatorID == id && r.Name == name);
+                // The previous line will trigger an exception if it doesn't find a registry with the specified id and name
+
+                if (registry != null) // Registry found
+                {
+                    return Json(true);
+                }
+                else // Just in case
+                {
+                    return Json(false);
+                }
+            }
+            catch(Exception ex) // The real 'else' 
+            {
+                return Json(false);
+            }
+        }
+
         // GET: api/Indicators/5/2018
         [HttpGet("{id:long}/{year:int}")]
         public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
