@@ -22,6 +22,13 @@
         Cantidad deber ser un número entero
       </div>
     </div>
+    <div class="form-group col-sm-12 col-md-12" *ngIf="indicator.registriesType == 2">
+      <label for="percent">Valor</label>    
+      <input type="text" placeholder="Ingrese valor" pattern="[0-9]{1,}" class="form-control" id="percent" required [(ngModel)]="model.percent" name="percent"/>
+      <div [hidden]="true" class="alert alert-danger">
+        Cantidad deber ser un número entero
+      </div>
+    </div>
   </div>
   <br>
   <div class="row">
