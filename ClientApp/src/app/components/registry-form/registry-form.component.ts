@@ -13,6 +13,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { ActivatedRoute } from '@angular/router';
 
+import swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registry-form',
   templateUrl: './registry-form.component.html',
@@ -64,6 +66,14 @@ export class RegistryFormComponent implements OnInit {
 
   private duplicateNameAlert()
   {
-    alert("El nuevo registro no ha logrado ser añadido.\nYa existe un registro con el nombre: " + this.model.name);
+    swal({
+      title: 'Error al agregar el registro',
+      //text: 'Ya existe un registro con el nombre ' + this.model.name,
+      html: '<h6> Ya existe un registro con el nombre "' + this.model.name + '"</h6>',
+      type: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary'
+    })
   }
 }
