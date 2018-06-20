@@ -6,7 +6,7 @@ export class Registry {
   name: string;
   links: string[];
   indicatorID: number;
-  documents: Document[] = new Array<Document>();
+  documents: Document [] = new Array<Document>();
   discriminator: string;
   quantity: number;
   registryID: number;

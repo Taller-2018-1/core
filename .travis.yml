@@ -6,5 +6,6 @@ install:
 - dotnet restore
 
 script:
- - dotnet build
+- dotnet publish
+        # - dotnet build
 #  - dotnet test MTAServiceStatus.Tests/MTAServiceStatus.Tests.csproj

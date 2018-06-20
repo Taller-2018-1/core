@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Registry } from '../../shared/models/registry';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, retry } from 'rxjs/operators';
 
+// Angular models from shared
+import { Registry } from '../../shared/models/registry';
 import { Document } from '../../shared/models/document';
 
 @Injectable()
@@ -24,17 +25,10 @@ export class RegistryService {
       return this.http.get<Registry>(RegistryService.REGISTRIES_API + registryId);
   }
 
-
-  addLinkDocument(document: Document, registryId: number) {
-    this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
-      + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
+  addLinkDocument(document: Document, registryId: number): Observable<Document> {
+    return this.http.post<Document>(RegistryService.REGISTRIES_API + registryId
+      + RegistryService.ADD_LINK_DOCUMENT_METHOD, document );
   }
-  /*
-  addFileDocument(document: Registry, registryId: number) {
-      this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
-        + RegistryService.ADD_FILE_DOCUMENT_METHOD, document ).subscribe();
-  }*/
-
 
   editRegistry(registry: Registry, registriesType: number): Observable<Registry> {
     const headers = new HttpHeaders()
