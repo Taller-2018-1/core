@@ -65,15 +65,15 @@ export class IndicatorService {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
   }
 
-  addRegistry(registry: Registry, indicatorId: String, registriesType: string) {
+  addRegistry(registry: Registry, indicatorId: String, registriesType: string): Observable<boolean> {
     let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
     if (registriesType === 'QuantityRegistry') {
         discriminator = IndicatorService.QUANTITY_REGISTRY;
     } else if (registriesType === 'PercentRegistry') {
         discriminator = IndicatorService.PERCENT_REGISTRY;
     }
-    this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
-        + discriminator, registry).subscribe();
+    return this.http.post<boolean>(IndicatorService.REGISTRIES_API + indicatorId
+        + discriminator, registry);
   }
 
   deleteRegistry(registry: Registry): Observable<Registry> {
@@ -82,9 +82,5 @@ export class IndicatorService {
 
   calculateIndicatorsYear(year: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
-  }
-
-  registryNameExists(indicatorId: number, name: string): Observable<boolean> {
-    return this.http.post<boolean>(IndicatorService.BASE_URL + indicatorId + IndicatorService.REGISTRY_NAME_VERIFICATION, name);
   }
 }

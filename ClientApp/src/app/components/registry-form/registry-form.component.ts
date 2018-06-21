@@ -31,18 +31,14 @@ export class RegistryFormComponent implements OnInit {
   onSubmit() {
     let nameVerification: boolean = false;
 
-    this.indicatorService.registryNameExists(this.idIndicator,this.model.name).subscribe((data) => {
-      nameVerification = data;
+    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
+      nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
+      if (nameVerification) {
+        this.indicator.registries.push(this.model);
+      } else {
+        this.duplicateNameAlert();
+      }
     });
-
-    if(nameVerification) {
-      this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
-      this.indicator.registries.push(this.model);
-    } else {
-      this.duplicateNameAlert();
-    }
-
-
   }
 
   closeModal() {
