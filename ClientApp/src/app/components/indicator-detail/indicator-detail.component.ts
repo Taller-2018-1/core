@@ -56,6 +56,9 @@ export class IndicatorDetailComponent implements OnInit {
   typesChart: string[] = [];
   typeDispersion: string[] = [];
 
+  devStandar : number = 0;
+  varianza : number = 0;
+
     // lineChart
     public counter = 0;
 
@@ -66,9 +69,9 @@ export class IndicatorDetailComponent implements OnInit {
     ];
 
     public DispersionChartData: Array<any> = [
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros'},
-      // {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
-      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio'}
+      {data: new Array(), label: 'Cantidad de Registros'},
+      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      {data: new Array(), label: 'Promedio'}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
@@ -76,13 +79,12 @@ export class IndicatorDetailComponent implements OnInit {
 
     public lineChartOptions: any = {
       responsive: true,
-
       elements: {
         point: {
           radius: 5,
-          hitRadius: 5,
-          hoverRadius: 7,
-          hoverBorderWidth: 2
+          hitRadius: 0,
+          hoverRadius: 5,
+          hoverBorderWidth: 0
         },
         line: {
           tension: 0
@@ -93,17 +95,57 @@ export class IndicatorDetailComponent implements OnInit {
         yAxes: [{
             ticks: {
                 beginAtZero: true,
-                /*
+            }
+        }]
+      },
+      maintainAspectRatio: false
+    };
+
+    public dispersionChartOptions : any = {
+      responsive: true,
+      tooltips: {
+        callbacks: {
+          // function that modify the tooltip title
+          title: function(tooltipItem, data){
+            // get the dataset of point
+            var datasetIndex = tooltipItem[0].datasetIndex;
+            // get the data array 
+            var dispersionData = data.datasets[datasetIndex];
+            // get the index 
+            var index = tooltipItem[0].index;
+            // tooltip title
+            var title = dispersionData.data[index].x;
+            return title;
+          }
+        }
+      },
+      elements: {
+        point: {
+          radius: 5,
+          hitRadius: 0,
+          hoverRadius: 5,
+          hoverBorderWidth: 0
+        },
+        line: {
+          tension:0
+        }
+
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
                 min: 0,
                 max: 100,
                 stepSize: 10
-                */
+                
 
             }
         }]
       },
       maintainAspectRatio: false
     };
+
     public lineChartColors: Array<any> = [
 
       { // grey
@@ -125,6 +167,27 @@ export class IndicatorDetailComponent implements OnInit {
       }
 
     ];
+
+    public dispersionChartColors : Array<any> = [
+      { // grey
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      },
+      
+      { // grey
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(0,149,58,1)',
+        pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      }
+    ];
+
     public lineChartLegend = true;
     public lineChartType = 'line';
 
@@ -314,37 +377,71 @@ export class IndicatorDetailComponent implements OnInit {
     this.sessionStorage.setMonth(this.selectedMonth);
   }
 
-  public showDispersionGraph(indicator: Indicator) {
-    if (this.counter++ % 200 === 0) {
+  // show the dispersion chart
+  public showDispersionGraph(indicator: Indicator){
+    if (this.counter++ % 200 == 0){
 
       let promedio = 0;
+      
+      let _dispersionChartData : Array<any> = new Array(this.DispersionChartData.length);
+      _dispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label}
 
-      const _lineChartData: Array<any> = new Array(this.DispersionChartData.length);
-      _lineChartData[0] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[0].label};
-
-      for (let i = 0; i < indicator.registries.length; i++) {
+      for(let i = 0; i < indicator.registries.length; i++){
         const date: Date = new Date(indicator.registries[i].date);
         const month = date.getUTCMonth();
-        const percent = indicator.registries[i].percent;
-        console.log('Fecha: ' + this.lineChartLabels[month]);
-        const datos = {x: this.lineChartLabels[month], y: percent};
-        // _lineChartData[0].data[month]=percent;
-        // this.lineChartOptions.tooltips.callbacks.tittle('Mayo');
-        // _lineChartData.push(datos);
-        promedio += percent;
-        _lineChartData[0].data.push(datos);
-      }
-      promedio = promedio / indicator.registries.length;
-      _lineChartData[1] = {data: new Array(indicator.registries.length), label: this.DispersionChartData[1].label};
-      for (let i = 0; i < 12; i++) {
-        const datos = {x: this.lineChartLabels[i], y: promedio};
-        _lineChartData[1].data.push(datos);
-        // _lineChartData[1].data[i]=50;
+        let percent = indicator.registries[i].percent;
+        percent = Number(percent); // convert string to number
+        let datos = {x: this.lineChartLabels[month], y:percent};
+        promedio += percent; 
+        _dispersionChartData[0].data.push(datos);
       }
 
-      this.DispersionChartData = _lineChartData;
-      console.log('colores: ' + this.lineChartColors[0].borderColor);
-      console.log(this.lineChartData);
+      promedio = promedio / indicator.registries.length;
+      
+      _dispersionChartData[1] = {data: new Array(), label:this.DispersionChartData[1].label};
+
+      let months = 12;
+      for (let i = 0; i < months; i++){
+        promedio = Number(promedio); // convert string to number
+        let datos = {x: this.lineChartLabels[i], y:promedio};
+        _dispersionChartData[1].data.push(datos);
+      }
+      
+      this.DispersionChartData = _dispersionChartData;
+
+      // get callbacks properties
+      let callbacks = this.dispersionChartOptions.tooltips.callbacks;
+      // add new attribute to callbacks functions
+      callbacks["label"] = function(tooltipItem,data){
+        
+        var datasetIndex = tooltipItem.datasetIndex;
+        var dispersionData = data.datasets[datasetIndex];
+        var index = tooltipItem.index;
+        // solo puntos dispersion
+        if (datasetIndex == 0){
+          var registryName = indicator.registries[index].name;
+          var percent = dispersionData.data[index].y; 
+          var label = registryName+": "+percent+"%";
+          return label;
+        }
+        // solo linea promedio
+        if (datasetIndex == 1){
+          var prom = dispersionData.data[index].y;
+          var label = "promedio: "+prom+"%";
+          return label;
+        }
+        
+        
+      }
+
+      if (promedio != 0){
+        this.calculateVariationIndicator(promedio);
+        
+      }
+
+      //console.log(this.DispersionChartData);
+      //console.log(this.dispersionChartOptions.tooltips);
+      
     }
   }
 
@@ -394,14 +491,38 @@ export class IndicatorDetailComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
+  // method to calculate the varianza and standard desviation
+  calculateVariationIndicator(promedio: number) : void{
+    let data = this.DispersionChartData[0].data;
+    let n = data.length;
+    let sum = 0;
+    for (let i = 0; i < n; i++){
+      let x = data[i].y; // get the percent
+      sum = sum + Math.pow(x-promedio,2);
+    }
+    // caso cuando hay un solo dato (n = 1 - 1 igual 0) division por cero igual NaN
+    if (n - 1 != 0){
+      let varianza = sum/(n-1);
+      this.varianza = Number(varianza.toFixed(2));
+    
+      let dev = Math.sqrt(sum/(n-1));
 
+      this.devStandar = Number(dev.toFixed(2));
+    }
+    
+    
+
+
+    
+    
+  }
 
 }
 

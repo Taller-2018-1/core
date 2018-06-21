@@ -162,12 +162,11 @@
               <canvas baseChart 
                       [datasets]="DispersionChartData"
                       [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
+                      [options]="dispersionChartOptions"
+                      [colors]="dispersionChartColors"
                       [legend]="lineChartLegend"
                       [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
+                      ></canvas>
             </div>
             <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
               <canvas baseChart 
@@ -182,7 +181,15 @@
             </div>
           </div>
         </div>
-
+        <div class="container" *ngIf="indicator.registriesType == 2">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Desviación estándar: {{devStandar}}</h4>
+              <h4>Varianza: {{varianza}}</h4>
+            </div>
+          </div>
+        </div>
+        
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">

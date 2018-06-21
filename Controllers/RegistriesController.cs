@@ -165,8 +165,19 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+                
+                if(r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
-            
+
             indicator.Registries.Add(registry);
 
             _context.Entry(indicator).State = EntityState.Modified;
@@ -187,7 +198,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
          private bool IndicatorExists(long id)
         {
@@ -203,6 +214,17 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+
+                if (r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
@@ -225,7 +247,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
@@ -238,6 +260,17 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+
+                if (r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
@@ -260,7 +293,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
 
 
@@ -396,6 +429,7 @@ namespace think_agro_metrics.Controllers
 				throw ex;
             }
         }
-                
+                
+
     }
 }

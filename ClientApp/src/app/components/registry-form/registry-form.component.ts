@@ -13,6 +13,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { ActivatedRoute } from '@angular/router';
 
+import swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registry-form',
   templateUrl: './registry-form.component.html',
@@ -27,8 +29,16 @@ export class RegistryFormComponent implements OnInit {
   @Input() indicator: Indicator;
 
   onSubmit() {
-    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
-    this.indicator.registries.push(this.model);
+    let nameVerification: boolean = false;
+
+    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
+      nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
+      if (nameVerification) {
+        this.indicator.registries.push(this.model);
+      } else {
+        this.duplicateNameAlert();
+      }
+    });
   }
 
   closeModal() {
@@ -50,4 +60,18 @@ export class RegistryFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  private duplicateNameAlert()
+  {
+    swal({
+      title: 'Error al agregar el registro',
+      //text: 'Ya existe un registro con el nombre ' + this.model.name,
+      html: '<h6> Ya existe un registro con el nombre "' + this.model.name + '"</h6>',
+      type: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
+  }
 }
