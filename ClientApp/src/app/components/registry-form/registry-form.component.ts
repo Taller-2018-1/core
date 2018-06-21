@@ -73,7 +73,9 @@ export class RegistryFormComponent implements OnInit {
       type: 'warning',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
-      confirmButtonClass: 'btn btn-sm btn-primary'
-    })
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
   }
 }

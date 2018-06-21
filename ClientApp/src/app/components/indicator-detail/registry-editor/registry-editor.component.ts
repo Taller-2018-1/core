@@ -53,27 +53,4 @@ export class RegistryEditorComponent implements OnInit {
     // this.registry = null;
     this.editModalRef = null;
   }
-
-  deleteDocument(document: Document) {
-    const result = confirm('Está seguro que desea eliminar el documento: ' + document.documentName);
-    if (this.registry.documents.length === 1) {
-      alert('Debe existir al menos un documento de respaldo para el registro');
-      return;
-    }
-    if (result) {
-      let removed: Document;
-      this.service.deleteDocument(document).subscribe(
-        data => {
-          removed = data;
-        },
-        err => console.error(err)
-      );
-
-      const index: number = this.registry.documents.indexOf(document);
-      if (index !== -1) {
-        this.registry.documents.splice(index, 1);
-      }
-    }
-  }
-
 }
