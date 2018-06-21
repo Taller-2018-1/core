@@ -536,7 +536,7 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+                       
             _context.Goals.UpdateRange(goals);
             await _context.SaveChangesAsync();
 

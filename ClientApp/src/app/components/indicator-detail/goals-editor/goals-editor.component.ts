@@ -40,6 +40,9 @@ export class GoalsEditorComponent implements OnInit {
   public requiredError = 'Este campo es obligatorio';
   public patternErrorNatural = 'El valor debe ser un número positivo';
   public patternErrorDecimal = 'El valor debe ser un número positivo con hasta 2 decimales';
+  // Flags to know if the form has changed
+  public isAdded: boolean;
+  public isChanged: boolean;
 
   constructor(private service: IndicatorService,
     private fb: FormBuilder) {
@@ -62,10 +65,12 @@ export class GoalsEditorComponent implements OnInit {
 
   // Adds a new goal, with the same value of the last added goal
   addGoal() {
+    // Set as Added
+    this.isAdded = true;
+
     // Copy the last added value to the new value
     const lastIndex = this.monthlyGoals.controls.length - 1;
     const last = this.monthlyGoals.get(lastIndex.toString()).value['month'];
-    console.log(last);
 
     // Add a new field to the form using the value of the previously added goal
     this.addMonthlyGoal(last);
@@ -84,7 +89,31 @@ export class GoalsEditorComponent implements OnInit {
     this.modalRef.hide();
 
     // Save changes
+    const goals = this.indicator.goals.slice();
+    const newGoals = [];
+    for (let i = 0; i < this.monthlyGoals.controls.length; i++) {
+      if (this.indicator.goals.length > i) {
+        goals[i].value = this.monthlyGoals.get(i.toString()).value['month'];
+      } else {
+        const newGoal = new Goal();
+        newGoal.indicatorID = this.indicator.indicatorID;
+        newGoal.value = this.monthlyGoals.get(i.toString()).value['month'];
+        newGoal.year = this.initialYear + Math.floor(i / 12);
+        newGoal.month = i % 12;
+        newGoals.push(newGoal);
+      }
+    }
 
+    this.service.postGoals(this.indicator.indicatorID, newGoals).subscribe((res) => {
+      this.service.postGoals(this.indicator.indicatorID, goals).subscribe((goalsResult) => {
+        res.forEach(g => {
+          goalsResult.push(g);
+        });
+        this.indicator.goals = goalsResult;
+        console.log('Result:');
+        console.log(this.indicator.goals);
+      });
+    });
 
     this.rebuildForm(); // Uses the already saved values of the indicator's goals
   }
@@ -105,6 +134,11 @@ export class GoalsEditorComponent implements OnInit {
   setSelectedYear(index: number) {
     this.selectedYear = this.years[index];
     this.selectedYearText = GoalsEditorComponent.YEAR_TEXT + this.selectedYear;
+  }
+
+  // Set the isChanged flag to true (called in the change of an input of the form)
+  setChanged() {
+    this.isChanged = true;
   }
 
   // Initialize the years array using the goals array
@@ -150,6 +184,8 @@ export class GoalsEditorComponent implements OnInit {
       monthlyGoals: this.fb.array([])
     });
     this.setMonthlyGoals(this.indicator.goals);
+    this.isAdded = false;
+    this.isChanged = false;
   }
 
   // Property to obtain the monthlyGoals FormArray easily
@@ -167,7 +203,7 @@ export class GoalsEditorComponent implements OnInit {
 
   // Adds a new field in the form with a value
   addMonthlyGoal(value: string) {
-    // If the registries aren't PercentRegistry, it allows natural numbers (including 0
+    // If the registries aren't PercentRegistry, it allows natural numbers (including 0)
     if (this.indicator.registriesType !== 2) {
       this.monthlyGoals.push(this.fb.group({
         month: [value, [Validators.required, Validators.pattern('[0-9]{1,}')]]
