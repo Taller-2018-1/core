@@ -435,4 +435,13 @@ export class PdfgeneratorComponent implements OnInit {
     
   }
 
+  downloadReport(){
+    if(this.selectedReport=='PDF'){
+      this.downloadPDF();
+    }
+    if(this.selectedReport=='XLS'){
+      this.downloadExcel();
+    }
+  }
+
 }
