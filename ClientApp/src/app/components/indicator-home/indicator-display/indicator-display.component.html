@@ -6,39 +6,45 @@
       </div>
 
       <!--Dropdown Filters-->
+
       <div class="row">
-        <!--Dropdown Year Filter-->
-        <div class="col-md-6">          
-          Seleccione el año a calcular:
+        <div class="col-md-6">
+          Seleccione Filtro Por Año:
           <br>
           <div class="btn-group" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedYearText }} <span class="caret"></span>
+              {{ selectedYearText }}
+              <span class="caret"></span>
             </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators(allYears, '')">Todos los años</a></li>          
-              <li *ngFor="let year of years"><a class="dropdown-item" (click)="calculateIndicators(year, '')">Año {{ year }}</a></li>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <!--<li ><a class="dropdown-item" (click)="calculateIndicators(allYears, '')">Todos los años</a></li>-->
+              <li *ngFor="let year of years">
+                <a class="dropdown-item" (click)="calculateIndicators(year, '')">Año {{ year }}</a>
+              </li>
             </ul>
           </div>
         </div>
+
         <!--Dropdown Month Filter-->
         <div class="col-md-6">
-          Seleccione el mes a calcular:
+          Seleccione Filtro Mensual, Trimestral o Todos Los Meses
           <br>
           <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedMonthText }} <span class="caret"></span>
+              {{ selectedMonthText }}
+              <span class="caret"></span>
             </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Todos los meses</a></li>          
-              <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="calculateIndicators('', month)">{{ month }}</a></li>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <!--<li ><a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Todos los meses</a></li>-->
+              <a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Periodo Mensual</a>
+              <a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Periodo Trimestral</a>
+              <li *ngFor="let month of monthsOfTheYear">
+                <a class="dropdown-item" (click)="calculateIndicators('', month)">{{ month }}</a>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-
 
       <!-- end col-md-12 -->
     </div>
@@ -50,7 +56,7 @@
     <div id="statistic-section" class="statistic-bg" data-stellar-background-ratio="0">
       <div class="container">
         <div class="row">
-  
+
           <ng-template ngFor let-indicator [ngForOf]="indicatorGroup.indicators" let-i="index" [ngForTrackBy]="trackByFn">
             <!--separador-->
             <div *ngIf="(i%3===0) && (i>0)" class="col-md-12" style="border: 15px solid transparent;"></div>
@@ -68,8 +74,8 @@
                         <ng-template #noPercent>
                           <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2'}}/{{ goals[i] | number:'.0-2' }}</span>
                         </ng-template>
-                      </div>                      
-                      
+                      </div>
+
                       <p>{{ indicator.name }}</p>
                     </div>
                     <!-- end fact -->
@@ -87,10 +93,10 @@
     </div>
     <!-- end statistic-section -->
   </section>
-    <!-- End statistic section -->
+  <!-- End statistic section -->
 </div>
 
 
 <ng-template #loading>
-    Cargando...
+  Cargando...
 </ng-template>
