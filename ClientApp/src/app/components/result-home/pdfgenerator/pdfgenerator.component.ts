@@ -18,6 +18,10 @@ import * as jsPDF from 'jspdf';
 import { modalConfigDefaults } from 'ngx-bootstrap/modal/modal-options.class';
 import { Indicator } from '../../../shared/models/indicator';
 
+//Importa libreria Excel
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver/FileSaver';
+
 @Component({
   selector: 'app-pdfgenerator',
   templateUrl: './pdfgenerator.component.html',
@@ -327,5 +331,108 @@ export class PdfgeneratorComponent implements OnInit {
   }
 
   
+
+  downloadExcel()
+  {
+
+    console.log("aers");
+
+    this.OrdernarArregloIndicators();
+
+
+    var wb = XLSX.utils.book_new();
+
+    wb.Props = {
+      Title: "Informe General",
+      Subject: "Informe",
+      Author: "ThinkAgro",
+      CreatedDate: new Date(2017,12,19)
+    };
+
+    wb.SheetNames.push("Hoja 1");
+
+    let cantidadGruposIndicadores = this.indicatorGroups.length;
+
+    let posicionIndicador = 0;
+
+    let meta = 0;
+
+    var ws_data = [[' ','Informe General '+this.selectedYear]];  //a row with 2 columns
+
+    ws_data.push([' ',' ']);
+
+    ws_data.push(['Grupo indicadores','Indicador','Meta','Cantidad registro']);
+
+    for(let i=0; i<cantidadGruposIndicadores; i++)
+    {
+      ws_data.push([this.indicatorGroups[i].name]);
+
+      //this.indicators[empiezaJ].name
+
+      for(let j=0; j<this.indicatorGroups[i].indicators.length; j++)
+      {
+        meta = 0;
+        for(let y=0; y<this.indicators[posicionIndicador].goals.length; y++)
+        {
+          if(this.indicators[posicionIndicador].goals[y].year == this.selectedYear)
+          {
+            meta += this.indicators[posicionIndicador].goals[y].value;
+          }
+        }
+
+        let cantidadMeta = meta.toString();
+
+        let cantidadRegistro = 0;
+        if(this.indicators[posicionIndicador].registriesType==1)
+        {
+          for(let z=0;z < this.indicators[posicionIndicador].registries.length; z++)
+          {
+            cantidadRegistro+=this.indicators[posicionIndicador].registries[z].quantity;
+          }        
+        }
+        else if(this.indicators[posicionIndicador].registriesType==2)
+        {
+          for(let z=0;z < this.indicators[posicionIndicador].registries.length; z++)
+          {
+            cantidadRegistro+=this.indicators[posicionIndicador].registries[z].percent;
+          }        
+        }
+        else
+        {
+          cantidadRegistro = this.indicators[posicionIndicador].registries.length;
+        }
+
+        let cantidadRegistros = cantidadRegistro.toString();
+
+        ws_data.push([' ',this.indicators[posicionIndicador].name,cantidadMeta, cantidadRegistros]);
+        posicionIndicador++;
+      }
+    }
+
+
+
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+
+    wb.Sheets["Hoja 1"] = ws;
+
+
+    //Export
+
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+    function s2ab(s) { 
+      var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+      var view = new Uint8Array(buf);  //create uint8array as viewer
+      for (var i=0; i<s.length; i++) 
+        view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+      return buf;    
+    }
+
+    // funcion que guarda y crea el archivo 
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Informe General.xlsx');
+
+    
+  }
 
 }
