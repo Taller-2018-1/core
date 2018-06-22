@@ -13,6 +13,7 @@ import { Document } from '../../../shared/models/document';
 
 //Services
 import { RegistryService } from '../../../services/registry/registry.service';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-link-document-form',
@@ -29,9 +30,11 @@ export class LinkDocumentFormComponent implements OnInit {
   onSubmit() {
     this.model.extension = "link";
     this.RegistryService.addLinkDocument(this.model, this.idRegistry).subscribe(
-      data =>{
-      this.registry.documents.push(data);
-      this.closeModal();
+      (data) =>{
+        data.forEach(element => {
+          this.registry.documents.push(element);
+        });
+        this.closeModal();
     });
     
   }
