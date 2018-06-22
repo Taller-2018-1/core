@@ -23,11 +23,11 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver/FileSaver';
 
 @Component({
-  selector: 'app-pdfgenerator',
-  templateUrl: './pdfgenerator.component.html',
-  styleUrls: ['./pdfgenerator.component.css']
+  selector: 'app-reportgenerator',
+  templateUrl: './reportgenerator.component.html',
+  styleUrls: ['./reportgenerator.component.css']
 })
-export class PdfgeneratorComponent implements OnInit {
+export class ReportgeneratorComponent implements OnInit {
 
   //modalRef: BsModalRef;
   @Input() modalRef: BsModalRef;

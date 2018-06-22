@@ -39,7 +39,7 @@
           </button>
         </div>
         <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
-          <app-pdfgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-pdfgenerator>
+          <app-reportgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-reportgenerator>
         </div>
   </div>
 </ng-template>

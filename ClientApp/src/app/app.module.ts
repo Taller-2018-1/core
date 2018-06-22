@@ -31,13 +31,12 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
-import { PdfgeneratorComponent } from './components/result-home/pdfgenerator/pdfgenerator.component';
+import { ReportgeneratorComponent } from './components/result-home/reportgenerator/reportgenerator.component';
 import { FileService } from './services/file/file.service';
 import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
-import { ExcelgeneratorComponent } from './components/result-home/excelgenerator/excelgenerator.component';
 
 @NgModule({
   declarations: [
@@ -57,10 +56,9 @@ import { ExcelgeneratorComponent } from './components/result-home/excelgenerator
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
-    PdfgeneratorComponent,
+    ReportgeneratorComponent,
     DocumentEditorComponent,
     NavigationButtonsComponent,
-    ExcelgeneratorComponent,
   ],
   imports: [
     BsDropdownModule.forRoot(),
