@@ -37,6 +37,7 @@ import { DocumentEditorComponent } from './components/indicator-detail/document-
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
+import { ExcelgeneratorComponent } from './components/result-home/excelgenerator/excelgenerator.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     PdfgeneratorComponent,
     DocumentEditorComponent,
     NavigationButtonsComponent,
+    ExcelgeneratorComponent,
   ],
   imports: [
     BsDropdownModule.forRoot(),
