@@ -439,7 +439,7 @@ export class ReportgeneratorComponent implements OnInit {
     if(this.selectedReport=='PDF'){
       this.downloadPDF();
     }
-    if(this.selectedReport=='XLS'){
+    if(this.selectedReport=='XLSX'){
       this.downloadExcel();
     }
   }
