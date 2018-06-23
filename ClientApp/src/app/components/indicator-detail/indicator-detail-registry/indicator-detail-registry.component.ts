@@ -34,7 +34,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   public editModalRef: BsModalRef;
   public modalRef: BsModalRef; // For Documents
 
-  public document: Document = null; // For EditDocument
+  public document: Document = null; // For EditDocument & DocumentPreview
 
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,
@@ -91,6 +91,15 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     }
     this.registry = selectedRegistry;
     this.modalRef = this.modalService.show(template);
+  }
+
+  openModalDocumentPreview($event: any, modal: any, selectedDocument: Document) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.document = selectedDocument;
+    modal.show();
   }
 
   goToLink(link: string) {

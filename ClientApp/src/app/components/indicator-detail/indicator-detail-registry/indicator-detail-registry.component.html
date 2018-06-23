@@ -48,7 +48,7 @@
                 Ver
               </button>
               <ng-template #viewFileTemplate>
-                  <button type="button" class="btn btn-xs btn-primary disabled">
+                  <button type="button" class="btn btn-xs btn-primary" (click)="openModalDocumentPreview($event, lgModal, document)">
                     Ver
                   </button>
               </ng-template>
@@ -117,3 +117,22 @@
   <app-document-editor [document]="document" (updateEvent)="updateData()" [editModalRef]="editModalRef" #editDocument></app-document-editor>
 
 </ng-template>
+
+<!-- Modal document preview -->
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Vista previa</h4>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-document-preview [document]="document"></app-document-preview>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN Modal document preview -->
