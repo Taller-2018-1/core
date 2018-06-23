@@ -75,7 +75,7 @@
   
 
   <div class="modal-footer">
-    <button type="button" (click)="closeModal()" class="btn btn-sm btn-clean-2">CANCELAR</button>
+    <button type="button" (click)="revertChanges()" class="btn btn-sm btn-clean-2">CANCELAR</button>
     <button [disabled]="!this.form.valid || !(this.isChanged || this.isAdded)" type="submit" (click)="saveChanges()" class="btn btn-sm btn-primary">Guardar</button>
   </div>
 

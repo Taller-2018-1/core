@@ -1,5 +1,7 @@
+// Angular
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { timer } from 'rxjs/observable/timer';
 
 // Models
 import { Goal } from '../../../shared/models/goal';
@@ -9,6 +11,9 @@ import { Months } from '../../../shared/models/months';
 // Ngx-Bootstrap
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
+
+// SweetAlert2
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-goals-editor',
@@ -115,19 +120,32 @@ export class GoalsEditorComponent implements OnInit {
       });
     });
 
-    this.rebuildForm(); // Uses the already saved values of the indicator's goals
+    // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
+    // rebuildForm() uses the already saved values of the indicator's goals
+    const source = timer(100);
+    source.subscribe(() => this.rebuildForm());
   }
 
-  // Close the modal and rebuild the form with the previous values
   revertChanges() {
     this.modalRef.hide();
-    this.rebuildForm();
+
+    // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
+    const source = timer(100);
+    source.subscribe(() => this.rebuildForm());
   }
 
   // If there are changes, it opens a new modal asking if save or revert the changes
   closeModal() {
     this.modalRef.hide();
-    // Warning and ask if wanna close and lose the changes (using other modal)
+
+    if (!this.form.valid) {
+      // Error: Form not valid
+      this.showErrorModal();
+    } else if (this.form.valid && (this.isChanged || this.isAdded)) {
+      // Warning: Save or Discard the changes already done
+      this.showWarningModal();
+    }
+
   }
 
   // Set the selectedYear and selectedYearText by the index in the years array
@@ -215,5 +233,52 @@ export class GoalsEditorComponent implements OnInit {
     }
   }
 
+  /* SweetAlert2 Modals */
+
+  showErrorModal() {
+    swal({
+      title: 'Meta no válida',
+      html: '<h6>Una de las metas ingresadas tiene un valor no válido.</h6><br>Los cambios realizados serán revertidos' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'error',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.value) {
+        // Discard changes
+        this.rebuildForm();
+      }
+    });
+  }
+
+  showWarningModal() {
+    swal({
+      title: 'Se han realizado cambios',
+      html: '<h6>¿Desea deshacer O guardar los cambios realizados?</h6>' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'DESHACER',
+      buttonsStyling: false,
+      reverseButtons: true,
+      confirmButtonClass: 'btn btn-sm btn-primary btn-confirm',
+      cancelButtonClass: 'btn btn-sm btn-clean-2 btn-cancel',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.value) {
+        this.saveChanges();
+      } else {
+        // Discard changes
+        this.rebuildForm();
+      }
+    });
+  }
 }
+
+
 

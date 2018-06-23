@@ -29,7 +29,7 @@ export class RegistryFormComponent implements OnInit {
   @Input() indicator: Indicator;
 
   onSubmit() {
-    let nameVerification: boolean = false;
+    let nameVerification = false;
 
     this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
       nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
@@ -60,13 +60,13 @@ export class RegistryFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  private duplicateNameAlert()
-  {
+  private duplicateNameAlert() {
     swal({
       title: 'Error al agregar el registro',
-      //text: 'Ya existe un registro con el nombre ' + this.model.name,
-      html: '<h6> Ya existe un registro con el nombre "' + this.model.name + '"</h6>',
-      type: 'warning',
+      // text: 'Ya existe un registro con el nombre ' + this.model.name,
+      html: '<h6> Ya existe un registro con el nombre "' + this.model.name + '"</h6>' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'error',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
       confirmButtonClass: 'btn btn-sm btn-primary',
