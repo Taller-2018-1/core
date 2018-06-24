@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http'
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 //Models
 import { Document } from '../../../shared/models/document';
@@ -14,7 +15,9 @@ import { FileService } from '../../../services/file/file.service';
 })
 export class DocumentPreviewComponent implements OnInit {
 
+  pdfSource;
   @Input() document: Document;
+  @Input() modalRef: BsModalRef;
 
   constructor(private http: HttpClient,
               private fileService: FileService) {

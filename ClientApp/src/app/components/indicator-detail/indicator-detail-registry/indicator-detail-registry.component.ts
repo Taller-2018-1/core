@@ -99,6 +99,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
       $event.preventDefault();
     }
     this.document = selectedDocument;
+    this.modalRef = modal;
     modal.show();
   }
 
