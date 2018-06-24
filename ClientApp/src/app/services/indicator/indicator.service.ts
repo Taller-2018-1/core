@@ -20,6 +20,7 @@ export class IndicatorService {
   public static PERCENT_REGISTRY = '/PercentRegistry';
   public static QUANTITY_REGISTRY = '/QuantityRegistry';
   public static DEFAULT_REGISTRY = '/DefaultRegistry/';
+  public static REGISTRY_NAME_VERIFICATION = '/RegistryNameExists';
 
   constructor(public http: HttpClient) { }
 
@@ -64,15 +65,15 @@ export class IndicatorService {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
   }
 
-  addRegistry(registry: Registry, indicatorId: String, registriesType: string) {
+  addRegistry(registry: Registry, indicatorId: String, registriesType: string): Observable<boolean> {
     let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
     if (registriesType === 'QuantityRegistry') {
         discriminator = IndicatorService.QUANTITY_REGISTRY;
     } else if (registriesType === 'PercentRegistry') {
         discriminator = IndicatorService.PERCENT_REGISTRY;
     }
-    this.http.post<Indicator>(IndicatorService.REGISTRIES_API + indicatorId
-        + discriminator, registry).subscribe();
+    return this.http.post<boolean>(IndicatorService.REGISTRIES_API + indicatorId
+        + discriminator, registry);
   }
 
   deleteRegistry(registry: Registry): Observable<Registry> {
