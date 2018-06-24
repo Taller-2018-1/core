@@ -176,7 +176,7 @@ namespace think_agro_metrics.Controllers
             foreach (Registry r in registries)
             {
                 
-                if(r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
                     return Json(false);
                 }
@@ -225,7 +225,7 @@ namespace think_agro_metrics.Controllers
             foreach (Registry r in registries)
             {
 
-                if (r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
                     return Json(false);
                 }
@@ -271,7 +271,7 @@ namespace think_agro_metrics.Controllers
             foreach (Registry r in registries)
             {
 
-                if (r.Name.ToUpper().Equals(registry.Name.ToUpper()))
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
                     return Json(false);
                 }
