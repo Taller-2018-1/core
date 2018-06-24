@@ -25,8 +25,8 @@ export class RegistryService {
       return this.http.get<Registry>(RegistryService.REGISTRIES_API + registryId);
   }
 
-  addLinkDocument(document: Document, registryId: number): Observable<Document> {
-    return this.http.post<Document>(RegistryService.REGISTRIES_API + registryId
+  addLinkDocument(document: Document, registryId: number): Observable<Document[]> {
+    return this.http.post<Document[]>(RegistryService.REGISTRIES_API + registryId
       + RegistryService.ADD_LINK_DOCUMENT_METHOD, document );
   }
 
