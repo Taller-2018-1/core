@@ -1,10 +1,19 @@
 <div class="modal-header">
-    <h4 ngif="document" id="dialog-sizes-name1" class="modal-title pull-left">{{document.name}}</h4>
+    <h4 *ngIf="document" id="dialog-sizes-name1" class="modal-title pull-left">{{document.name}}</h4>
     <button type="button" class="close pull-right" (click)="modalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <pdf-viewer ng-if="document && document.link && document.extension=='.pdf'" 
-      src="{{'/api/Files/' + this.document.link}}"></pdf-viewer>
+    <div *ngIf="document && document.link">
+      <pdf-viewer *ngIf="document.extension=='.pdf'" 
+        src="{{'/api/Files/' + this.document.link}}">
+      </pdf-viewer>
+      <div *ngIf="document.extension!='.pdf'">
+        Lo sentimos. No existe una vista previa para este archivo.
+      </div>
+    </div>
+    <div *ngIf="!document || !document.link">
+      Cargando...
+    </div>
   </div>
