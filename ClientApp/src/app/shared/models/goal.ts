@@ -3,6 +3,7 @@ export class Goal {
     year: number;
     month: number;
     value: number;
+    indicatorID: number;
 
   constructor() { }
 

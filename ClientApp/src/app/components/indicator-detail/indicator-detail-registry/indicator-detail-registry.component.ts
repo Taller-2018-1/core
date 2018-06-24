@@ -51,11 +51,9 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     if (registry.documents.length === 1) {
       this.deleteDoumentRestriction();
       return;
-    }
-    else {
-      //const result = confirm('Está seguro que desea eliminar el documento: ' + document.name);
-      this.confirmDeleteDocument().then( (result) =>
-      {
+    } else {
+      // const result = confirm('Está seguro que desea eliminar el documento: ' + document.name);
+      this.confirmDeleteDocument().then( (result) => {
         if (result.value) {
           let removed: Document;
           this.registryService.deleteDocument(document).subscribe(
@@ -114,14 +112,14 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   goToLink(link: string) {
-    //window.location.pathname = link;
-    var url = "http://" + link;
+    // window.location.pathname = link;
+    const url = 'http://' + link;
     window.location.href = url;
   }
 
   goToLinkBlank(link: string) {
-    //window.location.pathname = link;
-    var url = "http://" + link;
+    // window.location.pathname = link;
+    const url = 'http://' + link;
     window.open(url, '_blank');
   }
 
@@ -143,7 +141,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
           data => {
             const index = this.registries.indexOf(registry);
             this.registries.splice(index, 1);
-            this.updateEvent.emit("Registry Deleted");
+            this.updateEvent.emit('Registry Deleted');
           },
           err => console.error(err)
         );
@@ -163,14 +161,15 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   updateData() {
-    this.updateEvent.emit("Document modified");
+    this.updateEvent.emit('Document modified');
   }
 
   private deleteDoumentRestriction() {
     swal({
       title: 'No es posible eliminar el documento',
-      html: '<h6> Debe existir al menos un documento de respaldo para cada registro</h6>',
-      type: 'warning',
+      html: '<h6> Debe existir al menos un documento de respaldo para cada registro</h6>' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'error',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
       confirmButtonClass: 'btn btn-sm btn-primary',
@@ -182,28 +181,30 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   private confirmDeleteDocument() {
      return swal({
       title: 'Eliminar documento',
-      html: '<h6>¿Está seguro que desea eliminar el documento de respaldo?</h6><br>Esta acción no puede ser revertida',
+      html: '<h6>¿Está seguro que desea eliminar el documento de respaldo?</h6><br>Esta acción no puede ser revertida' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'CANCELAR',
       buttonsStyling: false,
       reverseButtons: true,
       confirmButtonClass: 'btn btn-sm btn-primary',
       cancelButtonClass: 'btn btn-sm btn-clean-2 btn-cancel',
-       allowOutsideClick: false,
-       allowEscapeKey: false
+      allowOutsideClick: false,
+      allowEscapeKey: false
     });
   }
 
   private confirmDeleteRegistry(name: string, date: string) {
     return swal({
       title: 'Eliminar registro',
-      html: '<h6>¿Está seguro que desea eliminar el registro<br>"' + date + ' - ' + name + '"?</h6><br>Esta acción no puede ser revertida',
+      html: '<h6>¿Está seguro que desea eliminar el registro<br>"' + date + ' - ' + name + '"?</h6><br>Esta acción no puede ser revertida' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'CANCELAR',
       buttonsStyling: false,
       reverseButtons: true,
       confirmButtonClass: 'btn btn-sm btn-primary',
