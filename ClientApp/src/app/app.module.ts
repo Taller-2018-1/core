@@ -32,11 +32,14 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
+import { PdfgeneratorComponent } from './components/result-home/pdfgenerator/pdfgenerator.component';
 import { FileService } from './services/file/file.service';
 import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
+import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -56,9 +59,11 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
+    PdfgeneratorComponent,
     DocumentEditorComponent,
     NavigationButtonsComponent,
-    GoalsEditorComponent
+    GoalsEditorComponent,
+    DocumentPreviewComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -74,6 +79,7 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     AccordionModule.forRoot(),
     FlexLayoutModule,
     StorageServiceModule ,
+    PdfViewerModule,
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
