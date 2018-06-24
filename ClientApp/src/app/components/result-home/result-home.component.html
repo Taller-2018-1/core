@@ -8,8 +8,14 @@
                 <h1>
                   Resultados
                 </h1>
+                <!--<button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(generator)">Generar informe <span class="glyphicon glyphicon-file"> </span></button>-->
               </div> <!-- end subsection-text -->
             </div> <!-- end col-md-8 -->
+            <div class="col-md-4 offset-md-2 text-right">
+              <button type="button" class="btn btn-primary btn-md" (click)="openModal(generator)">
+                  Generar Informe <span class="glyphicon glyphicon-file"> </span>
+              </button>
+            </div> <!-- end col-md-4 -->
           </div> <!-- end row -->
         </div> <!-- end container -->
       </div>
@@ -17,6 +23,23 @@
     <!-- end head-page-section -->
     <!-- about boxes
 ================================================== -->
+
 <div *ngIf="indicatorGroups$ | async as indicatorGroups">
+    
   <app-result-display [indicatorGroups]="indicatorGroups" ></app-result-display>
-</div>
+
+</div>  
+  
+<ng-template #generator>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Generador de informes de todos los indicadores</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
+    <app-pdfgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-pdfgenerator>
+  </div>
+</ng-template>
+
+

@@ -31,6 +31,7 @@ import { IndicatorDetailRegistryComponent } from './components/indicator-detail/
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
+import { PdfgeneratorComponent } from './components/result-home/pdfgenerator/pdfgenerator.component';
 import { FileService } from './services/file/file.service';
 import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
 import { StorageServiceModule } from 'ngx-webstorage-service';
@@ -57,6 +58,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
+    PdfgeneratorComponent,
     DocumentEditorComponent,
     NavigationButtonsComponent,
     DocumentPreviewComponent,
