@@ -1,14 +1,21 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
-  {{ this.showGraph(indicator) }}
+  
+  <div *ngIf="indicator.registriesType !== 2">
+    {{ this.showGraph(indicator) }}
+  </div>
+  <div *ngIf="indicator.registriesType == 2">
+    {{ this.showDispersionGraph(indicator) }}
+  </div>
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
+        <app-navigation-buttons></app-navigation-buttons>
         <div class="row">
           <div class="col-sm-8">
             <div class="head-title">
               <h5>{{selectedYearText}}</h5>
-              <h4 *ngIf="indicatorGroupName$ | async as indicatorGroup">{{indicatorGroup}}</h4>
+              <h4 *ngIf="indicatorGroupName$ | async as indicatorGroupName">{{ indicatorGroupName }}</h4>
               <h1>
                 {{ indicator.name }}
               </h1>
@@ -44,13 +51,13 @@
       </div>
       <!-- end container -->
     </div>
-  </section>
-  <!-- end head-page-section -->
+</section>
+<!-- end head-page-section -->
   <section>
     <div>
-      <ol class="breadcrumb shortcode" style="">
-        <li><a href="index.html">Modificar Meta</a></li>
-        <li><a href="index.html#portfolio-section">Modificar Indicador</a></li>
+      <ol class="breadcrumb shortcode">
+        <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
+        <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
       </ol>
     </div>
   </section>
@@ -106,9 +113,37 @@
                     <!--</div>-->
 
                   </td>
-                  <td style="padding-left: 200px;">
-                    <app-indicator-graph-option></app-indicator-graph-option>
+
+                  <!-- Graph Type Dropdown (no PercentRegistry) -->
+                  <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
+                    <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
+                      <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                          {{ selectedTypeChart }} <span class="caret"></span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic">
+                          <li *ngFor="let typeChart of typesChart"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
+                        </ul>
+                      </div>
+                      <!--</div>-->
+                  </td>
+
+                  <!-- Graph Type Dropdown (PercentRegistry) -->
+                  <td *ngIf="indicator.registriesType == 2" style="padding-left: 200px;">
+                    <!--<app-indicator-graph-option></app-indicator-graph-option>-->
+                    <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
+                      <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                          Gráfico de dispersión <span class="caret"></span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic">
+                          <li *ngFor="let typeChart of typeDispersion"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
+                        </ul>
+                      </div>
+                      <!--</div>-->
                   </td>
                 </tr>
               </table>
@@ -122,9 +157,19 @@
         <!--details files row ======================================== -->
 
         <div class="row">
-          <div class="col-md-11">
-            <div style="display: block;">
-              <canvas baseChart width="900" height="500"
+          <div class="col-md-12">
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == 2">
+              <canvas baseChart 
+                      [datasets]="DispersionChartData"
+                      [labels]="lineChartLabels"
+                      [options]="dispersionChartOptions"
+                      [colors]="dispersionChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      ></canvas>
+            </div>
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
+              <canvas baseChart 
                       [datasets]="lineChartData"
                       [labels]="lineChartLabels"
                       [options]="lineChartOptions"
@@ -136,7 +181,15 @@
             </div>
           </div>
         </div>
-
+        <div class="container" *ngIf="indicator.registriesType == 2">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Desviación estándar: {{devStandar}}</h4>
+              <h4>Varianza: {{varianza}}</h4>
+            </div>
+          </div>
+        </div>
+        
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">
@@ -157,7 +210,7 @@
             <!--Begin tab-->
             <!--Tabset removed because I didn't know what to do with him-->
             <!--Registries list and RegistriesType (from indicator) are needed-->
-            <app-indicator-detail-registry [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
+            <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
           </div>
         </div>
       </div>
@@ -168,6 +221,7 @@
 
   <!--MODALS-->
 
+  <!-- Modal Add Registry -->
   <ng-template #addRegistry>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
@@ -179,6 +233,12 @@
       <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
     </div>
   </ng-template>
+
+  <!-- Modal Edit Goal -->
+  <ng-template #editGoalModal>
+    <app-goals-editor [indicator]="indicator" [modalRef]="modalRef"></app-goals-editor>
+  </ng-template>
+
 
   <!--UX-->
 
@@ -201,7 +261,6 @@
 
 </div>
 
-
 <!------------------------------------------------------------------------------------------>
 <!-- OLD DESIGN
 <h1> OLD DESIGN </h1>
@@ -222,23 +281,7 @@
   </div>
 -->
 
-    <ng-template #addRegistry>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
-      </div>
-    </ng-template>
 
-<ng-template #editRegistry>
-  <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
-</ng-template>
-
-  
 
 <ng-template #loading>
   <div id="head-page-section" class="l-grey-bg head-page-section">

@@ -1,20 +1,23 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DecimalPipe } from '@angular/common';
+import { Router } from "@angular/router";
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
 import { Months } from '../../../shared/models/months';
 
-// Service
+// Services
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
 import { IndicatorGroup } from '../../../shared/models/indicatorGroup';
+import { SessionService } from '../../../services/session/session.service';
 
 @Component({
   selector: 'app-indicator-display',
   templateUrl: './indicator-display.component.html',
   styleUrls: ['./indicator-display.component.css']
 })
+
 export class IndicatorDisplayComponent implements OnInit {
   private static ALL_YEARS = 'Todos los años';
   private static ALL_MONTHS = 'Todos los meses';
@@ -39,9 +42,14 @@ export class IndicatorDisplayComponent implements OnInit {
 
   goals$: Observable<number[]>;
 
-  constructor(private service: IndicatorGroupService) {
+  private router: Router;
+
+  constructor(private service: IndicatorGroupService,
+    private sessionStorage: SessionService,
+    router: Router) {
+    this.router = router;
   }
-  
+
   ngOnInit() {
     const currentYear = new Date().getFullYear();
     this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, currentYear);
@@ -51,8 +59,8 @@ export class IndicatorDisplayComponent implements OnInit {
     for (let i = 0; i <= (currentYear - baseYear); i++) {
         this.years[i] = baseYear + i;
     }
-    this.selectedYearText = IndicatorDisplayComponent.YEAR + currentYear; // By default the current year is shown
-    this.selectedYear = currentYear; // The number of the selected year (by default the current year)
+    this.selectedYearText = this.sessionStorage.getYearText(IndicatorDisplayComponent.YEAR + currentYear);
+    this.selectedYear = this.sessionStorage.getYear(currentYear);
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
@@ -60,9 +68,29 @@ export class IndicatorDisplayComponent implements OnInit {
       this.months[i] = i;
     }
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
-    this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // By default ALL_MONTHS is shown
-    this.selectedMonth = -1; // It's not selected a specific month yet
-    this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
+
+    this.selectedMonthText = this.sessionStorage.getMonthText(IndicatorDisplayComponent.ALL_MONTHS);
+    this.selectedMonth = this.sessionStorage.getMonth(-1);
+
+    if (this.selectedYear === -1) {
+      this.isMonthDisabled = false;
+    }
+
+    this.loadDataByFilters();
+  }
+
+  loadDataByFilters() {
+    if (this.isMonthDisabled === true) {
+      if (this.selectedYear === -1) {
+        this.calculateIndicators(IndicatorDisplayComponent.ALL_YEARS, '');
+      }
+      else {
+        this.calculateIndicators(this.selectedYear, '');
+      }
+    }
+    else {
+      this.calculateIndicators('', this.selectedMonthText);
+    }
   }
 
   // Only specify the year or the month, depending on which one is changed, the other value must be an empty string ('')
@@ -75,8 +103,10 @@ export class IndicatorDisplayComponent implements OnInit {
         this.indicatorResults$ = this.service.calculateIndicatorGroup(this.indicatorGroup.indicatorGroupID); // Calculate for all the years
         this.goals$ = this.service.getGoals(this.indicatorGroup.indicatorGroupID);
         this.selectedYearText = IndicatorDisplayComponent.ALL_YEARS; // Change the value shown in the dropdown
+        this.sessionStorage.setYearText(this.selectedYearText);
         this.isMonthDisabled = true;  // Not able to select a month
         this.selectedYear = -1; // Not selected a specific year
+        this.sessionStorage.setYear(this.selectedYear);
       }
       // Selected a specific year
       // tslint:disable-next-line:one-line
@@ -85,11 +115,14 @@ export class IndicatorDisplayComponent implements OnInit {
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, year); // Calculate for the specific year
         this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, year);
         this.selectedYearText = IndicatorDisplayComponent.YEAR + year; // Change the value shown in the dropdown
+        this.sessionStorage.setYearText(this.selectedYearText);
         this.isMonthDisabled = false; // It's possible to select a month
         this.selectedYear = year;
+        this.sessionStorage.setYear(this.selectedYear);
         this.setMonths();
       }
       this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS;
+      this.sessionStorage.setMonthText(this.selectedMonthText);
     }
     // The change is in the month
     // tslint:disable-next-line:one-line
@@ -97,10 +130,12 @@ export class IndicatorDisplayComponent implements OnInit {
       // All the months of the already selected year
       if (month === IndicatorDisplayComponent.ALL_MONTHS) {
         this.selectedMonth = -1; // Not selected a specific month
+        this.sessionStorage.setMonth(this.selectedMonth);
         // tslint:disable-next-line:max-line-length
         this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, this.selectedYear); // Calculate for the already selected year
         this.goals$ = this.service.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
         this.selectedMonthText = IndicatorDisplayComponent.ALL_MONTHS; // Change the value shown in the dropdown
+        this.sessionStorage.setMonthText(this.selectedMonthText);
       }
       // Selected a specific month of the already selected year
       // tslint:disable-next-line:one-line
@@ -111,6 +146,7 @@ export class IndicatorDisplayComponent implements OnInit {
         this.indicatorResults$ = this.service.calculateIndicatorGroupYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
         this.goals$ = this.service.getGoalsYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
         this.selectedMonthText = Months[this.selectedMonth]; // Change the value shown in the dropdown
+        this.sessionStorage.setMonthText(this.selectedMonthText);
       }
     }
   }
@@ -148,5 +184,10 @@ export class IndicatorDisplayComponent implements OnInit {
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
     this.selectedMonth = Months[month];
+    this.sessionStorage.setMonth(this.selectedMonth);
+  }
+
+  gotoIndicator(idIndicatorGroup: number, idIndicator: number) {
+    this.router.navigateByUrl("/indicator/" + idIndicatorGroup + "/" + idIndicator);
   }
 }
