@@ -14,6 +14,7 @@ export class RegistryService {
   private static QUANTITY = 'QuantityRegistry/';
   private static PERCENT = 'PercentRegistry/';
   public static REGISTRIES_API = '/api/Registries/';
+  public static REGISTRIES_EXTERNAL = RegistryService.REGISTRIES_API + 'External';
   public static ADD_FILE_DOCUMENT_METHOD = '/AddFileDocument';
   public static ADD_LINK_DOCUMENT_METHOD = '/AddLinkDocument';
   private static DOCUMENTS = 'Documents/';
@@ -24,6 +25,9 @@ export class RegistryService {
       return this.http.get<Registry>(RegistryService.REGISTRIES_API + registryId);
   }
 
+  getRegistriesExternal(): Observable<Registry[]> {
+    return this.http.get<Registry[]>(RegistryService.REGISTRIES_EXTERNAL);
+  }
 
   addLinkDocument(document: Document, registryId: number) {
     this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId

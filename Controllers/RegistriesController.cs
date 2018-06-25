@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 
@@ -15,6 +18,55 @@ namespace think_agro_metrics.Controllers
     public class RegistriesController : Controller
     {
         private readonly DataContext _context;
+
+        public class QueryInterventionsResult
+        {
+            public InterventionsResult Resultado;
+        }
+
+        public class InterventionsResult
+        {
+            public Intervention[] Resultados;
+            public long CantidadResultados;
+            public long TotalResultados;
+        }
+
+        public class Intervention
+        {
+            public string Nombre;
+            public string Descripcion;
+            public Company ReferenciaEmpresa;
+            public int Estado;
+            public Visit VisitaTecnica;
+            public string FechaCreacion;
+
+        }
+
+        public class Company
+        {
+            public string NombreFantasia;
+        }
+
+        public class Visit
+        {
+            public string HoraInicio;
+            public string HoraFin;
+        }
+
+        public HttpClient _client = new HttpClient();
+        private String GET_INTERVENTIONS_QUERY_URL = "http://proyectos.thinkagro.cl/API/api/Query/Intervenciones";
+        private string _dateFormat = "yyyy-MM-ddTHH:mm:sszzz";
+        private System.Globalization.CultureInfo _cultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+
+
+
+        private Object CreateDataObject(Object data)
+        {
+            return new
+            {
+                Datos = data
+            };
+        }
 
         public RegistriesController(DataContext context)
         {
@@ -46,6 +98,46 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok(registry);
+        }
+
+        // GET: api/Registries/External
+        [HttpGet("External")]
+        public async Task<IActionResult> GetExternalRegistries()
+        {
+            var payload = this.CreateDataObject(new {
+                Orden = "DESC",
+                Pagina = 1,
+                ResultadosPorPagina = 10000000,
+                OrdenarPor = "Nombre",
+                Filtros = "[{\"Campo\": \"Estado\",\"Valor\": \"3\",\"Tipo\": \"MayorIgualQue\"}," +
+                "{\"Campo\": \"Eliminado\",\"Valor\": \"false\",\"Tipo\": \"Igual\"}]"
+            });
+
+            var response = await _client.PostAsync(this.GET_INTERVENTIONS_QUERY_URL,
+                new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
+            string JSONResponse = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest(response);
+            }
+
+            QueryInterventionsResult interventions = JsonConvert.DeserializeObject<QueryInterventionsResult>(JSONResponse);
+
+            Indicator indicatorExternal = await _context.Indicators.SingleAsync((i) => i.RegistriesType == RegistryType.ExternalRegistry);
+
+            List<ExternalRegistry> results = new List<ExternalRegistry>();
+            foreach (Intervention intervention in interventions.Resultado.Resultados){
+                results.Add(new ExternalRegistry {
+                    IndicatorID = indicatorExternal.IndicatorID,
+                    Name = intervention.Nombre,
+                    CompanyName = intervention.ReferenciaEmpresa.NombreFantasia,
+                    Date = DateTime.Parse(intervention.VisitaTecnica.HoraInicio),
+                    DateAdded = DateTime.Parse(intervention.FechaCreacion)                    
+                });
+            }
+
+            return Ok(results);
         }
 
         // PUT: api/Registries/DefaultRegistry/5

@@ -84,17 +84,4 @@ export class IndicatorService {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate/' + year);
   }
 
-  getExternalIndicator( ): Observable<ExternalIndicator>{
-    return this.http.post<ExternalIndicator>('http://proyectos.thinkagro.cl/API/api/Query/Intervensiones', 
-    {
-      'Datos':{
-        'Orden': 'DESC',
-        'Pagina': 1,
-        'ResultadosPorPagina': 12,
-        'OrdenarPor': 'Nombre',
-        'Filtros': '[{ \'Campo\': \'Estado\', \'Valor\': \'3\', \'Tipo\': \'MayorIgualQue\'}]'
-      }
-    }
-  );
-  }
 }
