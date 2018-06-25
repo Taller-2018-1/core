@@ -50,19 +50,22 @@ namespace think_agro_metrics.Models
 					fileName = hash;
 					//link = hash;
 				}
-
 				link = fileName;
 				string fullPath = Path.Combine(newPath, fileName);
-
 				using (var stream = new FileStream(fullPath, FileMode.Create))
 				{
 					file.CopyTo(stream);
 				}
 			}
+
 			var document = new Document();
-			document.Name = name;
 			document.Link = link;
-			document.Extension = "file";
+			int fileExtPos = name.LastIndexOf(".");
+			string ext = name.Substring(fileExtPos);
+			document.Extension = ext;
+			string documentName = name.Substring(0, fileExtPos);
+			document.DocumentName = documentName;
+			document.Name = documentName;
 			return document;
 		}
 	}
