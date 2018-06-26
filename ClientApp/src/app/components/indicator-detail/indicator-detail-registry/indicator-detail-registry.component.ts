@@ -112,15 +112,11 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   goToLink(link: string) {
-    // window.location.pathname = link;
-    const url = 'http://' + link;
-    window.location.href = url;
+    window.location.href = link;
   }
 
   goToLinkBlank(link: string) {
-    // window.location.pathname = link;
-    const url = 'http://' + link;
-    window.open(url, '_blank');
+    window.open(link, '_blank');
   }
 
   download(document: Document) {
