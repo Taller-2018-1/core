@@ -371,6 +371,11 @@ namespace think_agro_metrics.Controllers
                     }                        
                 }                
             }
+            if (!list.Any()) {
+                for (int i = 0; i < 12; i++) {
+                    list.Add(0);
+                }
+            }
 
             // Return the list with the results
             return Ok(list);

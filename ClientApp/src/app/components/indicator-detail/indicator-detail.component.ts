@@ -1,11 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Models
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
+import { RegistryType } from '../../shared/models/registryType';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -51,6 +52,8 @@ export class IndicatorDetailComponent implements OnInit {
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
+
+  public RegistryType = RegistryType;
 
   selectedTypeChart: string;
   typesChart: string[] = [];
@@ -208,6 +211,8 @@ export class IndicatorDetailComponent implements OnInit {
 
   ngOnInit() {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
+    this.updateExternalIndicator();
+
     const currentYear = new Date().getFullYear();
     const baseYear = 2018;
     for (let i = 0; i <= (currentYear - baseYear); i++) {
@@ -527,6 +532,14 @@ export class IndicatorDetailComponent implements OnInit {
     } else { // Specific year and month
       this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
     }
+  }
+
+  updateExternalIndicator() {
+    this.indicator$.subscribe((indicator) => {
+      if (indicator.registriesType === RegistryType.ExternalRegistry) {
+        this.registryService.getRegistriesExternal().subscribe();
+      }
+    });
   }
 
 }

@@ -132,7 +132,11 @@ namespace think_agro_metrics.Controllers
 
             QueryInterventionsResult interventions = JsonConvert.DeserializeObject<QueryInterventionsResult>(JSONResponse);
 
-            Indicator indicatorExternal = await _context.Indicators.SingleAsync((i) => i.RegistriesType == RegistryType.ExternalRegistry);
+            var indicatorExternalQuery = _context.Indicators.Where((i) => i.RegistriesType == RegistryType.ExternalRegistry);
+            
+            Indicator indicatorExternal = await indicatorExternalQuery
+                .Include(x => x.Registries)
+                .SingleAsync();
 
             List<ExternalRegistry> results = new List<ExternalRegistry>();
             foreach (Intervention intervention in interventions.Resultado.Resultados){
@@ -145,10 +149,30 @@ namespace think_agro_metrics.Controllers
                 });
             }
 
-            _context.Registries.UpdateRange(results);
+            foreach (ExternalRegistry registry in results){
+                bool exist = false;
+                foreach (ExternalRegistry indicatorRegistry in indicatorExternal.Registries) {
+                    if (registry.Name == indicatorRegistry.Name && registry.CompanyName == indicatorRegistry.CompanyName
+                        && registry.Date == indicatorRegistry.Date && registry.DateAdded == indicatorRegistry.DateAdded)
+                    {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    _context.Update(registry);
+                }
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok(results);
+            var registriesExternal = await _context.Registries.Where(r => r.IndicatorID == indicatorExternal.IndicatorID).ToListAsync();
+
+            if (!registriesExternal.Any()) {
+                return NoContent();
+            }
+
+            return Ok(registriesExternal);
         }
 
         // PUT: api/Registries/DefaultRegistry/5

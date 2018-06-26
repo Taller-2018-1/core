@@ -195,16 +195,14 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             
-
             // Obtain the Goal
-            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();
+            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleOrDefaultAsync();
 
-            // Fails if not found
+            // Return 0 if not found
             if (goal == null) 
             {
-                return NotFound();
+                return Ok(0);
             }
 
             return Ok(goal.Value);
