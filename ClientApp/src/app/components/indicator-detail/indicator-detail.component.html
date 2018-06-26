@@ -236,7 +236,7 @@
 
   <!-- Modal Edit Goal -->
   <ng-template #editGoalModal>
-    <app-goals-editor [indicator]="indicator" [modalRef]="modalRef"></app-goals-editor>
+    <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateGoal($event)" [modalRef]="modalRef"></app-goals-editor>
   </ng-template>
 
 

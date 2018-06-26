@@ -196,8 +196,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
+            
 
             // Obtain the Goal
             var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();

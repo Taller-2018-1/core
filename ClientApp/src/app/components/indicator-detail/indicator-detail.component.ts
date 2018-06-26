@@ -516,12 +516,17 @@ export class IndicatorDetailComponent implements OnInit {
 
       this.devStandar = Number(dev.toFixed(2));
     }
-    
-    
+  }
 
-
-    
-    
+  // Update the goals depending the already selected filters
+  updateGoal(event) {
+    if (this.selectedYear === -1) { // All years
+      this.goal$ = this.service.getGoal(this.idIndicator);
+    } else if (this.selectedMonth === -1) { // Specific year
+      this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+    } else { // Specific year and month
+      this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
+    }
   }
 
 }

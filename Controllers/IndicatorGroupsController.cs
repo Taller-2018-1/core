@@ -336,7 +336,7 @@ namespace think_agro_metrics.Controllers
             return Ok(list);
         }
 
-        // GET: api/IndicatorGroups/Goals/1/2018 (group = 1, year = 2018)
+        // GET: api/IndicatorGroups/Goals/1/2018/0 (group = 1, year = 2018, month = January)
         [Route("Goals/{id:long}/{year:int}/{month:int}")]
         public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
@@ -345,9 +345,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
-
+            
             // Load from the DB the Indicators 
             var indicators = await _context.Indicators
                 .Where(i => i.IndicatorGroupID == id)
