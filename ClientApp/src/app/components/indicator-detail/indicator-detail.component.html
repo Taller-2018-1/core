@@ -15,7 +15,7 @@
           <div class="col-sm-8">
             <div class="head-title">
               <h5>{{selectedYearText}}</h5>
-              <h4 *ngIf="indicatorGroupName$ | async as indicatorGroup">{{indicatorGroup}}</h4>
+              <h4 *ngIf="indicatorGroupName$ | async as indicatorGroupName">{{ indicatorGroupName }}</h4>
               <h1>
                 {{ indicator.name }}
               </h1>
@@ -56,8 +56,8 @@
   <section>
     <div>
       <ol class="breadcrumb shortcode">
-        <li><a href="#">Modificar Meta</a></li>
-        <li><a href="#">Modificar Indicador</a></li>
+        <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
+        <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
       </ol>
     </div>
   </section>
@@ -113,13 +113,12 @@
                     <!--</div>-->
 
                   </td>
+
+                  <!-- Graph Type Dropdown (no PercentRegistry) -->
                   <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-
-                      <!--Dropdown Month Filter-->
-                      <!--<div class="col-md-6">-->
-                      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                      <div class="btn-group" dropdown>
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
                           {{ selectedTypeChart }} <span class="caret"></span>
                         </button>
@@ -130,13 +129,12 @@
                       </div>
                       <!--</div>-->
                   </td>
+
+                  <!-- Graph Type Dropdown (PercentRegistry) -->
                   <td *ngIf="indicator.registriesType == 2" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-
-                      <!--Dropdown Month Filter-->
-                      <!--<div class="col-md-6">-->
-                      <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                      <div class="btn-group" dropdown>
                         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
                           Gráfico de dispersión <span class="caret"></span>
                         </button>
@@ -164,12 +162,11 @@
               <canvas baseChart 
                       [datasets]="DispersionChartData"
                       [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
+                      [options]="dispersionChartOptions"
+                      [colors]="dispersionChartColors"
                       [legend]="lineChartLegend"
                       [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
+                      ></canvas>
             </div>
             <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
               <canvas baseChart 
@@ -184,7 +181,15 @@
             </div>
           </div>
         </div>
-
+        <div class="container" *ngIf="indicator.registriesType == 2">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Desviación estándar: {{devStandar}}</h4>
+              <h4>Varianza: {{varianza}}</h4>
+            </div>
+          </div>
+        </div>
+        
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">
@@ -216,6 +221,7 @@
 
   <!--MODALS-->
 
+  <!-- Modal Add Registry -->
   <ng-template #addRegistry>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
@@ -227,6 +233,12 @@
       <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
     </div>
   </ng-template>
+
+  <!-- Modal Edit Goal -->
+  <ng-template #editGoalModal>
+    <app-goals-editor [indicator]="indicator" [modalRef]="modalRef"></app-goals-editor>
+  </ng-template>
+
 
   <!--UX-->
 
@@ -269,27 +281,7 @@
   </div>
 -->
 
-<ng-template #addRegistry>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Ingrese un Nuevo Registro</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
-  </div>
-</ng-template>
 
-<ng-template #editRegistry>
-  <app-registry-editor [registry]="registry" [registriesType]="registriesType" [editModalRef]="editModalRef" #editRegistry></app-registry-editor>
-</ng-template>
-
-<ng-template #editDocument>
-  <app-document-editor [document]="document" [editModalRef]="editModalRef" #editDocument></app-document-editor>
-</ng-template>
-
-  
 
 <ng-template #loading>
   <div id="head-page-section" class="l-grey-bg head-page-section">

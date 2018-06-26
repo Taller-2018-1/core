@@ -36,9 +36,11 @@
     "jspdf": "^1.4.1",
     "ng-bootstrap": "^1.6.3",
     "ng2-charts": "^1.6.0",
+    "ng2-pdf-viewer": "^5.0.1",
     "ngx-bootstrap": "2.0.4",
     "ngx-webstorage-service": "^3.1.0",
     "rxjs": "^5.5.6",
+    "sweetalert2": "^7.23.0",
     "xlsx": "^0.13.0",
     "zone.js": "^0.8.19"
   },
