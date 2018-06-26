@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DinkToPdf;
@@ -143,6 +144,9 @@ namespace think_agro_metrics.Controllers
                     DateAdded = DateTime.Parse(intervention.FechaCreacion)                    
                 });
             }
+
+            _context.Registries.UpdateRange(results);
+            await _context.SaveChangesAsync();
 
             return Ok(results);
         }
