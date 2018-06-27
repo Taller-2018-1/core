@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -25,17 +25,21 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { IndicatorService } from './services/indicator/indicator.service';
 import { IndicatorGroupService } from './services/indicator-group/indicator-group.service';
 import { RegistryEditorComponent } from './components/indicator-detail/registry-editor/registry-editor.component';
+import { GoalsEditorComponent } from './components/indicator-detail/goals-editor/goals-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
 import { WelcomeComponent } from './components/welcome-component/welcome-component.component';
+import { ReportgeneratorComponent } from './components/result-home/reportgenerator/reportgenerator.component';
 import { FileService } from './services/file/file.service';
 import { DocumentEditorComponent } from './components/indicator-detail/document-editor/document-editor.component';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
+import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -55,8 +59,11 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     IndicatorDetailRegistryComponent,
     ResultHomeComponent,
     WelcomeComponent,
+    ReportgeneratorComponent,
     DocumentEditorComponent,
     NavigationButtonsComponent,
+    GoalsEditorComponent,
+    DocumentPreviewComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -65,12 +72,14 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
     HttpClientModule,
     ModalModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
     ChartsModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
     StorageServiceModule ,
+    PdfViewerModule,
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },

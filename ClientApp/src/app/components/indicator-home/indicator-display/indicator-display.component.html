@@ -6,6 +6,7 @@
       </div>
 
       <!--Dropdown Filters-->
+
       <div class="row">
         <!--Dropdown Year Filter-->
         <div class="col-md-6">
@@ -13,7 +14,8 @@
           <br>
           <div class="btn-group" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedYearText }} <span class="caret"></span>
+              {{ selectedYearText }}
+              <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -22,13 +24,15 @@
             </ul>
           </div>
         </div>
+
         <!--Dropdown Month Filter-->
         <div class="col-md-6">
-          Seleccione el mes a calcular:
+          Seleccione Filtro Mensual, Trimestral o Todos Los Meses
           <br>
           <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedMonthText }} <span class="caret"></span>
+              {{ selectedMonthText }}
+              <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -38,7 +42,6 @@
           </div>
         </div>
       </div>
-
 
       <!-- end col-md-12 -->
     </div>
@@ -87,10 +90,10 @@
     </div>
     <!-- end statistic-section -->
   </section>
-    <!-- End statistic section -->
+  <!-- End statistic section -->
 </div>
 
 
 <ng-template #loading>
-    Cargando...
+  Cargando...
 </ng-template>

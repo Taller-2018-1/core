@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +20,13 @@ namespace think_agro_metrics.Controllers
     {
         private readonly DataContext _context;
         private IHostingEnvironment _hostingEnvironment;
+		private IConverter _converter;
 
-        public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment)
+        public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment, IConverter converter)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+			_converter = converter;
         }
 
         // GET: api/Registries
@@ -165,8 +171,19 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+                
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
-            
+
             indicator.Registries.Add(registry);
 
             _context.Entry(indicator).State = EntityState.Modified;
@@ -187,7 +204,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
          private bool IndicatorExists(long id)
         {
@@ -203,6 +220,17 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
@@ -225,7 +253,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
@@ -238,6 +266,17 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Don't add the registry if it has the same name as other registry on this indicator
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicatorId).ToListAsync();
+            foreach (Registry r in registries)
+            {
+
+                if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
+            }
+
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
@@ -260,7 +299,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return Ok();
+            return Json(true);
         }
 
 
@@ -341,15 +380,24 @@ namespace think_agro_metrics.Controllers
 
 			try
 			{
+				var linkDocumentFactory = new LinkDocumentFactory(document, _hostingEnvironment, _converter);
+
+				var backup = linkDocumentFactory.CreateDocument();
+
 				Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
 
 				registry.Documents.Add(document);
+				registry.Documents.Add(backup);
 
 				_context.Entry(registry).State = EntityState.Modified;
 				
 				await _context.SaveChangesAsync();
 
-				var response = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+				var response = new List<Document>();
+				var createdDocument = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == document.DocumentID);
+				var createdBackup = await _context.Documents.SingleOrDefaultAsync(m => m.DocumentID == backup.DocumentID);
+				response.Add(createdDocument);
+				response.Add(createdBackup);
 
 				return Ok(response);
 			}
@@ -364,6 +412,10 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
+			catch (Exception e)
+			{
+				throw e;
+			}
         }
 
         // ADD FileDocument: api/Registries/5/AddFileDocument
@@ -396,6 +448,7 @@ namespace think_agro_metrics.Controllers
 				throw ex;
             }
         }
-                
+                
+
     }
 }

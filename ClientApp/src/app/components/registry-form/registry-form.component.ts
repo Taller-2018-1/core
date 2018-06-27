@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
+import { ActivatedRoute } from '@angular/router';
+
+import swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registry-form',
   templateUrl: './registry-form.component.html',
@@ -23,10 +27,16 @@ export class RegistryFormComponent implements OnInit {
   @Input() idIndicator;
   @Input() indicator: Indicator;
   onSubmit() {
-    // this.IndicatorService.addRegistry(this.model,this.idIndicator); //Reemplazar por ID
-    this.service.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]);
-    this.indicator.registries.push(this.model);
-    // this.router.navigateByUrl('/indicator/' + this.idIndicator);
+    let nameVerification = false;
+
+    this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
+      nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
+      if (nameVerification) {
+        this.indicator.registries.push(this.model);
+      } else {
+        this.duplicateNameAlert();
+      }
+    });
   }
 
   closeModal() {
@@ -43,4 +53,18 @@ export class RegistryFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  private duplicateNameAlert() {
+    swal({
+      title: 'Error al agregar el registro',
+      // text: 'Ya existe un registro con el nombre ' + this.model.name,
+      html: '<h6> Ya existe un registro con el nombre "' + this.model.name + '"</h6>' +
+      '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'error',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
+  }
 }
