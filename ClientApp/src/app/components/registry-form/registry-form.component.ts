@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
@@ -26,6 +27,7 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
+
   onSubmit() {
     let nameVerification = false;
 
@@ -44,12 +46,17 @@ export class RegistryFormComponent implements OnInit {
     this.modalRef = null;
   }
 
-  constructor(router: Router, private service: IndicatorService, private modalService: BsModalService) {
+  constructor(router: Router, private indicatorService: IndicatorService, private modalService: BsModalService) {
     this.model = new Registry();
     this.router = router;
-
   }
 
+  private getIndicator(indicatorId: number) {
+    this.indicatorService.getIndicator(indicatorId).subscribe(
+      data => { this.indicator = data; },
+      err => console.error(err)
+    );
+  }
   ngOnInit() {
   }
 
