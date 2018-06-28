@@ -7,6 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { Document } from '../../../shared/models/document';
 import { equal, deepEqual, notDeepEqual } from 'assert';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { detachEmbeddedView } from '@angular/core/src/view';
 
 @Component({
   selector: 'app-registry-editor',
@@ -28,12 +30,20 @@ export class RegistryEditorComponent implements OnInit {
   @Input()
   public editModalRef: BsModalRef;
 
+  minDate = new Date(2018, 0, 1); // 1 January 2018
+  maxDate = new Date(); // Today
+
   public bsValue;
 
-  constructor(private service: RegistryService) {  }
+  constructor(private service: RegistryService,
+    private localeService: BsLocaleService,
+    private datepickerConfig: BsDatepickerConfig) {  }
 
   ngOnInit() {
+    this.localeService.use('es'); // Datepicker with spanish locale
+    this.datepickerConfig.showWeekNumbers = false; // Don't show the week numbers in the datepicker
     this.newRegistry = JSON.parse(JSON.stringify(this.registry)); // To create a clone of the selected registry (this.registry)
+    this.fixDate();
   }
 
   editRegistry() {
@@ -51,6 +61,15 @@ export class RegistryEditorComponent implements OnInit {
     }
     this.editModalRef.hide();
     // this.registry = null;
-    this.editModalRef = null;
+    // this.editModalRef = null;
+    
+    this.newRegistry = JSON.parse(JSON.stringify(this.registry)); // To create a clone of the selected registry (this.registry)
+    this.fixDate();
+  }
+
+  // Fix to convert the corrupted date (string for an unknown reason) to Date object
+  fixDate() {
+    const date = this.newRegistry.date.toString();
+    this.newRegistry.date = new Date(+date.substr(0, 4), +date.substr(5, 2) - 1, +date.substr(8, 2));
   }
 }

@@ -56,9 +56,13 @@
   <section>
     <div>
       <ol class="breadcrumb shortcode">
-        <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
         <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
+          <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
           <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
+        </div>
+        
+        <div *ngIf="indicator.registriesType == RegistryType.ExternalRegistry">
+            <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
         </div>        
       </ol>
     </div>
