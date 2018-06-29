@@ -59,6 +59,7 @@ export class RegistryFormComponent implements OnInit {
         this.duplicateNameAlert();
       }
     });
+    this.closeModal();
   }
 
   closeModal() {

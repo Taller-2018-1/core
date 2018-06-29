@@ -63,8 +63,6 @@ export class RegistryEditorComponent implements OnInit {
     // this.registry = null;
     // this.editModalRef = null;
     
-    this.newRegistry = JSON.parse(JSON.stringify(this.registry)); // To create a clone of the selected registry (this.registry)
-    this.fixDate();
   }
 
   // Fix to convert the corrupted date (string for an unknown reason) to Date object
