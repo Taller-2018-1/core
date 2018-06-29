@@ -90,11 +90,11 @@ namespace think_agro_metrics.Data
 
         private static Indicator[] CreateIndicatorsGroup1(DataContext context, long groupID)
         {
-            var indicator1a = new Indicator { Name = "Cantidad de empresas con aumento de inversión", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "1a", IndicatorGroupID = groupID };
+            var indicator1a = new Indicator { Name = "Cantidad de empresas con aumento de inversión", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido un aumento en la inversión.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator1a);
             context.SaveChanges();
 
-            var indicator1b = new Indicator { Name = "Porcentaje de aumento de inversión de los clientes asesorados", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "1b", IndicatorGroupID = groupID };
+            var indicator1b = new Indicator { Name = "Porcentaje de aumento de inversión de los clientes asesorados", RegistriesName = "% de aumento de inversión", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido un aumento en la inversión. En el valor de registro se debe especificar el porcentaje de aumento.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator1b);
             context.SaveChanges();
 
@@ -105,11 +105,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup2(DataContext context, long groupID)
         {
-            var indicator2a = new Indicator { Name = "Cantidad empresas asesoradas con nuevos empleos formales", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "2a", IndicatorGroupID = groupID };
+            var indicator2a = new Indicator { Name = "Cantidad empresas asesoradas con nuevos empleos formales", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido nuevos empleos formales.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator2a);
             context.SaveChanges();
 
-            var indicator2b = new Indicator { Name = "Porcentaje aumento empleos de los clientes asesorados/as que declararon nuevos empleos", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "2b", IndicatorGroupID = groupID };
+            var indicator2b = new Indicator { Name = "Porcentaje aumento empleos de los clientes asesorados/as que declararon nuevos empleos", RegistriesName = "% de aumento de empleos", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido nuevos empleos formales. En el valor de registro se debe especificar el porcentaje de aumento de empleos.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator2b);
             context.SaveChanges();
 
@@ -120,11 +120,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup3(DataContext context, long groupID)
         {
-            var indicator3a = new Indicator { Name = "Cantiadad empresas con disminución de costos", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "3a", IndicatorGroupID = groupID };
+            var indicator3a = new Indicator { Name = "Cantidad empresas con disminución de costos", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido disminución de costos.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator3a);
             context.SaveChanges();
 
-            var indicator3b = new Indicator { Name = "Porcentaje de disminución de costos de los clientes asesorados/as", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "3b", IndicatorGroupID = groupID };
+            var indicator3b = new Indicator { Name = "Porcentaje de disminución de costos de los clientes asesorados/as", RegistriesName = "% de disminución de costos", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido disminución de costos. En el valor de registro se debe especificar el porcentaje de disminución de los costos.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator3b);
             context.SaveChanges();
 
@@ -135,11 +135,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup4(DataContext context, long groupID)
         {
-            var indicator4a = new Indicator { Name = "Cantidad empresas con aumento de ventas", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "4a", IndicatorGroupID = groupID };
+            var indicator4a = new Indicator { Name = "Cantidad empresas con aumento de ventas", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido aumento de ventas.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator4a);
             context.SaveChanges();
 
-            var indicator4b = new Indicator { Name = "Porcentaje de aumento de ventas de los clientes asesorados/as que declararon ventas", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "4b", IndicatorGroupID = groupID };
+            var indicator4b = new Indicator { Name = "Porcentaje de aumento de ventas de los clientes asesorados/as que declararon ventas", RegistriesName = "% de aumento de ventas", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido aumento de ventas. En el valor de registro se debe especificar el porcentaje de aumento de las ventas.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator4b);
             context.SaveChanges();
 
@@ -150,11 +150,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup5(DataContext context, long groupID)
         {
-            var indicator5a = new Indicator { Name = "Cantidad de empresas con aumentos de productividad", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "5a", IndicatorGroupID = groupID };
+            var indicator5a = new Indicator { Name = "Cantidad de empresas con aumentos de productividad", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido aumento en la productividad.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator5a);
             context.SaveChanges();
 
-            var indicator5b = new Indicator { Name = "Porcentaje de aumento de productividad de los clientes asesorados/as", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "5b", IndicatorGroupID = groupID };
+            var indicator5b = new Indicator { Name = "Porcentaje de aumento de productividad de los clientes asesorados/as", RegistriesName = "% de aumento de productividad", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que ha tenido aumento de productividad. En el valor de registro se debe especificar el porcentaje de aumento de la productividad.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator5b);
             context.SaveChanges();
 
@@ -165,15 +165,15 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup6(DataContext context, long groupID)
         {
-            var indicator6a = new Indicator { Name = "Porcentaje de Satisfacción de empresas frutícolas", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "6a", IndicatorGroupID = groupID };
+            var indicator6a = new Indicator { Name = "Porcentaje de satisfacción de empresas frutícolas", RegistriesName = "% de satisfacción", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa frutícola. En el valor de registro se debe especificar el porcentaje de satisfacción de la empresa.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator6a);
             context.SaveChanges();
 
-            var indicator6b = new Indicator { Name = "Porcentaje de Satisfacción en diagnósticos", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "6b", IndicatorGroupID = groupID };
+            var indicator6b = new Indicator { Name = "Porcentaje de satisfacción en diagnósticos", RegistriesName = "% de satisfacción", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa diagnosticada. En el valor de registro se debe especificar el porcentaje de satisfacción de la empresa en el diagnóstico.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator6b);
             context.SaveChanges();
 
-            var indicator6c = new Indicator { Name = "Porcentaje de Satisfacción de empresas agroindustriales", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "6c", IndicatorGroupID = groupID };
+            var indicator6c = new Indicator { Name = "Porcentaje de satisfacción de empresas agroindustriales", RegistriesName = "% de satisfacción", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa agroindustrial. En el valor de registro se debe especificar el porcentaje de satisfacción de la empresa.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator6c);
             context.SaveChanges();
 
@@ -184,43 +184,43 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup7(DataContext context, long groupID)
         {
-            var indicator7a = new Indicator{Name = "Cantidad de proyectos apalancados", RegistriesName = "Proyecto", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "7a", IndicatorGroupID = groupID };
+            var indicator7a = new Indicator{Name = "Cantidad de proyectos apalancados", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del proyecto apalancado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7a);
             context.SaveChanges();
 
-            var indicator7b = new Indicator{Name = "Recursos directos apalancados", RegistriesName = "Proyecto", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7b", IndicatorGroupID = groupID };
+            var indicator7b = new Indicator{Name = "Recursos directos apalancados", RegistriesName = "recursos apalancados ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del proyecto apalancado. En el valor de registro se debe especificar el monto de recursos apalancados de manera directa.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7b);
             context.SaveChanges();
 
-            var indicator7c = new Indicator{Name = "Recursos indirectos apalancados", RegistriesName = "Proyecto", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7c", IndicatorGroupID = groupID };
+            var indicator7c = new Indicator{Name = "Recursos indirectos apalancados", RegistriesName = "recursos apalancados ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del proyecto apalancado. En el valor de registro se debe especificar el monto de recursos apalancados de manera indirecta.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7c);
             context.SaveChanges();
             
-            var indicator7d = new Indicator{Name = "Porcentaje Subsidio por empresa.", RegistriesName = "Empresa", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "7d", IndicatorGroupID = groupID };
+            var indicator7d = new Indicator{Name = "Porcentaje subsidio por empresa.", RegistriesName = "% de subsidio", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa. En el valor de registro se debe especificar el porcentaje de subsidio de dicha empresa.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7d);
             context.SaveChanges();
 
-            var indicator7e = new Indicator{Name = "Ingresos por servicios Agroindustriales", RegistriesName = "Servicio", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7e", IndicatorGroupID = groupID };
+            var indicator7e = new Indicator{Name = "Ingresos por servicios Agroindustriales", RegistriesName = "de ingreso ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del servicio agroindustrial. En el valor de registro se debe especificar el monto de los ingresos por conceptos de ese servicio.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7e);
             context.SaveChanges();
 
-            var indicator7f = new Indicator{Name = "Ingresos por servicios Frutícolas", RegistriesName = "Servicio", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7f", IndicatorGroupID = groupID };
+            var indicator7f = new Indicator{Name = "Ingresos por servicios Frutícolas", RegistriesName = "de ingreso ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del servicio frutícola. En el valor de registro se debe especificar el monto de los ingresos por conceptos de ese servicio.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7f);
             context.SaveChanges();
 
-            var indicator7g = new Indicator{Name = "Ingresos por membresías", RegistriesName = "Membresia", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7g", IndicatorGroupID = groupID };
+            var indicator7g = new Indicator{Name = "Ingresos por membresías", RegistriesName = "de ingreso ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre o denominación de la membresía. En el valor de registro se debe especificar el mondo de ingresos por concepto de esta membresía.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7g);
             context.SaveChanges();
 
-            var indicator7h = new Indicator{Name = "Cantidad de membresias", RegistriesName = "Membresia", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "7h", IndicatorGroupID = groupID };
+            var indicator7h = new Indicator{Name = "Cantidad de membresías", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre o denominación de la membresía.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7h);
             context.SaveChanges();
 
-            var indicator7i = new Indicator{Name = "Ingresos por capacitaciones", RegistriesName = "Capacitacion", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7i", IndicatorGroupID = groupID };
+            var indicator7i = new Indicator{Name = "Ingresos por capacitaciones", RegistriesName = "de ingreso ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la capacitación. En el valor de registro se debe especificar el monto de ingresos por conceptos de esa capacitación", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7i);
             context.SaveChanges();
 
-            var indicator7j = new Indicator{Name = "Otros ingresos", RegistriesName = "Actividad", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "7j", IndicatorGroupID = groupID };
+            var indicator7j = new Indicator{Name = "Otros ingresos", RegistriesName = "de ingreso ($)", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la actividad que generó ingresos. En el valor de registro se debe especificar el monto de ingresos por concepto de esa actividad.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator7j);
             context.SaveChanges();
 
@@ -231,15 +231,15 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup8(DataContext context, long groupID)
         {
-            var indicator8a = new Indicator { Name = "Cantidad de procedimientos estandarizados", RegistriesName = "Proceso", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "8a", IndicatorGroupID = groupID };
+            var indicator8a = new Indicator { Name = "Cantidad de procedimientos estandarizados", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del procedimiento estandarizado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator8a);
             context.SaveChanges();
 
-            var indicator8b = new Indicator { Name = "Cantidad de mejoras a los procesos realizados", RegistriesName = "Mejora", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "8b", IndicatorGroupID = groupID };
+            var indicator8b = new Indicator { Name = "Cantidad de mejoras a los procesos realizados", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del proceso de mejora.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator8b);
             context.SaveChanges();
 
-            var indicator8c = new Indicator { Name = "Porcentaje de satisfacción del equipo extensionista en procesos internos", RegistriesName = "Extensionista", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "8c", IndicatorGroupID = groupID };
+            var indicator8c = new Indicator { Name = "Porcentaje de satisfacción del equipo extensionista en procesos internos", RegistriesName = "% de satisfacción", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del extensionista. En el valor de registro se debe especificar el porcentaje de satisfacción de dicho extensionista.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator8c);
             context.SaveChanges();
 
@@ -250,34 +250,35 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup9(DataContext context, long groupID)
         {
-            var indicator9a = new Indicator { Name = "Cantidad diagnósticos realizados a Pymes", RegistriesName = "Empresa", RegistriesType = RegistryType.ExternalRegistry, RegistriesDescription = "9a", IndicatorGroupID = groupID };
+            var indicator9a = new Indicator { Name = "Cantidad diagnósticos realizados a Pymes", RegistriesName = "", RegistriesType = RegistryType.ExternalRegistry, RegistriesDescription = "", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9a);
             context.SaveChanges();
 
-            var indicator9c = new Indicator { Name = "Cantidad de diagnósticos entregados en plazo estimado", RegistriesName = "Diagnostico", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9c", IndicatorGroupID = groupID };
+            var indicator9c = new Indicator { Name = "Cantidad de diagnósticos entregados en plazo estimado", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del diagnóstico entregado en el plazo estimado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9c);
             context.SaveChanges();
 
-            var indicator9d = new Indicator { Name = "Cantidad de diagnósticos entregados fuera de plazo estimado", RegistriesName = "Diagnostico", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9d", IndicatorGroupID = groupID };
+            var indicator9d = new Indicator { Name = "Cantidad de diagnósticos entregados fuera de plazo estimado", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del diagnóstico entregado fuera del plazo estimado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9d);
             context.SaveChanges();
 
-            var indicator9e = new Indicator { Name = "Cantidad de propuestas de mejora en plazo estimado", RegistriesName = "Propuesta", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9e", IndicatorGroupID = groupID };
+            var indicator9e = new Indicator { Name = "Cantidad de propuestas de mejora en plazo estimado", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la propuesta entregada en el plazo estimado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9e);
             context.SaveChanges();
 
-            var indicator9f = new Indicator { Name = "Cantidad de propuestas de mejora fuera de plazo estimado", RegistriesName = "Propuesta", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9f", IndicatorGroupID = groupID };
+            var indicator9f = new Indicator { Name = "Cantidad de propuestas de mejora fuera de plazo estimado", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la propuesta entregada fuerza del plazo estimado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9f);
             context.SaveChanges();
 
-            var indicator9g = new Indicator { Name = "Cantidad de empresas intervenidas", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9g", IndicatorGroupID = groupID };
+            var indicator9g = new Indicator { Name = "Cantidad de empresas intervenidas", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa intervenida.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9g);
             context.SaveChanges();
 
-            var indicator9h = new Indicator { Name = "Cantidad de empresas asesoradas individualmente o en proceso de asesoría.", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9h", IndicatorGroupID = groupID };
+            var indicator9h = new Indicator { Name = "Cantidad de empresas asesoradas individualmente o en proceso de asesoría.", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa asesorada o en proceso de asesoría.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9h);
             context.SaveChanges();
 
+            /*
             var indicator9i = new Indicator { Name = "Porcentaje de intervenciones efectivamente realizadas", RegistriesName = "Registro", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "9i", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9i);
             context.SaveChanges();
@@ -285,47 +286,48 @@ namespace think_agro_metrics.Data
             var indicator9j = new Indicator { Name = "Cobertura territorial", RegistriesName = "Registro", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "9j", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9j);
             context.SaveChanges();
+            */
 
-            var indicator9k = new Indicator { Name = "Cantidad de visitas a empresas", RegistriesName = "Diagnostico", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "9k", IndicatorGroupID = groupID };
+            var indicator9k = new Indicator { Name = "Cantidad de visitas a empresas", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa visitada.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9k);
             context.SaveChanges();
 
-            var indicator9l = new Indicator { Name = "Cantidad de servicios que empresas demandan", RegistriesName = "Empresa", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "9l", IndicatorGroupID = groupID };
+            var indicator9l = new Indicator { Name = "Cantidad de servicios que empresas demandan", RegistriesName = "servicios demandados", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa que demanda servicios. En el valor de registro se debe especificar la cantidad de servicios demandados por esa empresa.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator9l);
             context.SaveChanges();
 
             var indicators9 = new Indicator[] {
-                indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h, indicator9i, indicator9j, indicator9k, indicator9l};
+                indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h,/* indicator9i, indicator9j,*/ indicator9k, indicator9l};
             
             return indicators9;
         }
         private static Indicator[] CreateIndicatorsGroup10(DataContext context, long groupID)
         {
-            var indicator10a = new Indicator{Name = "Cantidad de Nuevas entidades internacionales vinculadas al CET", RegistriesName = "Entidad", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10a", IndicatorGroupID = groupID };
+            var indicator10a = new Indicator{Name = "Cantidad de Nuevas entidades internacionales vinculadas al CET", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la entidad nacional vinculada al CET.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10a);
             context.SaveChanges();
 
-            var indicator10b = new Indicator{Name = "Cantidad de Nuevas entidades nacionales vinculadas al CET", RegistriesName = "Entidad", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10b", IndicatorGroupID = groupID };
+            var indicator10b = new Indicator{Name = "Cantidad de Nuevas entidades nacionales vinculadas al CET", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la entidad internacional vinculada al CET.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10b);
             context.SaveChanges();
 
-            var indicator10c = new Indicator{Name = "Cantidad empresas participantes en actividades de capacitación asociativas", RegistriesName = "Actividad", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "10c", IndicatorGroupID = groupID };
+            var indicator10c = new Indicator{Name = "Cantidad empresas participantes en actividades de capacitación asociativas", RegistriesName = "empresas participantes", RegistriesType = RegistryType.QuantityRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la actividad de capacitación. En el valor de registro se debe especificar el número de empresas participantes en dicha actividad.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10c);
             context.SaveChanges();
 
-            var indicator10d = new Indicator{Name = "Cantidad de actividades de difusión en la que el CET participa", RegistriesName = "Actividad", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10d", IndicatorGroupID = groupID };
+            var indicator10d = new Indicator{Name = "Cantidad de actividades de difusión en la que el CET participa", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la actividad de difusión.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10d);
             context.SaveChanges();
 
-            var indicator10e = new Indicator{Name = "Cantidad Apariciones en prensa digital y escrita", RegistriesName = "Aparicion", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10e", IndicatorGroupID = groupID };
+            var indicator10e = new Indicator{Name = "Cantidad Apariciones en prensa digital y escrita", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar se debe ingresar el nombre de la aparición en la prensa digital. Como documentos también es posible colocar un enlace a un sitio web.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10e);
             context.SaveChanges();
 
-            var indicator10f = new Indicator{Name = "Cantidad de publicaciones en redes sociales", RegistriesName = "Aparicion", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10f", IndicatorGroupID = groupID };
+            var indicator10f = new Indicator{Name = "Cantidad de publicaciones en redes sociales", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la aparición en la red social. Como documentos también es posible colocar un enlace a un sitio web.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10f);
             context.SaveChanges();
 
-            var indicator10g = new Indicator{Name = "Cantidad de empresas contactadas por medio plan comunicacional", RegistriesName = "Empresa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "10g", IndicatorGroupID = groupID };
+            var indicator10g = new Indicator{Name = "Cantidad de empresas contactadas por medio plan comunicacional", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar nombre de empresa contactada por plan comunicacional.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator10g);
             context.SaveChanges();
             
@@ -336,11 +338,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup11(DataContext context, long groupID)
         {
-            var indicator11a = new Indicator{Name = "Cantidad de académicos que participan en actividades del CET", RegistriesName = "Academico", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "11a", IndicatorGroupID = groupID };
+            var indicator11a = new Indicator{Name = "Cantidad de académicos que participan en actividades del CET", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del académico que participa en actividades del CET.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator11a);
             context.SaveChanges();
 
-            var indicator11b = new Indicator{Name = "Cantidad de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET", RegistriesName = "Estudiante", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "11b", IndicatorGroupID = groupID };
+            var indicator11b = new Indicator{Name = "Cantidad de estudiantes que realizan sus prácticas, tesis, proyectos de mejoramiento, memoria u otra actividad afín al CET", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del estudiante que realiza una actividad relacionada al CET.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator11b);
             context.SaveChanges();
 
@@ -351,7 +353,7 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup12(DataContext context, long groupID)
         {
-            var indicator12a = new Indicator{Name = "Porcentaje de cumplimiento del presupuesto", RegistriesName = "Registro", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "12a", IndicatorGroupID = groupID };
+            var indicator12a = new Indicator{Name = "Porcentaje de cumplimiento del presupuesto", RegistriesName = "% de cumplimiento del presupuesto", RegistriesType = RegistryType.PercentRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar un nombre cualquiera para mantener el presupuesto. En el valor de registro se debe especificar el porcentaje de cumplimiento del presupuesto. (Este porcentaje debe ser manejado de forma externa).", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator12a);
             context.SaveChanges();
 
@@ -362,11 +364,11 @@ namespace think_agro_metrics.Data
         }
         private static Indicator[] CreateIndicatorsGroup13(DataContext context, long groupID)
         {
-            var indicator13a = new Indicator { Name = "Cantidad de programas de formación implementados", RegistriesName = "Programa", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "13a", IndicatorGroupID = groupID };
+            var indicator13a = new Indicator { Name = "Cantidad de programas de formación implementados", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del programa implementado.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator13a);
             context.SaveChanges();
 
-            var indicator13b = new Indicator { Name = "Cantidad de extensionistas y profesionales del Centro formados", RegistriesName = "Profesional", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "13b", IndicatorGroupID = groupID };
+            var indicator13b = new Indicator { Name = "Cantidad de extensionistas y profesionales del Centro formados", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre del extensionista o profesional.", IndicatorGroupID = groupID };
             context.Indicators.Add(indicator13b);
             context.SaveChanges();
 
