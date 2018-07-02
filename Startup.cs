@@ -7,6 +7,8 @@ using AspNetCore.RouteAnalyzer;
 using System.Diagnostics;
 using think_agro_metrics.Data;
 using Microsoft.EntityFrameworkCore;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace ThinkAgroMetrics
 {
@@ -41,7 +43,9 @@ namespace ThinkAgroMetrics
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-        }
+
+			services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

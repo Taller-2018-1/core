@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Registry } from '../../shared/models/registry';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, retry } from 'rxjs/operators';
 
+// Angular models from shared
+import { Registry } from '../../shared/models/registry';
 import { Document } from '../../shared/models/document';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class RegistryService {
   private static QUANTITY = 'QuantityRegistry/';
   private static PERCENT = 'PercentRegistry/';
   public static REGISTRIES_API = '/api/Registries/';
+  public static REGISTRIES_EXTERNAL = RegistryService.REGISTRIES_API + 'External';
   public static ADD_FILE_DOCUMENT_METHOD = '/AddFileDocument';
   public static ADD_LINK_DOCUMENT_METHOD = '/AddLinkDocument';
   private static DOCUMENTS = 'Documents/';
@@ -24,17 +26,14 @@ export class RegistryService {
       return this.http.get<Registry>(RegistryService.REGISTRIES_API + registryId);
   }
 
-
-  addLinkDocument(document: Document, registryId: number) {
-    this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
-      + RegistryService.ADD_LINK_DOCUMENT_METHOD, document ).subscribe();
+  getRegistriesExternal(): Observable<Registry[]> {
+    return this.http.get<Registry[]>(RegistryService.REGISTRIES_EXTERNAL);
   }
-  /*
-  addFileDocument(document: Registry, registryId: number) {
-      this.http.post<Registry>(RegistryService.REGISTRIES_API + registryId
-        + RegistryService.ADD_FILE_DOCUMENT_METHOD, document ).subscribe();
-  }*/
 
+  addLinkDocument(document: Document, registryId: number): Observable<Document[]> {
+    return this.http.post<Document[]>(RegistryService.REGISTRIES_API + registryId
+      + RegistryService.ADD_LINK_DOCUMENT_METHOD, document );
+  }
 
   editRegistry(registry: Registry, registriesType: number): Observable<Registry> {
     const headers = new HttpHeaders()

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistryDetailsComponent } from './registry-details.component';
+import { PdfgeneratorComponent } from './pdfgenerator.component';
 
-describe('RegistryDetailsComponent', () => {
-  let component: RegistryDetailsComponent;
-  let fixture: ComponentFixture<RegistryDetailsComponent>;
+describe('PdfgeneratorComponent', () => {
+  let component: PdfgeneratorComponent;
+  let fixture: ComponentFixture<PdfgeneratorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegistryDetailsComponent ]
+      declarations: [ PdfgeneratorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegistryDetailsComponent);
+    fixture = TestBed.createComponent(PdfgeneratorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

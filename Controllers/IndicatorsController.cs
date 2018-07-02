@@ -123,7 +123,7 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
-        // GET: api/Indicators/Goal/1
+        // GET: api/Indicators/Goals/1
         [HttpGet("Goals/{id:long}")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id)
         {
@@ -155,7 +155,7 @@ namespace think_agro_metrics.Controllers
             return Ok(result);
         }
 
-        // GET: api/Indicators/Goal/1/2018
+        // GET: api/Indicators/Goals/1/2018
         [HttpGet("Goals/{id:long}/{year:int}")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year)
         {
@@ -187,7 +187,7 @@ namespace think_agro_metrics.Controllers
             return Ok(result);
         }
 
-        // GET: api/Indicators/Goal/1/2018/0 (indicator 1, year 2018, month January)
+        // GET: api/Indicators/Goals/1/2018/0 (indicator 1, year 2018, month January)
         [HttpGet("Goals/{id:long}/{year:int}/{month:int}")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
@@ -195,17 +195,14 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
-
+            
             // Obtain the Goal
-            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();
+            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleOrDefaultAsync();
 
-            // Fails if not found
+            // Return 0 if not found
             if (goal == null) 
             {
-                return NotFound();
+                return Ok(0);
             }
 
             return Ok(goal.Value);
@@ -469,5 +466,114 @@ namespace think_agro_metrics.Controllers
         {
             return _context.Indicators.Any(e => e.IndicatorID == id);
         }
+
+        // ADD REGISTRY: api/Indicators/5/AddRegistry
+        [HttpPost("{indicatorId}/AddRegistry")]
+        public async Task<IActionResult> AddRegistry([FromRoute] long indicatorId,
+            [FromBody] DefaultRegistry registry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Indicator indicator = _context.Indicators.First(i => i.IndicatorID == indicatorId);
+            //Registry registry = new DefaultRegistry();
+            //registry.Name = name;
+
+            indicator.Registries.Add(registry);
+
+            _context.Entry(indicator).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IndicatorExists(indicatorId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/Indicators/1/GoalsList
+        [HttpGet("{id:long}/GoalsList")]
+        public async Task<IActionResult> GetIndicatorGoalsList([FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Goals
+            var goals = await _context.Goals.Where(g => g.IndicatorID == id).ToListAsync();
+
+            // Fails if not found
+            if (goals == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(goals);
+        }
+
+        // POST: api/Indicators/1/GoalsList
+        [HttpPost("{idIndicator:long}/GoalsList")]
+        public async Task<IActionResult> PostGoalsList([FromRoute] long idIndicator, [FromBody] Goal[] goals)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+                       
+            _context.Goals.UpdateRange(goals);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetIndicatorGoalsList", new { id = idIndicator }, goals);
+        }
+
+        // PUT: api/Indicators/Goal/7
+        [HttpPut("Goal/{id:long}")]
+        public async Task<IActionResult> PutIndicatorGoal([FromBody] Goal goal, [FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != goal.GoalID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(goal).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Goals.Any(g => g.GoalID == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+
+            return Ok();
+        }
+
     }
 }
