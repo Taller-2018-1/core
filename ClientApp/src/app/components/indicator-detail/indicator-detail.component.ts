@@ -48,7 +48,7 @@ export class IndicatorDetailComponent implements OnInit {
   selectedYear: number; // Numeric value for selectionYear
   years: number[] = []; // List of years from 2018 to CurrentYear
 
-  //allTrimesters: string = IndicatorDetailComponent.
+  // allTrimesters: string = IndicatorDetailComponent.
   selectedTrimesterText: string = IndicatorDetailComponent.TRIMESTER;
   selectedTrimester: number;
   trimesters: number[] = [];
@@ -67,8 +67,8 @@ export class IndicatorDetailComponent implements OnInit {
   typesChart: string[] = [];
   typeDispersion: string[] = [];
 
-  devStandar : number = 0;
-  varianza : number = 0;
+  devStandar = 0;
+  varianza = 0;
 
     // lineChart
     public counter = 0;
@@ -81,7 +81,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     public DispersionChartData: Array<any> = [
       {data: new Array(), label: 'Cantidad de Registros'},
-      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      // {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
       {data: new Array(), label: 'Promedio'}
     ];
 
@@ -112,20 +112,20 @@ export class IndicatorDetailComponent implements OnInit {
       maintainAspectRatio: false
     };
 
-    public dispersionChartOptions : any = {
+    public dispersionChartOptions: any = {
       responsive: true,
       tooltips: {
         callbacks: {
           // function that modify the tooltip title
-          title: function(tooltipItem, data){
+          title: function(tooltipItem, data) {
             // get the dataset of point
-            var datasetIndex = tooltipItem[0].datasetIndex;
-            // get the data array 
-            var dispersionData = data.datasets[datasetIndex];
-            // get the index 
-            var index = tooltipItem[0].index;
+            const datasetIndex = tooltipItem[0].datasetIndex;
+            // get the data array
+            const dispersionData = data.datasets[datasetIndex];
+            // get the index
+            const index = tooltipItem[0].index;
             // tooltip title
-            var title = dispersionData.data[index].x;
+            const title = dispersionData.data[index].x;
             return title;
           }
         }
@@ -138,7 +138,7 @@ export class IndicatorDetailComponent implements OnInit {
           hoverBorderWidth: 0
         },
         line: {
-          tension:0
+          tension: 0
         }
 
       },
@@ -149,8 +149,6 @@ export class IndicatorDetailComponent implements OnInit {
                 min: 0,
                 max: 100,
                 stepSize: 10
-                
-
             }
         }]
       },
@@ -179,7 +177,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     ];
 
-    public dispersionChartColors : Array<any> = [
+    public dispersionChartColors: Array<any> = [
       { // grey
         backgroundColor: 'transparent',
         borderColor: 'transparent',
@@ -188,7 +186,7 @@ export class IndicatorDetailComponent implements OnInit {
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       },
-      
+
       { // grey
         backgroundColor: 'transparent',
         borderColor: 'rgba(0,149,58,1)',
@@ -231,7 +229,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.selectedYear = this.sessionStorage.getYear(currentYear);
 
     const currentTrimester = new Date().getMonth();
-    this.selectedTrimester = -1; // Trimester Not selected.  
+    this.selectedTrimester = -1; // Trimester Not selected.
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
@@ -379,22 +377,20 @@ export class IndicatorDetailComponent implements OnInit {
     this.setMonthsOfTheYear();
   }
 
-  //set names to all four trimester of the year
-  setTrimesters()
-  {
+  // set names to all four trimester of the year
+  setTrimesters() {
     this.trimestersOfTheYear = [];
     this.trimestersOfTheYear.forEach(trimester => {
-      this.trimestersOfTheYear[trimester] = Trimesters[trimester]
+      this.trimestersOfTheYear[trimester] = Trimesters[trimester];
     });
   }
 /*
   detectTrimester(month: number)
   {
-    
+
   }*/
 
-  setSelectedTrimester(trimester: string)
-  {
+  setSelectedTrimester(trimester: string) {
     this.selectedTrimester = Trimesters[trimester];
   }
 
@@ -413,70 +409,64 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   // show the dispersion chart
-  public showDispersionGraph(indicator: Indicator){
-    if (this.counter++ % 200 == 0){
+  public showDispersionGraph(indicator: Indicator) {
+    if (this.counter++ % 200 === 0) {
 
       let promedio = 0;
-      
-      let _dispersionChartData : Array<any> = new Array(this.DispersionChartData.length);
-      _dispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label}
 
-      for(let i = 0; i < indicator.registries.length; i++){
+      const _dispersionChartData: Array<any> = new Array(this.DispersionChartData.length);
+      _dispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label};
+
+      for (let i = 0; i < indicator.registries.length; i++) {
         const date: Date = new Date(indicator.registries[i].date);
         const month = date.getUTCMonth();
         let percent = indicator.registries[i].percent;
         percent = Number(percent); // convert string to number
-        let datos = {x: this.lineChartLabels[month], y:percent};
-        promedio += percent; 
+        const datos = {x: this.lineChartLabels[month], y: percent};
+        promedio += percent;
         _dispersionChartData[0].data.push(datos);
       }
 
       promedio = promedio / indicator.registries.length;
-      
-      _dispersionChartData[1] = {data: new Array(), label:this.DispersionChartData[1].label};
 
-      let months = 12;
-      for (let i = 0; i < months; i++){
+      _dispersionChartData[1] = {data: new Array(), label: this.DispersionChartData[1].label};
+
+      const months = 12;
+      for (let i = 0; i < months; i++) {
         promedio = Number(promedio); // convert string to number
-        let datos = {x: this.lineChartLabels[i], y:promedio};
+        const datos = {x: this.lineChartLabels[i], y: promedio};
         _dispersionChartData[1].data.push(datos);
       }
-      
+
       this.DispersionChartData = _dispersionChartData;
 
       // get callbacks properties
-      let callbacks = this.dispersionChartOptions.tooltips.callbacks;
+      const callbacks = this.dispersionChartOptions.tooltips.callbacks;
       // add new attribute to callbacks functions
-      callbacks["label"] = function(tooltipItem,data){
-        
-        var datasetIndex = tooltipItem.datasetIndex;
-        var dispersionData = data.datasets[datasetIndex];
-        var index = tooltipItem.index;
+      callbacks['label'] = function(tooltipItem, data) {
+
+        const datasetIndex = tooltipItem.datasetIndex;
+        const dispersionData = data.datasets[datasetIndex];
+        const index = tooltipItem.index;
         // solo puntos dispersion
-        if (datasetIndex == 0){
-          var registryName = indicator.registries[index].name;
-          var percent = dispersionData.data[index].y; 
-          var label = registryName+": "+percent+"%";
+        if (datasetIndex === 0) {
+          const registryName = indicator.registries[index].name;
+          const percent = dispersionData.data[index].y;
+          const label = registryName + ': ' + percent + '%';
           return label;
         }
         // solo linea promedio
-        if (datasetIndex == 1){
-          var prom = dispersionData.data[index].y;
-          var label = "promedio: "+prom+"%";
+        if (datasetIndex === 1) {
+          const prom = dispersionData.data[index].y;
+          const label = 'promedio: ' + prom + '%';
           return label;
         }
-        
-        
-      }
 
-      if (promedio != 0){
+      };
+
+      if (promedio !== 0) {
         this.calculateVariationIndicator(promedio);
-        
       }
-
-      //console.log(this.DispersionChartData);
-      //console.log(this.dispersionChartOptions.tooltips);
-      
     }
   }
 
@@ -526,28 +516,28 @@ export class IndicatorDetailComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    //console.log(e);
+    // console.log(e);
   }
 
   public chartHovered(e: any): void {
-    //console.log(e);
+    // console.log(e);
   }
 
   // method to calculate the varianza and standard desviation
-  calculateVariationIndicator(promedio: number) : void{
-    let data = this.DispersionChartData[0].data;
-    let n = data.length;
+  calculateVariationIndicator(promedio: number): void {
+    const data = this.DispersionChartData[0].data;
+    const n = data.length;
     let sum = 0;
-    for (let i = 0; i < n; i++){
-      let x = data[i].y; // get the percent
-      sum = sum + Math.pow(x-promedio,2);
+    for (let i = 0; i < n; i++) {
+      const x = data[i].y; // get the percent
+      sum = sum + Math.pow(x - promedio, 2);
     }
     // caso cuando hay un solo dato (n = 1 - 1 igual 0) division por cero igual NaN
-    if (n - 1 != 0){
-      let varianza = sum/(n-1);
+    if (n - 1 !== 0) {
+      const varianza = sum / (n - 1);
       this.varianza = Number(varianza.toFixed(2));
-    
-      let dev = Math.sqrt(sum/(n-1));
+
+      const dev = Math.sqrt(sum / (n - 1));
 
       this.devStandar = Number(dev.toFixed(2));
     }
