@@ -14,6 +14,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 //Importa libreria PDF
 import * as jsPDF from 'jspdf';
+import { TemplateAst } from '@angular/compiler';
 
 @Component(
 {
@@ -41,6 +42,11 @@ export class ResultHomeComponent implements OnInit {
   openModal(template: TemplateRef<any>) 
   {
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
+  }
+
+  openModalAdd(template: TemplateRef<any>)
+  {
+    this.modalRef = this.modalService.show(template);
   }
 
 }
