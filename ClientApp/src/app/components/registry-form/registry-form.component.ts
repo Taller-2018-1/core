@@ -74,4 +74,12 @@ export class RegistryFormComponent implements OnInit {
       allowEscapeKey: false
     });
   }
+
+  openAddDocumentModal($event: any, template: TemplateRef<any>) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.modalRef = this.modalService.show(template);
+  }
 }

@@ -40,6 +40,9 @@ import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AddDocumentFormComponent } from './components/registry-form/add-document-form/add-document-form.component';
+import { LinkDocumentSubformComponent } from './components/registry-form/link-document-subform/link-document-subform.component';
+import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DocumentEditorComponent,
     NavigationButtonsComponent,
     GoalsEditorComponent,
-    DocumentPreviewComponent
+    DocumentPreviewComponent,
+    AddDocumentFormComponent,
+    LinkDocumentSubformComponent,
+    FileDocumentSubformComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
