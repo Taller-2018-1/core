@@ -37,14 +37,14 @@ namespace think_agro_metrics.Models
 			if (file.Length > 0)
 			{
 				string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+				string fecha = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff");
 
 				name = fileName;
 
 				using (var sha256 = SHA256.Create())
-
 				{
 					// Send a sample text to hash.  
-					var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName));
+					var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName + fecha));
 					// Get the hashed string.  
 					var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 					fileName = hash;
