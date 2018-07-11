@@ -178,7 +178,7 @@ namespace think_agro_metrics.Controllers
                 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-					return Json(new Object { });
+					return NoContent();
 				}
             }
 
@@ -229,8 +229,8 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(new Object{ });
-                }
+					return NoContent();
+				}
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -277,7 +277,7 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-					return Json(new Object { });
+					return NoContent();
 				}
             }
 
