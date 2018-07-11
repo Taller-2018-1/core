@@ -53,7 +53,7 @@ export class LinkDocumentFormComponent implements OnInit {
               private RegistryService: RegistryService,
               private modalService: BsModalService) {
     this.model = new Document();
-    this.model.name = "Nombre";
+    this.model.name = "";
     this.model.link = "";
   }
 
