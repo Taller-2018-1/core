@@ -178,8 +178,8 @@ namespace think_agro_metrics.Controllers
                 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
-                }
+					return Json(new Object { });
+				}
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -191,7 +191,11 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-            }
+
+				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+
+				return Ok(createdRegistry);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -203,8 +207,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
          private bool IndicatorExists(long id)
         {
@@ -227,7 +229,7 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
+                    return Json(new Object{ });
                 }
             }
 
@@ -240,7 +242,11 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-            }
+
+				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+
+				return Ok(createdRegistry);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -252,8 +258,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
@@ -273,8 +277,8 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
-                }
+					return Json(new Object { });
+				}
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -286,7 +290,11 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-            }
+
+				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+
+				return Ok(createdRegistry);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -298,8 +306,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
 
 
