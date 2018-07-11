@@ -27,6 +27,11 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
+  submodalRef: BsModalRef;
+  
+  //For documents
+  fileList: File[][] = new Array();
+  documentList: Document[] = new Array();
 
   onSubmit() {
     let nameVerification = false;
@@ -80,6 +85,18 @@ export class RegistryFormComponent implements OnInit {
       $event.stopPropagation();
       $event.preventDefault();
     }
-    this.modalRef = this.modalService.show(template);
+    this.submodalRef = this.modalService.show(template);
+  }
+
+  addLink(document: Document){
+    this.documentList.push(document);
+    console.log("LINK");
+    console.log(this.documentList);
+  }
+
+  addFile(file: File[]){
+    this.fileList.push(file);
+    console.log("FILE");
+    console.log(this.fileList);
   }
 }

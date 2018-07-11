@@ -82,6 +82,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-add-document-form></app-add-document-form>
+    <app-add-document-form [modalRef]="submodalRef" (fileAdded)="addFile($event)" 
+    (linkAdded)="addLink($event)"></app-add-document-form>
   </div>
 </ng-template>

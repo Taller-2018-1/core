@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { Document } from '../../../shared/models/document';
 
 @Component({
   selector: 'app-link-document-subform',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LinkDocumentSubformComponent implements OnInit {
 
-  constructor() { }
+  @Output() docAdded: EventEmitter<Document> = new EventEmitter<Document>();
+
+  model: Document;
+
+  constructor() { 
+    this.model = new Document();
+    this.model.name = "";
+    this.model.link = "";
+  }
 
   ngOnInit() {
   }
 
+  onSubmit() {
+    this.model.extension = "link";
+    this.docAdded.emit(this.model);
+  }
 }

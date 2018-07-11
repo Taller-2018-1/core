@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-file-document-subform',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FileDocumentSubformComponent implements OnInit {
 
+  @Output() docAdded: EventEmitter<File[]> = new EventEmitter<File[]>();
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  upload(file: File[]){
+    this.docAdded.emit(file);
+  }
 }
