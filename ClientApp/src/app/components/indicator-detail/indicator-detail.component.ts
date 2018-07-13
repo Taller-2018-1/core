@@ -64,7 +64,7 @@ export class IndicatorDetailComponent implements OnInit {
 
     public lineChartData: Array<any> = [
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
-      // {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
+      {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Meta', lineTension: 0}
       // {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio', lineTension: 0}
     ];
 
@@ -94,7 +94,7 @@ export class IndicatorDetailComponent implements OnInit {
       scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true,
+              beginAtZero: true,
             }
         }]
       },
@@ -138,8 +138,6 @@ export class IndicatorDetailComponent implements OnInit {
                 min: 0,
                 max: 100,
                 stepSize: 10
-                
-
             }
         }]
       },
@@ -159,11 +157,15 @@ export class IndicatorDetailComponent implements OnInit {
 
       { // grey
         backgroundColor: 'transparent',
-        borderColor: 'rgba(0,149,58,1)',
-        pointBackgroundColor: 'rgba(0,149,58,1)',
+        //borderColor: 'rgba(0,149,58,1)',
+        borderColor: 'rgba(255,0,0,1)',
+        //pointBackgroundColor: 'rgba(0,149,58,1)',
+        pointBackgroundColor: 'rgba(255,0,0,1)',
         pointBorderColor: '#fff',
-        pointHoverBackgroundColor: 'rgba(0,149,58,1)',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        //pointHoverBackgroundColor: 'rgba(0,149,58,1)',
+        pointHoverBackgroundColor: 'rgba(255,0,0,1)',
+        //pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        pointHoverBorderColor: 'rgba(255,0,0,0.8)'
       }
 
     ];
@@ -237,6 +239,7 @@ export class IndicatorDetailComponent implements OnInit {
     }
 
     this.loadDataByFilters();
+
   }
 
   loadDataByFilters() {
@@ -318,6 +321,10 @@ export class IndicatorDetailComponent implements OnInit {
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
       this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
       this.lineChartType = 'bar'; // now the type is barchart
+      let dataset = this.lineChartData[1];
+      dataset["type"] = 'line';
+      dataset["fill"] = 'false';
+
 
     } else if (type === 'Gráfico de línea') {
       this.selectedTypeChart = 'Gráfico de línea'; // change the dropdownlist text
@@ -445,7 +452,7 @@ export class IndicatorDetailComponent implements OnInit {
     }
   }
 
-  public showGraph(indicator: Indicator) {
+  public showGraph(indicator: Indicator, goal : number) {
     if (this.counter++ % 200 === 0) {
       const _lineChartData: Array<any> = new Array(this.lineChartData.length);
       _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
@@ -453,6 +460,15 @@ export class IndicatorDetailComponent implements OnInit {
         let cantidad = 0;
         const cantidadAcumulada = 0;
         const monthMin = 0;
+
+      // data de la meta
+      _lineChartData[1] = {data: new Array(this.lineChartData[1].data.length), label: this.lineChartData[1].label}
+      
+      // cargo en el data correspondiente la meta
+      for(let i = 0; i < _lineChartData[1].data.length; i++){
+        _lineChartData[1].data[i] = goal;
+      }
+
 
         /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
         for (let i = 0; i < 12; i++) {
@@ -486,6 +502,7 @@ export class IndicatorDetailComponent implements OnInit {
         }
       this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
       console.log(this.lineChartData);
+      // ajustar rango del eje y en el gráfico      
     }
   }
 

@@ -1,12 +1,13 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
-  
+  <!--
   <div *ngIf="indicator.registriesType !== 2">
     {{ this.showGraph(indicator) }}
   </div>
   <div *ngIf="indicator.registriesType == 2">
     {{ this.showDispersionGraph(indicator) }}
   </div>
+-->
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
@@ -40,6 +41,12 @@
                 <div class="inline" style="text-align: center;">Valor Meta</div>
                 <div class="row-number row-h1" *ngIf="goal$ | async as goal else na;">
                   {{ goal }}
+                  <div *ngIf="indicator.registriesType !== 2">
+                    {{ this.showGraph(indicator,goal) }}
+                  </div>
+                  <div *ngIf="indicator.registriesType == 2">
+                    {{ this.showDispersionGraph(indicator) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -52,6 +59,7 @@
       <!-- end container -->
     </div>
 </section>
+
 <!-- end head-page-section -->
   <section>
     <div>
