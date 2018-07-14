@@ -43,6 +43,7 @@ import { DocumentPreviewComponent } from './components/indicator-detail/document
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
 import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
+import { PopoverModule} from "ngx-bootstrap";
 
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
@@ -90,6 +91,7 @@ defineLocale('es', esLocale);
     FlexLayoutModule,
     StorageServiceModule ,
     PdfViewerModule,
+    PopoverModule.forRoot(),
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },

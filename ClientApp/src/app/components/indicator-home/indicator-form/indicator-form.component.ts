@@ -3,6 +3,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
+import {RegistryType} from "../../../shared/models/registryType";
 
 // Services
 import { IndicatorService} from "../../../services/indicator/indicator.service";
@@ -21,12 +22,24 @@ export class IndicatorFormComponent implements OnInit {
   @Output()
   private udpateEvent = new EventEmitter();
 
-  public model: Indicator;
+  public model: Indicator = new Indicator();
+  public selectedIndicatorTypeText = "Tipo de registros";
+
+  public types;
+
 
   constructor(private modalService: BsModalService,
               private service: IndicatorService) { }
 
   ngOnInit() {
+    this.types = ["Registros simples",
+                  "Registros de cantidad",
+                  "Registros de porcentajes"];
+    this.selectedIndicatorTypeText = this.types[0];
+  }
+
+  updateDropdown(value: string) {
+    this.selectedIndicatorTypeText = value;
   }
 
   hideModal() {
