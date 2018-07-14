@@ -22,14 +22,13 @@ export class IndicatorGroupFormComponent implements OnInit {
   //modalRef: BsModalRef;
   @Input() modalRef: BsModalRef;
 
-  @Input() indicatorGroups;
-
   @Output()
   private updateEvent = new EventEmitter();
 
   public model: IndicatorGroup = new IndicatorGroup();
 
-  constructor(private modalService: BsModalService, private service: IndicatorGroupService) { }
+  constructor(private modalService: BsModalService,
+              private service: IndicatorGroupService) { }
 
   ngOnInit() {
   }

@@ -1,0 +1,10 @@
+<form (ngSubmit)="onSubmit()" #indicatorForm="ngForm">
+  <div class="modal-body">
+
+  </div>
+  <div class="modal-footer">
+    <!--modal-footer needed, in other case, the button will be outside the modal-->
+    <button type="button" class="btn btn-sm btn-clean-2" (click)="hideModal()">Cancelar</button>
+    <button type="submit" class="btn btn-sm btn-primary" [disabled]="!indicatorForm.form.valid">Aceptar</button>
+  </div>
+</form>

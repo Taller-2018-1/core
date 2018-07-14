@@ -41,6 +41,7 @@ import { NavigationButtonsComponent } from './components/navigation-buttons/navi
 import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
+import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { IndicatorGroupFormComponent } from './components/result-home/indicator-
     NavigationButtonsComponent,
     GoalsEditorComponent,
     DocumentPreviewComponent,
-    IndicatorGroupFormComponent
+    IndicatorGroupFormComponent,
+    IndicatorFormComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
