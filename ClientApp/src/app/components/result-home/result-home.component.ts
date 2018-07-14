@@ -27,19 +27,19 @@ export class ResultHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
   public indicatorGroups$: Observable<IndicatorGroup[]>;
-  
+
   modalRef: BsModalRef;
 
   constructor(private service: IndicatorGroupService, private modalService: BsModalService) {
-    
+
   }
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
   }
 
-  openModal(template: TemplateRef<any>) 
+  openModal(template: TemplateRef<any>)
   {
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
@@ -47,6 +47,11 @@ export class ResultHomeComponent implements OnInit {
   openModalAdd(template: TemplateRef<any>)
   {
     this.modalRef = this.modalService.show(template);
+  }
+
+  indicatorGroupAdded()
+  {
+    this.indicatorGroups$ = this.service.getIndicatorGroups();
   }
 
 }

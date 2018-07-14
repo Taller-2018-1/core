@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -9,6 +9,8 @@ import { IndicatorGroup } from '../../../shared/models/indicatorGroup';
 
 // Services
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
+
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-indicator-group-form',
@@ -22,6 +24,9 @@ export class IndicatorGroupFormComponent implements OnInit {
 
   @Input() indicatorGroups;
 
+  @Output()
+  private updateEvent = new EventEmitter();
+
   public model: IndicatorGroup = new IndicatorGroup();
 
   constructor(private modalService: BsModalService, private service: IndicatorGroupService) { }
@@ -34,6 +39,34 @@ export class IndicatorGroupFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.model);
+    this.service.addIndicatorGroup(this.model).subscribe(
+      data => {
+        const verification = data;
+        if(data as boolean == false) { // Not added
+          this.duplicateNameAlert();
+          return;
+        }
+        else {
+          this.updateEvent.emit('Indicator Group Added');
+        }
+      }
+    );
+    this.hideModal();
+    //this.updateEvent.emit('Indicator Group Added');
+  }
+
+  private duplicateNameAlert()
+  {
+    swal({
+      title: 'Error al agregar el grupo de indicadores',
+      //text: 'Ya existe un registro con el nombre ' + this.model.name,
+      html: '<h6> Ya existe un grupo de indicadores con el nombre "' + this.model.name + '"</h6>',
+      type: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
   }
 }
