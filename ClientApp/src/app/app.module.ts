@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
@@ -43,6 +44,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
 import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
 
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { esLocale } from 'ngx-bootstrap/locale';
+defineLocale('es', esLocale);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +76,7 @@ import { IndicatorFormComponent } from './components/indicator-home/indicator-fo
   ],
   imports: [
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

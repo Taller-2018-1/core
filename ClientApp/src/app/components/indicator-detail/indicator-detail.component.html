@@ -1,10 +1,10 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
   
-  <div *ngIf="indicator.registriesType !== 2">
+  <div *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">
     {{ this.showGraph(indicator) }}
   </div>
-  <div *ngIf="indicator.registriesType == 2">
+  <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
     {{ this.showDispersionGraph(indicator) }}
   </div>
   <section>
@@ -28,10 +28,10 @@
               <div class="col-sm-6">
                 <div class="inline" style="text-align: center;">Valor Indicador</div>
                 <div class="row-number row-h1 inline" *ngIf="value$ | async as value else zero;">
-                  <div *ngIf="indicator.registriesType == 2">
+                  <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
                     {{ value }}%
                   </div>
-                  <div *ngIf="indicator.registriesType != 2">
+                  <div *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
                     {{ value }}
                   </div>
                 </div>
@@ -56,8 +56,14 @@
   <section>
     <div>
       <ol class="breadcrumb shortcode">
-        <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-        <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
+        <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
+          <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
+          <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
+        </div>
+        
+        <div *ngIf="indicator.registriesType == RegistryType.ExternalRegistry">
+            <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
+        </div>        
       </ol>
     </div>
   </section>
@@ -115,7 +121,7 @@
                   </td>
 
                   <!-- Graph Type Dropdown (no PercentRegistry) -->
-                  <td *ngIf="indicator.registriesType != 2" style="padding-left: 200px;">
+                  <td *ngIf="indicator.registriesType != RegistryType.PercentRegistry" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
                       <div class="btn-group" dropdown>
@@ -131,7 +137,7 @@
                   </td>
 
                   <!-- Graph Type Dropdown (PercentRegistry) -->
-                  <td *ngIf="indicator.registriesType == 2" style="padding-left: 200px;">
+                  <td *ngIf="indicator.registriesType == RegistryType.PercentRegistry" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
                     <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
                       <div class="btn-group" dropdown>
@@ -158,7 +164,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == 2">
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
               <canvas baseChart 
                       [datasets]="DispersionChartData"
                       [labels]="lineChartLabels"
@@ -168,7 +174,7 @@
                       [chartType]="lineChartType"
                       ></canvas>
             </div>
-            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
               <canvas baseChart 
                       [datasets]="lineChartData"
                       [labels]="lineChartLabels"
@@ -181,7 +187,7 @@
             </div>
           </div>
         </div>
-        <div class="container" *ngIf="indicator.registriesType == 2">
+        <div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
           <div class="row">
             <div class="col-md-6">
               <h4>Desviación estándar: {{devStandar}}</h4>
@@ -202,7 +208,9 @@
                     <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
                       Añadir registro
                     </button>-->
-                    <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
+                    <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
+                      <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
+                    </div>
                   </td>
                 </tr>
               </table>
@@ -236,7 +244,7 @@
 
   <!-- Modal Edit Goal -->
   <ng-template #editGoalModal>
-    <app-goals-editor [indicator]="indicator" [modalRef]="modalRef"></app-goals-editor>
+    <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateGoal($event)" [modalRef]="modalRef"></app-goals-editor>
   </ng-template>
 
 
@@ -244,10 +252,10 @@
 
   <ng-template #zero>
     <div class="row-number row-h1 inline">
-      <div *ngIf="indicator.registriesType == 2">
+      <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
         0%
       </div>
-      <div *ngIf="indicator.registriesType != 2">
+      <div *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
         0
       </div>
     </div>
