@@ -35,8 +35,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-indicator-form [modalRef]="modalRef"></app-indicator-form>
-      <!--<app-indicator-group-form (updateEvent)="indicatorGroupAdded()" [modalRef]="modalRef"></app-indicator-group-form>-->
+      <app-indicator-form (udpateEvent)="indicatorAdded()" [modalRef]="modalRef" [idIndicatorGroup]="idIndicatorGroup"></app-indicator-form>
     </div>
   </div>
 </ng-template>

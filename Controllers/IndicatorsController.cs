@@ -435,6 +435,16 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            List<Indicator> indicators = _context.Indicators.ToList();
+
+            foreach(Indicator i in indicators)
+            {
+                if (i.Name.ToUpper().Trim().Equals(indicator.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
+            }
+
             _context.Indicators.Add(indicator);
             await _context.SaveChangesAsync();
 

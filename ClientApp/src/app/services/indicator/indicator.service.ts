@@ -97,4 +97,8 @@ export class IndicatorService {
   putGoal(goal: Goal) {
     this.http.put(IndicatorService.INDICATORS_API + IndicatorService.GOAL + '/' + goal.goalID, goal).subscribe();
   }
+
+  addIndicator(indicator: Indicator): Observable<any> {
+    return this.http.post<any>(IndicatorService.INDICATORS_API, indicator);
+  }
 }

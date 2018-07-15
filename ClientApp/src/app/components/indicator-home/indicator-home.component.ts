@@ -39,5 +39,8 @@ export class IndicatorHomeComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  indicatorAdded() {
+    this.indicatorGroup$ = this.service.getIndicatorGroup(this.idIndicatorGroup);
+  }
 
 }

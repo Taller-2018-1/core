@@ -19,6 +19,8 @@ export class IndicatorFormComponent implements OnInit {
 
   @Input() modalRef: BsModalRef;
 
+  @Input() idIndicatorGroup: number;
+
   @Output()
   private udpateEvent = new EventEmitter();
 
@@ -47,7 +49,31 @@ export class IndicatorFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("submited");
+
+    this.model.indicatorGroupID = this.idIndicatorGroup;
+
+    if(this.selectedIndicatorTypeText == this.types[0]) {
+      this.model.registriesType = 0;
+    }
+    else if(this.selectedIndicatorTypeText == this.types[1]) {
+      this.model.registriesType = 1;
+    }
+    else if (this.selectedIndicatorTypeText == this.types[2]) {
+      this.model.registriesType = 2;
+    }
+
+    this.service.addIndicator(this.model).subscribe(
+      data => {
+        if (data as boolean == false) {
+          this.duplicateNameAlert();
+          return
+        }
+        else {
+          this.udpateEvent.emit("Indicator Added");
+        }
+      }
+    );
+    this.hideModal();
   }
 
   private duplicateNameAlert()
