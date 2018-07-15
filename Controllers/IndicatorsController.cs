@@ -195,17 +195,14 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
-
+            
             // Obtain the Goal
-            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();
+            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleOrDefaultAsync();
 
-            // Fails if not found
+            // Return 0 if not found
             if (goal == null) 
             {
-                return NotFound();
+                return Ok(0);
             }
 
             return Ok(goal.Value);
@@ -436,6 +433,16 @@ namespace think_agro_metrics.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            List<Indicator> indicators = _context.Indicators.ToList();
+
+            foreach(Indicator i in indicators)
+            {
+                if (i.Name.ToUpper().Trim().Equals(indicator.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
             }
 
             _context.Indicators.Add(indicator);

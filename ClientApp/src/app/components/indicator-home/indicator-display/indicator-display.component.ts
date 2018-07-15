@@ -6,8 +6,10 @@ import { Router } from "@angular/router";
 // Models
 import { Indicator } from '../../../shared/models/indicator';
 import { Months } from '../../../shared/models/months';
+import { RegistryType } from '../../../shared/models/registryType';
 
 // Services
+import { RegistryService } from '../../../services/registry/registry.service';
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
 import { IndicatorGroup } from '../../../shared/models/indicatorGroup';
 import { SessionService } from '../../../services/session/session.service';
@@ -45,12 +47,14 @@ export class IndicatorDisplayComponent implements OnInit {
   private router: Router;
 
   constructor(private service: IndicatorGroupService,
+    private registryService: RegistryService,
     private sessionStorage: SessionService,
     router: Router) {
     this.router = router;
   }
 
   ngOnInit() {
+    this.updateExternalIndicator();
     const currentYear = new Date().getFullYear();
     this.indicatorResults$ = this.service.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, currentYear);
 
@@ -189,5 +193,13 @@ export class IndicatorDisplayComponent implements OnInit {
 
   gotoIndicator(idIndicatorGroup: number, idIndicator: number) {
     this.router.navigateByUrl("/indicator/" + idIndicatorGroup + "/" + idIndicator);
+  }
+
+  updateExternalIndicator() {
+    this.indicatorGroup.indicators.forEach(indicator => {
+      if (indicator.registriesType === RegistryType.ExternalRegistry) {
+        this.registryService.getRegistriesExternal().subscribe();
+      }
+    });
   }
 }
