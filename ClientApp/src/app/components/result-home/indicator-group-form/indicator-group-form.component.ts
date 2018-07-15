@@ -40,7 +40,6 @@ export class IndicatorGroupFormComponent implements OnInit {
   onSubmit() {
     this.service.addIndicatorGroup(this.model).subscribe(
       data => {
-        const verification = data;
         if(data as boolean == false) { // Not added
           this.duplicateNameAlert();
           return;

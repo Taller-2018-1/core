@@ -81,7 +81,7 @@ export class IndicatorFormComponent implements OnInit {
     swal({
       title: 'Error al agregar el grupo de indicadores',
       //text: 'Ya existe un registro con el nombre ' + this.model.name,
-      html: '<h6> Ya existe un grupo de indicadores con el nombre "' + this.model.name + '"</h6>',
+      html: '<h6> Ya existe un indicador con el nombre "' + this.model.name + '"</h6>',
       type: 'warning',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
