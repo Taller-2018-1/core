@@ -175,7 +175,7 @@ export class ReportgeneratorComponent implements OnInit {
 
       this.service.getIndicatorGroup(i).subscribe(g => {
         g.indicators.forEach(indicator => {
-          this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
+          this.serviceIndicator.getIndicatorYear(indicator.indicatorID, this.selectedYear).subscribe(j => {
             this.indicators.push(j);
 
           });

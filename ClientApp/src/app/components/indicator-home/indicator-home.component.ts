@@ -16,17 +16,16 @@ import { IndicatorGroupService } from '../../services/indicator-group/indicator-
 export class IndicatorHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
-  public indicatorGroup$: Observable<IndicatorGroup>;
-  public idIndicatorGroup = -1;
+  indicatorGroup$: Observable<IndicatorGroup>;
+  //  indicatorGroup: IndicatorGroup;
+  // public idIndicatorGroup = -1;
 
-  constructor(private service: IndicatorGroupService,
-              private route: ActivatedRoute) {
-    this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
+  constructor(private service: IndicatorGroupService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.indicatorGroup$ = this.service.getIndicatorGroup(this.idIndicatorGroup);
+    this.indicatorGroup$ = this.service.getIndicatorGroup(this.route.snapshot.params.idIndicatorGroup);
+    // this.indicatorGroup$.subscribe(data => this.indicatorGroup = data);
   }
-
 
 }

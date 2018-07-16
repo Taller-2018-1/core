@@ -9,6 +9,8 @@ namespace think_agro_metrics.Models
     {
         double Calculate(ICollection<Registry> registries);
         double Calculate(ICollection<Registry> registries, int year);
-        double Calculate(ICollection<Registry> registries, int year, int month);
+        double CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester);
+        double CalculateYearMonth(ICollection<Registry> registries, int year, int month);
+        double CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay);
     }
 }

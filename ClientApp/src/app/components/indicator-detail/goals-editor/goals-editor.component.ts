@@ -4,13 +4,13 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { timer } from 'rxjs/observable/timer';
 
 // Models
-import { Goal } from '../../../shared/models/goal';
-import { Indicator } from '../../../shared/models/indicator';
-import { Months } from '../../../shared/models/months';
+import { Goal, Indicator, Months } from '../../../shared/models/';
+
+// Services
+import { IndicatorService } from '../../../services/indicator/indicator.service';
 
 // Ngx-Bootstrap
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { IndicatorService } from '../../../services/indicator/indicator.service';
 
 // SweetAlert2
 import swal from 'sweetalert2';

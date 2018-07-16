@@ -5,42 +5,9 @@
         <h2>{{ indicatorGroup.name }}</h2>
       </div>
 
-      <!--Dropdown Filters-->
-
+      <!--Dropdown Filters by Date-->
       <div class="row">
-        <!--Dropdown Year Filter-->
-        <div class="col-md-6">
-          Seleccione el año a calcular:
-          <br>
-          <div class="btn-group" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedYearText }}
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators(allYears, '')">Todos los años</a></li>
-              <li *ngFor="let year of years"><a class="dropdown-item" (click)="calculateIndicators(year, '')">Año {{ year }}</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <!--Dropdown Month Filter-->
-        <div class="col-md-6">
-          Seleccione Filtro Mensual, Trimestral o Todos Los Meses
-          <br>
-          <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedMonthText }}
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Todos los meses</a></li>
-              <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="calculateIndicators('', month)">{{ month }}</a></li>
-            </ul>
-          </div>
-        </div>
+        <app-dropdown-date-filters (dropdownChange)="updateObservables($event)"> </app-dropdown-date-filters>
       </div>
 
       <!-- end col-md-12 -->

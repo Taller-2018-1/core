@@ -1,5 +1,4 @@
-import { Registry } from './registry';
-import { Goal } from './goal';
+import { Registry, Goal } from './';
 
 export class Indicator {
     indicatorID: number;

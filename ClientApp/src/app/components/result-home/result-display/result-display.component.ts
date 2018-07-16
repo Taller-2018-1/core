@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router} from "@angular/router";
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-result-display',
@@ -10,17 +10,14 @@ import { Router} from "@angular/router";
 export class ResultDisplayComponent implements OnInit {
   @Input() indicatorGroups;
 
-  private router: Router;
-
-  constructor(router: Router) {
-    this.router = router
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
   }
 
   gotoIndicatorGroup(idIndicatorGroup: number) {
-    this.router.navigateByUrl("/indicatorGroup/" + idIndicatorGroup);
+    this.router.navigateByUrl('/indicadores/' + idIndicatorGroup);
   }
 
 }

@@ -22,19 +22,16 @@ export class NavigationButtonsComponent implements OnInit {
   ngOnInit() {
   }
 
-  goBack()
-  {
+  goBack() {
     if (this.idIndicatorGroup != null && this.idIndicator != null) {  // If is an indicator-detail view, go back to indicatorGroup view
-      this.router.navigateByUrl("indicatorGroup/" + this.idIndicatorGroup);
-    }
-    else {
-      this.router.navigateByUrl("/home"); // Otherwise is an indicator-display view, to back home
+      this.router.navigateByUrl('indicadores/' + this.idIndicatorGroup);
+    } else {
+      this.router.navigateByUrl('/inicio'); // Otherwise is an indicator-display view, to back home
     }
   }
 
-  goHome()
-  {
-    this.router.navigateByUrl("/home");
+  goHome() {
+    this.router.navigateByUrl('/inicio');
   }
 
 }

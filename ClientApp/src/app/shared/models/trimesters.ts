@@ -1,6 +1,6 @@
 export enum Trimesters {
-  Enero_Marzo,
-  Abril_Junio,
-  Julio_Septiembre,
-  Octubre_Diciembre
+  'Enero - Marzo',
+  'Abril - Junio',
+  'Julio - Septiembre',
+  'Octubre - Diciembre'
 }

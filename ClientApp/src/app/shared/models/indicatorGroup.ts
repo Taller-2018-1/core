@@ -1,4 +1,4 @@
-import { Indicator } from './indicator';
+import { Indicator } from './';
 
 export class IndicatorGroup {
     indicatorGroupID: number;

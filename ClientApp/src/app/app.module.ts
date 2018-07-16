@@ -9,13 +9,15 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { DateService } from './services/date/date.service';
+import { DropdownDateFiltersComponent } from './components/dropdown-date-filters/dropdown-date-filters.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
 import { IndicatorDisplayComponent } from './components/indicator-home/indicator-display/indicator-display.component';
 import { IndicatorDetailComponent } from './components/indicator-detail/indicator-detail.component';
 import { RegistryFormComponent } from './components/registry-form/registry-form.component';
 import { FileDocumentFormComponent } from './components/indicator-detail/file-document-form/file-document-form.component';
 import { LinkDocumentFormComponent } from './components/indicator-detail/link-document-form/link-document-form.component';
-import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -68,7 +70,8 @@ defineLocale('es', esLocale);
     DocumentEditorComponent,
     NavigationButtonsComponent,
     GoalsEditorComponent,
-    DocumentPreviewComponent
+    DocumentPreviewComponent,
+    DropdownDateFiltersComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -84,18 +87,27 @@ defineLocale('es', esLocale);
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
-    StorageServiceModule ,
+    StorageServiceModule,
     PdfViewerModule,
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
-      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
-      { path: 'home',        component: ResultHomeComponent, canActivate:[CanActivateUser] },
+      { path: 'indicador/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
+      { path: 'indicadores/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
+      { path: 'inicio',        component: ResultHomeComponent, canActivate: [CanActivateUser] },
       { path: '',            component: WelcomeComponent },
       { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
+  providers: [
+    AuthService,
+    CanActivateUser,
+    DateService,
+    FileService,
+    IndicatorService,
+    IndicatorGroupService,
+    RegistryService,
+    SessionService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

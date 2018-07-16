@@ -1,4 +1,4 @@
-import { Document } from './document';
+import { Document } from './';
 
 export class Registry {
   dateAdded: Date;

@@ -246,3 +246,5 @@ wwwroot/Repository/*
 
 #Die .idea files
 \.idea/
+
+ClientApp/\.vscode/settings\.json
