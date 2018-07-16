@@ -28,6 +28,7 @@ import { RegistryEditorComponent } from './components/indicator-detail/registry-
 import { GoalsEditorComponent } from './components/indicator-detail/goals-editor/goals-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+// tslint:disable-next-line:max-line-length
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
@@ -78,18 +79,44 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
-    StorageServiceModule ,
+    StorageServiceModule,
     PdfViewerModule,
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
-      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
-      { path: 'home',        component: ResultHomeComponent, canActivate:[CanActivateUser] },
-      { path: '',            component: WelcomeComponent },
-      { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
+      {
+        path: 'indicator/:idIndicatorGroup/:idIndicator',
+        component: IndicatorDetailComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'indicatorGroup/:idIndicatorGroup',
+        component: IndicatorHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'home',
+        component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: '',
+        component: WelcomeComponent
+      },
+      {
+        path: '**',
+        component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      }
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
+  providers: [
+    IndicatorService,
+    IndicatorGroupService,
+    RegistryService,
+    AuthService,
+    CanActivateUser, SessionService,
+    FileService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
