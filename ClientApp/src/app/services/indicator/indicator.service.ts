@@ -7,6 +7,7 @@ import { Indicator } from '../../shared/models/indicator';
 import { Registry } from '../../shared/models/registry';
 import { Router } from '@angular/router';
 import { Goal } from '../../shared/models/goal';
+import { LoaderService } from '../loader/loader.service';
 
 
 @Injectable()

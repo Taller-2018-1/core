@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -41,6 +41,9 @@ import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderService } from './services/loader/loader.service';
+import { LoaderInterceptor } from './shared/interceptors/loader-interceptor';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DocumentEditorComponent,
     NavigationButtonsComponent,
     GoalsEditorComponent,
-    DocumentPreviewComponent
+    DocumentPreviewComponent,
+    LoaderComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -115,7 +119,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     RegistryService,
     AuthService,
     CanActivateUser, SessionService,
-    FileService
+    FileService,
+    LoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

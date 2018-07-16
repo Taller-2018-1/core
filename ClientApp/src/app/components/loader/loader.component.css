@@ -12,7 +12,7 @@
 	border-left: 5px solid #FFFFFF;
 	border-radius: 100%;
 
-	animation: spin infinite 3.5s linear;
+	animation: spin infinite 1.750s linear;
 }
 .loader-wheel::before {
 	content: "";
@@ -24,10 +24,10 @@
 	width: 40px;
 	height: 40px;
 	border: 5px solid transparent;
-	border-left: 5px solid #FF6B00;
+	border-left: 5px solid #429345;
 	border-radius: 100%;
 
-	animation: spin infinite 2.5s linear;
+	animation: spin infinite 1.250s linear;
 }
 .loader-wheel::after {
 	content: "";
@@ -39,7 +39,7 @@
 	border: 5px solid transparent;
 	border-left: 5px solid #FFFFFF;
 	border-radius: 100%;
-	animation: spin infinite 1.5s linear;
+	animation: spin infinite 0.75s linear;
 }
 @keyframes spin {
 	0% {
@@ -51,7 +51,7 @@
 }
 .loading-wheel {
   position: fixed;
-  z-index: 2;
+  z-index: 9999;
   height: 100%;
   width: 100%;
   background-color: #0000008A;
