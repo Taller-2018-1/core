@@ -21,13 +21,11 @@ export class LoaderService {
   // pushed a callback
   public push(symbol: string): void {
     this.eventList.push(symbol);
-    console.log(`pushin ${symbol}`);
     this.loaderUpdateSubject.next(true);
   }
 
   // removes a callback
   public pop(symbol: string): void {
-    console.log(`poppin ${symbol}`);
     const targetIndex = this.eventList.findIndex(item => {
       return item === symbol;
     });

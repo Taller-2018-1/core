@@ -14,7 +14,6 @@ export class LoaderComponent implements OnInit {
   constructor(private loaderService: LoaderService) {
     this.subscription = this.loaderService.loaderUpdateEvent.subscribe(item => {
       this.loaderStatus = this.loaderService.getStatus();
-      console.log(`transmitted status: ${this.loaderStatus}`);
     });
   }
 
