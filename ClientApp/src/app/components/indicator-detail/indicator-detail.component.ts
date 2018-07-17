@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
+import { Component, OnInit, Inject, TemplateRef,ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Models
@@ -16,6 +16,9 @@ import { SessionService } from '../../services/session/session.service';
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+// ng2-chart
+import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -59,6 +62,7 @@ export class IndicatorDetailComponent implements OnInit {
   devStandar : number = 0;
   varianza : number = 0;
 
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
     // lineChart
     public counter = 0;
 
@@ -157,14 +161,10 @@ export class IndicatorDetailComponent implements OnInit {
 
       { // grey
         backgroundColor: 'transparent',
-        //borderColor: 'rgba(0,149,58,1)',
         borderColor: 'rgba(255,0,0,1)',
-        //pointBackgroundColor: 'rgba(0,149,58,1)',
         pointBackgroundColor: 'rgba(255,0,0,1)',
         pointBorderColor: '#fff',
-        //pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBackgroundColor: 'rgba(255,0,0,1)',
-        //pointHoverBorderColor: 'rgba(148,159,177,0.8)'
         pointHoverBorderColor: 'rgba(255,0,0,0.8)'
       }
 
@@ -418,6 +418,8 @@ export class IndicatorDetailComponent implements OnInit {
 
       // get callbacks properties
       let callbacks = this.dispersionChartOptions.tooltips.callbacks;
+      console.log("hola");
+      console.log(this.dispersionChartOptions);
       // add new attribute to callbacks functions
       callbacks["label"] = function(tooltipItem,data){
         
@@ -429,12 +431,16 @@ export class IndicatorDetailComponent implements OnInit {
           var registryName = indicator.registries[index].name;
           var percent = dispersionData.data[index].y; 
           var label = registryName+": "+percent+"%";
+          console.log("conjunto 0: ");
+          console.log(label);
           return label;
         }
         // solo linea promedio
         if (datasetIndex == 1){
           var prom = dispersionData.data[index].y;
           var label = "promedio: "+prom+"%";
+          console.log("conjunto 1: ");
+          console.log(label);
           return label;
         }
         
@@ -460,6 +466,31 @@ export class IndicatorDetailComponent implements OnInit {
         let cantidad = 0;
         const cantidadAcumulada = 0;
         const monthMin = 0;
+
+        this.chart.options = {
+          responsive: true,
+          elements: {
+            point: {
+              radius: 5,
+              hitRadius: 0,
+              hoverRadius: 5,
+              hoverBorderWidth: 0
+            },
+            line: {
+              tension: 0
+            }
+    
+          },
+          scales: {
+            yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  max : goal + 20
+                }
+            }]
+          },
+          maintainAspectRatio: false
+        };
 
       // data de la meta
       _lineChartData[1] = {data: new Array(this.lineChartData[1].data.length), label: this.lineChartData[1].label}
@@ -508,11 +539,11 @@ export class IndicatorDetailComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    //console.log(e);
+    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    //console.log(e);
+    console.log(e);
   }
 
   // method to calculate the varianza and standard desviation
