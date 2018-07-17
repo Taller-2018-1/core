@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 
@@ -21,6 +24,55 @@ namespace think_agro_metrics.Controllers
         private readonly DataContext _context;
         private IHostingEnvironment _hostingEnvironment;
 		private IConverter _converter;
+
+        public class QueryInterventionsResult
+        {
+            public InterventionsResult Resultado;
+        }
+
+        public class InterventionsResult
+        {
+            public Intervention[] Resultados;
+            public long CantidadResultados;
+            public long TotalResultados;
+        }
+
+        public class Intervention
+        {
+            public string Nombre;
+            public string Descripcion;
+            public Company ReferenciaEmpresa;
+            public int Estado;
+            public Visit VisitaTecnica;
+            public string FechaCreacion;
+
+        }
+
+        public class Company
+        {
+            public string NombreFantasia;
+        }
+
+        public class Visit
+        {
+            public string HoraInicio;
+            public string HoraFin;
+        }
+
+        public HttpClient _client = new HttpClient();
+        private String GET_INTERVENTIONS_QUERY_URL = "http://proyectos.thinkagro.cl/API/api/Query/Intervenciones";
+        private string _dateFormat = "yyyy-MM-ddTHH:mm:sszzz";
+        private System.Globalization.CultureInfo _cultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+
+
+
+        private Object CreateDataObject(Object data)
+        {
+            return new
+            {
+                Datos = data
+            };
+        }
 
         public RegistriesController(DataContext context, IHostingEnvironment hostingEnvironment, IConverter converter)
         {
@@ -54,6 +106,73 @@ namespace think_agro_metrics.Controllers
             }
             _context.Registries.Include(x => x.Documents).ToList();
             return Ok(registry);
+        }
+
+        // GET: api/Registries/External
+        [HttpGet("External")]
+        public async Task<IActionResult> GetExternalRegistries()
+        {
+            var payload = this.CreateDataObject(new {
+                Orden = "DESC",
+                Pagina = 1,
+                ResultadosPorPagina = 10000000,
+                OrdenarPor = "Nombre",
+                Filtros = "[{\"Campo\": \"Estado\",\"Valor\": \"3\",\"Tipo\": \"MayorIgualQue\"}," +
+                "{\"Campo\": \"Eliminado\",\"Valor\": \"false\",\"Tipo\": \"Igual\"}]"
+            });
+
+            var response = await _client.PostAsync(this.GET_INTERVENTIONS_QUERY_URL,
+                new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
+            string JSONResponse = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest(response);
+            }
+
+            QueryInterventionsResult interventions = JsonConvert.DeserializeObject<QueryInterventionsResult>(JSONResponse);
+
+            var indicatorExternalQuery = _context.Indicators.Where((i) => i.RegistriesType == RegistryType.ExternalRegistry);
+            
+            Indicator indicatorExternal = await indicatorExternalQuery
+                .Include(x => x.Registries)
+                .SingleAsync();
+
+            List<ExternalRegistry> results = new List<ExternalRegistry>();
+            foreach (Intervention intervention in interventions.Resultado.Resultados){
+                results.Add(new ExternalRegistry {
+                    IndicatorID = indicatorExternal.IndicatorID,
+                    Name = intervention.Nombre,
+                    CompanyName = intervention.ReferenciaEmpresa.NombreFantasia,
+                    Date = DateTime.Parse(intervention.VisitaTecnica.HoraInicio),
+                    DateAdded = DateTime.Parse(intervention.FechaCreacion)                    
+                });
+            }
+
+            foreach (ExternalRegistry registry in results){
+                bool exist = false;
+                foreach (ExternalRegistry indicatorRegistry in indicatorExternal.Registries) {
+                    if (registry.Name == indicatorRegistry.Name && registry.CompanyName == indicatorRegistry.CompanyName
+                        && registry.Date == indicatorRegistry.Date && registry.DateAdded == indicatorRegistry.DateAdded)
+                    {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    _context.Update(registry);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            var registriesExternal = await _context.Registries.Where(r => r.IndicatorID == indicatorExternal.IndicatorID).ToListAsync();
+
+            if (!registriesExternal.Any()) {
+                return NoContent();
+            }
+
+            return Ok(registriesExternal);
         }
 
         // PUT: api/Registries/DefaultRegistry/5
@@ -178,8 +297,8 @@ namespace think_agro_metrics.Controllers
                 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-					return NoContent();
-				}
+                    return NoContent();
+                }
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -191,11 +310,9 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-
-				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
-
-				return Ok(createdRegistry);
-			}
+                var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+                return Ok(createdRegistry);
+            }
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -208,10 +325,12 @@ namespace think_agro_metrics.Controllers
                 }
             }
         }
-         private bool IndicatorExists(long id)
+
+        private bool IndicatorExists(long id)
         {
             return _context.Indicators.Any(e => e.IndicatorID == id);
         }
+
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/QuantityRegistry")]
         public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
@@ -229,8 +348,8 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-					return NoContent();
-				}
+                    return NoContent();
+                }
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -242,11 +361,9 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-
-				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
-
-				return Ok(createdRegistry);
-			}
+                var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+                return Ok(createdRegistry);
+            }
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -277,8 +394,8 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-					return NoContent();
-				}
+                    return NoContent();
+                }
             }
 
             Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
@@ -290,11 +407,9 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-
 				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
-
 				return Ok(createdRegistry);
-			}
+            }
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))

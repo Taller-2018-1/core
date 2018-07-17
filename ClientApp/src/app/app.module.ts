@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
@@ -44,6 +45,10 @@ import { AddDocumentFormComponent } from './components/registry-form/add-documen
 import { LinkDocumentSubformComponent } from './components/registry-form/link-document-subform/link-document-subform.component';
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { esLocale } from 'ngx-bootstrap/locale';
+defineLocale('es', esLocale);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +78,7 @@ import { FileDocumentSubformComponent } from './components/registry-form/file-do
   ],
   imports: [
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

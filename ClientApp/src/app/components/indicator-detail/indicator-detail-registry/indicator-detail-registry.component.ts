@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
@@ -20,6 +20,8 @@ import swal from 'sweetalert2';
   encapsulation: ViewEncapsulation.None
 })
 export class IndicatorDetailRegistryComponent implements OnInit {
+
+  public RegistryType = RegistryType;
 
   customClass = 'card-header';
 

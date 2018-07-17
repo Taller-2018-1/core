@@ -12,6 +12,7 @@ import { Document } from '../../shared/models/document';
 
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -26,6 +27,8 @@ export class RegistryFormComponent implements OnInit {
 
   model: Registry;
   router: Router;
+  minDate = new Date(2018, 0, 1); // 1 January 2018
+  maxDate = new Date(); // Today
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
@@ -34,6 +37,23 @@ export class RegistryFormComponent implements OnInit {
   //For documents
   fileList: File[][] = new Array();
   documentList: Document[] = new Array();
+
+  constructor(router: Router,
+    private indicatorService: IndicatorService,
+    private modalService: BsModalService,
+    private localeService: BsLocaleService,
+    private datepickerConfig: BsDatepickerConfig
+  ) {
+    this.model = new Registry();
+    this.router = router;
+  }
+
+  ngOnInit() {
+    this.localeService.use('es'); // Datepicker with spanish locale
+    this.datepickerConfig.showWeekNumbers = false; // Don't show the week numbers in the datepicker
+    console.log(this.model.date);
+    console.log(this.indicator.registries[0].date);
+  }
 
   onSubmit() {
     //let nameVerification = false;
@@ -48,6 +68,7 @@ export class RegistryFormComponent implements OnInit {
         this.duplicateNameAlert();
       }
     });
+    this.closeModal();
   }
 
   closeModal() {
@@ -70,8 +91,6 @@ export class RegistryFormComponent implements OnInit {
       data => { this.indicator = data; },
       err => console.error(err)
     );
-  }
-  ngOnInit() {
   }
 
   private duplicateNameAlert() {
