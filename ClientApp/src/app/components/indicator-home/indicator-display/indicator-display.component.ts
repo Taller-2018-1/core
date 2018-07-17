@@ -44,14 +44,6 @@ export class IndicatorDisplayComponent implements OnInit/* , OnChanges */ {
     this.updateObservables(this.sessionService.getDateFiltersData());
   }
 
-/*   ngOnChanges(changes: SimpleChanges) {
-    if (changes['indicatorGroup']) {
-      if (this.indicatorGroup) {
-        
-      }
-    }
-  } */
-
   updateObservables(event) {
     this.updateDropdownDateFiltersValues(event);
 

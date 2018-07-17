@@ -274,9 +274,9 @@ namespace think_agro_metrics.Controllers
 
             // Obtain the Goals
             // The month of the goals in the DB starts at 0 (equals to Angular side)
-            var goal1 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 1).SingleOrDefaultAsync();
+            var goal1 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 3).SingleOrDefaultAsync();
             var goal2 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 2).SingleOrDefaultAsync();
-            var goal3 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 3).SingleOrDefaultAsync();
+            var goal3 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 1).SingleOrDefaultAsync();
             
             // Return 0 if not found
             if (goal1 == null && goal2 == null && goal3 == null)
