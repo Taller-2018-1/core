@@ -42,7 +42,8 @@ export class RegistryFormComponent implements OnInit {
     private indicatorService: IndicatorService,
     private modalService: BsModalService,
     private localeService: BsLocaleService,
-    private datepickerConfig: BsDatepickerConfig
+    private datepickerConfig: BsDatepickerConfig,
+    private registryService: RegistryService
   ) {
     this.model = new Registry();
     this.router = router;
@@ -75,17 +76,6 @@ export class RegistryFormComponent implements OnInit {
     this.modalRef.hide();
     this.modalRef = null;
   }
-
-  constructor(
-    router: Router,
-    private indicatorService: IndicatorService,
-    private modalService: BsModalService,
-    private registryService: RegistryService,
-  ) {
-    this.model = new Registry();
-    this.router = router;
-  }
-
   private getIndicator(indicatorId: number) {
     this.indicatorService.getIndicator(indicatorId).subscribe(
       data => { this.indicator = data; },
