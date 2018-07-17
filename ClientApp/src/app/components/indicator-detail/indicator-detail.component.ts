@@ -431,16 +431,12 @@ export class IndicatorDetailComponent implements OnInit {
           var registryName = indicator.registries[index].name;
           var percent = dispersionData.data[index].y; 
           var label = registryName+": "+percent+"%";
-          console.log("conjunto 0: ");
-          console.log(label);
           return label;
         }
         // solo linea promedio
         if (datasetIndex == 1){
           var prom = dispersionData.data[index].y;
           var label = "promedio: "+prom+"%";
-          console.log("conjunto 1: ");
-          console.log(label);
           return label;
         }
         
@@ -450,11 +446,7 @@ export class IndicatorDetailComponent implements OnInit {
       if (promedio != 0){
         this.calculateVariationIndicator(promedio);
         
-      }
-
-      //console.log(this.DispersionChartData);
-      //console.log(this.dispersionChartOptions.tooltips);
-      
+      }      
     }
   }
 
@@ -539,11 +531,11 @@ export class IndicatorDetailComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
 
   // method to calculate the varianza and standard desviation
