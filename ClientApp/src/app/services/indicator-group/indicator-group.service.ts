@@ -16,6 +16,10 @@ export class IndicatorGroupService {
 
   constructor(public http: HttpClient) { }
 
+  addIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<any> {
+    return this.http.post<any>(IndicatorGroupService.API_URL, indicatorGroup);
+  }
+
   getIndicatorGroups(): Observable<IndicatorGroup[]> {
     return this.http.get<IndicatorGroup[]>(IndicatorGroupService.API_URL);
   }

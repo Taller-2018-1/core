@@ -37,32 +37,35 @@ namespace think_agro_metrics.Models
 			if (file.Length > 0)
 			{
 				string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+				string fecha = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff");
 
 				name = fileName;
 
 				using (var sha256 = SHA256.Create())
-
 				{
 					// Send a sample text to hash.  
-					var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName));
+					var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(fileName + fecha));
 					// Get the hashed string.  
 					var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 					fileName = hash;
 					//link = hash;
 				}
-
 				link = fileName;
 				string fullPath = Path.Combine(newPath, fileName);
-
 				using (var stream = new FileStream(fullPath, FileMode.Create))
 				{
 					file.CopyTo(stream);
 				}
 			}
+
 			var document = new Document();
-			document.Name = name;
 			document.Link = link;
-			document.Extension = "file";
+			int fileExtPos = name.LastIndexOf(".");
+			string ext = name.Substring(fileExtPos);
+			document.Extension = ext;
+			string documentName = name.Substring(0, fileExtPos);
+			document.DocumentName = documentName;
+			document.Name = documentName;
 			return document;
 		}
 	}

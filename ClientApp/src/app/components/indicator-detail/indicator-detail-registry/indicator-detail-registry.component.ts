@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 import { RegistryType } from '../../../shared/models/registryType';
@@ -20,6 +20,8 @@ import swal from 'sweetalert2';
   encapsulation: ViewEncapsulation.None
 })
 export class IndicatorDetailRegistryComponent implements OnInit {
+
+  public RegistryType = RegistryType;
 
   customClass = 'card-header';
 
@@ -112,15 +114,11 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   goToLink(link: string) {
-    // window.location.pathname = link;
-    const url = 'http://' + link;
-    window.location.href = url;
+    window.location.href = link;
   }
 
   goToLinkBlank(link: string) {
-    // window.location.pathname = link;
-    const url = 'http://' + link;
-    window.open(url, '_blank');
+    window.open(link, '_blank');
   }
 
   download(document: Document) {

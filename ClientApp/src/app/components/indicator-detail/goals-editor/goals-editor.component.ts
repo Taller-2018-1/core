@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { timer } from 'rxjs/observable/timer';
 
@@ -31,6 +31,7 @@ export class GoalsEditorComponent implements OnInit {
   // Inputs
   @Input() public indicator: Indicator = new Indicator();
   @Input() public modalRef: BsModalRef;
+  @Output() updateGoalEvent = new EventEmitter();
 
   // Dropdown
   public years: number[] = [];
@@ -46,8 +47,8 @@ export class GoalsEditorComponent implements OnInit {
   public patternErrorNatural = 'El valor debe ser un número positivo';
   public patternErrorDecimal = 'El valor debe ser un número positivo con hasta 2 decimales';
   // Flags to know if the form has changed
-  public isAdded: boolean;
-  public isChanged: boolean;
+  public isAdded: boolean; // True if the button to add goals is pressed
+  public isChanged: boolean; // True if some field of the form is modified
 
   constructor(private service: IndicatorService,
     private fb: FormBuilder) {
@@ -115,14 +116,13 @@ export class GoalsEditorComponent implements OnInit {
           goalsResult.push(g);
         });
         this.indicator.goals = goalsResult;
-        console.log('Result:');
-        console.log(this.indicator.goals);
+        this.updateGoalEvent.emit('');
       });
     });
 
     // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
     // rebuildForm() uses the already saved values of the indicator's goals
-    const source = timer(100);
+    const source = timer(500);
     source.subscribe(() => this.rebuildForm());
   }
 
@@ -130,7 +130,7 @@ export class GoalsEditorComponent implements OnInit {
     this.modalRef.hide();
 
     // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
-    const source = timer(100);
+    const source = timer(500);
     source.subscribe(() => this.rebuildForm());
   }
 
@@ -161,11 +161,15 @@ export class GoalsEditorComponent implements OnInit {
 
   // Initialize the years array using the goals array
   initYears() {
-    this.indicator.goals.forEach((goal) => {
-      if (!this.years.includes(goal.year)) {
-        this.years.push(goal.year);
-      }
-    });
+    if (this.indicator.goals.length !== 0) {
+      this.indicator.goals.forEach((goal) => {
+        if (!this.years.includes(goal.year)) {
+          this.years.push(goal.year);
+        }
+      });
+    } else {
+      this.years.push(GoalsEditorComponent.INITIAL_YEAR);
+    }
   }
 
   // Returns the goals array (of the indicator) sorted by date
@@ -214,9 +218,13 @@ export class GoalsEditorComponent implements OnInit {
 
   // Set the values of the form using an array of goals
   setMonthlyGoals(goals: Goal[]) {
-    goals.forEach((goal) => {
-      this.addMonthlyGoal(goal.value.toString());
-    });
+    if (goals.length !== 0) {
+      goals.forEach((goal) => {
+        this.addMonthlyGoal(goal.value.toString());
+      });
+    } else {
+      this.addMonthlyGoal('');
+    }
   }
 
   // Adds a new field in the form with a value

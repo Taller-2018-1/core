@@ -10,7 +10,7 @@ namespace think_agro_metrics.Models
         public long GoalID { get; set; }
         public int Year { get; set; }
         public int Month { get; set; } 
-        public long Value { get; set; }
+        public double Value { get; set; }
 
         public long IndicatorID { get; set; }
     }

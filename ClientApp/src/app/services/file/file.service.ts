@@ -16,7 +16,7 @@ export class FileService {
 
   public downloadFile(document: Document) {
     this.http.get(FileService.FILES_API + document.link, { responseType: 'blob' }).subscribe(blob => {
-        saveAs(blob, document.name)
+      saveAs(blob, document.documentName + document.extension)
     })
   }
 
