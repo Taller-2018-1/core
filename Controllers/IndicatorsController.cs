@@ -498,7 +498,11 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-            }
+				
+				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+
+				return Ok(createdRegistry);
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!IndicatorExists(indicatorId))
@@ -510,8 +514,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // GET: api/Indicators/1/GoalsList

@@ -297,7 +297,7 @@ namespace think_agro_metrics.Controllers
                 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
+                    return NoContent();
                 }
             }
 
@@ -310,6 +310,8 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+                return Ok(createdRegistry);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -322,13 +324,13 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
-         private bool IndicatorExists(long id)
+
+        private bool IndicatorExists(long id)
         {
             return _context.Indicators.Any(e => e.IndicatorID == id);
         }
+
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/QuantityRegistry")]
         public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
@@ -346,7 +348,7 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
+                    return NoContent();
                 }
             }
 
@@ -359,6 +361,8 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+                return Ok(createdRegistry);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -371,8 +375,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
@@ -392,7 +394,7 @@ namespace think_agro_metrics.Controllers
 
                 if (r.Name.ToUpper().Trim().Equals(registry.Name.ToUpper().Trim()))
                 {
-                    return Json(false);
+                    return NoContent();
                 }
             }
 
@@ -405,6 +407,8 @@ namespace think_agro_metrics.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+				var createdRegistry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == registry.RegistryID);
+				return Ok(createdRegistry);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -417,8 +421,6 @@ namespace think_agro_metrics.Controllers
                     throw;
                 }
             }
-
-            return Json(true);
         }
 
 

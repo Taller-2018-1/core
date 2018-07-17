@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -33,6 +33,18 @@ export class RegistryService {
   addLinkDocument(document: Document, registryId: number): Observable<Document[]> {
     return this.http.post<Document[]>(RegistryService.REGISTRIES_API + registryId
       + RegistryService.ADD_LINK_DOCUMENT_METHOD, document );
+  }
+
+  addFileDocument(files: File[], registryId: number): Observable<HttpEvent<{}>> {
+    const formData = new FormData();
+
+    for (let file of files)
+      formData.append(file.name, file);
+    const request = new HttpRequest('POST', RegistryService.REGISTRIES_API + registryId
+     + RegistryService.ADD_FILE_DOCUMENT_METHOD, formData, {
+      reportProgress: true,
+    });
+    return this.http.request(request);
   }
 
   editRegistry(registry: Registry, registriesType: number): Observable<Registry> {
