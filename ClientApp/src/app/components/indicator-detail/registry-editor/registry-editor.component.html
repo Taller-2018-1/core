@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form (ngSubmit)="editRegistry()" #registryEditForm="ngForm">
+  <form #registryEditForm="ngForm">
     <div class="form-group">
       <label for="name">Nombre</label>
       <input type="text" class="form-control" id="name" required [(ngModel)]="newRegistry.name" name="name" #name="ngModel" />
@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <label for="date">Fecha</label>
-      <input type="date" class="form-control" id="date" required [ngModel]="newRegistry.date | date:'yyyy-MM-dd'" (ngModelChange)="newRegistry.date = $event" name="date" #date="ngModel" />
+      <input class="form-control" id="date" required [(ngModel)]="newRegistry.date" name="date" #date="ngModel"  bsDatepicker [minDate]="minDate" [maxDate]="maxDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"/>
       <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
@@ -29,7 +29,7 @@
       <input type="text" pattern="[0-9]{1,}" class="form-control" id="quantity" required [(ngModel)]="newRegistry.quantity" name="quantity" #quantity="ngModel" />
       <div [hidden]="(quantity.valid || quantity.pristine)"
             class="alert alert-danger">
-        Cantidad deber ser un número entero
+        Cantidad debe ser un número entero
       </div>
     </div>
 
@@ -43,7 +43,8 @@
     </div>
     
     <div class="modal-footer"> <!--modal-footer needed, in other case, the button will be outside the modal-->
-      <button type="submit" class="btn btn-success pull-right" [disabled]="!registryEditForm.form.valid">Editar</button>
+      <button class="btn btn-clean-2" (click)="editModalRef.hide()">CANCELAR</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!registryEditForm.form.valid" (click)="editRegistry()">Editar</button>
     </div>
   </form>
 </div>
