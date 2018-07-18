@@ -8,7 +8,7 @@ import { Subscription } from '../../../../node_modules/rxjs';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  public loaderStatus = false;
+  public loaderStatus = true;
   public subscription: Subscription;
 
   constructor(private loaderService: LoaderService) {
