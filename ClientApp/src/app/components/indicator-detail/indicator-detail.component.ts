@@ -459,6 +459,9 @@ export class IndicatorDetailComponent implements OnInit {
         const cantidadAcumulada = 0;
         const monthMin = 0;
 
+        let shift = 20;
+        let maxRange = shift*Math.round(goal/shift);
+
         this.chart.options = {
           responsive: true,
           elements: {
@@ -477,7 +480,7 @@ export class IndicatorDetailComponent implements OnInit {
             yAxes: [{
                 ticks: {
                   beginAtZero: true,
-                  max : goal + 20
+                  max : maxRange
                 }
             }]
           },
