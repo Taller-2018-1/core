@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
+import { RegistryType } from '../../shared/models/registryType';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -54,6 +55,8 @@ export class IndicatorDetailComponent implements OnInit {
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;  // Set 'true' when ALL_YEARS is selected. In other case, set false.
+
+  public RegistryType = RegistryType;
 
   selectedTypeChart: string;
   typesChart: string[] = [];
@@ -210,6 +213,8 @@ export class IndicatorDetailComponent implements OnInit {
 
   ngOnInit() {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
+    this.updateExternalIndicator();
+
     const currentYear = new Date().getFullYear();
     const baseYear = 2018;
     for (let i = 0; i <= (currentYear - baseYear); i++) {
@@ -559,12 +564,25 @@ export class IndicatorDetailComponent implements OnInit {
 
       this.devStandar = Number(dev.toFixed(2));
     }
-    
-    
+  }
 
+  // Update the goals depending the already selected filters
+  updateGoal(event) {
+    if (this.selectedYear === -1) { // All years
+      this.goal$ = this.service.getGoal(this.idIndicator);
+    } else if (this.selectedMonth === -1) { // Specific year
+      this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+    } else { // Specific year and month
+      this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
+    }
+  }
 
-    
-    
+  updateExternalIndicator() {
+    this.indicator$.subscribe((indicator) => {
+      if (indicator.registriesType === RegistryType.ExternalRegistry) {
+        this.registryService.getRegistriesExternal().subscribe();
+      }
+    });
   }
 
 }

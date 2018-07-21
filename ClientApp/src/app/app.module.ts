@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
@@ -40,6 +41,16 @@ import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
+import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
+import { PopoverModule} from "ngx-bootstrap";
+import { AddDocumentFormComponent } from './components/registry-form/add-document-form/add-document-form.component';
+import { LinkDocumentSubformComponent } from './components/registry-form/link-document-subform/link-document-subform.component';
+import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
+
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { esLocale } from 'ngx-bootstrap/locale';
+defineLocale('es', esLocale);
 
 @NgModule({
   declarations: [
@@ -63,10 +74,16 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DocumentEditorComponent,
     NavigationButtonsComponent,
     GoalsEditorComponent,
-    DocumentPreviewComponent
+    DocumentPreviewComponent,
+    IndicatorGroupFormComponent,
+    IndicatorFormComponent,
+    AddDocumentFormComponent,
+    LinkDocumentSubformComponent,
+    FileDocumentSubformComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -80,6 +97,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     FlexLayoutModule,
     StorageServiceModule ,
     PdfViewerModule,
+    PopoverModule.forRoot(),
 
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
