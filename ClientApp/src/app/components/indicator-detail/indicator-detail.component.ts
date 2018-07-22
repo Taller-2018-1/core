@@ -505,9 +505,6 @@ export class IndicatorDetailComponent implements OnInit {
         let goalLength = indicator.goals.length;
         let goalYear = 0;
         const currentYear = new Date().getFullYear();
-        console.log("indicator: ");
-        console.log(indicator);
-        console.log("año actual: "+currentYear);
         for(let i = 0; i < goalLength; i++){
           if (currentYear == indicator.goals[i].year){
             goalYear = goalYear + indicator.goals[i].value;
