@@ -19,6 +19,8 @@ export class DocumentPreviewComponent implements OnInit {
   @Input() document: Document;
   @Input() modalRef: BsModalRef;
 
+  loading: boolean = true;
+
   constructor(private http: HttpClient,
               private fileService: FileService) {
   }
