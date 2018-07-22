@@ -165,11 +165,11 @@ export class IndicatorDetailComponent implements OnInit {
 
       { // grey
         backgroundColor: 'transparent',
-        borderColor: 'rgba(255,0,0,1)',
-        pointBackgroundColor: 'rgba(255,0,0,1)',
+        borderColor: 'rgba(0, 102, 34,1)',
+        pointBackgroundColor: 'rgba(0, 102, 34,1)',
         pointBorderColor: '#fff',
-        pointHoverBackgroundColor: 'rgba(255,0,0,1)',
-        pointHoverBorderColor: 'rgba(255,0,0,0.8)'
+        pointHoverBackgroundColor: 'rgba(0, 102, 34,1)',
+        pointHoverBorderColor: 'rgba(0, 102, 34,1)'
       }
 
     ];
@@ -194,11 +194,11 @@ export class IndicatorDetailComponent implements OnInit {
       },
       { // goal
         backgroundColor: 'transparent',
-        borderColor: 'rgba(255,0,0,1)',
-        pointBackgroundColor: 'rgba(255,0,0,1)',
+        borderColor: 'rgba(0, 102, 34,1)',
+        pointBackgroundColor: 'rgba(0, 102, 34,1)',
         pointBorderColor: '#fff',
-        pointHoverBackgroundColor: 'rgba(255,0,0,1)',
-        pointHoverBorderColor: 'rgba(255,0,0,0.8)'
+        pointHoverBackgroundColor: 'rgba(0, 102, 34,1)',
+        pointHoverBorderColor: 'rgba(0, 102, 34,1)'
       }
     ];
 
@@ -435,9 +435,17 @@ export class IndicatorDetailComponent implements OnInit {
       // sumo los valores de las metas mensuales para obtner la meta anual
       let goalLength = indicator.goals.length;
       let goalYear = 0;
+      const currentYear = new Date().getFullYear();
+      let numGoalsCurrentYear = 0;
+      let goalProm = 0;
       for(let i = 0; i < goalLength; i++){
-        goalYear = goalYear + indicator.goals[i].value;
+        if (currentYear == indicator.goals[i].year){
+          goalProm = goalProm + indicator.goals[i].value;
+          numGoalsCurrentYear++;
+        }
       }
+
+      goalYear = goalProm/numGoalsCurrentYear;
 
       // agrego el valor de la meta a cada mes en el grafico
       for(let i = 0; i < months; i++){
@@ -496,39 +504,16 @@ export class IndicatorDetailComponent implements OnInit {
         
         let goalLength = indicator.goals.length;
         let goalYear = 0;
+        const currentYear = new Date().getFullYear();
+        console.log("indicator: ");
+        console.log(indicator);
+        console.log("año actual: "+currentYear);
         for(let i = 0; i < goalLength; i++){
-          goalYear = goalYear + indicator.goals[i].value;
+          if (currentYear == indicator.goals[i].year){
+            goalYear = goalYear + indicator.goals[i].value;
+          }
         }
         
-        //let shift = 20;
-        //let maxRange = shift*Math.round(goal/shift);
-
-        /*
-        this.chart.options = {
-          responsive: true,
-          elements: {
-            point: {
-              radius: 5,
-              hitRadius: 0,
-              hoverRadius: 5,
-              hoverBorderWidth: 0
-            },
-            line: {
-              tension: 0
-            }
-    
-          },
-          scales: {
-            yAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  max : maxRange
-                }
-            }]
-          },
-          maintainAspectRatio: false
-        };
-        */
 
       // data de la meta
       _lineChartData[1] = {data: new Array(this.lineChartData[1].data.length), label: this.lineChartData[1].label}
