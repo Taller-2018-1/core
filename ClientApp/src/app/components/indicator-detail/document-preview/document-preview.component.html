@@ -5,7 +5,14 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngIf="document && document.link">
+    <div *ngIf="document.extension!='.pdf'
+    && document.extension!='.jpg'
+    && document.extension!='.jpeg'
+    && document.extension!='.png'
+    && document.extension!='link'; else contentDiv">
+      Lo sentimos. No existe una vista previa para este archivo.
+    </div>
+    <ng-template #contentDiv>
       <div *ngIf="loading" class="inner-loading-wheel">
         <div class="loader-wheel"></div>
       </div>
@@ -19,12 +26,5 @@
       <iframe style="height:80vh; width:100%;" *ngIf="document.extension=='link'" 
       [src]="this.document.link | safeDom" (load)="loading=false">
       </iframe>
-      <div *ngIf="document.extension!='.pdf'
-      && document.extension!='.jpg'
-      && document.extension!='.jpeg'
-      && document.extension!='.png'
-      && document.extension!='link'">
-        Lo sentimos. No existe una vista previa para este archivo.
-      </div>
-    </div>
+    </ng-template>
   </div>

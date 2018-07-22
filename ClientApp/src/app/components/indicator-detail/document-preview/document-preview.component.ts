@@ -16,7 +16,15 @@ import { FileService } from '../../../services/file/file.service';
 export class DocumentPreviewComponent implements OnInit {
 
   pdfSource;
-  @Input() document: Document;
+  _document: Document;
+  @Input()
+  get document(): Document {
+    return this._document;
+  }
+  set document(value: Document){
+    this._document = value;
+    if (!value) this.loading = true;
+  }
   @Input() modalRef: BsModalRef;
 
   loading: boolean = true;
