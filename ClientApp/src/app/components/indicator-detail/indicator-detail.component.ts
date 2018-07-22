@@ -65,20 +65,21 @@ export class IndicatorDetailComponent implements OnInit {
   devStandar : number = 0;
   varianza : number = 0;
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  goal: number = 0;
+
+  //@ViewChild(BaseChartDirective) chart: BaseChartDirective;
     // lineChart
     public counter = 0;
 
     public lineChartData: Array<any> = [
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Meta', lineTension: 0}
-      // {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Promedio', lineTension: 0}
     ];
 
     public DispersionChartData: Array<any> = [
-      {data: new Array(), label: 'Cantidad de Registros'},
-      //{data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0}
-      {data: new Array(), label: 'Promedio'}
+      {data: new Array(), label: 'Datos'},
+      {data: new Array(), label: 'Promedio'},
+      {data: new Array(), label: 'Meta'}
     ];
 
     public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
@@ -174,7 +175,7 @@ export class IndicatorDetailComponent implements OnInit {
     ];
 
     public dispersionChartColors : Array<any> = [
-      { // grey
+      { // points
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         pointBackgroundColor: 'rgba(0,149,58,1)',
@@ -183,13 +184,21 @@ export class IndicatorDetailComponent implements OnInit {
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       },
       
-      { // grey
+      { // average
         backgroundColor: 'transparent',
         borderColor: 'rgba(0,149,58,1)',
         pointBackgroundColor: 'rgba(0,149,58,1)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      },
+      { // goal
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(255,0,0,1)',
+        pointBackgroundColor: 'rgba(255,0,0,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: 'rgba(255,0,0,1)',
+        pointHoverBorderColor: 'rgba(255,0,0,0.8)'
       }
     ];
 
@@ -284,6 +293,8 @@ export class IndicatorDetailComponent implements OnInit {
         // Calculate Indicator Selected Year
         this.value$ = this.service.getIndicatorValueYear(this.idIndicator, this.selectedYear);
         this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+        console.log("goal: ");
+        console.log(this.goal$);
         this.setMonths();
         }
       this.selectedMonthText = IndicatorDetailComponent.ALL_MONTHS;
@@ -418,13 +429,27 @@ export class IndicatorDetailComponent implements OnInit {
         let datos = {x: this.lineChartLabels[i], y:promedio};
         _dispersionChartData[1].data.push(datos);
       }
-      
+
+      _dispersionChartData[2] = {data: new Array(), label:this.DispersionChartData[2].label};
+
+      // sumo los valores de las metas mensuales para obtner la meta anual
+      let goalLength = indicator.goals.length;
+      let goalYear = 0;
+      for(let i = 0; i < goalLength; i++){
+        goalYear = goalYear + indicator.goals[i].value;
+      }
+
+      // agrego el valor de la meta a cada mes en el grafico
+      for(let i = 0; i < months; i++){
+        let datos = {x: this.lineChartLabels[i],y:goalYear};
+        _dispersionChartData[2].data.push(datos);
+      }
+
+
       this.DispersionChartData = _dispersionChartData;
 
       // get callbacks properties
       let callbacks = this.dispersionChartOptions.tooltips.callbacks;
-      console.log("hola");
-      console.log(this.dispersionChartOptions);
       // add new attribute to callbacks functions
       callbacks["label"] = function(tooltipItem,data){
         
@@ -444,6 +469,12 @@ export class IndicatorDetailComponent implements OnInit {
           var label = "promedio: "+prom+"%";
           return label;
         }
+        // solo linea meta
+        if (datasetIndex == 2){
+          var goal = dispersionData.data[index].y;
+          var label = "Meta: "+goal+"%";
+          return label;
+        }
         
         
       }
@@ -455,18 +486,24 @@ export class IndicatorDetailComponent implements OnInit {
     }
   }
 
-  public showGraph(indicator: Indicator, goal : number) {
+  public showGraph(indicator: Indicator) {
     if (this.counter++ % 200 === 0) {
       const _lineChartData: Array<any> = new Array(this.lineChartData.length);
       _lineChartData[0] = {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
-
         let cantidad = 0;
         const cantidadAcumulada = 0;
         const monthMin = 0;
+        
+        let goalLength = indicator.goals.length;
+        let goalYear = 0;
+        for(let i = 0; i < goalLength; i++){
+          goalYear = goalYear + indicator.goals[i].value;
+        }
+        
+        //let shift = 20;
+        //let maxRange = shift*Math.round(goal/shift);
 
-        let shift = 20;
-        let maxRange = shift*Math.round(goal/shift);
-
+        /*
         this.chart.options = {
           responsive: true,
           elements: {
@@ -491,15 +528,16 @@ export class IndicatorDetailComponent implements OnInit {
           },
           maintainAspectRatio: false
         };
+        */
 
       // data de la meta
       _lineChartData[1] = {data: new Array(this.lineChartData[1].data.length), label: this.lineChartData[1].label}
       
       // cargo en el data correspondiente la meta
       for(let i = 0; i < _lineChartData[1].data.length; i++){
-        _lineChartData[1].data[i] = goal;
+        _lineChartData[1].data[i] = goalYear;
       }
-
+      
 
         /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
         for (let i = 0; i < 12; i++) {

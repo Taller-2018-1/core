@@ -1,9 +1,7 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
-  <div *ngIf="goal$ | async as goal else na;">
-      <div *ngIf="indicator.registriesType !== 2">
-          {{ this.showGraph(indicator,goal) }}
-        </div>
+  <div *ngIf="indicator.registriesType !== 2">
+      {{ this.showGraph(indicator) }}
   </div>
   <div *ngIf="indicator.registriesType == 2">
       {{ this.showDispersionGraph(indicator) }}
