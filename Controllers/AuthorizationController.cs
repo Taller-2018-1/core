@@ -147,6 +147,17 @@ namespace think_agro_metrics.Controllers
             };
         }
 
+        private String GetHash(String randomString) {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
+        }
+
         private async Task<AuthenticatedUser> LogInOntoThinkagro(Credentials credentials)
         {
             
@@ -156,7 +167,7 @@ namespace think_agro_metrics.Controllers
                 new
                 {
                     NombreUsuario = credentials.email,
-                    Password = credentials.password,
+                    Password = this.GetHash(credentials.password),
                     Semilla = seed.ToString()
                 }
             );
