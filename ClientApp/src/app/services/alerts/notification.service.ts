@@ -10,7 +10,7 @@ export class NotificationService {
   constructor() {
     this.toaster = (<any>swal).mixin({
       toast: true,
-      position: 'center',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000
     });
