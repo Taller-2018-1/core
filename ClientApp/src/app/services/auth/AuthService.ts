@@ -5,8 +5,6 @@ import {Indicator} from '../../shared/models/indicator';
 import {IndicatorService} from '../indicator/indicator.service';
 import {Router} from '@angular/router';
 import { NotificationService } from '../alerts/notification.service';
-import sha256, { Hash, HMAC } from 'fast-sha256';
-import {encodeUTF8, decodeUTF8} from 'tweetnacl-ts';
 export interface Credentials {
   email: string;
   password: string;
