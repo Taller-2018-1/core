@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Indicator} from '../../shared/models/indicator';
 import {IndicatorService} from '../indicator/indicator.service';
 import {Router} from '@angular/router';
+import { NotificationService } from '../alerts/notification.service';
 
 
 export interface Credentials {
@@ -13,7 +14,7 @@ export interface Credentials {
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private notifications: NotificationService) {}
 
   private static AUTHORIZATION_API = '/api/auth/';
 
@@ -28,7 +29,7 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(credentials));
           observer.complete();
           this.router.navigate(['/home']);
-
+          this.notifications.showToaster('Sesión iniciada', 'success');
         },
         error => {
           // error path
@@ -36,6 +37,7 @@ export class AuthService {
           localStorage.setItem('user', null);
           this.router.navigate(['/welcome']);
           observer.error(new Error('usuario inválido'));
+          this.notifications.showToaster('Usuario inválido', 'error');
           observer.complete();
         }
       );

@@ -29,6 +29,7 @@ import { RegistryEditorComponent } from './components/indicator-detail/registry-
 import { GoalsEditorComponent } from './components/indicator-detail/goals-editor/goals-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+// tslint:disable-next-line:max-line-length
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
@@ -43,13 +44,14 @@ import { DocumentPreviewComponent } from './components/indicator-detail/document
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
 import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
-import { PopoverModule} from "ngx-bootstrap";
+import { PopoverModule} from 'ngx-bootstrap';
 import { AddDocumentFormComponent } from './components/registry-form/add-document-form/add-document-form.component';
 import { LinkDocumentSubformComponent } from './components/registry-form/link-document-subform/link-document-subform.component';
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
+import { NotificationService } from './services/alerts/notification.service';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -107,7 +109,8 @@ defineLocale('es', esLocale);
       { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
+  // tslint:disable-next-line:max-line-length
+  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
