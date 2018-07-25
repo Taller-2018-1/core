@@ -14,6 +14,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 //Importa libreria PDF
 import * as jsPDF from 'jspdf';
+import { TemplateAst } from '@angular/compiler';
 
 @Component(
 {
@@ -26,21 +27,31 @@ export class ResultHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
   public indicatorGroups$: Observable<IndicatorGroup[]>;
-  
+
   modalRef: BsModalRef;
 
   constructor(private service: IndicatorGroupService, private modalService: BsModalService) {
-    
+
   }
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
   }
 
-  openModal(template: TemplateRef<any>) 
+  openModal(template: TemplateRef<any>)
   {
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
+  }
+
+  openModalAdd(template: TemplateRef<any>)
+  {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  indicatorGroupAdded()
+  {
+    this.indicatorGroups$ = this.service.getIndicatorGroups();
   }
 
 }

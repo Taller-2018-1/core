@@ -21,6 +21,7 @@ namespace think_agro_metrics.Models
         public long IndicatorGroupID { get; set; }
         public string Name { get; set; }
         public string RegistriesName { get; set; }
+        public string RegistriesDescription { get; set; }
         public ICollection<Registry> Registries { get; set; }
         public ICollection<Goal> Goals { get; set; }
         
@@ -37,7 +38,7 @@ namespace think_agro_metrics.Models
                 else if (registriesType == RegistryType.PercentRegistry) {
                     this.IndicatorCalculator = new PercentIndicatorCalculator();
                 }
-                else if (registriesType == RegistryType.DefaultRegistry) {
+                else if (registriesType == RegistryType.DefaultRegistry || registriesType == RegistryType.ExternalRegistry) {
                     this.IndicatorCalculator = new DefaultIndicatorCalculator();
                 }
 

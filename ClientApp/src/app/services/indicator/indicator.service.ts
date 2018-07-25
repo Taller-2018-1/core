@@ -68,14 +68,14 @@ export class IndicatorService {
     return this.http.get<number[]>(IndicatorService.INDICATORS_API + 'Calculate');
   }
 
-  addRegistry(registry: Registry, indicatorId: String, registriesType: string): Observable<boolean> {
+  addRegistry(registry: Registry, indicatorId: String, registriesType: string): Observable<Registry> {
     let discriminator: string = IndicatorService.DEFAULT_REGISTRY;
     if (registriesType === 'QuantityRegistry') {
         discriminator = IndicatorService.QUANTITY_REGISTRY;
     } else if (registriesType === 'PercentRegistry') {
         discriminator = IndicatorService.PERCENT_REGISTRY;
     }
-    return this.http.post<boolean>(IndicatorService.REGISTRIES_API + indicatorId
+    return this.http.post<Registry>(IndicatorService.REGISTRIES_API + indicatorId
         + discriminator, registry);
   }
 
@@ -97,5 +97,9 @@ export class IndicatorService {
 
   putGoal(goal: Goal) {
     this.http.put(IndicatorService.INDICATORS_API + IndicatorService.GOAL + '/' + goal.goalID, goal).subscribe();
+  }
+
+  addIndicator(indicator: Indicator): Observable<any> {
+    return this.http.post<any>(IndicatorService.INDICATORS_API, indicator);
   }
 }

@@ -246,3 +246,4 @@ wwwroot/Repository/*
 
 #Die .idea files
 \.idea/
+.history

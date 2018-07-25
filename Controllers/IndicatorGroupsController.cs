@@ -120,6 +120,16 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            List<IndicatorGroup> indicatorGroups = _context.IndicatorGroups.ToList(); ;
+
+            foreach(IndicatorGroup ig in indicatorGroups)
+            {
+                if (ig.Name.ToUpper().Trim().Equals(indicatorGroup.Name.ToUpper().Trim()))
+                {
+                    return Json(false);
+                }
+            }
+
             _context.IndicatorGroups.Add(indicatorGroup);
             await _context.SaveChangesAsync();
 
@@ -336,7 +346,7 @@ namespace think_agro_metrics.Controllers
             return Ok(list);
         }
 
-        // GET: api/IndicatorGroups/Goals/1/2018 (group = 1, year = 2018)
+        // GET: api/IndicatorGroups/Goals/1/2018/0 (group = 1, year = 2018, month = January)
         [Route("Goals/{id:long}/{year:int}/{month:int}")]
         public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
@@ -345,9 +355,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
-
+            
             // Load from the DB the Indicators 
             var indicators = await _context.Indicators
                 .Where(i => i.IndicatorGroupID == id)
@@ -372,6 +380,11 @@ namespace think_agro_metrics.Controllers
                         continue;
                     }                        
                 }                
+            }
+            if (!list.Any()) {
+                for (int i = 0; i < 12; i++) {
+                    list.Add(0);
+                }
             }
 
             // Return the list with the results

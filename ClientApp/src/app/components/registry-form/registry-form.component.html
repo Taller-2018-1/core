@@ -35,7 +35,7 @@
     <div class="col-sm-12 col-md-12">
       <h4 class="head-project-title">
         Documentación de respaldo
-        <a class="btn btn-xs btn-primary pull-right disabled"><i class="glyphicon glyphicon-plus"></i>Nuevo</a>
+        <a class="btn btn-xs btn-primary pull-right" (click)="openAddDocumentModal($event, documentModal)"><i class="glyphicon glyphicon-plus"></i>Nuevo</a>
         <!-- 
           <a class="btn btn-xs btn-primary pull-right" (click)="newIsCollapsed = !newIsCollapsed"><i class="glyphicon glyphicon-plus"></i>Nuevo</a>
         -->
@@ -43,32 +43,58 @@
     </div>
   </div>
 
+  <!-- documents list -->
+  <ng-template ngFor let-document [ngForOf]="documentList" let-i="index">
+    <div fxLayout="row">
+      <div fxFlex="60%">
+        <b>Nombre</b>
+        <br /> {{document.name}}
+      </div>
+      <div fxFlex="20%">
+        <b>Tipo</b>
+        <br /> Link
+      </div>
+      <div fxFlex="20%">
+        <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteLink(document)">Eliminar</a>
+      </div>
+    </div>
+  </ng-template>
 
-          <!--
-
-           Seccion ingreso documentos
-
-              -->
-
-
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-              <h4 class="head-project-title">Tipo de registro</h4>
-            </div>
-            <form class="col-xs-12 col-sm-12 col-md-12">
-              <label class="col-md-6" style="text-align: center;">
-                <input type="radio" name="optradio">Diagnostico
-              </label>
-              <label class="col-md-6" style="text-align: center;">
-                <input type="radio" name="optradio">Intervencion
-              </label>
-            </form>
-          </div>
-  
+  <ng-template ngFor let-document [ngForOf]="fileList" let-i="index">
+    <div fxLayout="row">
+      <div fxFlex="60%">
+        <b>Nombre</b>
+        <br /> {{document[0].name}}
+      </div>
+      <div fxFlex="20%">
+        <b>Tipo</b>
+        <br /> Archivo
+      </div>
+      <div fxFlex="20%">
+        <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteFile(document)">Eliminar</a>
+      </div>
+    </div>
+  </ng-template>
+  <!-- documents list END -->
 
   <div class="modal-footer">
     <!--modal-footer needed, in other case, the button will be outside the modal-->
     <button type="button" class="btn btn-sm btn-clean-2" ng-click=cancel()>Cancelar</button>
-    <button type="submit" class="btn btn-sm btn-primary" (click)="closeModal()">Aceptar</button>
+    <button type="submit" class="btn btn-sm btn-primary" (click)="closeModal()"
+    [ngClass]="{'disabled': (!fileList[0] && !documentList[0]) }">Aceptar</button>
   </div>
 </form>
+
+<!-- Template ADD-Document -->
+<ng-template #documentModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ingrese un documento de respaldo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="submodalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-add-document-form [modalRef]="submodalRef" (fileAdded)="addFile($event)" 
+    (linkAdded)="addLink($event)"></app-add-document-form>
+  </div>
+</ng-template>
