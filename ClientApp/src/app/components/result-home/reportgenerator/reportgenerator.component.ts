@@ -343,6 +343,7 @@ export class ReportgeneratorComponent implements OnInit {
             if(anio==this.selectedYear)
             {
               cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+              //prueba
             }
           }
           doc.text(20, y, " Meta: " + meta + " Cantidad Porcentaje: " + cantidadRegistro + "%"); 
