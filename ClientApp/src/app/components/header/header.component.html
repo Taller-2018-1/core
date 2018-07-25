@@ -11,7 +11,7 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
           <li><a class="active" href="/">Inicio</a></li>
-          <li *ngIf = "isLogged"> <a (click)="openModalReport(generator)"  href="#" onclick="return false;">Descargar Informe</a></li> <!-- Yo lo puse-->
+          <li *ngIf = "isLogged"> <a (click)="openModalReport(generator)"  href="#" onclick="return false;">Generar Informe</a></li> <!-- Yo lo puse-->
           <li [class.hidden]="isLogged" ><a (click)="openModal(template)"  href="#">Iniciar Sesión</a></li>
           <li [class.hidden]="!isLogged" ><a (click)="logOut()"  href="./#">Cerrar Sesión</a></li>
       </ul>
