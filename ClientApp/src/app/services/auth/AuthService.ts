@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {HttpClient} from "@angular/common/http";
-import {Indicator} from "../../shared/models/indicator";
-import {IndicatorService} from "../indicator/indicator.service";
-import {Router} from "@angular/router";
+import {HttpClient} from '@angular/common/http';
+import {Indicator} from '../../shared/models/indicator';
+import {IndicatorService} from '../indicator/indicator.service';
+import {Router} from '@angular/router';
 
 
 export interface Credentials {
@@ -15,25 +15,15 @@ export interface Credentials {
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private static AUTHORIZATION_API = "/api/auth/";
+  private static AUTHORIZATION_API = '/api/auth/';
 
   public auth(credentials: Credentials): Observable<boolean> {
     return Observable.create(observer => {
-      // this.checkAuth(credentials).subscribe(
-      //   response => {
-      //     const user = this.newUser(response);
-      //     localStorage.setItem('user', user);
-      //     observer.next(true);
-      //     observer.complete();
-      //   },
-      //   err => {
-      //     observer.error(err);
-      //     observer.complete();
-      //   }
-      // );
       return this.http.post<any>(AuthService.AUTHORIZATION_API, credentials).subscribe(
         (data: any) => {
           // success path
+          const token: string = data.token;
+          localStorage.setItem('token', token);
           observer.next(true);
           localStorage.setItem('user', JSON.stringify(credentials));
           observer.complete();
@@ -42,6 +32,8 @@ export class AuthService {
         },
         error => {
           // error path
+          localStorage.setItem('token', null);
+          localStorage.setItem('user', null);
           this.router.navigate(['/welcome']);
           observer.error(new Error('usuario inválido'));
           observer.complete();
@@ -58,12 +50,20 @@ export class AuthService {
     });
   }
 
-  public getUser() : Credentials | boolean {
+  public getUser(): Credentials | boolean {
     const object = JSON.parse(localStorage.getItem('user'));
     if (object == null) {
       return false;
     }
     return JSON.parse(localStorage.getItem('user'));
+  }
+
+  public getToken(): String | boolean {
+    const token: string = JSON.parse(localStorage.getItem('token'));
+    if (token == null) {
+      return false;
+    }
+    return token;
   }
 
   private parseJwt(token) {

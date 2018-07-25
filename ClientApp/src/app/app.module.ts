@@ -102,7 +102,7 @@ defineLocale('es', esLocale);
     RouterModule.forRoot([
       { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
       { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
-      { path: 'home',        component: ResultHomeComponent, canActivate:[CanActivateUser] },
+      { path: 'home',        component: ResultHomeComponent, canActivate: [CanActivateUser] },
       { path: '',            component: WelcomeComponent },
       { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
     ])
