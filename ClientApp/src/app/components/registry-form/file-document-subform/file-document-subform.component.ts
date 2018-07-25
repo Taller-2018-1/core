@@ -7,9 +7,12 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class FileDocumentSubformComponent implements OnInit {
 
+  model: Document;
   @Output() docAdded: EventEmitter<File[]> = new EventEmitter<File[]>();
 
-  constructor() { }
+  constructor() {
+    this.model = new Document();
+    this.model.name = "Nombre";}
 
   ngOnInit() {
   }
