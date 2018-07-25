@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import swal from 'sweetalert2';
+import swal, { SweetAlertType } from 'sweetalert2';
 
 @Injectable()
 export class NotificationService {
 
   private toaster: any;
   constructor() {
-    this.toaster = swal.mixin({
+    this.toaster = (<any>swal).mixin({
       toast: true,
-      position: 'top-end',
+      position: 'center',
       showConfirmButton: false,
       timer: 3000
     });
   }
 
-  public showToaster(text: String, type: 'success'|'warning'|'error'|'success'|'info'|'question') {
+  public showToaster(text: String, type: SweetAlertType) {
     this.toaster({
       type: type,
       title: text

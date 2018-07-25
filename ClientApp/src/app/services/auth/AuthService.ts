@@ -49,6 +49,7 @@ export class AuthService {
       localStorage.removeItem('user');
       observer.next(true);
       observer.complete();
+      this.notifications.showToaster('Sesión finalizada', 'info');
     });
   }
 
