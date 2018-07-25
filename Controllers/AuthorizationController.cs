@@ -228,33 +228,41 @@ namespace think_agro_metrics.Controllers
         [HttpPost("")]
         public async Task<IActionResult> LogIn([FromBody] Credentials credentials)
         {
-            AuthenticatedUser user =  await this.LogInOntoThinkagro(credentials);
-            if (user == null)
+            try
+            {
+                AuthenticatedUser user =  await this.LogInOntoThinkagro(credentials);
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+                // At this point, the user is logged in, and it's information can be retrieved.
+
+                UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
+                if (userDetails == null)
+                {
+                    return Unauthorized();
+                }
+                // Now, we get all the roles involved
+
+                UserRole[] userRoles = await this.GetRolesPerUserFromThinkagro(userDetails);
+                if (userRoles == null)
+                {
+                    return Unauthorized();
+                }
+
+                String token = this.BuildToken(user, userDetails, userRoles);
+
+                if (token == null)
+                {
+                    return Unauthorized();
+                }
+                return Ok(new { token = token });
+            }
+            catch (System.Exception)
             {
                 return Unauthorized();
             }
-            // At this point, the user is logged in, and it's information can be retrieved.
-
-            UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
-            if (userDetails == null)
-            {
-                return Unauthorized();
-            }
-            // Now, we get all the roles involved
-
-            UserRole[] userRoles = await this.GetRolesPerUserFromThinkagro(userDetails);
-            if (userRoles == null)
-            {
-                return Unauthorized();
-            }
-
-            String token = this.BuildToken(user, userDetails, userRoles);
-
-            if (token == null)
-            {
-                return Unauthorized();
-            }
-            return Ok(new { token = token });
+            
         }
     }
 }
