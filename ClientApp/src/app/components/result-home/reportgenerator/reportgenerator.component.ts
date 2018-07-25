@@ -39,8 +39,9 @@ export class ReportgeneratorComponent implements OnInit {
   options: string[] = [];//arreglo que se adecua al periodo que se selecciona
 
   selectedYear: number;
-  selectedYearText: string;//cambia la opcion del dropdown
+  selectedYearText: String;//cambia la opcion del dropdown
   years: number[] = []; // List of years from 2018 to CurrentYear
+  baseYear: number;
 
   selectedMonthText: string = "Seleccione Mes"; // Default selection (string shown in the dropdown)
   selectedMonth: number; // The current selected month (number), depends of the name of the month in spanish.
@@ -75,11 +76,16 @@ export class ReportgeneratorComponent implements OnInit {
   ngOnInit() {
     console.log(this.indicatorGroups);
 
-    const currentYear = new Date().getFullYear();
-    const baseYear = 2018;
-    for (let i = 0; i <= (currentYear - baseYear); i++) {
-      this.years[i] = baseYear + i;
+    //const currentYear = new Date().getFullYear();
+    //this.baseYear = 2018;
+    const currentYear = 2018;
+    this.baseYear = 2016;
+    for (let i = 0; i <= (currentYear - this.baseYear); i++) {
+      this.years[i] = this.baseYear + i;
     }
+
+    console.log("years: "+this.years);
+    console.log("currentYear: "+currentYear);
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
@@ -101,7 +107,8 @@ export class ReportgeneratorComponent implements OnInit {
   selectYear(year: any) {
     this.selectedYearText = year; 
     this.selectedYear = year;
-    this.GeneraIndicadores(Number(this.selectedYearText));
+    console.log("Año seleccionado: "+this.selectedYear);
+    //this.GeneraIndicadores(Number(this.selectedYearText));
   }
 
   //selecciona periodo Trimestral,Mensual,Semanal
@@ -316,19 +323,41 @@ export class ReportgeneratorComponent implements OnInit {
 
         let cantidadRegistro = 0;
         if (this.indicators[empiezaJ].registriesType == 1) {
+          
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
-            cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            if(anio==this.selectedYear)
+            {
+              cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+            }              
           }
           doc.text(20, y, " Meta: " + meta + " Cantidad Registros: " + cantidadRegistro); 
         }
         else if (this.indicators[empiezaJ].registriesType == 2) {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
-            cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            if(anio==this.selectedYear)
+            {
+              cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+            }
           }
           doc.text(20, y, " Meta: " + meta + " Cantidad Porcentaje: " + cantidadRegistro + "%"); 
         }
         else {
-          cantidadRegistro = this.indicators[empiezaJ].registries.length;
+          for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            if(anio==this.selectedYear)
+            {
+              //cantidadRegistro = this.indicators[empiezaJ].registries.length;
+              cantidadRegistro++;
+            }
+          }
           doc.text(20, y, " Meta: " + meta + " Cantidad General: " + cantidadRegistro);
         }
 
