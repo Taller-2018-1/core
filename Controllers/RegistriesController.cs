@@ -98,7 +98,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var registry = await _context.Registries.SingleAsync(m => m.RegistryID == id);
+            var registry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == id);
 
             if (registry == null)
             {
@@ -136,7 +136,7 @@ namespace think_agro_metrics.Controllers
             
             Indicator indicatorExternal = await indicatorExternalQuery
                 .Include(x => x.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             List<ExternalRegistry> results = new List<ExternalRegistry>();
             foreach (Intervention intervention in interventions.Resultado.Resultados){
@@ -301,7 +301,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
+            Indicator indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
 
@@ -350,7 +350,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
+            Indicator indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
 
@@ -396,7 +396,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            Indicator indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == indicatorId);
+            Indicator indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == indicatorId);
 
             indicator.Registries.Add(registry);
 
@@ -431,7 +431,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var document = await _context.Documents.SingleAsync(d => d.DocumentID == id );
+            var document = await _context.Documents.SingleOrDefaultAsync(d => d.DocumentID == id );
             
             if(document == null)
             {
@@ -439,7 +439,7 @@ namespace think_agro_metrics.Controllers
             }
             
             // Every documents belongs to a Registry, it's not necessary to validate
-            var registry = await _context.Registries.SingleAsync(r => r.RegistryID == document.RegistryID);
+            var registry = await _context.Registries.SingleOrDefaultAsync(r => r.RegistryID == document.RegistryID);
 
             registry.Documents.Remove(document); // Delete Document from model
 
@@ -460,7 +460,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var registry = await _context.Registries.SingleAsync(m => m.RegistryID == id);
+            var registry = await _context.Registries.SingleOrDefaultAsync(m => m.RegistryID == id);
 
             if (registry == null)
             {
@@ -503,7 +503,7 @@ namespace think_agro_metrics.Controllers
 
 				var backup = linkDocumentFactory.CreateDocument();
 
-				Registry registry = await _context.Registries.SingleAsync(i => i.RegistryID == id);
+				Registry registry = await _context.Registries.SingleOrDefaultAsync(i => i.RegistryID == id);
 
 				registry.Documents.Add(document);
 				registry.Documents.Add(backup);

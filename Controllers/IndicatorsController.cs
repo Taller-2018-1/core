@@ -48,7 +48,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await indicatorQuery
                 .Include(x => x.Goals)
                 .Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).SingleAsync();
+                .ThenInclude(x => x.Documents).SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -76,7 +76,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
             
             // Fails if not found
             if (indicator == null)
@@ -108,7 +108,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // Fails if not found
             if (indicator == null)
@@ -142,7 +142,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // Fails if not found
             if (indicator == null)
@@ -180,7 +180,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // Fails if not found
             if (indicator == null)
@@ -202,25 +202,26 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the Goals
-            var goals = await _context.Goals.Where(g => g.IndicatorID == id).ToListAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
 
-            // Fails if not found
-            if (goals == null) 
-            {
+            if (indicator == null) {
                 return NoContent();
             }
 
-            double result = 0;
-            foreach (Goal goal in goals)
+            // Goals of the indicator
+            var goals = indicator.Goals;
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any())
             {
-                result += goal.Value;
+                return Ok(0);
             }
-            // Percent Registry
-            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
-            if (indicator.RegistriesType == RegistryType.PercentRegistry){
-                result /= goals.Count;
-            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
 
             return Ok(result);
         }
@@ -234,25 +235,27 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the Goals
-            var goals = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year).ToListAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
 
-            // Fails if not found
-            if (goals == null) 
+            if (indicator == null)
             {
                 return NoContent();
             }
 
-            double result = 0;
-            foreach (Goal goal in goals)
+            // Goals of the indicator
+            var goals = indicator.Goals.Where(g => g.Year == year).ToList();
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any()) 
             {
-                result += goal.Value;
+                return Ok(0);
             }
-            // Percent Registry
-            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
-            if (indicator.RegistriesType == RegistryType.PercentRegistry){
-                result /= goals.Count;
-            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
 
             return Ok(result);
         }
@@ -267,41 +270,27 @@ namespace think_agro_metrics.Controllers
             }
 
             // Obtain the indicator's registries type
-            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id).SingleAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
             if (indicator == null) {
                 return NoContent();
             }
 
             // Obtain the Goals
             // The month of the goals in the DB starts at 0 (equals to Angular side)
-            var goal1 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 3).SingleOrDefaultAsync();
-            var goal2 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 2).SingleOrDefaultAsync();
-            var goal3 = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == (trimester + 1) * 3 - 1).SingleOrDefaultAsync();
+            int firstMonthTrimester = (trimester + 1) * 3 - 3;
+
+            var goals = indicator.Goals.Where(g => g.Year == year
+            && (g.Month == firstMonthTrimester || g.Month == firstMonthTrimester + 1 || g.Month == firstMonthTrimester + 2)).ToList();
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
+
+            return Ok(result);
             
-            // Return 0 if not found
-            if (goal1 == null && goal2 == null && goal3 == null)
-            {
-                return Ok(0);
-            }
-            else if (goal2 == null && goal3 == null)
-            {
-                return Ok(goal1.Value);
-            }
-            else if (goal3 == null)
-            {
-                if (indicator.RegistriesType == RegistryType.PercentRegistry) {
-                    return Ok((goal1.Value + goal2.Value) / 2);
-                }
-                return Ok(goal1.Value + goal2.Value);
-            }
-            else
-            {
-                if (indicator.RegistriesType == RegistryType.PercentRegistry)
-                {
-                    return Ok((goal1.Value + goal2.Value + goal3.Value) / 3);
-                }
-                return Ok(goal1.Value + goal2.Value + goal3.Value);
-            }
         }
 
         // GET: api/Indicators/1/Goals/Year/2018/Month/0 (indicator 1, year 2018, month January)
@@ -313,9 +302,16 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null) {
+                return NoContent();
+            }
+
             // Obtain the Goal
             // The month of the goals in the DB starts at 0 (equals to Angular side)
-            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleAsync();
+            var goal =  indicator.Goals.Where(g => g.Year == year && g.Month == month).SingleOrDefault();
 
             // Return 0 if not found
             if (goal == null) 
@@ -335,23 +331,20 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the sum of the goals of the 7 days of the week
-            // The month in c# starts in 1
-            DateTime date = new DateTime(startWeekYear, startWeekMonth +  1, startWeekDay);
-            double sum = 0;
-            for (int i = 0; i < 7; i++) {
-                DateTime newDate = date.AddDays(i);
-                // The month of the goals in the DB starts at 0
-                var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == newDate.Year && g.Month == newDate.Month - 1).SingleAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
 
-                // Return 0 if not found
-                if (goal != null)
-                {
-                    sum += goal.Value;
-                }
+            if (indicator == null)
+            {
+                return NoContent();
             }
-            
-            return Ok(sum / 7.0);
+
+            // Assign indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoalWeek(indicator.Goals, startWeekYear, startWeekMonth, startWeekDay);
+
+            return Ok(result);
         }
 
         // GET: api/Indicators/Calculate
@@ -413,7 +406,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
+                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year));
             }
             
             // Return the list with the results
@@ -540,7 +533,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -566,7 +559,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -574,7 +567,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year);
+            var value = indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year);
 
             return Ok(value);
         }
@@ -592,7 +585,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -621,7 +614,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -650,7 +643,7 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
@@ -722,7 +715,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            var indicator = await _context.Indicators.SingleAsync(m => m.IndicatorID == id);
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(m => m.IndicatorID == id);
             if (indicator == null)
             {
                 return NoContent();

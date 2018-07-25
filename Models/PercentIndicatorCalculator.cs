@@ -28,7 +28,7 @@ namespace think_agro_metrics.Models
             }
         }
 
-        public double Calculate(ICollection<Registry> registries, int year)
+        public double CalculateYear(ICollection<Registry> registries, int year)
         {
             double sum = 0;
             double quantity = 0;
@@ -107,6 +107,45 @@ namespace think_agro_metrics.Models
             {
                 return 0;
             }
+        }
+
+        public double CalculateGoal(ICollection<Goal> goals)
+        {
+            double result = 0;
+            foreach (Goal goal in goals)
+            {
+                result += goal.Value;
+            }
+
+            if (goals.Any())
+            {
+                return result / goals.Count;
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+        public double CalculateGoalWeek(ICollection<Goal> goals, int startWeekYear, int startWeekMonth, int startWeekDay)
+        {
+            DateTime date = new DateTime(startWeekYear, startWeekMonth + 1, startWeekDay);
+            double sum = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime newDate = date.AddDays(i);
+                // The month of the goals in the DB starts at 0
+                var goal = goals.Where(g => g.Year == newDate.Year && g.Month == newDate.Month - 1).SingleOrDefault();
+
+                // Return 0 if not found
+                if (goal != null)
+                {
+                    sum += goal.Value;
+                }
+            }
+
+            return (sum / 7.0);
         }
     }
 }
