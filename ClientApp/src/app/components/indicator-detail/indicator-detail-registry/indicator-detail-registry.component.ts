@@ -114,11 +114,14 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   goToLink(link: string) {
-    window.location.href = link;
+    var url = ("https://" + link);
+
+    window.location.href = url;
   }
 
   goToLinkBlank(link: string) {
-    window.open(link, '_blank');
+    var url = ("https://" + link);
+    window.open(url, '_blank');
   }
 
   download(document: Document) {
