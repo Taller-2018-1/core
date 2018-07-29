@@ -62,15 +62,15 @@ export class IndicatorDetailComponent implements OnInit {
   typesChart: string[] = [];
   typeDispersion: string[] = [];
 
-  devStandar : number = 0;
-  varianza : number = 0;
+  //devStandar : number = 0;
+  //varianza : number = 0;
 
   goal: number = 0;
 
   //@ViewChild(BaseChartDirective) chart: BaseChartDirective;
     // lineChart
     public counter = 0;
-
+    
     public lineChartData: Array<any> = [
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Meta', lineTension: 0}
@@ -201,7 +201,7 @@ export class IndicatorDetailComponent implements OnInit {
         pointHoverBorderColor: 'rgba(0, 102, 34,1)'
       }
     ];
-
+    
     public lineChartLegend = true;
     public lineChartType = 'line';
 
@@ -335,17 +335,17 @@ export class IndicatorDetailComponent implements OnInit {
 
     if (type === 'Gráfico de barra') {
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
-      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
-      this.lineChartType = 'bar'; // now the type is barchart
-      let dataset = this.lineChartData[1];
-      dataset["type"] = 'line';
-      dataset["fill"] = 'false';
+      //this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
+      //this.lineChartType = 'bar'; // now the type is barchart
+      //let dataset = this.lineChartData[1];
+      //dataset["type"] = 'line';
+      //dataset["fill"] = 'false';
 
 
     } else if (type === 'Gráfico de línea') {
       this.selectedTypeChart = 'Gráfico de línea'; // change the dropdownlist text
-      this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
-      this.lineChartType = 'line'; // the type now is linechart
+      //this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
+      //this.lineChartType = 'line'; // the type now is linechart
     } else {
       this.selectedTypeChart = 'Gráfico de dispersión';
     }
@@ -400,6 +400,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.sessionStorage.setMonth(this.selectedMonth);
   }
 
+  /*
   // show the dispersion chart
   public showDispersionGraph(indicator: Indicator){
     if (this.counter++ % 200 == 0){
@@ -521,18 +522,18 @@ export class IndicatorDetailComponent implements OnInit {
       }
       
 
-        /* Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) */
+        // Se ingresa 0 a todos los datos en el arreglo provisorio de los meses (_lineChartData) 
         for (let i = 0; i < 12; i++) {
           _lineChartData[0].data[i] = 0;
         }
 
-        /* Ingreso de datos al arreglo provisorio de meses */
+        // Ingreso de datos al arreglo provisorio de meses 
         // console.log("largo" + this.indicator.registries.length);
         for (let i = 0; i < indicator.registries.length; i++) {
           const date: Date = new Date(indicator.registries[i].date);
           const month = date.getUTCMonth();
           // console.log("entre ctm !!!!:   " + month);
-          /* if si el registro es de cantidad */
+          // if si el registro es de cantidad 
           if (indicator.registriesType === 1) {
             cantidad = indicator.registries[i].quantity;
             // console.log("Cantidad : "+cantidad);
@@ -556,8 +557,9 @@ export class IndicatorDetailComponent implements OnInit {
       // ajustar rango del eje y en el gráfico      
     }
   }
-
+  */
   // events
+  /*
   public chartClicked(e: any): void {
     //console.log(e);
   }
@@ -565,7 +567,8 @@ export class IndicatorDetailComponent implements OnInit {
   public chartHovered(e: any): void {
     //console.log(e);
   }
-
+  */
+  /*
   // method to calculate the varianza and standard desviation
   calculateVariationIndicator(promedio: number) : void{
     let data = this.DispersionChartData[0].data;
@@ -585,7 +588,7 @@ export class IndicatorDetailComponent implements OnInit {
       this.devStandar = Number(dev.toFixed(2));
     }
   }
-
+  */
   // Update the goals depending the already selected filters
   updateGoal(event) {
     if (this.selectedYear === -1) { // All years
