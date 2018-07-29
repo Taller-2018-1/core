@@ -50,7 +50,7 @@ import { FileDocumentSubformComponent } from './components/registry-form/file-do
 
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
-import { TestchartComponent } from './components/indicator-detail/testchart/testchart.component';
+import { ChartComponent } from './components/indicator-detail/chart/chart.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -81,7 +81,7 @@ defineLocale('es', esLocale);
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
-    TestchartComponent
+    ChartComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

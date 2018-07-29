@@ -4,11 +4,11 @@ import {Indicator} from '../../../shared/models/indicator';
 import {RegistryType} from '../../../shared/models/registryType';
 
 @Component({
-  selector: 'app-testchart',
-  templateUrl: './testchart.component.html',
-  styleUrls: ['./testchart.component.css']
+  selector: 'app-chart',
+  templateUrl: './chart.component.html',
+  styleUrls: ['./chart.component.css']
 })
-export class TestchartComponent implements OnInit,DoCheck {
+export class ChartComponent implements OnInit,DoCheck {
 
   @Input() indicator : Indicator;
   @Input() selectedTypeChart: string;
