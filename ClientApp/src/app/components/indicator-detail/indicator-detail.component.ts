@@ -70,7 +70,7 @@ export class IndicatorDetailComponent implements OnInit {
   //@ViewChild(BaseChartDirective) chart: BaseChartDirective;
     // lineChart
     public counter = 0;
-    
+    /*
     public lineChartData: Array<any> = [
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Cantidad de Registros', lineTension: 0},
       {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Meta', lineTension: 0}
@@ -201,7 +201,7 @@ export class IndicatorDetailComponent implements OnInit {
         pointHoverBorderColor: 'rgba(0, 102, 34,1)'
       }
     ];
-    
+    */
     public lineChartLegend = true;
     public lineChartType = 'line';
 

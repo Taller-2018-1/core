@@ -11,8 +11,10 @@ import {RegistryType} from '../../../shared/models/registryType';
 export class TestchartComponent implements OnInit,DoCheck {
 
   @Input() indicator : Indicator;
+  @Input() selectedTypeChart: string;
 
   oldIndicator : Indicator;
+  oldSelectedTypeChart: string;
 
   devStandar : number = 0;
   varianza : number = 0;
@@ -158,6 +160,7 @@ export class TestchartComponent implements OnInit,DoCheck {
   }
 
   ngOnInit() {
+    this.oldSelectedTypeChart = this.selectedTypeChart;
     this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
     if (this.indicator.registriesType != this.RegistryType.PercentRegistry){
       this.showGraph(this.indicator);
@@ -167,6 +170,7 @@ export class TestchartComponent implements OnInit,DoCheck {
     }
     
   }
+
 
   ngDoCheck(){
     if (JSON.stringify(this.oldIndicator) !== JSON.stringify(this.indicator)){
@@ -178,6 +182,25 @@ export class TestchartComponent implements OnInit,DoCheck {
       else{
         this.showDispersionGraph(this.indicator);
       }
+    }
+
+    if(this.oldSelectedTypeChart !== this.selectedTypeChart){
+      // significa que hay cambios en el tipo de grafico
+      if (this.selectedTypeChart === 'Gráfico de barra'){
+        this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // change the bar colors
+        this.lineChartType = 'bar'; // now the type is barchart
+        let dataset = this.lineChartData[1];
+        dataset["type"] = 'line';
+        dataset["fill"] = 'false';
+      }
+      else if (this.selectedTypeChart === 'Gráfico de línea'){
+        this.lineChartColors[0].backgroundColor = 'rgba(144,188,36,0.4)'; // back to the original color
+        this.lineChartType = 'line'; // the type now is linechart
+      }
+      else{
+        this.selectedTypeChart = 'Gráfico de dispersión';
+      }
+      this.oldSelectedTypeChart = this.selectedTypeChart;
     }
   }
 
