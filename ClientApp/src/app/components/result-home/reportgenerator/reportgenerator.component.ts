@@ -39,14 +39,17 @@ export class ReportgeneratorComponent implements OnInit {
   options: string[] = [];//arreglo que se adecua al periodo que se selecciona
 
   selectedYear: number;
-  selectedYearText: string;//cambia la opcion del dropdown
+  selectedYearText: String;//cambia la opcion del dropdown
   years: number[] = []; // List of years from 2018 to CurrentYear
+  baseYear: number;
 
   selectedMonthText: string = "Seleccione Mes"; // Default selection (string shown in the dropdown)
   selectedMonth: number; // The current selected month (number), depends of the name of the month in spanish.
   months: number[] = []; // List of the months from 0 (January) to the current month (defined in ngOnInit)
   monthsOfTheYear: string[] = []; // List with the list names of the months (in spanish) of the selected year (defined in ngOnInit)
   isMonthDisabled = false;
+  Months: string[]=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  selectMonth: string = "Ninguno";
 
   public indicators: Indicator[] = [];
   public isClicked: Boolean = false;
@@ -76,11 +79,16 @@ export class ReportgeneratorComponent implements OnInit {
     console.log("Onit");
     console.log(this.indicatorGroups);
 
-    const currentYear = new Date().getFullYear();
-    const baseYear = 2018;
-    for (let i = 0; i <= (currentYear - baseYear); i++) {
-      this.years[i] = baseYear + i;
+    //const currentYear = new Date().getFullYear();
+    //this.baseYear = 2018;
+    const currentYear = 2018;
+    this.baseYear = 2016;
+    for (let i = 0; i <= (currentYear - this.baseYear); i++) {
+      this.years[i] = this.baseYear + i;
     }
+
+    console.log("years: "+this.years);
+    console.log("currentYear: "+currentYear);
 
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
@@ -99,9 +107,18 @@ export class ReportgeneratorComponent implements OnInit {
     this.selectedReport = report;
   }
 
+  //selecciona el año
+  selectYear(year: any) {
+    this.selectedYearText = year; 
+    this.selectedYear = year;
+    console.log("Año seleccionado: "+this.selectedYear);
+    //this.GeneraIndicadores(Number(this.selectedYearText));
+  }
+
   //selecciona periodo Trimestral,Mensual,Semanal
   selectPeriod(period: string) {
     this.selectedPeriod = period;
+    console.log("this.selectedPeriod: "+this.selectedPeriod);
     this.selectOption();
   }
 
@@ -111,6 +128,7 @@ export class ReportgeneratorComponent implements OnInit {
       this.setTitlePeriod = " ";
       this.setContentDropdown = "Ninguno"; //default is shown
       this.options = [null];
+      this.selectMonth = "Ninguno";
     }
     if (this.selectedPeriod == 'Trimestral') {
       this.setTitlePeriod = "Seleccione Trimestre";
@@ -120,6 +138,7 @@ export class ReportgeneratorComponent implements OnInit {
     if (this.selectedPeriod == 'Mensual') {
       this.setTitlePeriod = "Seleccione Mes";
       this.setContentDropdown = "Enero"; //default is shown
+      this.selectMonth = "Enero";
       this.options = this.monthsOfTheYear;
     }
     if (this.selectedPeriod == 'Semanal') {
@@ -132,7 +151,9 @@ export class ReportgeneratorComponent implements OnInit {
 
   //cambia al seleccionar el contenido del ultimo dropdown
   setOptionContentDropdown(option: string) {
-    this.setContentDropdown = option;
+    this.setContentDropdown = option;//MES
+    this.selectMonth = option;
+    console.log("this.setContentDropdown: "+this.setContentDropdown);
   }
 
   setMonths() {
@@ -161,6 +182,7 @@ export class ReportgeneratorComponent implements OnInit {
     this.months.forEach(month => {
       this.monthsOfTheYear[month] = Months[month];
     });
+    console.log("this.monthsOfTheYear: "+this.monthsOfTheYear);
   }
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
@@ -216,6 +238,10 @@ export class ReportgeneratorComponent implements OnInit {
 
     console.log(this.indicators);
 
+    console.log("this.selectMonth: "+this.selectMonth);  
+    
+   
+
     let doc = new jsPDF();
 
     let xImage = 60;
@@ -233,7 +259,26 @@ export class ReportgeneratorComponent implements OnInit {
 
     doc.setFontSize(25);
 
-    doc.text(60, y, "Informe General " + this.selectedYear);
+    let mesString= "Ninguno";
+    let mesInt = 0;
+    
+    if(this.selectMonth.localeCompare("Ninguno")!=0)
+    {
+      console.log("if this.selectMonth: "+this.selectMonth);
+      for(let i = 0; i<this.Months.length; i++)
+      {
+          if(this.selectMonth.localeCompare(this.Months[i])==0)
+          {
+            mesString=this.Months[i];
+            mesInt=i+1;
+          }
+      }
+      doc.text(60, y, "Informe General " + this.selectedYear + " " + this.selectMonth);
+    }
+    else
+    {
+      doc.text(60, y, "Informe General " + this.selectedYear);
+    }
 
     y = y + 15;
 
@@ -298,25 +343,97 @@ export class ReportgeneratorComponent implements OnInit {
 
         for (let y = 0; y < this.indicators[empiezaJ].goals.length; y++) {
           if (this.indicators[empiezaJ].goals[y].year == this.selectedYear) {
-            meta += this.indicators[empiezaJ].goals[y].value;
+            if(mesString.localeCompare("Ninguno")==0)
+            {
+              meta += this.indicators[empiezaJ].goals[y].value;
+            }
+            else
+            {
+              if(mesInt == this.indicators[empiezaJ].goals[y].month+1)
+              {
+                meta += this.indicators[empiezaJ].goals[y].value;
+              }
+            }
+           
           }
         }
 
         let cantidadRegistro = 0;
         if (this.indicators[empiezaJ].registriesType == 1) {
+          
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
-            cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                }
+              }              
+            }              
           }
           doc.text(20, y, " Meta: " + meta + " Cantidad Registros: " + cantidadRegistro);
         }
         else if (this.indicators[empiezaJ].registriesType == 2) {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
-            cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+                }
+              }
+              
+              //prueba
+            }
           }
           doc.text(20, y, " Meta: " + meta + " Cantidad Porcentaje: " + cantidadRegistro + "%");
         }
         else {
-          cantidadRegistro = this.indicators[empiezaJ].registries.length;
+          for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
+            const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              //cantidadRegistro = this.indicators[empiezaJ].registries.length;
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                cantidadRegistro++;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  cantidadRegistro++;
+                }
+              } 
+              
+            }
+          }
           doc.text(20, y, " Meta: " + meta + " Cantidad General: " + cantidadRegistro);
         }
 
@@ -376,7 +493,29 @@ export class ReportgeneratorComponent implements OnInit {
 
     let meta = 0;
 
-    var ws_data = [[' ','Informe General '+this.selectedYear]];  //a row with 2 columns
+    let mesString= "Ninguno";
+    let mesInt = 0;
+    
+    if(this.selectMonth.localeCompare("Ninguno")!=0)
+    {
+      console.log("if this.selectMonth: "+this.selectMonth);
+      for(let i = 0; i<this.Months.length; i++)
+      {
+          if(this.selectMonth.localeCompare(this.Months[i])==0)
+          {
+            mesString=this.Months[i];
+            mesInt=i+1;
+          }
+      }
+
+      var ws_data = [[' ','Informe General '+this.selectedYear+ " " + this.selectMonth]];  //a row with 2 columns
+    }
+    else
+    {
+      var ws_data = [[' ','Informe General '+this.selectedYear]]; 
+    }
+
+    
 
     ws_data.push([' ',' ']);
 
@@ -395,7 +534,18 @@ export class ReportgeneratorComponent implements OnInit {
         {
           if(this.indicators[posicionIndicador].goals[y].year == this.selectedYear)
           {
-            meta += this.indicators[posicionIndicador].goals[y].value;
+            if(mesString.localeCompare("Ninguno")==0)
+            {
+              meta += this.indicators[posicionIndicador].goals[y].value;
+            }
+            else
+            {
+              if(mesInt == this.indicators[posicionIndicador].goals[y].month+1)
+              {
+                meta += this.indicators[posicionIndicador].goals[y].value;
+              }
+            }
+            
           }
         }
 
@@ -406,19 +556,82 @@ export class ReportgeneratorComponent implements OnInit {
         {
           for(let z=0;z < this.indicators[posicionIndicador].registries.length; z++)
           {
-            cantidadRegistro+=this.indicators[posicionIndicador].registries[z].quantity;
+            const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                cantidadRegistro+=this.indicators[posicionIndicador].registries[z].quantity;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  cantidadRegistro+=this.indicators[posicionIndicador].registries[z].quantity;
+                }
+              }              
+            }   
+            
           }        
         }
         else if(this.indicators[posicionIndicador].registriesType==2)
         {
           for(let z=0;z < this.indicators[posicionIndicador].registries.length; z++)
           {
-            cantidadRegistro+=this.indicators[posicionIndicador].registries[z].percent;
+            const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                cantidadRegistro+=this.indicators[posicionIndicador].registries[z].percent;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  cantidadRegistro+=this.indicators[posicionIndicador].registries[z].percent;
+                }
+              }              
+            } 
+            
           }        
         }
         else
         {
-          cantidadRegistro = this.indicators[posicionIndicador].registries.length;
+          for(let z=0;z < this.indicators[posicionIndicador].registries.length; z++)
+          {
+            const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date); 
+            const anio = date.getFullYear(); 
+            console.log("anio"+anio); 
+            const mes = date.getMonth()+1;            
+            console.log("mes: "+ mes);
+            if(anio==this.selectedYear)
+            {
+              if(mesString.localeCompare("Ninguno")==0)
+              {
+                //cantidadRegistro = this.indicators[posicionIndicador].registries.length;
+                cantidadRegistro++;
+              }
+              else
+              {
+                if(mesInt == mes)
+                {
+                  //cantidadRegistro = this.indicators[posicionIndicador].registries.length;
+                  cantidadRegistro++;
+                }
+              }              
+            } 
+            
+          }
+          
         }
 
         let cantidadRegistros = cantidadRegistro.toString();
