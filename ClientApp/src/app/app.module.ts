@@ -55,6 +55,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
+import { ChartComponent } from './components/indicator-detail/chart/chart.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -86,6 +87,7 @@ defineLocale('es', esLocale);
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
+    ChartComponent
     SafeDomPipe,
   ],
   imports: [
