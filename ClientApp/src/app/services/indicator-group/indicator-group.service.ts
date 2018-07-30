@@ -33,6 +33,10 @@ export class IndicatorGroupService {
     return this.http.get<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroupId);
   }
 
+  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> { 
+    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL); 
+  } 
+
   calculateIndicatorGroup(indicatorGroup: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup);
   }
