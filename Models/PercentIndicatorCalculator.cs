@@ -111,15 +111,9 @@ namespace think_agro_metrics.Models
 
         public double CalculateGoal(ICollection<Goal> goals)
         {
-            double result = 0;
-            foreach (Goal goal in goals)
-            {
-                result += goal.Value;
-            }
-
             if (goals.Any())
             {
-                return result / goals.Count;
+                return goals.Max(g => g.Value);
             }
             else
             {
@@ -131,21 +125,24 @@ namespace think_agro_metrics.Models
         public double CalculateGoalWeek(ICollection<Goal> goals, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
             DateTime date = new DateTime(startWeekYear, startWeekMonth + 1, startWeekDay);
-            double sum = 0;
-            for (int i = 0; i < 7; i++)
+            DateTime newDate = date.AddDays(6);
+
+            var goal1 = goals.Where(g => g.Year == date.Year && g.Month == date.Month - 1).SingleOrDefault();
+
+            var goal2 = goals.Where(g => g.Year == newDate.Year && g.Month == newDate.Month - 1).SingleOrDefault();
+
+            if (goal1 == null && goal2 == null)
             {
-                DateTime newDate = date.AddDays(i);
-                // The month of the goals in the DB starts at 0
-                var goal = goals.Where(g => g.Year == newDate.Year && g.Month == newDate.Month - 1).SingleOrDefault();
-
-                // Return 0 if not found
-                if (goal != null)
-                {
-                    sum += goal.Value;
-                }
+                return 0;
             }
-
-            return (sum / 7.0);
+            else if (goal2 == null)
+            {
+                return goal1.Value;
+            }
+            else
+            {
+                return goal2.Value;
+            }
         }
     }
 }
