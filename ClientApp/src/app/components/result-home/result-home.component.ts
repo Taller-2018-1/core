@@ -28,6 +28,8 @@ export class ResultHomeComponent implements OnInit {
 
   public indicatorGroups$: Observable<IndicatorGroup[]>;
 
+  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>; 
+
   modalRef: BsModalRef;
 
   constructor(private service: IndicatorGroupService, private modalService: BsModalService) {
@@ -37,12 +39,10 @@ export class ResultHomeComponent implements OnInit {
   ngOnInit()
   {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
+
+    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
-  openModal(template: TemplateRef<any>)
-  {
-    this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
-  }
 
   openModalAdd(template: TemplateRef<any>)
   {
