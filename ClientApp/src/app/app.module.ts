@@ -53,6 +53,7 @@ import { LinkDocumentSubformComponent } from './components/registry-form/link-do
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
+import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 defineLocale('es', esLocale);
 
@@ -84,7 +85,8 @@ defineLocale('es', esLocale);
     IndicatorFormComponent,
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
-    FileDocumentSubformComponent
+    FileDocumentSubformComponent,
+    SafeDomPipe,
   ],
   imports: [
     BsDropdownModule.forRoot(),
