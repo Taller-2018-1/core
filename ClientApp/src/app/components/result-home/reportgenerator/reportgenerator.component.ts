@@ -180,38 +180,13 @@ export class ReportgeneratorComponent implements OnInit {
       { 
         console.log("largo: "+this.indicatorGroups[i].indicators[j].registries.length); 
         this.indicators.push(this.indicatorGroups[i].indicators[j]);
-        /*for(let k=0; k< this.indicatorGroups[i].indicators[j].registries.length; k++) 
-        { 
-          const date: Date = new Date(this.indicatorGroups[i].indicators[j].registries[k].date); 
-          const anio = date.getFullYear(); 
-          console.log("anio"+anio); 
-          if( anio == year) 
-          { 
-            this.indicators.push(this.indicatorGroups[i].indicators[j]); 
-          } 
-        }*/ 
+        
       }
-    } 
-    
-
-    /*for (let i = 1; i < this.indicatorGroups.length + 1; i++) {
-
-      this.service.getIndicatorGroup(i).subscribe(g => {
-        g.indicators.forEach(indicator => {
-          this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
-            this.indicators.push(j);
-
-          });
-        });
-
-      });
-
-    }*/
-
+    }
   }
 
   OrdernarArregloIndicators() {
-    console.log("Entra");
+   
     this.indicators.sort(
       function (a, b) {
         return a.indicatorID - b.indicatorID;
@@ -398,7 +373,7 @@ export class ReportgeneratorComponent implements OnInit {
     {
       ws_data.push([this.indicatorGroups[i].name]);
 
-      //this.indicators[empiezaJ].name
+      
 
       for(let j=0; j<this.indicatorGroups[i].indicators.length; j++)
       {
