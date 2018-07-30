@@ -55,6 +55,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
 import { NotificationService } from './services/alerts/notification.service';
 import { ConfigHomeComponent } from './components/config-home/config-home.component';
+import { PreviousRouteService } from './services/previous-route/previous-route.service';
+
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -147,6 +149,7 @@ defineLocale('es', esLocale);
     FileService,
     NotificationService,
     LoaderService,
+    PreviousRouteService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
