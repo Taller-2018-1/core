@@ -10,9 +10,10 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-          <li><a class="active" href="/">Inicio</a></li>
-          <li [class.hidden]="isLogged" ><a (click)="openModal(template)"  href="#">Iniciar Sesión</a></li>
-          <li [class.hidden]="!isLogged" ><a (click)="logOut()"  href="./#">Cerrar Sesión</a></li>
+        <li><a class="active" href="/">Inicio</a></li>
+        <li [class.hidden]="!isLogged" ><a  (click)="goToConfigPage()" >Configuración</a></li>
+        <li [class.hidden]="isLogged" ><a (click)="openModal(template)"  href="#">Iniciar Sesión</a></li>
+        <li [class.hidden]="!isLogged" ><a (click)="logOut()"  href="./#">Cerrar Sesión</a></li>
       </ul>
 
       <ng-template #template>

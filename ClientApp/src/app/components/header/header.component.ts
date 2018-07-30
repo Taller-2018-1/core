@@ -1,6 +1,7 @@
 import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AuthService } from '../../services/auth/AuthService';
+import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +30,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  constructor(private modalService: BsModalService, private auth: AuthService) { }
+  constructor(private modalService: BsModalService, private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
   }
@@ -43,5 +46,9 @@ export class HeaderComponent implements OnInit {
   }
   get isLogged(): boolean {
     return this.auth.getUser() !== false;
+  }
+
+  goToConfigPage() {
+    this.router.navigateByUrl('/config') ;
   }
 }
