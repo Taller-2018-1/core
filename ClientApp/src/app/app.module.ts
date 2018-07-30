@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DateFilterComponent } from './components/date-filter/date-filter.component';
+import { DateService } from './services/date/date.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
@@ -89,8 +91,9 @@ defineLocale('es', esLocale);
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
-    ChartComponent
+    ChartComponent,
     SafeDomPipe,
+    DateFilterComponent,
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -151,7 +154,8 @@ defineLocale('es', esLocale);
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
       multi: true
-    }
+    },
+    DateService,
   ],
   bootstrap: [AppComponent]
 })
