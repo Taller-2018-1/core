@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
+using System.IO;
 
 namespace think_agro_metrics.Controllers
 {
@@ -26,7 +27,12 @@ namespace think_agro_metrics.Controllers
     {
         private IConfiguration _config;
 
-        
+        public class Role{
+            public String role_name;
+            public List<String> read;
+            public List<String> write;
+        }
+
         public AuthorizationController(IConfiguration config)
         {
             _config = config;
@@ -100,13 +106,28 @@ namespace think_agro_metrics.Controllers
             public Boolean Eliminado ; // : false
         }
                 
+        
         private string BuildToken(AuthenticatedUser user, UserDetails userDetails, UserRole[] userRoles)
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Email, userDetails.Resultado.Email));
             foreach (var userRole in userRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, userRole.Resultado.Nombre));
+                claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x,i) => i > 0 && (char.IsUpper(x) || char.IsWhiteSpace(x)) ? "_" + x.ToString().ToLower() : x.ToString().ToLower()))));
+
+                // came with this idea while listening https://www.youtube.com/watch?v=7PYe57MwxPI while drunk
+                using (StreamReader r = new StreamReader("Data/permissions.json")) 
+                {
+                    string json = r.ReadToEnd();
+                    List<Role> roles = new List<Role>(JsonConvert.DeserializeObject<List<Role>>(json));
+                    Role subject = roles.Find(role => role.role_name == userRole.Resultado.Nombre);
+                    foreach (string permission in subject.write){
+                        claims.Add(new Claim("writes", permission));
+                    }
+                    foreach (string permission in subject.read){
+                        claims.Add(new Claim("reads", permission));
+                    }
+                }
             }   
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
