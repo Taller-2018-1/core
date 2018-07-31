@@ -4,13 +4,18 @@ import { Observable } from 'rxjs/Observable';
 
 // Model
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
+import { RegistryType } from '../../shared/models/registryType';
 
 // Service
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
+import { RegistryService } from '../../services/registry/registry.service';
+import { SessionService } from '../../services/session/session.service';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+
 
 @Component({
   selector: 'app-indicator-home',
@@ -20,19 +25,108 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class IndicatorHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
-  public indicatorGroup$: Observable<IndicatorGroup>;
+  public indicatorGroup: IndicatorGroup;
   public idIndicatorGroup = -1;
+
+  // Observables
+  indicatorResults$: Observable<number[]>;
+  goals$: Observable<number[]>;
+
+  // Date Filter data
+  isSpecificYearSelected: boolean;
+  isSpecificTrimesterSelected: boolean;
+  isSpecificMonthSelected: boolean;
+  isSpecificWeekSelected: boolean;
+  selectedYear: number;
+  selectedTrimester: number;
+  selectedMonth: number;
+  selectedWeek: number;
 
   modalRef: BsModalRef;
 
-  constructor(private service: IndicatorGroupService,
+  constructor(private indicatorGroupService: IndicatorGroupService,
               private route: ActivatedRoute,
-              private modalService: BsModalService) {
+              private modalService: BsModalService,
+              private indicatorService: IndicatorGroupService,
+              private registryService: RegistryService,
+              private sessionService: SessionService,) {
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
   }
 
   ngOnInit() {
-    this.indicatorGroup$ = this.service.getIndicatorGroup(this.idIndicatorGroup);
+    this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup)
+      .subscribe(data => this.indicatorGroup = data);
+    this.updateExternalIndicator();
+    this.updateObservables(this.sessionService.getDateFiltersData());
+  }
+
+  updateExternalIndicator() {
+    this.indicatorGroup.indicators.forEach(indicator => {
+      if (indicator.registriesType === RegistryType.ExternalRegistry) {
+        this.registryService.getRegistriesExternal().subscribe();
+      }
+    });
+  }
+
+  updateObservables(event) {
+    this.updateDropdownDateFiltersValues(event);
+
+    // Verify dropdown selection bottom-up (from week to year)
+    if (this.isSpecificWeekSelected) {
+      this.updateObservablesSpecificWeek();
+
+    } else if (this.isSpecificMonthSelected) {
+      this.updateObservablesSpecificMonth();
+
+    } else if (this.isSpecificTrimesterSelected) {
+      this.updateObservablesSpecificTrimester();
+
+    } else if (this.isSpecificYearSelected) {
+      this.updateObservablesSpecificYear();
+
+    } else {
+      this.updateObservablesAllYears();
+    }
+  }
+
+  updateDropdownDateFiltersValues(event) {
+    this.isSpecificYearSelected = event.isSpecificYearSelected;
+    this.isSpecificTrimesterSelected = event.isSpecificTrimesterSelected;
+    this.isSpecificMonthSelected = event.isSpecificMonthSelected;
+    this.isSpecificWeekSelected = event.isSpecificWeekSelected;
+    this.selectedYear = event.selectedYear;
+    this.selectedTrimester = event.selectedTrimester;
+    this.selectedMonth = event.selectedMonth;
+    this.selectedWeek = event.selectedWeek;
+  }
+
+  updateObservablesAllYears() {
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroup(this.indicatorGroup.indicatorGroupID);
+    this.goals$ = this.indicatorService.getGoals(this.indicatorGroup.indicatorGroupID);
+  }
+
+  updateObservablesSpecificYear() {
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
+    this.goals$ = this.indicatorService.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
+  }
+
+  updateObservablesSpecificTrimester() {
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearTrimester(this.indicatorGroup.indicatorGroupID,
+      this.selectedYear, this.selectedTrimester);
+    this.goals$ = this.indicatorService
+      .getGoalsYearTrimester(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedTrimester);
+  }
+
+  updateObservablesSpecificMonth() {
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearMonth(this.indicatorGroup.indicatorGroupID,
+      this.selectedYear, this.selectedMonth);
+    this.goals$ = this.indicatorService.getGoalsYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
+  }
+
+  updateObservablesSpecificWeek() {
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearWeek(this.indicatorGroup.indicatorGroupID,
+      this.selectedYear, this.selectedWeek);
+    this.goals$ = this.indicatorService.getGoalsYearWeek(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedWeek);
   }
 
   openModal(template: TemplateRef<any>) {
@@ -40,7 +134,8 @@ export class IndicatorHomeComponent implements OnInit {
   }
 
   indicatorAdded() {
-    this.indicatorGroup$ = this.service.getIndicatorGroup(this.idIndicatorGroup);
+    this.indicatorService.getIndicatorGroup(this.idIndicatorGroup)
+      .subscribe(data => this.indicatorGroup = data);
   }
 
 }

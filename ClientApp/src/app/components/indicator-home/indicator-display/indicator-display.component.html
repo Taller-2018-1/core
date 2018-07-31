@@ -1,19 +1,4 @@
-<div *ngIf="indicatorResults$ | async as indicatorResults; else loading">
-  <section>
-    <div class="container">
-      <div class="heading-block">
-        <h2>{{ indicatorGroup.name }}</h2>
-      </div>
-
-      <!--Dropdown Filters-->
-      <!-- <div class="col-xs-12 col-sm-6 col-md-6"> 
-      </div> -->
-
-      <!-- end col-md-12 -->
-    </div>
-    <!-- end container -->
-  </section>
-  <br>
+<div *ngIf="indicatorResultsObservable | async as indicatorResults; else loading">
   <!-- end page-section -->
   <section>
     <div id="statistic-section" class="statistic-bg" data-stellar-background-ratio="0">
@@ -27,7 +12,7 @@
                 <div class="services-content">
                     <div class="fact statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     
-                      <div class="row" *ngIf="goals$ | async as goals">
+                      <div class="row" *ngIf="goalsObservable | async as goals">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <p>Actual</p>
                           <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
@@ -58,6 +43,6 @@
 
 
 <ng-template #loading>
-    Cargando...
-  </ng-template>
+  Cargando...
+</ng-template>
   
