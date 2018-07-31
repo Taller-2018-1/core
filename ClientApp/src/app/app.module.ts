@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -29,6 +29,7 @@ import { RegistryEditorComponent } from './components/indicator-detail/registry-
 import { GoalsEditorComponent } from './components/indicator-detail/goals-editor/goals-editor.component';
 import { RegistryService } from './services/registry/registry.service';
 import { IndicatorGraphOptionComponent } from './components/indicator-detail/indicator-graph-option/indicator-graph-option.component';
+// tslint:disable-next-line:max-line-length
 import { IndicatorDetailRegistryComponent } from './components/indicator-detail/indicator-detail-registry/indicator-detail-registry.component';
 import { AuthService } from './services/auth/AuthService';
 import { CanActivateUser } from './services/auth/CanActivateService';
@@ -41,15 +42,18 @@ import { SessionService } from './services/session/session.service';
 import { NavigationButtonsComponent } from './components/navigation-buttons/navigation-buttons.component';
 import { DocumentPreviewComponent } from './components/indicator-detail/document-preview/document-preview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderService } from './services/loader/loader.service';
+import { LoaderInterceptor } from './shared/interceptors/loader-interceptor';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
 import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
-import { PopoverModule} from "ngx-bootstrap";
+import { PopoverModule} from 'ngx-bootstrap';
 import { AddDocumentFormComponent } from './components/registry-form/add-document-form/add-document-form.component';
 import { LinkDocumentSubformComponent } from './components/registry-form/link-document-subform/link-document-subform.component';
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
-
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
+import { NotificationService } from './services/alerts/notification.service';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -75,6 +79,7 @@ defineLocale('es', esLocale);
     NavigationButtonsComponent,
     GoalsEditorComponent,
     DocumentPreviewComponent,
+    LoaderComponent,
     IndicatorGroupFormComponent,
     IndicatorFormComponent,
     AddDocumentFormComponent,
@@ -95,19 +100,52 @@ defineLocale('es', esLocale);
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     FlexLayoutModule,
-    StorageServiceModule ,
+    StorageServiceModule,
     PdfViewerModule,
     PopoverModule.forRoot(),
 
     RouterModule.forRoot([
-      { path: 'indicator/:idIndicatorGroup/:idIndicator', component: IndicatorDetailComponent, canActivate: [CanActivateUser] },
-      { path: 'indicatorGroup/:idIndicatorGroup',   component: IndicatorHomeComponent, canActivate: [CanActivateUser] },
-      { path: 'home',        component: ResultHomeComponent, canActivate:[CanActivateUser] },
-      { path: '',            component: WelcomeComponent },
-      { path: '**',          component: ResultHomeComponent, canActivate: [CanActivateUser] },
+      {
+        path: 'indicator/:idIndicatorGroup/:idIndicator',
+        component: IndicatorDetailComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'indicatorGroup/:idIndicatorGroup',
+        component: IndicatorHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'home',
+        component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: '',
+        component: WelcomeComponent
+      },
+      {
+        path: '**',
+        component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      }
     ])
   ],
-  providers: [IndicatorService, IndicatorGroupService, RegistryService, AuthService, CanActivateUser, SessionService, FileService],
+  providers: [
+    IndicatorService,
+    IndicatorGroupService,
+    RegistryService,
+    AuthService,
+    CanActivateUser, SessionService,
+    FileService,
+    NotificationService,
+    LoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
