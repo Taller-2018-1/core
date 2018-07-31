@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
+import { Document } from '../../../shared/models/document';
+
 @Component({
   selector: 'app-file-document-subform',
   templateUrl: '../../indicator-detail/file-document-form/file-document-form.component.html',
