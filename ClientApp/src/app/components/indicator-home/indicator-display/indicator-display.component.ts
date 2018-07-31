@@ -47,6 +47,14 @@ export class IndicatorDisplayComponent implements OnInit {
     this.updateObservables(this.sessionService.getDateFiltersData());
   }
 
+  updateExternalIndicator() {
+    this.indicatorGroup.indicators.forEach(indicator => {
+      if (indicator.registriesType === RegistryType.ExternalRegistry) {
+        this.registryService.getRegistriesExternal().subscribe();
+      }
+    });
+  }
+
   updateObservables(event) {
     this.updateDropdownDateFiltersValues(event);
 
@@ -111,11 +119,4 @@ export class IndicatorDisplayComponent implements OnInit {
     this.router.navigateByUrl('/indicator/' + idIndicatorGroup + '/' + idIndicator);
   }
 
-  updateExternalIndicator() {
-    this.indicatorGroup.indicators.forEach(indicator => {
-      if (indicator.registriesType === RegistryType.ExternalRegistry) {
-        this.registryService.getRegistriesExternal().subscribe();
-      }
-    });
-  }
 }

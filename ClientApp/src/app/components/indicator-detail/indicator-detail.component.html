@@ -71,50 +71,14 @@
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">
+
+              <!-- Date Filters Here-->
+
               <table border="0">
                 <tr>
-                  <td width="40%">Seleccione año a mostrar</td>
-                  <td width="30%">Seleccione mes a mostrar</td>
                   <td style="padding-left: 200px;"><span>Mostrar Gráfico</span></td>
                 </tr>
                 <tr>
-                  <td width="40%">
-                    <!-- Filtros año-mes -->
-                    <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-                      Filtrar por Fecha
-                    </button> -->
-                    <!--Dropdown Year Filter-->
-                    <!--<div class="col-md-6">-->
-                    <div class="btn-group" dropdown>
-                      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                        {{ selectedYearText }} <span class="caret"></span>
-                      </button>
-                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                          role="menu" aria-labelledby="button-basic">
-                        <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
-                        <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
-                      </ul>
-                    </div>
-                    <!--</div>-->
-                  </td>
-                  <td width="30%">
-
-                    <!--Dropdown Month Filter-->
-                    <!--<div class="col-md-6">-->
-                    <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
-                      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                        {{ selectedMonthText }} <span class="caret"></span>
-                      </button>
-                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                          role="menu" aria-labelledby="button-basic">
-                        <li><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>
-                        <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li>
-                      </ul>
-                    </div>
-                    <!--</div>-->
-
-                  </td>
-
                   <!-- Graph Type Dropdown (no PercentRegistry) -->
                   <td *ngIf="indicator.registriesType != RegistryType.PercentRegistry" style="padding-left: 200px;">
                     <!--<app-indicator-graph-option></app-indicator-graph-option>-->
