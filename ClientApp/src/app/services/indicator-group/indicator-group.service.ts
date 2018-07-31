@@ -99,4 +99,8 @@ export class IndicatorGroupService {
   getIndicatorGroupName(indicatorId: number): Observable<string> {
     return this.http.get<string>(IndicatorGroupService.API_URL + indicatorId + IndicatorGroupService.NAME);
   }
+
+  addIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<any> {
+    return this.http.post<any>(IndicatorGroupService.API_URL, indicatorGroup);
+  }
 }
