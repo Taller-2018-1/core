@@ -60,9 +60,9 @@ export class RegistryService {
       discriminator = RegistryService.PERCENT;
     }
 
-    return this.http.put<Registry>(RegistryService.BASE_URL + discriminator + registry.registryID , registry, { headers: headers })
+    return this.http.put<Registry>(RegistryService.BASE_URL + discriminator + registry.indicatorID + '/' + registry.registryID , registry, { headers: headers })
       .pipe(
-      retry(5) // retry a failed request up to 3 times, but don't handle errros
+      retry(3) // retry a failed request up to 3 times, but don't handle errros
       );
   }
 
