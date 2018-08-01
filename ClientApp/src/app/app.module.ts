@@ -56,6 +56,8 @@ import { esLocale } from 'ngx-bootstrap/locale';
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
+import { PreviousRouteService } from './services/previous-route/previous-route.service';
+
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -144,6 +146,7 @@ defineLocale('es', esLocale);
     FileService,
     NotificationService,
     LoaderService,
+    PreviousRouteService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
