@@ -41,7 +41,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
+        <div class="modal-body" *ngIf="indicatorGroupsComplete$ | async as indicatorGroups">
           <app-reportgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-reportgenerator>
         </div>
   </div>
