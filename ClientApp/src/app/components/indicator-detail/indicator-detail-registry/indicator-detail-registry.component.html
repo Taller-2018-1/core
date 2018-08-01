@@ -1,26 +1,31 @@
 <div *ngIf="registriesType != RegistryType.ExternalRegistry; else externalRegistries">
   <ngb-accordion [closeOthers]="true" activeIds="static-1">
     <ng-template ngFor let-registry [ngForOf]="registries" let-i="index">
+      
       <ngb-panel>
-        <ng-template ngbPanelTitle style="padding: 1em; border-radius: 0.5em; font-size: 14px; border: 5px solid #c4c4c4 !important; font-weight: bolder;">
-          <div fxLayout="row" class="clickeable">
-            <div fxFlex="30%">
-              {{registry.name | uppercase}}
+        <ng-template ngbPanelTitle>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-5">
+              {{ registry.name | uppercase }}
               <br>
-              <span class="not-bold-but-italic">{{registry.date | date: 'dd-MM-yyyy'}}</span>
+              <span class="not-bold-but-italic"> ({{registry.date | date: 'dd-MM-yyyy' || "No Disponible"}})</span>
             </div>
-            <div fxFlex="42%">
-              <div class="value-box" *ngIf="registriesType === RegistryType.QuantityRegistry">{{registry.quantity}}</div>
-              <div class="value-box" *ngIf="registriesType === RegistryType.PercentRegistry">{{registry.percent}}%</div>
-            </div>       
-            <div fxFlex="15%">
-              <button class="btn btn-xs btn-primary btn-size-text" (click)="openModalEditRegistry($event, editRegistry,registry)">Modificar</button>
+            <div class="col-xs-12 col-sm-2 col-md-2">
+              <span class="not-bold-but-italic">
+                <strong *ngIf="registriesType === RegistryType.QuantityRegistry">{{registry.quantity || "0"}}  apariciones</strong>
+                <strong *ngIf="registriesType === RegistryType.PercentRegistry">{{registry.percent || "0"}} % asociado</strong>
+              </span>
             </div>
-            <div fxFlex="20%">
-              <button class="btn btn-xs btn-danger btn-size-text" (click)="deleteRegistry($event, registry)">Eliminar</button>
+            <div class="col-xs-10 col-sm-4 col-md-4">
+              <div class="pull-right">
+                <button class="btn btn-xs btn-warning" (click)="openModalEditRegistry($event, editRegistry,registry)">Modificar</button>
+                <button class="btn btn-xs btn-danger" (click)="deleteRegistry($event, registry)">Eliminar</button>
+              </div>
             </div>
-            <span fxFlex="3%" class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
-          </div>
+            <div class="col-xs-2 col-sm-1 col-md-1">
+              <span class="pull-right glyphicon glyphicon-menu-down" style="font-size: 24px;"></span>
+            </div>
         </ng-template>
         <ng-template ngbPanelContent>
           <div class="row">
@@ -30,46 +35,50 @@
           </div>
           <br/>
           <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
-            <div fxLayout="row">
-              <div fxFlex="40%">
-                <b>Nombre</b>
-                <br /> {{document.name}}
+            <div class="row">
+
+              <div class="col-xs-12 col-sm-6 col-md-4">
+                Nombre
+                <br><strong>{{document.name || "No Disponible"}}</strong>
               </div>
-              <div fxFlex="10%">
-                <b>Fecha</b>
-                <br />  {{document.date | date: 'dd-MM-yyyy'}}
+              <div class="col-xs-6 col-sm-4 col-md-2">
+                Fecha
+                <br><strong>{{document.date | date: 'dd-MM-yyyy' || "No Disponible"}}</strong>
               </div>
-              <div fxFlex="10%">
-                <b>Tipo</b>
-                <br /> {{document.extension}}
+              <div class="col-xs-6 col-sm-2 col-md-1">
+                Tipo
+                <br><strong>{{document.extension || "No Disponible"}}</strong>
               </div>
-              <div fxFlex="10%">
-                <button type="button" class="btn btn-xs btn-primary" (click)="openModalDocumentPreview($event, lgModal, document)">
-                  Ver
-                </button>
-              </div>
-              <div fxFlex="15%">
-                <button *ngIf="document.extension=='link'; else downloadFileTemplate" 
-                type="button" (click)="goToLinkBlank(document.link)" class="btn btn-xs btn-info btn-size-text">
-                  Descargar
-                </button>
-                <ng-template #downloadFileTemplate>
-                  <button type="button" (click)="download(document)"  class="btn btn-xs btn-info btn-size-text">
+              <div class="col-xs-12 col-sm-12 col-md-5">
+                <div class="pull-right">
+                  <button class="btn btn-xs btn-success" *ngIf="document.extension=='link'; else viewFileTemplate"
+                          type="button" (click)="goToLinkBlank(document.link)">
+                    Ver
+                  </button>
+                  <ng-template #viewFileTemplate>
+                    <button class="btn btn-xs btn-success" type="button" (click)="openModalDocumentPreview($event, lgModal, document)">
+                      Ver
+                    </button>
+                  </ng-template>
+                  <button class="btn btn-xs btn-info" *ngIf="document.extension=='link'; else downloadFileTemplate"
+                          type="button" (click)="goToLink(document.link)">
                     Descargar
                   </button>
-                </ng-template>
+                  <ng-template #downloadFileTemplate>
+                    <button class="btn btn-xs btn-info" type="button" (click)="download(document)">
+                      Descargar
+                    </button>
+                  </ng-template>
+                  <button class="btn btn-xs btn-warning" type="button" (click)="openModalEditDocument($event, editDocument, document)">Modificar</button>
+                  <button class="btn btn-xs btn-danger" type="button" (click)="deleteDocument(registry,document)">Eliminar</button>
+                </div>
               </div>
-              <div fxFlex="15%">
-                <a class="btn btn-xs btn-primary" (click)="openModalEditDocument($event, editDocument, document)">Modificar</a>
-              </div>
-              <div fxFlex="12%">
-                <a class="btn btn-xs btn-danger btn-size-text" (click)="deleteDocument(registry,document)">Eliminar</a>
-              </div>
+
             </div>
-            
-            
+            <hr>
           </ng-template>
         </ng-template>
+
       </ngb-panel>
     </ng-template>
   </ngb-accordion>

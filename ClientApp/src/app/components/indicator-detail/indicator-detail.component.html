@@ -5,43 +5,39 @@
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
         <app-navigation-buttons></app-navigation-buttons>
+
         <div class="row">
-          <div class="col-sm-8">
+          <div class="col-xs-12 col-sm-8 col-md-8">
             <div class="head-title">
-              <h5>{{selectedYearText}}</h5>
+              <h3>Período {{selectedYearText}}</h3>
               <h4 *ngIf="indicatorGroupName$ | async as indicatorGroupName">{{ indicatorGroupName }}</h4>
-              <h1>
-                {{ indicator.name }}
-              </h1>
+              <h1>{{ indicator.name }}</h1>
             </div>
             <!-- end subsection-text -->
           </div>
           <!-- end col-sm-8 -->
-          <div class="col-sm-4">
+          <div class="col-xs-6 col-sm-2 col-md-2">
             <div class="head-title">
-              <div class="col-sm-6">
-                <div class="inline" style="text-align: center;">Valor Indicador</div>
-                <div class="row-number row-h1 inline" *ngIf="value$ | async as value else zero;">
-                  <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-                    {{ value }}%
-                  </div>
-                  <div *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
-                    {{ value }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="inline" style="text-align: center;">Valor Meta</div>
-                <div class="row-number row-h1" *ngIf="goal$ | async as goal else na;">
-                  {{ goal }}
-                </div>
-              </div>
+              <p class="text-center">Valor Indicador</p>
+              <h1 class="row-h1 text-center">
+                <strong><span *ngIf="value$ | async as value">{{ value || "0" }}</span>
+                <span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span></strong>
+              </h1>
             </div>
-            <!-- end subsection-text -->
+          </div>
+
+          <div class="col-xs-6 col-sm-2 col-md-2">
+            <div class="head-title">
+              <p class="text-center">Valor Meta</p>
+              <h1 class="row-h1 text-center">
+                <strong><span *ngIf="goal$ | async as goal">{{ goal || "N/A " }}</span>
+                <span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span></strong>
+              </h1>
+            </div>
           </div>
           <!-- end col-sm-4 -->
         </div>
-        <!-- end row -->
+        
       </div>
       <!-- end container -->
     </div>
@@ -69,49 +65,70 @@
       <div class="container">
         <!--subtitle row ===================================== -->
         <div class="row">
-          <div class="col-md-12 pad-bt-60">
+          <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="heading-block">
 
-              <!-- Date Filters Here-->
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12">
+                    <span class="h3">Gráfica de Resultados</span>
+                  </div>
+                </div>
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  Seleccione Año
+                  <br />
+                  <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                      {{ selectedYearText }} <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-basic">
+                      <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
+                      <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-5 col-md-5">
+                  Seleccione Mes
+                  <br />
+                  <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                      {{ selectedMonthText }} <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-basic">
+                      <li><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>
+                      <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                  Seleccione Tipo Gráfico
+                  <br />
 
-              <table border="0">
-                <tr>
-                  <td style="padding-left: 200px;"><span>Mostrar Gráfico</span></td>
-                </tr>
-                <tr>
-                  <!-- Graph Type Dropdown (no PercentRegistry) -->
-                  <td *ngIf="indicator.registriesType != RegistryType.PercentRegistry" style="padding-left: 200px;">
-                    <!--<app-indicator-graph-option></app-indicator-graph-option>-->
-                    <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-                      <div class="btn-group" dropdown>
-                        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                          {{ selectedTypeChart }} <span class="caret"></span>
-                        </button>
-                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                            role="menu" aria-labelledby="button-basic">
-                          <li *ngFor="let typeChart of typesChart"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
-                        </ul>
-                      </div>
-                      <!--</div>-->
-                  </td>
+                  <div class="btn-group" dropdown *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                      {{ selectedTypeChart }} <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-basic">
+                      <li *ngFor="let typeChart of typesChart"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
+                    </ul>
+                  </div>
 
-                  <!-- Graph Type Dropdown (PercentRegistry) -->
-                  <td *ngIf="indicator.registriesType == RegistryType.PercentRegistry" style="padding-left: 200px;">
-                    <!--<app-indicator-graph-option></app-indicator-graph-option>-->
-                    <!--<app-indicator-graph-option [graph]="data[0]"></app-indicator-graph-option> --> <!--from design-->
-                      <div class="btn-group" dropdown>
-                        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                          Gráfico de dispersión <span class="caret"></span>
-                        </button>
-                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                            role="menu" aria-labelledby="button-basic">
-                          <li *ngFor="let typeChart of typeDispersion"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
-                        </ul>
-                      </div>
-                      <!--</div>-->
-                  </td>
-                </tr>
-              </table>
+                  <div class="btn-group" dropdown *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                      Gráfico de dispersión <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-basic">
+                      <li *ngFor="let typeChart of typeDispersion"><a class="dropdown-item" (click)="selectChart(typeChart, indicator)">{{ typeChart }}</a></li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
           <!-- end col-md-12 -->
@@ -120,32 +137,59 @@
         <!--graph row ======================================== -->
         <!-- end row -->
         <!--details files row ======================================== -->
-        <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart"></app-chart>
+        <div class="row">
+          <div class="col-md-12">
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
+              <canvas baseChart
+                      [datasets]="DispersionChartData"
+                      [labels]="lineChartLabels"
+                      [options]="dispersionChartOptions"
+                      [colors]="dispersionChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"></canvas>
+            </div>
+            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
+              <canvas baseChart
+                      [datasets]="lineChartData"
+                      [labels]="lineChartLabels"
+                      [options]="lineChartOptions"
+                      [colors]="lineChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Desviación estándar: {{devStandar}}</h4>
+              <h4>Varianza: {{varianza}}</h4>
+            </div>
+          </div>
+        </div>
+
+        <br />
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">
-              <table border="0">
-                <tr>
-                  <td width="70%">
-                    <h2>Descripción</h2>
-                  </td>
-                  <td style="padding-left: 200px;">
-                    <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login">
-                      Añadir registro
-                    </button>-->
-                    <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
-                      <button type="button" class="btn btn-primary pull-right" style="margin-bottom: 20px" (click)="openModal(addRegistry)">Añadir registro <span class="glyphicon glyphicon-plus"> </span></button>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <span class="h3">Registros Asociados</span>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <button type="button" class="btn btn-primary btn-lg pull-right" (click)="openModal(addRegistry)">
+                    <i class="glyphicon glyphicon-plus-sign"></i><span class="hidden-xs"> Añadir Registro</span>
+                  </button>
+                </div>
+              </div>
             </div>
             <!--Begin tab-->
-            <!--Tabset removed because I didn't know what to do with him-->
-            <!--Registries list and RegistriesType (from indicator) are needed-->
             <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -182,47 +226,7 @@
   </ng-template>
 
 
-  <!--UX-->
-
-  <ng-template #zero>
-    <div class="row-number row-h1 inline">
-      <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-        0%
-      </div>
-      <div *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
-        0
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #na>
-    <div class="row-number row-h1 inline">
-      N/A
-    </div>
-  </ng-template>
-
 </div>
-
-<!------------------------------------------------------------------------------------------>
-<!-- OLD DESIGN
-<h1> OLD DESIGN </h1>
-
-<div *ngIf="indicator$ | async as indicator; else loading">
-  <div id="head-page-section" class="l-grey-bg head-page-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-sm-7">
-          <div class="head-title">
-            <h1>
-              {{ indicator.name }}
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
--->
-
 
 
 <ng-template #loading>
