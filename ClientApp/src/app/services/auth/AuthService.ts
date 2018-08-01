@@ -6,6 +6,7 @@ import { IndicatorService } from '../indicator/indicator.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../alerts/notification.service';
 import { PermissionTarget, PermissionClaim } from './permissions';
+import { User } from './User';
 export interface Credentials {
   email: string;
   password: string;
@@ -26,7 +27,6 @@ export class AuthService {
           const token: string = data.token;
           localStorage.setItem('token', token);
           observer.next(true);
-          localStorage.setItem('user', JSON.stringify(credentials));
           observer.complete();
           this.router.navigate(['/home']);
           this.notifications.showToaster('Sesión iniciada', 'success');
@@ -35,7 +35,6 @@ export class AuthService {
         error => {
           // error path
           localStorage.setItem('token', null);
-          localStorage.setItem('user', null);
           this.router.navigate(['/welcome']);
           this.self_token = null;
           observer.error(new Error('usuario inválido'));
@@ -59,7 +58,6 @@ export class AuthService {
 
   public signOut() {
     return Observable.create(observer => {
-      localStorage.removeItem('user');
       localStorage.removeItem('token');
       observer.next(true);
       observer.complete();
@@ -68,16 +66,20 @@ export class AuthService {
     });
   }
 
-  public getUser(): Credentials | boolean {
-    const object = JSON.parse(localStorage.getItem('user'));
-    if (object == null) {
-      return false;
+
+  public getUser(): User | boolean {
+    const user: any = this.getToken();
+    if (user !== false) {
+      return user;
     }
-    return JSON.parse(localStorage.getItem('user'));
+    return false;
   }
 
   public getToken(): String | boolean {
     const raw_token = localStorage.getItem('token');
+    if (!raw_token) {
+      return false;
+    }
     const secure_token: string = this.parseJwt(raw_token);
     if (secure_token == null) {
       return false;

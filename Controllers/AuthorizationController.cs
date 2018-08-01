@@ -110,23 +110,35 @@ namespace think_agro_metrics.Controllers
         private string BuildToken(AuthenticatedUser user, UserDetails userDetails, UserRole[] userRoles)
         {
             List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Email, userDetails.Resultado.Email));
+            claims.Add(new Claim("id", userDetails.Resultado.Id));
+            claims.Add(new Claim("email", userDetails.Resultado.Email));
+            claims.Add(new Claim("first_name", userDetails.Resultado.Nombre));
+            claims.Add(new Claim("username", userDetails.Resultado.NombreUsuario));
+            claims.Add(new Claim("last_name", userDetails.Resultado.Apellido));
+            if(userDetails.Resultado.UrlFoto != null)
+            {
+                claims.Add(new Claim("profile_picture", userDetails.Resultado.UrlFoto));
+            }
             foreach (var userRole in userRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x,i) => i > 0 && (char.IsUpper(x) || char.IsWhiteSpace(x)) ? "_" + x.ToString().ToLower() : x.ToString().ToLower()))));
-
+                claims.Add(new Claim("role_ids", userRole.Resultado.Id));
                 // came with this idea while listening https://www.youtube.com/watch?v=7PYe57MwxPI while drunk
                 using (StreamReader r = new StreamReader("Data/permissions.json")) 
                 {
                     string json = r.ReadToEnd();
                     List<Role> roles = new List<Role>(JsonConvert.DeserializeObject<List<Role>>(json));
                     Role subject = roles.Find(role => role.role_name == userRole.Resultado.Nombre);
-                    foreach (string permission in subject.write){
-                        claims.Add(new Claim("writes", permission));
+                    if(subject != null) 
+                    {
+                        foreach (string permission in subject.write){
+                            claims.Add(new Claim("writes", permission));
+                        }
+                        foreach (string permission in subject.read){
+                            claims.Add(new Claim("reads", permission));
+                        }
                     }
-                    foreach (string permission in subject.read){
-                        claims.Add(new Claim("reads", permission));
-                    }
+                    
                 }
             }   
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
