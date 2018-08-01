@@ -70,7 +70,6 @@ export class AuthService {
   public getUser(): User | boolean {
     const user: any = this.getToken();
     if (user !== false) {
-      debugger;
       return user;
     }
     return false;
