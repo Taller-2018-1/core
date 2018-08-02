@@ -86,9 +86,6 @@ export class ReportgeneratorComponent implements OnInit {
       this.years[i] = this.baseYear + i;
     }
 
-    //console.log("years: "+this.years);
-    //console.log("currentYear: "+currentYear);
-
     const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = December
     // List of the months (numbers) from 0 to the current month (max 11)
     for (let i = 0; i <= currentMonth; i++) {
@@ -109,7 +106,6 @@ export class ReportgeneratorComponent implements OnInit {
   selectYear(year: any) {
     this.selectedYearText = year; 
     this.selectedYear = year;
-    //console.log("Año seleccionado: "+this.selectedYear);
     //this.GeneraIndicadores(Number(this.selectedYearText));
   }
 
@@ -151,7 +147,6 @@ export class ReportgeneratorComponent implements OnInit {
   setOptionContentDropdown(option: string) {
     this.setContentDropdown = option;//MES
     this.selectMonth = option;
-    //console.log("this.setContentDropdown: "+this.setContentDropdown);
   }
 
   setMonths() {
@@ -165,7 +160,6 @@ export class ReportgeneratorComponent implements OnInit {
     // tslint:disable-next-line:one-line
     else {
       this.months = [];
-      //console.log(this.months);
       const currentMonth = new Date().getMonth(); // 0 = Juanuary, 1 = February, ..., 11 = Decembery
       for (let i = 0; i <= currentMonth; i++) {
         this.months[i] = i;
@@ -180,7 +174,6 @@ export class ReportgeneratorComponent implements OnInit {
     this.months.forEach(month => {
       this.monthsOfTheYear[month] = Months[month];
     });
-    //console.log("this.monthsOfTheYear: "+this.monthsOfTheYear);
   }
   // According to the name of a month, it sets the corresponding number to the 'selectedMonth'
   setSelectedMonth(month: string) {
@@ -192,8 +185,7 @@ export class ReportgeneratorComponent implements OnInit {
     for (let i = 0; i < this.indicatorGroups.length; i++) { 
       
       for(let j = 0; j<this.indicatorGroups[i].indicators.length; j++) 
-      { 
-        //console.log("largo: "+this.indicatorGroups[i].indicators[j].registries.length); 
+      {  
         this.indicators.push(this.indicatorGroups[i].indicators[j]);
         /*for(let k=0; k< this.indicatorGroups[i].indicators[j].registries.length; k++) 
         { 
@@ -226,26 +218,15 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   OrdernarArregloIndicators() {
-    //console.log("Entra");
     this.indicators.sort(
       function (a, b) {
         return a.indicatorID - b.indicatorID;
       });
-
-
   }
 
   downloadPDF() {
-
-    this.OrdernarArregloIndicators();
-
-    //console.log(this.indicatorGroups);
-
-    //console.log(this.indicators);
-
-    //console.log("this.selectMonth: "+this.selectMonth);  
     
-    let maxY = 260;
+    let maxY = 260; // limite del Y para que escriba en el pdf antes de saltar a nueva pagina
 
     let doc = new jsPDF();
 
@@ -269,7 +250,6 @@ export class ReportgeneratorComponent implements OnInit {
     
     if(this.selectMonth.localeCompare("Ninguno")!=0)
     {
-      //console.log("if this.selectMonth: "+this.selectMonth);
       for(let i = 0; i<this.Months.length; i++)
       {
           if(this.selectMonth.localeCompare(this.Months[i])==0)
@@ -291,7 +271,6 @@ export class ReportgeneratorComponent implements OnInit {
     // recorre IndicatorsGroups
     for (let i = 0; i < n; i++) {
       doc.setFontSize(15);
-      let linesIndicatorGroup = this.linesIndicatorGroup(this.indicatorGroups[i]);
 
       let largoNombreGrupo = this.indicatorGroups[i].name.length;
       if (largoNombreGrupo > 75) {
@@ -300,7 +279,6 @@ export class ReportgeneratorComponent implements OnInit {
           // caso cuando el nombre del indicatorGroup no cabe en una sola linea y hay un espacio en blanco
 
           if (y + 7 > maxY){
-            console.log("cambio pagina");
             doc.addPage();
             y = 25;
           }
@@ -313,7 +291,6 @@ export class ReportgeneratorComponent implements OnInit {
 
           // caso cuando el nombre del indicatorGroup no cabe en una sola linea y no hay espacio en blanco
           if (y + 7 > maxY){
-            console.log("cambio pagina");
             doc.addPage();
             y = 25;
           }
@@ -333,7 +310,6 @@ export class ReportgeneratorComponent implements OnInit {
       }
       else {
         if (y > maxY){
-          console.log("cambio pagina");
           doc.addPage();
           y = 25;
         }
@@ -353,7 +329,6 @@ export class ReportgeneratorComponent implements OnInit {
           if (this.indicators[empiezaJ].name[100] == ' ') { // cambio indicatorsGroup por indicators
 
             if (y + 5 > maxY){
-              console.log("cambio pagina");
               doc.addPage();
               y = 25;
             }
@@ -365,7 +340,6 @@ export class ReportgeneratorComponent implements OnInit {
           else {
 
             if (y + 5 > maxY){
-              console.log("cambio pagina");
               doc.addPage();
               y = 25;
             }
@@ -383,7 +357,6 @@ export class ReportgeneratorComponent implements OnInit {
         else {
 
           if (y + 5> maxY){
-            console.log("cambio pagina");
             doc.addPage();
             y = 25;
           }
@@ -417,10 +390,8 @@ export class ReportgeneratorComponent implements OnInit {
           
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
             const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
-            const anio = date.getFullYear(); 
-            //console.log("anio"+anio); 
+            const anio = date.getFullYear();  
             const mes = date.getMonth()+1;            
-            //console.log("mes: "+ mes);
             if(anio==this.selectedYear)
             {
               if(mesString.localeCompare("Ninguno")==0)
@@ -442,9 +413,7 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
             const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
             const anio = date.getFullYear(); 
-            //console.log("anio"+anio); 
             const mes = date.getMonth()+1;            
-            //console.log("mes: "+ mes);
             if(anio==this.selectedYear)
             {
               if(mesString.localeCompare("Ninguno")==0)
@@ -468,9 +437,7 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
             const date: Date = new Date(this.indicators[empiezaJ].registries[z].date); 
             const anio = date.getFullYear(); 
-            //console.log("anio"+anio); 
             const mes = date.getMonth()+1;            
-            //console.log("mes: "+ mes);
             if(anio==this.selectedYear)
             {
               //cantidadRegistro = this.indicators[empiezaJ].registries.length;
@@ -497,14 +464,9 @@ export class ReportgeneratorComponent implements OnInit {
 
       }
 
-      //console.log("i: "+i);
-
       y = y + 10;
 
-      //console.log("y: "+y+ " y%270: "+y%270);
-
-
-      /*
+      /* 
       if ((y % 270 >= 0) && (y % 270) <= 50) {
         console.log("cambio de pagina, y = "+y);
         y = 25;
@@ -732,55 +694,5 @@ export class ReportgeneratorComponent implements OnInit {
     }
   }
 
-  linesIndicatorGroup(indicatorGroup : IndicatorGroup) : number{
-    let indicatorsLength = indicatorGroup.indicators.length;
-    let sumY = 0;
-
-    let empiezaJ = 0;
-
-    let largoNombreGrupo = indicatorGroup.name.length;
-    if (largoNombreGrupo > 75) {
-      if (indicatorGroup.name[75] == ' ') {
-        sumY = sumY + 7;
-      }
-      else {
-        let num = 75;
-        while (indicatorGroup.name[num] != ' ') {
-          num--;
-        }
-        sumY = sumY + 7;
-      }
-    }
-    sumY = sumY + 5;
-
-    for (let j = 0; j < indicatorsLength; j++) {
-      sumY = sumY + 5;
-      //doc.setFontSize(10);
-
-      let largoNombreIndicador = this.indicators[empiezaJ].name.length;
-      if (largoNombreIndicador > 100) {
-        if (this.indicators[empiezaJ].name[100] == ' ') { // cambio indicatorsGroup por indicators
-          sumY = sumY + 5;
-        }
-        else {
-          let num = 100;
-          while (this.indicators[empiezaJ].name[num] != ' ') {
-            num--;
-          }
-
-          sumY = sumY + 5;
-
-        }
-
-      }
-
-      sumY = sumY + 5;
-
-      //doc.text(20, y, " Meta: " + meta + " Cantidad Registros: " + cantidadRegistro);
-
-      empiezaJ++;
-    }
-    return sumY;
-  }
 
 }
