@@ -5,8 +5,10 @@ import { Registry } from '../../shared/models/registry';
 import { RegistryType } from '../../shared/models/registryType';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RegistryService } from '../../services/registry/registry.service';
+import { Document } from '../../shared/models/document';
 
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -27,14 +29,21 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
+  submodalRef: BsModalRef;
+  
+  //For documents
+  fileList: File[][] = new Array();
+  documentList: Document[] = new Array();
 
   onSubmit() {
-    let nameVerification = false;
+    //let nameVerification = false;
 
     this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
-      nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
-      if (nameVerification) {
+      //nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
+      if (data) {
+        this.model = data;
         this.indicator.registries.push(this.model);
+        this.addDocuments();
       } else {
         this.duplicateNameAlert();
       }
@@ -46,7 +55,12 @@ export class RegistryFormComponent implements OnInit {
     this.modalRef = null;
   }
 
-  constructor(router: Router, private indicatorService: IndicatorService, private modalService: BsModalService) {
+  constructor(
+    router: Router,
+    private indicatorService: IndicatorService,
+    private modalService: BsModalService,
+    private registryService: RegistryService,
+  ) {
     this.model = new Registry();
     this.router = router;
   }
@@ -72,6 +86,50 @@ export class RegistryFormComponent implements OnInit {
       confirmButtonClass: 'btn btn-sm btn-primary',
       allowOutsideClick: false,
       allowEscapeKey: false
+    });
+  }
+
+  openAddDocumentModal($event: any, template: TemplateRef<any>) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+    this.submodalRef = this.modalService.show(template);
+  }
+
+  addLink(document: Document){
+    this.documentList.push(document);
+  }
+
+  addFile(file: File[]){
+    this.fileList.push(file);
+  }
+
+  deleteLink(document: Document){
+    this.documentList.splice(this.documentList.indexOf(document), 1);
+  }
+
+  deleteFile(file: File[]){
+    this.fileList.splice(this.fileList.indexOf(file), 1);
+  }
+  
+  addDocuments(){
+    this.documentList.forEach(element => {
+      this.registryService.addLinkDocument(element, this.model.registryID).subscribe(data => {
+        data.forEach(document => {
+          this.model.documents.push(document);
+        });
+      });
+    });
+
+    this.fileList.forEach(element => {
+      this.registryService.addFileDocument(element, this.model.registryID).subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress)
+          //this.progress = Math.round(100 * event.loaded / event.total);
+          console.log();
+        else if (event.type === HttpEventType.Response)
+          this.model.documents.push(new Document().fromJSON(event.body));
+      });      
     });
   }
 }

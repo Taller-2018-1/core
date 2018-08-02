@@ -68,7 +68,8 @@ namespace think_agro_metrics.Models
 			{
 				Name = name,
 				Link = link,
-				Extension = ".pdf"
+				Extension = ".pdf",
+				DocumentName = name
 			};
 			return document;
 		}

@@ -27,7 +27,7 @@ export class CanActivateUser implements CanActivate {
     // Editor's note: As of 2018 06 11, That was no longer true, for some reason now it works as it should.
     // If we found an user we allow the pass into the component. Otherwise we don't.
     // I have no idea why it works now, but ¯\_(ツ)_/¯.
-    
+
     if (this.auth.getUser() !== false) {
       return Observable.of(true);
     } else {
