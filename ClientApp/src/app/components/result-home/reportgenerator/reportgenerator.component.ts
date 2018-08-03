@@ -71,6 +71,7 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Onit");
     console.log(this.indicatorGroups);
 
     const currentYear = new Date().getFullYear();
@@ -86,19 +87,14 @@ export class ReportgeneratorComponent implements OnInit {
     }
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
     this.selectedMonth = -1;
-    this.GeneraIndicadores(Number(this.selectedYearText));
+
+    this.GeneraIndicadores(currentYear);
+    
   }
 
   //selecciona el reporte PDF,XLS
   selectReport(report: string) {
     this.selectedReport = report;
-  }
-
-  //selecciona el año
-  selectYear(year: any) {
-    this.selectedYearText = year; 
-    this.selectedYear = year;
-    this.GeneraIndicadores(Number(this.selectedYearText));
   }
 
   //selecciona periodo Trimestral,Mensual,Semanal
@@ -169,11 +165,25 @@ export class ReportgeneratorComponent implements OnInit {
     this.selectedMonth = Months[month];
   }
 
-  GeneraIndicadores(year: number) {
+  GeneraIndicadores(year:number) {
 
-    for (let i = 1; i < this.indicatorGroups.length + 1; i++) {
+    for (let i = 0; i < this.indicatorGroups.length; i++) {
 
-      this.service.getIndicatorGroup(i).subscribe(g => {
+      for(let j = 0; j<this.indicatorGroups[i].indicators.length; j++)
+      {
+        console.log("largo: "+this.indicatorGroups[i].indicators[j].registries.length);
+        for(let k=0; k< this.indicatorGroups[i].indicators[j].registries.length; k++)
+        {
+          const date: Date = new Date(this.indicatorGroups[i].indicators[j].registries[k].date);
+          const anio = date.getFullYear();
+          console.log("anio"+anio);
+          if( anio == year)
+          {
+            this.indicators.push(this.indicatorGroups[i].indicators[j]);
+          }
+        }
+      }
+      /*this.service.getIndicatorGroup(i).subscribe(g => {
         g.indicators.forEach(indicator => {
           this.serviceIndicator.getIndicatorYearRegistries(indicator.indicatorID, this.selectedYear).subscribe(j => {
             this.indicators.push(j);
@@ -181,7 +191,7 @@ export class ReportgeneratorComponent implements OnInit {
           });
         });
 
-      });
+      });*/
 
     }
 
@@ -291,17 +301,20 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
             cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
           }
+          doc.text(20, y, " Meta: " + meta + " Cantidad Registros: " + cantidadRegistro);
         }
         else if (this.indicators[empiezaJ].registriesType == 2) {
           for (let z = 0; z < this.indicators[empiezaJ].registries.length; z++) {
             cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
           }
+          doc.text(20, y, " Meta: " + meta + " Cantidad Porcentaje: " + cantidadRegistro + "%");
         }
         else {
           cantidadRegistro = this.indicators[empiezaJ].registries.length;
+          doc.text(20, y, " Meta: " + meta + " Cantidad General: " + cantidadRegistro);
         }
 
-        doc.text(20, y, " Meta: " + meta + " Cantidad Registros: " + cantidadRegistro);
+        
 
         empiezaJ++;
 
@@ -335,7 +348,7 @@ export class ReportgeneratorComponent implements OnInit {
   downloadExcel()
   {
 
-    console.log("aers");
+    
 
     this.OrdernarArregloIndicators();
 
