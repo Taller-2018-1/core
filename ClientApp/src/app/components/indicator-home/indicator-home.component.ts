@@ -25,10 +25,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class IndicatorHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
-  public indicatorGroup: IndicatorGroup;
   public idIndicatorGroup = -1;
 
   // Observables
+  public indicatorGroup: Observable<IndicatorGroup>;
   indicatorResults$: Observable<number[]>;
   goals$: Observable<number[]>;
 
@@ -49,13 +49,12 @@ export class IndicatorHomeComponent implements OnInit {
               private modalService: BsModalService,
               private indicatorService: IndicatorGroupService,
               private registryService: RegistryService,
-              private sessionService: SessionService,) {
+              private sessionService: SessionService) {
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
+    this.indicatorGroup = this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup);
   }
 
   ngOnInit() {
-    this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup)
-      .subscribe(data => this.indicatorGroup = data);
     this.updateExternalIndicator();
     this.updateObservables(this.sessionService.getDateFiltersData());
   }
@@ -101,32 +100,32 @@ export class IndicatorHomeComponent implements OnInit {
   }
 
   updateObservablesAllYears() {
-    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroup(this.indicatorGroup.indicatorGroupID);
-    this.goals$ = this.indicatorService.getGoals(this.indicatorGroup.indicatorGroupID);
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroup(this.idIndicatorGroup);
+    this.goals$ = this.indicatorService.getGoals(this.idIndicatorGroup);
   }
 
   updateObservablesSpecificYear() {
-    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
-    this.goals$ = this.indicatorService.getGoalsYear(this.indicatorGroup.indicatorGroupID, this.selectedYear);
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYear(this.idIndicatorGroup, this.selectedYear);
+    this.goals$ = this.indicatorService.getGoalsYear(this.idIndicatorGroup, this.selectedYear);
   }
 
   updateObservablesSpecificTrimester() {
-    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearTrimester(this.indicatorGroup.indicatorGroupID,
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearTrimester(this.idIndicatorGroup,
       this.selectedYear, this.selectedTrimester);
     this.goals$ = this.indicatorService
-      .getGoalsYearTrimester(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedTrimester);
+      .getGoalsYearTrimester(this.idIndicatorGroup, this.selectedYear, this.selectedTrimester);
   }
 
   updateObservablesSpecificMonth() {
-    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearMonth(this.indicatorGroup.indicatorGroupID,
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearMonth(this.idIndicatorGroup,
       this.selectedYear, this.selectedMonth);
-    this.goals$ = this.indicatorService.getGoalsYearMonth(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedMonth);
+    this.goals$ = this.indicatorService.getGoalsYearMonth(this.idIndicatorGroup, this.selectedYear, this.selectedMonth);
   }
 
   updateObservablesSpecificWeek() {
-    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearWeek(this.indicatorGroup.indicatorGroupID,
+    this.indicatorResults$ = this.indicatorService.calculateIndicatorGroupYearWeek(this.idIndicatorGroup,
       this.selectedYear, this.selectedWeek);
-    this.goals$ = this.indicatorService.getGoalsYearWeek(this.indicatorGroup.indicatorGroupID, this.selectedYear, this.selectedWeek);
+    this.goals$ = this.indicatorService.getGoalsYearWeek(this.idIndicatorGroup, this.selectedYear, this.selectedWeek);
   }
 
   openModal(template: TemplateRef<any>) {
