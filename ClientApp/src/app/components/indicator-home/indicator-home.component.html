@@ -24,19 +24,19 @@
 ================================================== -->
 
 <section>
-    <div class="container">
-      <div class="heading-block">
-        <h2>{{ indicatorGroup.name }}</h2>
-      </div>
-
-      <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
-
+  <div class="container">
+    <div class="heading-block">
+      <h2>{{ (indicatorGroup$ | async)?.name }}</h2>
     </div>
-    <!-- end container -->
-  </section>
-  <br>
 
-<app-indicator-display [indicatorResultsObservable]="indicatorResults$" [goalsObservable]="goals$"></app-indicator-display>
+    <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
+
+  </div>
+  <!-- end container -->
+</section>
+<br>
+
+<app-indicator-display [indicatorResultsObservable]="indicatorResults$" [goalsObservable]="goals$" [indicatorGroup]="indicatorGroup$ | async"></app-indicator-display>
 
 <ng-template #addIndicator>
   <div class="modal-dialog">

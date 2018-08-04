@@ -3,6 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 
+// Model
+import { IndicatorGroup } from '../../../shared/models/indicatorGroup';
+
 @Component({
   selector: 'app-indicator-display',
   templateUrl: './indicator-display.component.html',
@@ -12,6 +15,7 @@ import { Router } from '@angular/router';
 export class IndicatorDisplayComponent {
   @Input() indicatorResultsObservable: Observable<number[]>;
   @Input() goalsObservable: Observable<number[]>;
+  @Input() indicatorGroup: IndicatorGroup;
 
   constructor(private router: Router) {
   }

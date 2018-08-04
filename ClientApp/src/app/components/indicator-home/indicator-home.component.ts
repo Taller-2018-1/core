@@ -28,7 +28,7 @@ export class IndicatorHomeComponent implements OnInit {
   public idIndicatorGroup = -1;
 
   // Observables
-  public indicatorGroup: Observable<IndicatorGroup>;
+  public indicatorGroup$: Observable<IndicatorGroup>;
   indicatorResults$: Observable<number[]>;
   goals$: Observable<number[]>;
 
@@ -51,7 +51,7 @@ export class IndicatorHomeComponent implements OnInit {
               private registryService: RegistryService,
               private sessionService: SessionService) {
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
-    this.indicatorGroup = this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup);
+    this.indicatorGroup$ = this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup);
   }
 
   ngOnInit() {
@@ -60,10 +60,12 @@ export class IndicatorHomeComponent implements OnInit {
   }
 
   updateExternalIndicator() {
-    this.indicatorGroup.indicators.forEach(indicator => {
-      if (indicator.registriesType === RegistryType.ExternalRegistry) {
-        this.registryService.getRegistriesExternal().subscribe();
-      }
+    this.indicatorGroup$.subscribe(group => {
+      group.indicators.forEach(indicator => {
+        if (indicator.registriesType === RegistryType.ExternalRegistry) {
+          this.registryService.getRegistriesExternal().subscribe();
+        }
+      });
     });
   }
 
@@ -133,8 +135,7 @@ export class IndicatorHomeComponent implements OnInit {
   }
 
   indicatorAdded() {
-    this.indicatorService.getIndicatorGroup(this.idIndicatorGroup)
-      .subscribe(data => this.indicatorGroup = data);
+    this.indicatorGroup$ = this.indicatorService.getIndicatorGroup(this.idIndicatorGroup);
   }
 
 }
