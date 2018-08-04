@@ -77,7 +77,7 @@ export class AuthService {
 
   public getToken(): String | boolean {
     const raw_token = localStorage.getItem('token');
-    if (!raw_token) {
+    if (!raw_token || raw_token === "null") {
       return false;
     }
     const secure_token: string = this.parseJwt(raw_token);
