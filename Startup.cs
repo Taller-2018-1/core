@@ -73,7 +73,8 @@ namespace ThinkAgroMetrics {
             }
 
             app.UseStaticFiles ();
-            app.UseSpaStaticFiles ();
+            app.UseSpaStaticFiles ();   
+            app.UseAuthentication();
 
             app.UseMvc (routes => {
                 routes.MapRouteAnalyzer ("/routes");
