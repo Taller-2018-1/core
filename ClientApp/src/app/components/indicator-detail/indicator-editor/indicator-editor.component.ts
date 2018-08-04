@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {Router} from '@angular/router';
 
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -8,6 +9,8 @@ import { IndicatorGroup} from '../../../shared/models/indicatorGroup';
 // Services
 import { IndicatorGroupService} from '../../../services/indicator-group/indicator-group.service';
 import {IndicatorService} from "../../../services/indicator/indicator.service";
+
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-indicator-editor',
@@ -30,7 +33,9 @@ export class IndicatorEditorComponent implements OnInit {
                         // The indicatorGroup name show a few more characters
                         // Why 46? - Count the characters of selectedText
 
-  constructor(service: IndicatorService, private indicatorGroupService: IndicatorGroupService) { }
+  constructor(private service: IndicatorService,
+              private indicatorGroupService: IndicatorGroupService,
+              private router: Router) { }
 
   ngOnInit() {
     this.newIndicator = JSON.parse(JSON.stringify(this.indicator)); // Create a clone of the original Indicator.
@@ -48,14 +53,44 @@ export class IndicatorEditorComponent implements OnInit {
   }
 
   onSubmit() {
+    let moved = false;
     for (let ig of this.groups) {
       if (ig.name === this.selectedText) {
+        if (ig.indicatorGroupID !== this.newIndicator.indicatorGroupID) { // Moved to another IndicatorGroup
+          moved = true
+        }
         this.newIndicator.indicatorGroupID = ig.indicatorGroupID;
+
       }
     }
 
-    console.log(this.newIndicator);
+    this.service.editIndicator(this.newIndicator).subscribe(data => {
+      if (data) {
+        if (moved) {
+          this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID );
+        } else {
+          this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
+        }
+      } else {
+        this.duplicateNameAlert();
+      }
+
+
+    });
     this.indicatorModalRef.hide();
+  }
+
+  private duplicateNameAlert() {
+    swal({
+      title: 'Error al editar el indicador',
+      html: '<h6> Ya existe un indicador con el nombre "' + this.newIndicator.name + '"</h6>',
+      type: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
   }
 
 }

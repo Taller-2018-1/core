@@ -399,6 +399,12 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
+            List<Indicator> indicators = await _context.Indicators.Where(i => i.Name == indicator.Name && i.IndicatorGroupID == indicator.IndicatorGroupID && i.IndicatorID != id).ToListAsync();
+
+            if(indicators.Any()) {
+                return NoContent();
+            }
 
             if (id != indicator.IndicatorID)
             {
@@ -423,7 +429,8 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            var finalIndicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == id);
+            return Ok(finalIndicator);
         }
 
         // POST: api/Indicators
