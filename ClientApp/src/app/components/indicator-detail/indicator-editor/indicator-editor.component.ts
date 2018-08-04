@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -7,8 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Indicator } from '../../../shared/models/indicator';
 import { IndicatorGroup} from '../../../shared/models/indicatorGroup';
 // Services
-import { IndicatorGroupService} from '../../../services/indicator-group/indicator-group.service';
-import {IndicatorService} from "../../../services/indicator/indicator.service";
+import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
+import { IndicatorService } from '../../../services/indicator/indicator.service';
 
 import swal from 'sweetalert2';
 
@@ -24,6 +24,9 @@ export class IndicatorEditorComponent implements OnInit {
 
   @Input()
   public indicator: Indicator;
+
+  @Output()
+  updateInfo = new EventEmitter();
 
   public newIndicator: Indicator;
   public groups: IndicatorGroup[];
@@ -69,7 +72,8 @@ export class IndicatorEditorComponent implements OnInit {
         if (moved) {
           this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID );
         } else {
-          this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
+          this.updateInfo.emit("Indicator updated");
+          //this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
         }
       } else {
         this.duplicateNameAlert();

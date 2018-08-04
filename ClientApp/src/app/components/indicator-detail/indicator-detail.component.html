@@ -1,6 +1,6 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
-  
+
   <div *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">
     {{ this.showGraph(indicator) }}
   </div>
@@ -255,7 +255,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit"></app-indicator-editor>
+    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>
   </ng-template>
   <!--UX-->
 

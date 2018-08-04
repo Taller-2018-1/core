@@ -114,9 +114,9 @@ export class IndicatorDetailComponent implements OnInit {
           title: function(tooltipItem, data){
             // get the dataset of point
             var datasetIndex = tooltipItem[0].datasetIndex;
-            // get the data array 
+            // get the data array
             var dispersionData = data.datasets[datasetIndex];
-            // get the index 
+            // get the index
             var index = tooltipItem[0].index;
             // tooltip title
             var title = dispersionData.data[index].x;
@@ -143,7 +143,7 @@ export class IndicatorDetailComponent implements OnInit {
                 min: 0,
                 max: 100,
                 stepSize: 10
-                
+
 
             }
         }]
@@ -182,7 +182,7 @@ export class IndicatorDetailComponent implements OnInit {
         pointHoverBackgroundColor: 'rgba(0,149,58,1)',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       },
-      
+
       { // grey
         backgroundColor: 'transparent',
         borderColor: 'rgba(0,149,58,1)',
@@ -397,7 +397,7 @@ export class IndicatorDetailComponent implements OnInit {
     if (this.counter++ % 200 == 0){
 
       let promedio = 0;
-      
+
       let _dispersionChartData : Array<any> = new Array(this.DispersionChartData.length);
       _dispersionChartData[0] = {data: new Array(), label: this.DispersionChartData[0].label}
 
@@ -407,12 +407,12 @@ export class IndicatorDetailComponent implements OnInit {
         let percent = indicator.registries[i].percent;
         percent = Number(percent); // convert string to number
         let datos = {x: this.lineChartLabels[month], y:percent};
-        promedio += percent; 
+        promedio += percent;
         _dispersionChartData[0].data.push(datos);
       }
 
       promedio = promedio / indicator.registries.length;
-      
+
       _dispersionChartData[1] = {data: new Array(), label:this.DispersionChartData[1].label};
 
       let months = 12;
@@ -421,21 +421,21 @@ export class IndicatorDetailComponent implements OnInit {
         let datos = {x: this.lineChartLabels[i], y:promedio};
         _dispersionChartData[1].data.push(datos);
       }
-      
+
       this.DispersionChartData = _dispersionChartData;
 
       // get callbacks properties
       let callbacks = this.dispersionChartOptions.tooltips.callbacks;
       // add new attribute to callbacks functions
       callbacks["label"] = function(tooltipItem,data){
-        
+
         var datasetIndex = tooltipItem.datasetIndex;
         var dispersionData = data.datasets[datasetIndex];
         var index = tooltipItem.index;
         // solo puntos dispersion
         if (datasetIndex == 0){
           var registryName = indicator.registries[index].name;
-          var percent = dispersionData.data[index].y; 
+          var percent = dispersionData.data[index].y;
           var label = registryName+": "+percent+"%";
           return label;
         }
@@ -445,18 +445,18 @@ export class IndicatorDetailComponent implements OnInit {
           var label = "promedio: "+prom+"%";
           return label;
         }
-        
-        
+
+
       }
 
       if (promedio != 0){
         this.calculateVariationIndicator(promedio);
-        
+
       }
 
       //console.log(this.DispersionChartData);
       //console.log(this.dispersionChartOptions.tooltips);
-      
+
     }
   }
 
@@ -526,7 +526,7 @@ export class IndicatorDetailComponent implements OnInit {
     if (n - 1 != 0){
       let varianza = sum/(n-1);
       this.varianza = Number(varianza.toFixed(2));
-    
+
       let dev = Math.sqrt(sum/(n-1));
 
       this.devStandar = Number(dev.toFixed(2));
@@ -549,6 +549,13 @@ export class IndicatorDetailComponent implements OnInit {
       if (indicator.registriesType === RegistryType.ExternalRegistry) {
         this.registryService.getRegistriesExternal().subscribe();
       }
+    });
+  }
+
+  updateIndicator() {
+    this.indicator$ = this.service.getIndicator(this.idIndicator);
+    this.indicator$.subscribe(data =>{ // Just to preload the data, I don't like to do this, but it is what it is
+      this.indicatorToEdit = data;
     });
   }
 
