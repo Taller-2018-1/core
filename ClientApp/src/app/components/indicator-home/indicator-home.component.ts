@@ -136,6 +136,7 @@ export class IndicatorHomeComponent implements OnInit {
 
   indicatorAdded() {
     this.indicatorGroup$ = this.indicatorService.getIndicatorGroup(this.idIndicatorGroup);
+    this.updateObservables('');
   }
 
 }

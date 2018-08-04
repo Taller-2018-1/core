@@ -36,7 +36,7 @@
 </section>
 <br>
 
-<app-indicator-display [indicatorResultsObservable]="indicatorResults$" [goalsObservable]="goals$" [indicatorGroup]="indicatorGroup$ | async"></app-indicator-display>
+<app-indicator-display *ngIf="indicatorGroup$ | async as indicatorGroup" [indicatorResultsObservable]="indicatorResults$" [goalsObservable]="goals$" [indicatorGroup]="indicatorGroup"></app-indicator-display>
 
 <ng-template #addIndicator>
   <div class="modal-dialog">
