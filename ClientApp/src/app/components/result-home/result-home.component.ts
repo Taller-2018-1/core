@@ -43,10 +43,6 @@ export class ResultHomeComponent implements OnInit {
     this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
-  openModal(template: TemplateRef<any>)
-  {
-    this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
-  }
 
   openModalAdd(template: TemplateRef<any>)
   {
