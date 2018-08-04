@@ -56,7 +56,7 @@ export class IndicatorService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId +
       '/' + IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
@@ -85,7 +85,7 @@ export class IndicatorService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE +
       IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
@@ -114,7 +114,7 @@ export class IndicatorService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS +
       IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
@@ -142,7 +142,7 @@ export class IndicatorService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number[]>(IndicatorService.CALCULATE_API +
       IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);

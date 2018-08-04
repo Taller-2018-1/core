@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import {Component, Inject, OnInit, HostBinding, TemplateRef} from '@angular/core';
+import { Component, Inject, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Model

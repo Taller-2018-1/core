@@ -1,11 +1,7 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 // Models
-import { Indicator } from '../../shared/models/indicator';
 import { Months } from '../../shared/models/months';
-import { RegistryType } from '../../shared/models/registryType';
 import { Trimesters } from '../../shared/models/trimesters';
 
 // Services
@@ -73,15 +69,11 @@ export class DateFilterComponent implements OnInit {
   @Output() dropdownChange = new EventEmitter();
 
   constructor(private sessionService: SessionService, private dateService: DateService) {
-    this.getInitialData();
-    this.prepareDropdowns();
-    console.log('constructor');
   }
 
   ngOnInit() {
-
-    // this.dropdownChanged();
-    console.log('init');
+    this.getInitialData();
+    this.prepareDropdowns();
   }
 
   // Get the data from the session service, if it's not saved, the service returns the default values
@@ -133,8 +125,8 @@ export class DateFilterComponent implements OnInit {
   getWeekString(week: number): string {
     const mondayWeek = this.dateService.getDateFromWeek(this.selectedYear, week);
     const sundayWeek = this.dateService.addDays(mondayWeek, 6);
-    const mondayWeekString = mondayWeek.getDay() + ' ' + this.dateService.months[mondayWeek.getMonth()].shortName;
-    const sundayWeekString = sundayWeek.getDay() + ' ' + this.dateService.months[sundayWeek.getMonth()].shortName;
+    const mondayWeekString = mondayWeek.getDate() + ' ' + this.dateService.months[mondayWeek.getMonth()].shortName;
+    const sundayWeekString = sundayWeek.getDate() + ' ' + this.dateService.months[sundayWeek.getMonth()].shortName;
     return week + ' (' + mondayWeekString + ' a ' + sundayWeekString + ')';
   }
 
@@ -196,17 +188,20 @@ export class DateFilterComponent implements OnInit {
   }
 
   selectedDefaultTrimester() {
+    this.setDefaultTrimester();
     this.resetChildDropdowns();
     this.dropdownChanged();
   }
 
   selectedSpecificTrimester(trimester: number) {
     this.setSpecificTrimester(trimester);
+    this.prepareMonthsDropdown();
     this.resetChildDropdowns();
     this.dropdownChanged();
   }
 
   selectedDefaultMonth() {
+    this.setDefaultMonth();
     this.resetChildDropdowns();
     this.dropdownChanged();
   }
@@ -219,13 +214,12 @@ export class DateFilterComponent implements OnInit {
   }
 
   selectedDefaultWeek() {
-    this.resetChildDropdowns();
+    this.setDefaultWeek();
     this.dropdownChanged();
   }
 
   selectedSpecificWeek(week: number) {
     this.setSpecificWeek(week);
-    this.resetChildDropdowns();
     this.dropdownChanged();
   }
 
@@ -237,8 +231,15 @@ export class DateFilterComponent implements OnInit {
     // All years is the default option in the dropdown
     this.dropdownYearText = DateFilterComponent.ALL_YEARS;
     this.selectedYear = DateFilterComponent.SELECT_DEFAULT;
+    // Save data in session storage
     this.sessionService.setDropdownYearText(this.dropdownYearText);
     this.sessionService.setSelectedYear(this.selectedYear);
+    this.sessionService.setDropdownTrimesterText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedTrimester(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownMonthText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedMonth(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setSpecificYear(year: number) {
@@ -248,8 +249,15 @@ export class DateFilterComponent implements OnInit {
     this.isSpecificWeekSelected = false;
     this.dropdownYearText = DateFilterComponent.YEAR_PREFIX + year;
     this.selectedYear = year;
+    // Save data in session storage
     this.sessionService.setDropdownYearText(this.dropdownYearText);
     this.sessionService.setSelectedYear(this.selectedYear);
+    this.sessionService.setDropdownTrimesterText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedTrimester(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownMonthText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedMonth(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setDefaultTrimester() {
@@ -258,19 +266,28 @@ export class DateFilterComponent implements OnInit {
     this.isSpecificWeekSelected = false;
     this.dropdownTrimesterText = DateFilterComponent.SELECT_DEFAULT_TEXT;
     this.selectedTrimester = DateFilterComponent.SELECT_DEFAULT;
+    // Save data in session storage
     this.sessionService.setDropdownTrimesterText(this.dropdownTrimesterText);
     this.sessionService.setSelectedTrimester(this.selectedTrimester);
+    this.sessionService.setDropdownMonthText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedMonth(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setSpecificTrimester(trimester: number) {
     this.isSpecificTrimesterSelected = true;
-    console.log('specific trimester');
     this.isSpecificMonthSelected = false;
     this.isSpecificWeekSelected = false;
     this.dropdownTrimesterText = Trimesters[trimester];
     this.selectedTrimester = trimester;
+    // Save data in session storage
     this.sessionService.setDropdownTrimesterText(this.dropdownTrimesterText);
     this.sessionService.setSelectedTrimester(this.selectedTrimester);
+    this.sessionService.setDropdownMonthText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedMonth(DateFilterComponent.SELECT_DEFAULT);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setDefaultMonth() {
@@ -278,8 +295,11 @@ export class DateFilterComponent implements OnInit {
     this.isSpecificWeekSelected = false;
     this.dropdownMonthText = DateFilterComponent.SELECT_DEFAULT_TEXT;
     this.selectedMonth = DateFilterComponent.SELECT_DEFAULT;
+    // Save data in session storage
     this.sessionService.setDropdownMonthText(this.dropdownMonthText);
     this.sessionService.setSelectedMonth(this.selectedMonth);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setSpecificMonth(month: number) {
@@ -287,14 +307,18 @@ export class DateFilterComponent implements OnInit {
     this.isSpecificWeekSelected = false;
     this.dropdownMonthText = Months[month];
     this.selectedMonth = month;
+    // Save data in session storage
     this.sessionService.setDropdownMonthText(this.dropdownMonthText);
     this.sessionService.setSelectedMonth(this.selectedMonth);
+    this.sessionService.setDropdownWeekText(DateFilterComponent.SELECT_DEFAULT_TEXT);
+    this.sessionService.setSelectedWeek(DateFilterComponent.SELECT_DEFAULT);
   }
 
   setDefaultWeek() {
     this.isSpecificWeekSelected = false;
     this.dropdownWeekText = DateFilterComponent.SELECT_DEFAULT_TEXT;
     this.selectedWeek = DateFilterComponent.SELECT_DEFAULT;
+    // Save data in session storage
     this.sessionService.setDropdownWeekText(this.dropdownWeekText);
     this.sessionService.setSelectedWeek(this.selectedWeek);
   }
@@ -303,6 +327,7 @@ export class DateFilterComponent implements OnInit {
     this.isSpecificWeekSelected = true;
     this.dropdownWeekText = this.getWeekString(week);
     this.selectedWeek = week;
+    // Save data in session storage
     this.sessionService.setDropdownWeekText(this.dropdownWeekText);
     this.sessionService.setSelectedWeek(this.selectedWeek);
   }
@@ -317,8 +342,6 @@ export class DateFilterComponent implements OnInit {
 
   // set names to all four trimester of the year
   prepareTrimestersDropdown() {
-    this.selectedTrimester = DateFilterComponent.SELECT_DEFAULT;
-    this.dropdownTrimesterText = DateFilterComponent.SELECT_DEFAULT_TEXT;
     const currentYear = this.getCurrentYear();
     if (this.selectedYear < currentYear) {
       this.setTrimesterUntil(3); // October-December
@@ -335,7 +358,6 @@ export class DateFilterComponent implements OnInit {
     for (let i = 0; i <= until; i++) {
       this.trimesters[i] = i;
     }
-    console.log(this.trimesters);
   }
 
   setDropdownTrimesterList() {
@@ -348,8 +370,6 @@ export class DateFilterComponent implements OnInit {
   // Set the list of the months (numbers) from 0 to the current month (max 11)
   // The months depends on the selected trimester (this.selectedTrimester) and year (this.selectedYear)
   prepareMonthsDropdown() {
-    this.selectedMonth = DateFilterComponent.SELECT_DEFAULT;
-    this.dropdownMonthText = DateFilterComponent.SELECT_DEFAULT_TEXT;
     const currentYear = this.getCurrentYear();
     const currentMonth = this.getCurrentMonth();
     const from = (this.selectedTrimester + 1) * 3 - 3;
@@ -383,9 +403,6 @@ export class DateFilterComponent implements OnInit {
   }
 
   prepareWeeksDropdown() {
-    this.selectedWeek = DateFilterComponent.SELECT_DEFAULT;
-    this.dropdownWeekText = DateFilterComponent.SELECT_DEFAULT_TEXT;
-
     const currentYear = this.getCurrentYear();
     const currentWeek = this.dateService.getWeekISO8601(new Date());
 

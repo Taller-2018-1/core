@@ -61,7 +61,7 @@ export class IndicatorGroupService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE
       + IndicatorGroupService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
@@ -90,7 +90,7 @@ export class IndicatorGroupService {
     const startWeekDate = this.dateService.getDateFromWeek(year, week);
     const startWeekYear = startWeekDate.getFullYear();
     const startWeekMonth = startWeekDate.getMonth();
-    const startWeekDay = startWeekDate.getDay();
+    const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS
       + IndicatorGroupService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
