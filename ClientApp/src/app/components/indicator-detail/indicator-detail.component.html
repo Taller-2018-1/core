@@ -58,12 +58,12 @@
       <ol class="breadcrumb shortcode">
         <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
           <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-          <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
+          <button class="btn btn-xs btn-clean-2" (click)="openModalEditIndicator(editIndicator)">Modificar Indicador</button>
         </div>
-        
+
         <div *ngIf="indicator.registriesType == RegistryType.ExternalRegistry">
             <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-        </div>        
+        </div>
       </ol>
     </div>
   </section>
@@ -165,7 +165,7 @@
         <div class="row">
           <div class="col-md-12">
             <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-              <canvas baseChart 
+              <canvas baseChart
                       [datasets]="DispersionChartData"
                       [labels]="lineChartLabels"
                       [options]="dispersionChartOptions"
@@ -175,7 +175,7 @@
                       ></canvas>
             </div>
             <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
-              <canvas baseChart 
+              <canvas baseChart
                       [datasets]="lineChartData"
                       [labels]="lineChartLabels"
                       [options]="lineChartOptions"
@@ -195,7 +195,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-12 pad-bt-60">
             <div class="heading-block">
@@ -247,7 +247,16 @@
     <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateGoal($event)" [modalRef]="modalRef"></app-goals-editor>
   </ng-template>
 
-
+  <!-- Modal Edit Indicator -->
+  <ng-template #editIndicator>
+    <div class="modal-header" tabindex="-1">
+      <h4 class="modal-title pull-left">Modificar Indicador</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="indicatorModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit"></app-indicator-editor>
+  </ng-template>
   <!--UX-->
 
   <ng-template #zero>
@@ -268,27 +277,6 @@
   </ng-template>
 
 </div>
-
-<!------------------------------------------------------------------------------------------>
-<!-- OLD DESIGN
-<h1> OLD DESIGN </h1>
-
-<div *ngIf="indicator$ | async as indicator; else loading">
-  <div id="head-page-section" class="l-grey-bg head-page-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-sm-7">
-          <div class="head-title">
-            <h1>
-              {{ indicator.name }}
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
--->
-
 
 
 <ng-template #loading>

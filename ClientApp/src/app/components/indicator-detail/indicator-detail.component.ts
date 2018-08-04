@@ -36,10 +36,12 @@ export class IndicatorDetailComponent implements OnInit {
   public idIndicator = -1;
 
   public indicator$: Observable<Indicator>;
+  public indicatorToEdit: Indicator; // For edit Modal
   public goal$: Observable<number>;
   public value$: Observable<number>;
   router: Router;
   modalRef: BsModalRef;
+  indicatorModalRef: BsModalRef;
 
   allYears: string = IndicatorDetailComponent.ALL_YEARS;
   selectedYearText: string; // Dropdown year "Año 2018"
@@ -213,6 +215,10 @@ export class IndicatorDetailComponent implements OnInit {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
     this.updateExternalIndicator();
 
+    this.indicator$.subscribe(data =>{ // Just to preload the data, I don't like to do this, but it is what it is
+      this.indicatorToEdit = data;
+    });
+
     const currentYear = new Date().getFullYear();
     const baseYear = 2018;
     for (let i = 0; i <= (currentYear - baseYear); i++) {
@@ -314,6 +320,10 @@ export class IndicatorDetailComponent implements OnInit {
   openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
     this.document = selectedDocument;
     this.modalRef = this.modalService.show(template);
+  }
+
+  openModalEditIndicator(template: TemplateRef<any>) {
+    this.indicatorModalRef = this.modalService.show(template);
   }
 
   selectChart(type: string, indicator: Indicator) {

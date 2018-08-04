@@ -54,6 +54,7 @@ import { FileDocumentSubformComponent } from './components/registry-form/file-do
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
 import { NotificationService } from './services/alerts/notification.service';
+import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -84,7 +85,8 @@ defineLocale('es', esLocale);
     IndicatorFormComponent,
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
-    FileDocumentSubformComponent
+    FileDocumentSubformComponent,
+    IndicatorEditorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
