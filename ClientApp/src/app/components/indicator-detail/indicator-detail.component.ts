@@ -26,16 +26,18 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class IndicatorDetailComponent implements OnInit {
   router: Router;
   modalRef: BsModalRef;
+  indicatorModalRef: BsModalRef;
 
   // Router params
   idIndicatorGroup: number;
   idIndicator: number;
 
   // Observables
-  public indicator$: Observable<Indicator>;
-  public goal$: Observable<number>;
-  public value$: Observable<number>;
-  public indicatorGroupName$: Observable<string>;
+  indicator$: Observable<Indicator>;
+  indicatorToEdit: Indicator; // For edit Modal
+  goal$: Observable<number>;
+  value$: Observable<number>;
+  indicatorGroupName$: Observable<string>;
 
   // Dropdown date filters
   isSpecificYearSelected: boolean;
@@ -48,7 +50,7 @@ export class IndicatorDetailComponent implements OnInit {
   selectedWeek: number;
 
   // Allow to use the enum in the html tempalte
-  public RegistryType = RegistryType;
+  RegistryType = RegistryType;
 
   // Chart data
   selectedTypeChart: string;
@@ -56,7 +58,7 @@ export class IndicatorDetailComponent implements OnInit {
   typeDispersion: string[] = [];
 
   // Document data (for EditDocument)
-  public document: Document = null;
+  document: Document = null;
 
   constructor(private service: IndicatorService,
     router: Router,
@@ -196,6 +198,17 @@ export class IndicatorDetailComponent implements OnInit {
   gotoAddRegistry() {
     this.router.navigateByUrl('/indicator-add-registry');
   } */
+
+  updateIndicator() {
+    this.indicator$ = this.service.getIndicator(this.idIndicator);
+    this.indicator$.subscribe(data =>{ // Just to preload the data, I don't like to do this, but it is what it is
+      this.indicatorToEdit = data;
+    });
+  }
+
+  openModalEditIndicator(template: TemplateRef<any>) {
+    this.indicatorModalRef = this.modalService.show(template);
+  }
 
 }
 

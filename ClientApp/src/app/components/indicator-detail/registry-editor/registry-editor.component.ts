@@ -49,11 +49,22 @@ export class RegistryEditorComponent implements OnInit {
   editRegistry() {
     try {
       notDeepEqual(this.registry, this.newRegistry); // If registry and newRegistry are not equal, just close the modal
-      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe();
+      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe(data =>
+      {
+        if (data) {
+          console.log(data);
+          // replacing the old registry (this.registry) with the edited registry (this.newRegistry)
+          const index = this.registries.indexOf(this.registry);
+          this.registries[index] = this.newRegistry;
+        } else {
+          console.log(data);
+          alert('error');
+        }
+      });
 
       // replacing the old registry (this.registry) with the edited registry (this.newRegistry)
-      let index = this.registries.indexOf(this.registry);
-      this.registries[index] = this.newRegistry;
+      // let index = this.registries.indexOf(this.registry);
+      // this.registries[index] = this.newRegistry;
 
     }
     catch (error) {

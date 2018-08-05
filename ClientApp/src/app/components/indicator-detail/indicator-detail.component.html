@@ -49,12 +49,12 @@
       <ol class="breadcrumb shortcode">
         <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
           <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-          <button class="btn btn-xs btn-clean-2">Modificar Indicador</button>
+          <button class="btn btn-xs btn-clean-2" (click)="openModalEditIndicator(editIndicator)">Modificar Indicador</button>
         </div>
-        
+
         <div *ngIf="indicator.registriesType == RegistryType.ExternalRegistry">
             <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-        </div>        
+        </div>
       </ol>
     </div>
   </section>
@@ -225,6 +225,16 @@
     <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateGoal($event)" [modalRef]="modalRef"></app-goals-editor>
   </ng-template>
 
+  <!-- Modal Edit Indicator -->
+  <ng-template #editIndicator>
+    <div class="modal-header" tabindex="-1">
+      <h4 class="modal-title pull-left">Modificar Indicador</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="indicatorModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>
+  </ng-template>
 
 </div>
 

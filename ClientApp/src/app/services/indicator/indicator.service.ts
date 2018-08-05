@@ -178,4 +178,8 @@ export class IndicatorService {
   addIndicator(indicator: Indicator): Observable<any> {
     return this.http.post<any>(IndicatorService.INDICATORS_API, indicator);
   }
+
+  editIndicator(indicator: Indicator): Observable<Indicator> {
+    return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID,indicator);
+  }
 }
