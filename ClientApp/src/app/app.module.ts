@@ -60,6 +60,7 @@ import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
+import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
 
 defineLocale('es', esLocale);
 
@@ -95,6 +96,7 @@ defineLocale('es', esLocale);
     ChartComponent,
     SafeDomPipe,
     DateFilterComponent,
+    IndicatorEditorComponent,
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -151,17 +153,17 @@ defineLocale('es', esLocale);
     NotificationService,
     LoaderService,
     PreviousRouteService,
+    DateService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
       multi: true
     },
-    DateService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })
