@@ -57,6 +57,7 @@ import { esLocale } from 'ngx-bootstrap/locale';
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
+import { ConfigHomeComponent } from './components/config-home/config-home.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
 
 defineLocale('es', esLocale);
@@ -91,7 +92,8 @@ defineLocale('es', esLocale);
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
     SafeDomPipe,
-    ChartComponent
+    ChartComponent,
+    ConfigHomeComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -125,6 +127,11 @@ defineLocale('es', esLocale);
       {
         path: 'home',
         component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'config',
+        component: ConfigHomeComponent,
         canActivate: [CanActivateUser]
       },
       {
