@@ -95,7 +95,6 @@ export class ReportgeneratorComponent implements OnInit {
     }
     this.setMonthsOfTheYear(); // List of the names of the months, based in the prior list (this.months)
     this.selectedMonth = -1;
-    // this.GeneraIndicadores(Number(this.selectedYearText));
     this.GeneraIndicadores(currentYear);
   }
 
@@ -108,13 +107,11 @@ export class ReportgeneratorComponent implements OnInit {
   selectYear(year: any) {
     this.selectedYearText = year;
     this.selectedYear = year;
-    // this.GeneraIndicadores(Number(this.selectedYearText));
   }
 
   // selecciona periodo Trimestral,Mensual,Semanal
   selectPeriod(period: string) {
     this.selectedPeriod = period;
-    // console.log('this.selectedPeriod: '+this.selectedPeriod);
     this.selectOption();
   }
 
@@ -191,12 +188,6 @@ export class ReportgeneratorComponent implements OnInit {
     }
   }
 
-  OrdernarArregloIndicators() {
-    this.indicators.sort(
-      function (a, b) {
-        return a.indicatorID - b.indicatorID;
-      });
-  }
 
   downloadPDF() {
     const maxY = 260; // limite del Y para que escriba en el pdf antes de saltar a nueva pagina
@@ -396,7 +387,7 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              // cantidadRegistro = this.indicators[empiezaJ].registries.length;
+              
               if (mesString.localeCompare('Ninguno') === 0) {
                 cantidadRegistro++;
               }  else {
@@ -411,7 +402,6 @@ export class ReportgeneratorComponent implements OnInit {
           doc.text(20, y, '     Meta: ' + meta);
         }
 
-        // doc.text(20, y, ' Meta: ' + meta + ' Cantidad Registros: ' + cantidadRegistro);
 
         empiezaJ++;
 
@@ -419,13 +409,6 @@ export class ReportgeneratorComponent implements OnInit {
 
       y = y + 10;
 
-      /*
-      if ((y % 270 >= 0) && (y % 270) <= 50) {
-        console.log('cambio de pagina, y = '+y);
-        y = 25;
-        doc.addPage();
-      }
-      */
 
     }
     if (this.selectedPeriod === 'Ninguno' ) {
@@ -453,7 +436,7 @@ export class ReportgeneratorComponent implements OnInit {
   downloadExcel() {
 
 
-    this.OrdernarArregloIndicators();
+    //this.OrdernarArregloIndicators();
 
 
     const wb = XLSX.utils.book_new();
@@ -522,9 +505,7 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[posicionIndicador].registries.length; z++) {
             const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date);
             const anio = date.getFullYear();
-            // console.log('anio'+anio);
             const mes = date.getMonth() + 1;
-            // console.log('mes: '+ mes);
             if (anio === this.selectedYear) {
               if (mesString.localeCompare('Ninguno') === 0) {
                 cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
@@ -539,9 +520,7 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[posicionIndicador].registries.length; z++) {
             const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date);
             const anio = date.getFullYear();
-            // console.log('anio'+anio);
             const mes = date.getMonth() + 1;
-            // console.log('mes: '+ mes);
             if (anio === this.selectedYear) {
               if (mesString.localeCompare('Ninguno') === 0) {
                 cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;
@@ -556,9 +535,7 @@ export class ReportgeneratorComponent implements OnInit {
           for (let z = 0; z < this.indicators[posicionIndicador].registries.length; z++) {
             const date: Date = new Date(this.indicators[posicionIndicador].registries[z].date);
             const anio = date.getFullYear();
-            // console.log('anio'+anio);
             const mes = date.getMonth() + 1;
-            // console.log('mes: '+ mes);
             if (anio === this.selectedYear) {
               if (mesString.localeCompare('Ninguno') === 0) {
                 // cantidadRegistro = this.indicators[posicionIndicador].registries.length;
