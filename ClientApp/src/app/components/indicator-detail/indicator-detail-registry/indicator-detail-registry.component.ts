@@ -205,7 +205,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
-      cancelButtonText: 'CANCELAR',
+      cancelButtonText: 'Cancelar',
       buttonsStyling: false,
       reverseButtons: true,
       confirmButtonClass: 'btn btn-sm btn-primary',
