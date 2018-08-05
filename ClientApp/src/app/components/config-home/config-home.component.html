@@ -1,6 +1,6 @@
 <!-- Head page section================================================== -->
 <section>
-<div id="head-page-section" class="l-grey-bg head-page-section">
+  <div id="head-page-section" class="l-grey-bg head-page-section">
     <div class="container">
       <app-navigation-buttons></app-navigation-buttons>
       <div class="row">
@@ -9,10 +9,72 @@
             <h1>
               Configuración
             </h1>
-          </div> <!-- end subsection-text -->
-        </div> <!-- end col-md-8 -->
-      </div> <!-- end row -->
-    </div> <!-- end container -->
+          </div>
+          <!-- end subsection-text -->
+        </div>
+        <!-- end col-md-8 -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
   </div>
   <!-- end head-page-section -->
+</section>
+
+<section>
+
+  <div class="container">
+    <div style="margin-top: 10px;">
+      <tabset [justified]="true" style="margin-top: 30px;">
+        <tab>
+          <ng-template tabHeading>
+            <strong>Resultados esperados</strong>
+          </ng-template>
+          <div *ngIf="indicatorsGroups$ | async as indicatorGroups">
+            <div *ngFor="let ig of indicatorGroups" class="wide-border-promo-box promo-box pad-sec-40" style="padding: 20px; margin-bottom: 5px; margin-top: 5px;">
+              <div class="row">
+                <div class="col-xs-10 col-md-10">
+                  <h5 class="fixh5">
+                    <strong>{{ ig.name }}</strong>
+                  </h5>
+                </div>
+                <div class="col-xs-10 col-sm-10 col-md-10 pull-right" style="margin-top: 5px;">
+                  <div class="pull-right">
+                    <button class="btn btn-xs btn-danger" type="button">Eliminar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab >
+          <ng-template tabHeading>
+            <strong>Indicadores</strong>
+          </ng-template>
+          <div *ngIf="indicators$ | async as indicators">
+            <div *ngFor="let i of indicators" class="wide-border-promo-box promo-box pad-sec-40" style="padding: 20px; margin-bottom: 5px; margin-top: 5px;">
+              <div class="row">
+                <div class="col-xs-10 col-md-10">
+                  <h5 class="fixh5">
+                    <strong>{{ i.name }}</strong>
+                  </h5>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 pull-right" style="margin-top: 5px;">
+                  <div class="pull-right">
+                    <button class="btn btn-xs btn-danger" type="button">Eliminar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+
+    </div>
+
+
+
+  </div>
+  <!--End Container-->
+
 </section>

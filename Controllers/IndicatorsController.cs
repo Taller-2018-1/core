@@ -27,11 +27,13 @@ namespace think_agro_metrics.Controllers
         [HttpGet]
         public async Task<IActionResult> GetIndicators()
         {
-            var indicators = await _context.Indicators
+            // I hope nobody needs this
+            /*var indicators = await _context.Indicators
                 .Include(x => x.Goals)
                 .Include(x => x.Registries)                
                 .ThenInclude(x => x.Documents).ToListAsync();
-
+            */
+            var indicators = await _context.Indicators.ToListAsync();
             return Ok(indicators);
         }
 
