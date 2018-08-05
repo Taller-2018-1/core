@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace think_agro_metrics.Controllers
 {
@@ -24,6 +25,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators
         [HttpGet]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicators()
         {
             var indicators = await _context.Indicators
@@ -36,6 +38,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5
         [HttpGet("{id:long}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicator([FromRoute] long id)
         {            
             if (!ModelState.IsValid)
@@ -60,6 +63,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Year/2018
         [HttpGet("{id:long}/Year/{year:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
         {
             if(!ModelState.IsValid)
@@ -123,6 +127,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Year/2018/Month/1
         [HttpGet("{id:long}/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if(!ModelState.IsValid)
@@ -157,6 +162,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Week/2018/6/9 (9th July 2018)
         [HttpGet("{id:long}/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
         {
             if (!ModelState.IsValid)
@@ -228,6 +234,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/1/Goals/Year/2018
         [HttpGet("{id:long}/Goals/Year/{year:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year)
         {
             if(!ModelState.IsValid)
@@ -295,6 +302,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/1/Goals/Year/2018/Month/0 (indicator 1, year 2018, month January)
         [HttpGet("{id:long}/Goals/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoalsMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if(!ModelState.IsValid)
@@ -349,6 +357,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate
         [Route("Calculate")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators()
         {
             if (!ModelState.IsValid)
@@ -382,6 +391,7 @@ namespace think_agro_metrics.Controllers
         
         // GET: api/Indicators/Calculate/Year/2018
         [Route("Calculate/Year/{year:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -415,6 +425,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate/Year/2018/Trimester/1
         [Route("Calculate/Year/{year:int}/Trimester/{trimester:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicatorsYearTrimester([FromRoute] int year, [FromRoute] int trimester)
         {
             if (!ModelState.IsValid)
@@ -522,6 +533,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate // Calculate Indicator with ID 5 for all years
         [Route("{id:long}/Calculate")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -548,6 +560,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate/Year/2018 // Calculate Indicator with ID 5 for a selected year
         [Route("{id:long}/Calculate/Year/{year:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYear([FromRoute] long id, [FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -600,6 +613,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate/Year/2018/Month/0 // Calculate Indicator with ID 5 for a selected year and selected month
         [Route("{id:long}/Calculate/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -658,6 +672,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicator([FromRoute] long id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -700,6 +715,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/Indicators
         [HttpPost]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostIndicator([FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -725,6 +741,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Indicators/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> DeleteIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -751,6 +768,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/AddRegistry")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> AddRegistry([FromRoute] long indicatorId,
             [FromBody] DefaultRegistry registry)
         {
@@ -790,6 +808,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/1/GoalsList
         [HttpGet("{id:long}/GoalsList")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoalsList([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -811,6 +830,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/Indicators/1/GoalsList
         [HttpPost("{idIndicator:long}/GoalsList")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostGoalsList([FromRoute] long idIndicator, [FromBody] Goal[] goals)
         {
             if (!ModelState.IsValid)
@@ -826,6 +846,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Indicators/7/Goal
         [HttpPut("{id:long}/Goal/")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicatorGoal([FromBody] Goal goal, [FromRoute] long id)
         {
             if (!ModelState.IsValid)
