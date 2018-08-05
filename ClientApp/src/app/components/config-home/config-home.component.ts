@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 
 
@@ -15,7 +15,8 @@ import swal from 'sweetalert2';
 @Component({
   selector: 'app-config-home',
   templateUrl: './config-home.component.html',
-  styleUrls: ['./config-home.component.css']
+  styleUrls: ['./config-home.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ConfigHomeComponent implements OnInit {
 
@@ -53,7 +54,7 @@ export class ConfigHomeComponent implements OnInit {
       cancelButtonText: 'CANCELAR',
       buttonsStyling: false,
       reverseButtons: true,
-      confirmButtonClass: 'btn btn-sm btn-primary btn-accept',
+      confirmButtonClass: 'btn btn-sm btn-primary',
       cancelButtonClass: 'btn btn-sm btn-clean-2 btn-cancel',
       allowOutsideClick: false,
       allowEscapeKey: false

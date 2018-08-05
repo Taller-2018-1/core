@@ -1,11 +1,9 @@
+.btn-cancel {
+  margin-right: 5px;
+}
+
 .head-page-section{
     margin-top: 80px !important;
 }
 
-.btn-cancel {
-  margin-right: 10px;
-}
 
-.btn-accept {
-  margin-left: 10px;
-}

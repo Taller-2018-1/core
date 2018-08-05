@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,12 @@ namespace think_agro_metrics.Controllers
     public class IndicatorsController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public IndicatorsController(DataContext context)
+        public IndicatorsController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Indicators
@@ -469,11 +472,39 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            var repository = _hostingEnvironment.WebRootPath + "\\Repository";
+
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == id).ToListAsync();
+
+            foreach (Registry registry in registries )
+            {
+                // To delete all documentss asociated to the indicator
+                List<Document> docs = await _context.Documents.Where(d => d.RegistryID == registry.RegistryID).ToListAsync();
+                foreach (Document doc in docs)
+                {
+                    if (doc.Extension.Equals(".pdf")) { // If it's a pdf, delete it from the server
+                        
+                        System.IO.File.Delete(repository + "\\" + doc.Link);
+                    }
+                    registry.Documents.Remove(doc); // Remove from modal
+                    _context.Documents.Remove(doc); // Remove from database
+                    await _context.SaveChangesAsync();
+                }
+
+                // To delete the registries 
+                indicator.Registries.Remove(registry); // Delete from model
+                _context.Registries.Remove(registry); // Delete from database
+                await _context.SaveChangesAsync();
+
+            }
+
             _context.Indicators.Remove(indicator);
             await _context.SaveChangesAsync();
 
             return Ok(indicator);
         }
+
+        
 
         private bool IndicatorExists(long id)
         {

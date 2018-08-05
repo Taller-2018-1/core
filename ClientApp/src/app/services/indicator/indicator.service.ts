@@ -106,4 +106,8 @@ export class IndicatorService {
   addIndicator(indicator: Indicator): Observable<any> {
     return this.http.post<any>(IndicatorService.INDICATORS_API, indicator);
   }
+
+  deleteIndicator(indicador: Indicator) {
+    //return this.http.delete<any>
+  }
 }
