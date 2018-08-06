@@ -29,7 +29,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // GET: api/Files/ASDKFJ"#L$"L#$J!#"#$JLSDG
         [HttpGet("{link}")]
-        [Authorize(Roles = "administrador,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public IActionResult Download([FromRoute] string link) 
         {
             string folderName = "Repository";

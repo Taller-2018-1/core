@@ -123,12 +123,12 @@ defineLocale('es', esLocale);
         canActivate: [CanActivateUser]
       },
       {
-        path: 'home',
+        path: '',
         component: ResultHomeComponent,
         canActivate: [CanActivateUser]
       },
       {
-        path: '',
+        path: 'welcome',
         component: WelcomeComponent
       },
       {
