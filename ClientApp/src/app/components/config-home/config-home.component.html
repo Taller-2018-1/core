@@ -38,13 +38,14 @@
             <ngb-panel>
               <ng-template ngbPanelTitle style="padding: 1em; border-radius: 0.5em; font-size: 14px; border: 5px solid #c4c4c4 !important; font-weight: bolder;">
                 <div class="row clickable" style="padding: 20px; margin-bottom: 5px; margin-top: 5px;">
-                    <div class="col-xs-9 col-sm-9 col-md-9">
+                    <div class="col-xs-7 col-sm-7 col-md-7">
                       <h5 class="fixh5">
                         {{ indicatorGroup.name }}
                       </h5>
                     </div>
-                    <div class="col-xs-1 col-sm-1 col-md-1">
-                        <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicatorGroup($event, indicatorGroup)">Eliminar</button>
+                    <div class="col-xs-3 col-sm-3 col-md-3">
+                      <button class="btn btn-xs btn-primary" type="button">Modificar</button>
+                      <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicatorGroup($event, indicatorGroup)">ELIMINAR</button>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 pull-right">
                       <span class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px; vertical-align: top; padding-top: -10px;"></span>
@@ -61,7 +62,7 @@
 
                     </div>
                     <div class="col-xs-2 col-sm-2 col-md-2">
-                        <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicator($event, indicator)">Eliminar</button>
+                        <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicator($event, indicator)">ELIMINAR</button>
                     </div>
                   </div>
                 </ng-template>
@@ -79,3 +80,7 @@
   <!--End Container-->
 
 </section>
+
+<ng-template #editIndicatorGroup>
+  
+</ng-template>
