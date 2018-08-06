@@ -62,7 +62,7 @@ export class ReportgeneratorComponent implements OnInit {
   selectedPeriod = 'Ninguno';
   periods: string[] = ['Ninguno', 'Trimestral', 'Mensual', 'Semanal']; // List of periods
 
-  selectedTrimester = 'Trimestre 1';
+  selectedTrimester = 'Ninguno';
   trimester: string[] = ['Trimestre 1', 'Trimestre 2', 'Trimestre 3', 'Trimestre 4']; // List of Trimester
 
   selectedWeek = 'Semana 1';
@@ -122,10 +122,12 @@ export class ReportgeneratorComponent implements OnInit {
       this.setContentDropdown = 'Ninguno'; // default is shown
       this.options = [null];
       this.selectMonth = 'Ninguno';
+      this.selectedTrimester='Ninguno';
     }
     if (this.selectedPeriod === 'Trimestral') {
       this.setTitlePeriod = 'Seleccione Trimestre';
       this.setContentDropdown = 'Trimestre 1'; // default is shown
+      this.selectedTrimester='Trimestre 1';
       this.options = this.trimester;
     }
     if (this.selectedPeriod === 'Mensual') {
@@ -145,7 +147,25 @@ export class ReportgeneratorComponent implements OnInit {
   // cambia al seleccionar el contenido del ultimo dropdown
   setOptionContentDropdown(option: string) {
     this.setContentDropdown = option; // MES
-    this.selectMonth = option;
+   
+    console.log("this.setContentDropdown: "+this.setContentDropdown);
+
+    for(let i = 0; i<12; i++)
+    {
+      if (option.localeCompare(this.Months[i]) === 0)
+      {
+        this.selectMonth = option;
+      }
+    }
+
+    for(let i = 0; i<4; i++)
+    {
+      if (option.localeCompare(this.trimester[i]) === 0)
+      {
+        this.selectedTrimester = option;
+      }
+    }  
+
   }
 
   setMonths() {
@@ -328,11 +348,56 @@ export class ReportgeneratorComponent implements OnInit {
         let meta = 0;
 
         for (let k = 0; k < this.indicators[empiezaJ].goals.length; k++) {
+          const mes = this.indicators[empiezaJ].goals[k].month + 1;
           if (this.indicators[empiezaJ].goals[k].year === this.selectedYear) {
-            if (mesString.localeCompare('Ninguno') === 0) {
+            if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
               meta += this.indicators[empiezaJ].goals[k].value;
             } else {
-              if (mesInt === this.indicators[empiezaJ].goals[k].month + 1) {
+              if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+              {
+                if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                {
+                  console.log("Entro Trimestre 1");
+                  for(let g=1;g<=3;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[empiezaJ].goals[k].value;
+                    }
+                  }
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                {
+                  console.log("Entro Trimestre 2");
+                  for(let g=4;g<=6;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[empiezaJ].goals[k].value;
+                    }
+                  } 
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                {
+                  console.log("Entro Trimestre 3");
+                  for(let g=7;g<=9;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[empiezaJ].goals[k].value;
+                    }
+                  }
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                {
+                  console.log("Entro Trimestre 4");
+                  for(let g=10;g<=12;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[empiezaJ].goals[k].value;
+                    }
+                  }
+                }
+              }
+              else if (mesInt === mes) {
+                console.log("Entro Mes");
                 meta += this.indicators[empiezaJ].goals[k].value;
               }
             }
@@ -347,10 +412,54 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              if (mesString.localeCompare('Ninguno') === 0) {
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
                 cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
               } else {
-                if (mesInt === mes) {
+                if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                {
+                  if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                  {
+                    console.log("Entro Trimestre 1");
+                    for(let g=1;g<=3;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                  {
+                    console.log("Entro Trimestre 2");
+                    for(let g=4;g<=6;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                      }
+                    } 
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                  {
+                    console.log("Entro Trimestre 3");
+                    for(let g=7;g<=9;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                  {
+                    console.log("Entro Trimestre 4");
+                    for(let g=10;g<=12;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                      }
+                    }
+                  }
+                }
+                else if (mesInt === mes) {
+                  console.log("Entro Mes");
                   cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
                 }
               }
@@ -367,10 +476,54 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              if (mesString.localeCompare('Ninguno') === 0) {
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
                 cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
               } else {
-                if (mesInt === mes) {
+                if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                {
+                  if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                  {
+                    console.log("Entro Trimestre 1");
+                    for(let g=1;g<=3;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                  {
+                    console.log("Entro Trimestre 2");
+                    for(let g=4;g<=6;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                      }
+                    } 
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                  {
+                    console.log("Entro Trimestre 3");
+                    for(let g=7;g<=9;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                  {
+                    console.log("Entro Trimestre 4");
+                    for(let g=10;g<=12;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
+                      }
+                    }
+                  }
+                }
+                else if (mesInt === mes) {
+                  console.log("Entro Mes");
                   cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
                 }
               }
@@ -386,12 +539,55 @@ export class ReportgeneratorComponent implements OnInit {
             const date: Date = new Date(this.indicators[empiezaJ].registries[z].date);
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
-            if (anio === this.selectedYear) {
-              
-              if (mesString.localeCompare('Ninguno') === 0) {
+            if (anio === this.selectedYear) {              
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
                 cantidadRegistro++;
               }  else {
-                if (mesInt === mes) {
+                if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                {
+                  if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                  {
+                    console.log("Entro Trimestre 1");
+                    for(let g=1;g<=3;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro++;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                  {
+                    console.log("Entro Trimestre 2");
+                    for(let g=4;g<=6;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro++;
+                      }
+                    } 
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                  {
+                    console.log("Entro Trimestre 3");
+                    for(let g=7;g<=9;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro++;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                  {
+                    console.log("Entro Trimestre 4");
+                    for(let g=10;g<=12;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro++;
+                      }
+                    }
+                  }
+                }
+                else if (mesInt === mes) {
+                  console.log("Entro Mes");
                   cantidadRegistro++;
                 }
               }
@@ -487,11 +683,56 @@ export class ReportgeneratorComponent implements OnInit {
       for (let j = 0; j < this.indicatorGroups[i].indicators.length; j++) {
         meta = 0;
         for (let y = 0; y < this.indicators[posicionIndicador].goals.length; y++) {
+          const mes = this.indicators[posicionIndicador].goals[y].month + 1;
           if (this.indicators[posicionIndicador].goals[y].year === this.selectedYear) {
-            if (mesString.localeCompare('Ninguno') === 0) {
+            if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
               meta += this.indicators[posicionIndicador].goals[y].value;
             } else {
-              if (mesInt === this.indicators[posicionIndicador].goals[y].month + 1) {
+              if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+              {
+                if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                {
+                  console.log("Entro Trimestre 1");
+                  for(let g=1;g<=3;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[posicionIndicador].goals[y].value;
+                    }
+                  }
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                {
+                  console.log("Entro Trimestre 2");
+                  for(let g=4;g<=6;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[posicionIndicador].goals[y].value;
+                    }
+                  } 
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                {
+                  console.log("Entro Trimestre 3");
+                  for(let g=7;g<=9;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[posicionIndicador].goals[y].value;
+                    }
+                  }
+                }
+                if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                {
+                  console.log("Entro Trimestre 4");
+                  for(let g=10;g<=12;g++)
+                  {
+                    if (g === mes) {
+                      meta += this.indicators[posicionIndicador].goals[y].value;
+                    }
+                  }
+                }
+              }
+              else if (mesInt === mes) {
+                console.log("Entro Mes");
                 meta += this.indicators[posicionIndicador].goals[y].value;
               }
             }
@@ -507,10 +748,54 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              if (mesString.localeCompare('Ninguno') === 0) {
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ) {
                 cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
               } else {
-                if (mesInt === mes) {
+                if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                {
+                  if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                  {
+                    console.log("Entro Trimestre 1");
+                    for(let g=1;g<=3;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                  {
+                    console.log("Entro Trimestre 2");
+                    for(let g=4;g<=6;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
+                      }
+                    } 
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                  {
+                    console.log("Entro Trimestre 3");
+                    for(let g=7;g<=9;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
+                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                  {
+                    console.log("Entro Trimestre 4");
+                    for(let g=10;g<=12;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
+                      }
+                    }
+                  }
+                }
+                else if (mesInt === mes) {
+                  console.log("Entro Mes");
                   cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
                 }
               }
@@ -522,12 +807,52 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              if (mesString.localeCompare('Ninguno') === 0) {
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno') ===0 ){
                 cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;
-              } else {
-                if (mesInt === mes) {
-                  cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;
+              } 
+              else {
+                if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                {
+                  if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                  {
+                    console.log("Entro Trimestre 1");
+                    for(let g=1;g<=3;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                  {
+                    console.log("Entro Trimestre 2");
+                    for(let g=4;g<=6;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                      }
+                    } 
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                  {
+                    console.log("Entro Trimestre 3");
+                    for(let g=7;g<=9;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                      }
+                    }
+                  }
+                  if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                  {
+                    console.log("Entro Trimestre 4");
+                    for(let g=10;g<=12;g++)
+                    {
+                      if (g === mes) {
+                        cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                      }
+                    }
+                  }
                 }
+                else if (mesInt === mes) {
+                  console.log("Entro Mes");
+                  cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                }
               }
             }
           }
@@ -537,14 +862,52 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              if (mesString.localeCompare('Ninguno') === 0) {
+              if (mesString.localeCompare('Ninguno') === 0 && this.selectedTrimester.localeCompare('Ninguno')===0 ){
                 // cantidadRegistro = this.indicators[posicionIndicador].registries.length;
                 cantidadRegistro++;
               } else {
-                if (mesInt === mes) {
-                  // cantidadRegistro = this.indicators[posicionIndicador].registries.length;
-                  cantidadRegistro++;
-                }
+                  if(!(this.selectedTrimester.localeCompare('Ninguno')===0))
+                  {
+                    if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
+                    {
+                      console.log("Entro Trimestre 1");
+                      for(let g=1;g<=3;g++)
+                      {
+                        if (g === mes) {
+                          cantidadRegistro++;                        }
+                      }
+                    }
+                    if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
+                    {
+                      console.log("Entro Trimestre 2");
+                      for(let g=4;g<=6;g++)
+                      {
+                        if (g === mes) {
+                          cantidadRegistro++;                        }
+                      } 
+                    }
+                    if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
+                    {
+                      console.log("Entro Trimestre 3");
+                      for(let g=7;g<=9;g++)
+                      {
+                        if (g === mes) {
+                          cantidadRegistro++;                        }
+                      }
+                    }
+                    if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
+                    {
+                      console.log("Entro Trimestre 4");
+                      for(let g=10;g<=12;g++)
+                      {
+                        if (g === mes) {
+                          cantidadRegistro++;                        }
+                      }
+                    }
+                  }
+                  else if (mesInt === mes) {
+                    console.log("Entro Mes");
+                    cantidadRegistro++;                  }
               }
             }
           }
@@ -572,7 +935,7 @@ export class ReportgeneratorComponent implements OnInit {
 
 
     // funcion que guarda y crea el archivo
-    saveAs(new Blob([this.s2ab(wbout)], {type: 'application/octet-stream'}), 'Informe General.xlsx');
+  saveAs(new Blob([this.s2ab(wbout)], {type: 'application/octet-stream'}), 'Informe General.xlsx');
 
   }
 
