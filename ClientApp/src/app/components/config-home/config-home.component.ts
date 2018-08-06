@@ -1,6 +1,7 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, TemplateRef} from '@angular/core';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 // Models
 import { Indicator } from '../../shared/models/indicator';
@@ -22,13 +23,27 @@ import swal from 'sweetalert2';
 export class ConfigHomeComponent implements OnInit {
 
   indicatorsGroups$: Observable<IndicatorGroup[]>;
+  public editIndicatorGroupModalRef: BsModalRef;
+
+  public indicatorGroup: IndicatorGroup;
 
   constructor(private indicatorService: IndicatorService,
               private indicatorGroupService: IndicatorGroupService,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService,
+              private modalService: BsModalService) { }
 
   ngOnInit() {
     this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
+  }
+
+  openModalEdit($event: any, template: TemplateRef<any>, indicatorGroup: IndicatorGroup) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+
+    this.indicatorGroup = indicatorGroup;
+    this.editIndicatorGroupModalRef = this.modalService.show(template);
   }
 
   deleteIndicator($event: any, indicator: Indicator) {

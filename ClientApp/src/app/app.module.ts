@@ -59,6 +59,7 @@ import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
 import { ConfigHomeComponent } from './components/config-home/config-home.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
+import { IndicatorGroupEditorComponent } from './components/config-home/indicator-group-editor/indicator-group-editor.component';
 
 defineLocale('es', esLocale);
 
@@ -93,7 +94,8 @@ defineLocale('es', esLocale);
     FileDocumentSubformComponent,
     SafeDomPipe,
     ChartComponent,
-    ConfigHomeComponent
+    ConfigHomeComponent,
+    IndicatorGroupEditorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),

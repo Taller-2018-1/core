@@ -245,7 +245,7 @@ export class IndicatorDetailComponent implements OnInit {
     this.sessionStorage.setMonth(this.selectedMonth);
   }
 
-  
+
   // Update the goals depending the already selected filters
   updateGoal(event) {
     if (this.selectedYear === -1) { // All years

@@ -44,7 +44,7 @@
                       </h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3">
-                      <button class="btn btn-xs btn-primary" type="button">Modificar</button>
+                      <button class="btn btn-xs btn-primary" type="button" (click)="openModalEdit($event, editIndicatorGroup,indicatorGroup)">Modificar</button>
                       <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicatorGroup($event, indicatorGroup)">ELIMINAR</button>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 pull-right">
@@ -81,6 +81,14 @@
 
 </section>
 
+<!-- Modal Edit Indicator -->
 <ng-template #editIndicatorGroup>
-  
+  <div class="modal-header" tabindex="-1">
+    <h4 class="modal-title pull-left">Modificar resultado esperado</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editIndicatorGroupModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <app-indicator-group-editor></app-indicator-group-editor>
+  <!--<app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>-->
 </ng-template>
