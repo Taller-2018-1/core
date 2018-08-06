@@ -36,19 +36,19 @@ namespace think_agro_metrics.Controllers
             return Ok(indicatorGroups);
         }
 
-        // GET: api/IndicatorGroupsComplete
-        [HttpGet("Complete")]
-        public async Task<IActionResult> GetIndicatorGroupsComplete()
-        {
-            var indicatorGroups = await _context.IndicatorGroups
-                .Include(g => g.Indicators)
-                .ThenInclude(i => i.Registries)
-                .Include(i => i.Indicators)
-                .ThenInclude( i => i.Goals)
-                .ToListAsync();
-
-            return Ok(indicatorGroups);
-        }
+         // GET: api/IndicatorGroupsComplete 
+        [HttpGet("Complete")] 
+        public async Task<IActionResult> GetIndicatorGroupsComplete() 
+        { 
+            var indicatorGroups = await _context.IndicatorGroups 
+                .Include(g => g.Indicators) 
+                .ThenInclude(i => i.Registries) 
+                .Include(i => i.Indicators) 
+                .ThenInclude( i => i.Goals) 
+                .ToListAsync(); 
+ 
+            return Ok(indicatorGroups); 
+        } 
 
         // GET: api/IndicatorGroups/5
         [HttpGet("{id}")]
