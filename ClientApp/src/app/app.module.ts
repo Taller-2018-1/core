@@ -45,6 +45,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderService } from './services/loader/loader.service';
 import { LoaderInterceptor } from './shared/interceptors/loader-interceptor';
+import { TokenInterceptor } from './interceptors/TokenInterceptor';
 import { IndicatorGroupFormComponent } from './components/result-home/indicator-group-form/indicator-group-form.component';
 import { IndicatorFormComponent } from './components/indicator-home/indicator-form/indicator-form.component';
 import { PopoverModule} from 'ngx-bootstrap';
@@ -53,8 +54,12 @@ import { LinkDocumentSubformComponent } from './components/registry-form/link-do
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
-import { NotificationService } from './services/alerts/notification.service';
 import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
+import { SafeDomPipe } from './shared/safe-dom.pipe';
+import { NotificationService } from './services/alerts/notification.service';
+import { ChartComponent } from './components/indicator-detail/chart/chart.component';
+import { PreviousRouteService } from './services/previous-route/previous-route.service';
+
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -86,7 +91,9 @@ defineLocale('es', esLocale);
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
-    IndicatorEditorComponent
+    IndicatorEditorComponent,
+    SafeDomPipe,
+    ChartComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -118,12 +125,12 @@ defineLocale('es', esLocale);
         canActivate: [CanActivateUser]
       },
       {
-        path: 'home',
+        path: '',
         component: ResultHomeComponent,
         canActivate: [CanActivateUser]
       },
       {
-        path: '',
+        path: 'welcome',
         component: WelcomeComponent
       },
       {
@@ -142,9 +149,15 @@ defineLocale('es', esLocale);
     FileService,
     NotificationService,
     LoaderService,
+    PreviousRouteService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true
     }
   ],

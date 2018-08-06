@@ -1,7 +1,9 @@
 import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AuthService } from '../../services/auth/AuthService';
-
+import {IndicatorGroup} from '../../shared/models/indicatorGroup';
+import {IndicatorGroupService} from '../../services/indicator-group/indicator-group.service';
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,27 +17,33 @@ export class HeaderComponent implements OnInit {
   };
   email: string;
   password: string;
-
+  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>; 
   authorize() {
     this.auth.auth({
       email: this.email,
       password: this.password
     }).subscribe(item => {
       console.log('ok');
-      this.modalRef.hide()
+      this.modalRef.hide();
     }, error => {
-      this.email = "";
-      this.password = "";
+      this.email = '';
+      this.password = '';
     });
   }
-
-  constructor(private modalService: BsModalService, private auth: AuthService) { }
+  
+  constructor(private service: IndicatorGroupService, private modalService: BsModalService, private auth: AuthService) { }
 
   ngOnInit() {
+    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  openModalReport(template: TemplateRef<any>) 
+  {
+    this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
 
   logOut() {
