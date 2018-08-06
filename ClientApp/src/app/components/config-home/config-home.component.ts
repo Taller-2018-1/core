@@ -16,12 +16,11 @@ import swal from 'sweetalert2';
 @Component({
   selector: 'app-config-home',
   templateUrl: './config-home.component.html',
-  styleUrls: ['./config-home.component.css'],
+  styleUrls: ['./config-home.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ConfigHomeComponent implements OnInit {
 
-  indicators$: Observable<Indicator[]>;
   indicatorsGroups$: Observable<IndicatorGroup[]>;
 
   constructor(private indicatorService: IndicatorService,
@@ -33,12 +32,17 @@ export class ConfigHomeComponent implements OnInit {
     this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
   }
 
-  deleteIndicator(indicator: Indicator) {
+  deleteIndicator($event: any, indicator: Indicator) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+
     this.confirmDeleteIndicator(indicator.name).then( result => {
       if (result.value) {
         this.indicatorService.deleteIndicator(indicator).subscribe(data =>{
           this.notificationService.showToaster('Indicador eliminado', 'success');
-          this.indicators$ = this.indicatorService.getIndicators();
+          this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
         });
       } else {
         // Do nothing
@@ -48,7 +52,12 @@ export class ConfigHomeComponent implements OnInit {
     });
   }
 
-  deleteIndicatorGroup(indicatorGroup: IndicatorGroup) {
+  deleteIndicatorGroup($event: any, indicatorGroup: IndicatorGroup) {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+
     this.confirmDeleteIndicatorGroup(indicatorGroup.name).then( result => {
       if (result.value) {
         this.indicatorGroupService.deleteIndicatorGroup(indicatorGroup).subscribe( data => {
