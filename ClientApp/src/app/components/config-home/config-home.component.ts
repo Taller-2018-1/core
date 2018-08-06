@@ -28,7 +28,6 @@ export class ConfigHomeComponent implements OnInit {
               private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.indicators$ = this.indicatorService.getIndicators();
     this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
   }
 
