@@ -10,6 +10,8 @@ import { equal, deepEqual, notDeepEqual } from 'assert';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { detachEmbeddedView } from '@angular/core/src/view';
 
+import swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registry-editor',
   templateUrl: './registry-editor.component.html',
@@ -49,25 +51,44 @@ export class RegistryEditorComponent implements OnInit {
   editRegistry() {
     try {
       notDeepEqual(this.registry, this.newRegistry); // If registry and newRegistry are not equal, just close the modal
-      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe();
+      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe(data =>
+      {
+        if (data) {
+          // replacing the old registry (this.registry) with the edited registry (this.newRegistry)
+          const index = this.registries.indexOf(this.registry);
+          this.registries[index] = this.newRegistry;
+        } else {
+          this.duplicateNameAlert();
+        }
+      });
 
       // replacing the old registry (this.registry) with the edited registry (this.newRegistry)
-      let index = this.registries.indexOf(this.registry);
-      this.registries[index] = this.newRegistry;
+      // let index = this.registries.indexOf(this.registry);
+      // this.registries[index] = this.newRegistry;
 
     }
     catch (error) {
 
     }
     this.editModalRef.hide();
-    // this.registry = null;
-    // this.editModalRef = null;
-    
   }
 
   // Fix to convert the corrupted date (string for an unknown reason) to Date object
   fixDate() {
     const date = this.newRegistry.date.toString();
     this.newRegistry.date = new Date(+date.substr(0, 4), +date.substr(5, 2) - 1, +date.substr(8, 2));
+  }
+
+  private duplicateNameAlert() {
+    swal({
+      title: 'Error al editar el registro',
+      html: '<h6> Ya existe un registro con el nombre "' + this.newRegistry.name + '"</h6>',
+      type: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
   }
 }

@@ -66,7 +66,7 @@ export class IndicatorFormComponent implements OnInit {
       data => {
         if (data as boolean == false) {
           this.duplicateNameAlert();
-          return
+          return;
         }
         else {
           this.udpateEvent.emit("Indicator Added");
