@@ -148,8 +148,6 @@ export class ReportgeneratorComponent implements OnInit {
   setOptionContentDropdown(option: string) {
     this.setContentDropdown = option; // MES
    
-    console.log("this.setContentDropdown: "+this.setContentDropdown);
-
     for(let i = 0; i<12; i++)
     {
       if (option.localeCompare(this.Months[i]) === 0)
@@ -357,7 +355,7 @@ export class ReportgeneratorComponent implements OnInit {
               {
                 if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                 {
-                  console.log("Entro Trimestre 1");
+                  // Entro Trimestre 1
                   for(let g=1;g<=3;g++)
                   {
                     if (g === mes) {
@@ -367,7 +365,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                 {
-                  console.log("Entro Trimestre 2");
+                  // Entro Trimestre 2
                   for(let g=4;g<=6;g++)
                   {
                     if (g === mes) {
@@ -377,7 +375,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                 {
-                  console.log("Entro Trimestre 3");
+                  // Entro Trimestre 3
                   for(let g=7;g<=9;g++)
                   {
                     if (g === mes) {
@@ -387,7 +385,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                 {
-                  console.log("Entro Trimestre 4");
+                  // Entro Trimestre 4
                   for(let g=10;g<=12;g++)
                   {
                     if (g === mes) {
@@ -397,7 +395,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
               }
               else if (mesInt === mes) {
-                console.log("Entro Mes");
+                // Entro Mes
                 meta += this.indicators[empiezaJ].goals[k].value;
               }
             }
@@ -419,7 +417,7 @@ export class ReportgeneratorComponent implements OnInit {
                 {
                   if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                   {
-                    console.log("Entro Trimestre 1");
+                    // Entro Trimestre 1
                     for(let g=1;g<=3;g++)
                     {
                       if (g === mes) {
@@ -429,7 +427,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                   {
-                    console.log("Entro Trimestre 2");
+                    // Entro Trimestre 2
                     for(let g=4;g<=6;g++)
                     {
                       if (g === mes) {
@@ -439,7 +437,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                   {
-                    console.log("Entro Trimestre 3");
+                    // Entro Trimestre 3
                     for(let g=7;g<=9;g++)
                     {
                       if (g === mes) {
@@ -449,7 +447,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                   {
-                    console.log("Entro Trimestre 4");
+                    // Entro Trimestre 4
                     for(let g=10;g<=12;g++)
                     {
                       if (g === mes) {
@@ -459,7 +457,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                 }
                 else if (mesInt === mes) {
-                  console.log("Entro Mes");
+                  // Entro Mes
                   cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
                 }
               }
@@ -483,7 +481,7 @@ export class ReportgeneratorComponent implements OnInit {
                 {
                   if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                   {
-                    console.log("Entro Trimestre 1");
+                    // Entro Trimestre 1
                     for(let g=1;g<=3;g++)
                     {
                       if (g === mes) {
@@ -493,17 +491,17 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                   {
-                    console.log("Entro Trimestre 2");
+                    // Entro Trimestre 2"
                     for(let g=4;g<=6;g++)
                     {
                       if (g === mes) {
-                        cantidadRegistro += this.indicators[empiezaJ].registries[z].quantity;
+                        cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
                       }
                     } 
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                   {
-                    console.log("Entro Trimestre 3");
+                    // Entro Trimestre 3
                     for(let g=7;g<=9;g++)
                     {
                       if (g === mes) {
@@ -513,7 +511,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                   {
-                    console.log("Entro Trimestre 4");
+                    // Entro Trimestre 4
                     for(let g=10;g<=12;g++)
                     {
                       if (g === mes) {
@@ -523,7 +521,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                 }
                 else if (mesInt === mes) {
-                  console.log("Entro Mes");
+                  // Entro Mes
                   cantidadRegistro += this.indicators[empiezaJ].registries[z].percent;
                 }
               }
@@ -547,7 +545,7 @@ export class ReportgeneratorComponent implements OnInit {
                 {
                   if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                   {
-                    console.log("Entro Trimestre 1");
+                    // Entro Trimestre 1
                     for(let g=1;g<=3;g++)
                     {
                       if (g === mes) {
@@ -557,7 +555,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                   {
-                    console.log("Entro Trimestre 2");
+                    // Entro Trimestre 2
                     for(let g=4;g<=6;g++)
                     {
                       if (g === mes) {
@@ -567,7 +565,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                   {
-                    console.log("Entro Trimestre 3");
+                    // Entro Trimestre 3
                     for(let g=7;g<=9;g++)
                     {
                       if (g === mes) {
@@ -577,7 +575,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                   {
-                    console.log("Entro Trimestre 4");
+                    // Entro Trimestre 4
                     for(let g=10;g<=12;g++)
                     {
                       if (g === mes) {
@@ -587,7 +585,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                 }
                 else if (mesInt === mes) {
-                  console.log("Entro Mes");
+                  // Entro Mes
                   cantidadRegistro++;
                 }
               }
@@ -630,10 +628,6 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   downloadExcel() {
-
-
-    //this.OrdernarArregloIndicators();
-
 
     const wb = XLSX.utils.book_new();
 
@@ -692,7 +686,7 @@ export class ReportgeneratorComponent implements OnInit {
               {
                 if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                 {
-                  console.log("Entro Trimestre 1");
+                  // Entro Trimestre 1
                   for(let g=1;g<=3;g++)
                   {
                     if (g === mes) {
@@ -702,7 +696,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                 {
-                  console.log("Entro Trimestre 2");
+                  // Entro Trimestre 2
                   for(let g=4;g<=6;g++)
                   {
                     if (g === mes) {
@@ -712,7 +706,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                 {
-                  console.log("Entro Trimestre 3");
+                  // Entro Trimestre 3
                   for(let g=7;g<=9;g++)
                   {
                     if (g === mes) {
@@ -722,7 +716,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
                 if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                 {
-                  console.log("Entro Trimestre 4");
+                  // Entro Trimestre 4
                   for(let g=10;g<=12;g++)
                   {
                     if (g === mes) {
@@ -732,7 +726,7 @@ export class ReportgeneratorComponent implements OnInit {
                 }
               }
               else if (mesInt === mes) {
-                console.log("Entro Mes");
+                // Entro Mes
                 meta += this.indicators[posicionIndicador].goals[y].value;
               }
             }
@@ -755,7 +749,7 @@ export class ReportgeneratorComponent implements OnInit {
                 {
                   if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                   {
-                    console.log("Entro Trimestre 1");
+                    // Entro Trimestre 1
                     for(let g=1;g<=3;g++)
                     {
                       if (g === mes) {
@@ -765,7 +759,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                   {
-                    console.log("Entro Trimestre 2");
+                    // Entro Trimestre 2
                     for(let g=4;g<=6;g++)
                     {
                       if (g === mes) {
@@ -775,7 +769,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                   {
-                    console.log("Entro Trimestre 3");
+                    // Entro Trimestre 3
                     for(let g=7;g<=9;g++)
                     {
                       if (g === mes) {
@@ -785,7 +779,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                   {
-                    console.log("Entro Trimestre 4");
+                    // Entro Trimestre 4
                     for(let g=10;g<=12;g++)
                     {
                       if (g === mes) {
@@ -795,7 +789,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                 }
                 else if (mesInt === mes) {
-                  console.log("Entro Mes");
+                  // Entro Mes
                   cantidadRegistro += this.indicators[posicionIndicador].registries[z].quantity;
                 }
               }
@@ -815,7 +809,7 @@ export class ReportgeneratorComponent implements OnInit {
                 {
                   if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                   {
-                    console.log("Entro Trimestre 1");
+                    // Entro Trimestre 1
                     for(let g=1;g<=3;g++)
                     {
                       if (g === mes) {
@@ -824,7 +818,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                   {
-                    console.log("Entro Trimestre 2");
+                    // Entro Trimestre 2
                     for(let g=4;g<=6;g++)
                     {
                       if (g === mes) {
@@ -833,7 +827,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                   {
-                    console.log("Entro Trimestre 3");
+                    // Entro Trimestre 3
                     for(let g=7;g<=9;g++)
                     {
                       if (g === mes) {
@@ -842,7 +836,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                   if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                   {
-                    console.log("Entro Trimestre 4");
+                    // Entro Trimestre 4
                     for(let g=10;g<=12;g++)
                     {
                       if (g === mes) {
@@ -851,7 +845,7 @@ export class ReportgeneratorComponent implements OnInit {
                   }
                 }
                 else if (mesInt === mes) {
-                  console.log("Entro Mes");
+                  // Entro Mes
                   cantidadRegistro += this.indicators[posicionIndicador].registries[z].percent;                }
               }
             }
@@ -870,44 +864,49 @@ export class ReportgeneratorComponent implements OnInit {
                   {
                     if(this.selectedTrimester.localeCompare('Trimestre 1')===0)
                     {
-                      console.log("Entro Trimestre 1");
+                      // Entro Trimestre 1
                       for(let g=1;g<=3;g++)
                       {
                         if (g === mes) {
-                          cantidadRegistro++;                        }
+                          cantidadRegistro++;                        
+                        }
                       }
                     }
                     if(this.selectedTrimester.localeCompare('Trimestre 2')===0)
                     {
-                      console.log("Entro Trimestre 2");
+                      // Entro Trimestre 2
                       for(let g=4;g<=6;g++)
                       {
                         if (g === mes) {
-                          cantidadRegistro++;                        }
+                          cantidadRegistro++;                        
+                        }
                       } 
                     }
                     if(this.selectedTrimester.localeCompare('Trimestre 3')===0)
                     {
-                      console.log("Entro Trimestre 3");
+                      // Entro Trimestre 3
                       for(let g=7;g<=9;g++)
                       {
                         if (g === mes) {
-                          cantidadRegistro++;                        }
+                          cantidadRegistro++;                        
+                        }
                       }
                     }
                     if(this.selectedTrimester.localeCompare('Trimestre 4')===0)
                     {
-                      console.log("Entro Trimestre 4");
+                      // Entro Trimestre 4
                       for(let g=10;g<=12;g++)
                       {
                         if (g === mes) {
-                          cantidadRegistro++;                        }
+                          cantidadRegistro++;                        
+                        }
                       }
                     }
                   }
                   else if (mesInt === mes) {
-                    console.log("Entro Mes");
-                    cantidadRegistro++;                  }
+                    // Entro Mes
+                    cantidadRegistro++;                  
+                  }
               }
             }
           }
@@ -939,7 +938,7 @@ export class ReportgeneratorComponent implements OnInit {
 
   }
 
-  s2ab(s) {
+  s2ab(s : any) {
     const buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
     const view = new Uint8Array(buf);  // create uint8array as viewer
     for (let i = 0; i < s.length; i++) {
