@@ -13,7 +13,7 @@ export class IndicatorGroupService {
   public static CALCULATE = IndicatorGroupService.API_URL + 'Calculate/';
   public static GOALS = IndicatorGroupService.API_URL + 'Goals/';
   public static NAME = IndicatorGroupService.API_URL + 'Name/';
-  public static ALL = IndicatorGroupService.API_URL + 'Complete';   
+  public static ALL = IndicatorGroupService.API_URL + 'Complete';
 
   constructor(public http: HttpClient) { }
 
@@ -29,9 +29,9 @@ export class IndicatorGroupService {
     return this.http.get<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroupId);
   }
 
-  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> { 
-    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL); 
-  } 
+  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> {
+    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL);
+  }
 
   calculateIndicatorGroup(indicatorGroup: number): Observable<number[]> {
     return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup);

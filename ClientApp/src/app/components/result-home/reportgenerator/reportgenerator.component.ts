@@ -78,6 +78,7 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Onit");
     console.log(this.indicatorGroups);
 
     // const currentYear = new Date().getFullYear();
@@ -179,7 +180,7 @@ export class ReportgeneratorComponent implements OnInit {
     this.selectedMonth = Months[month];
   }
 
-  GeneraIndicadores(year: number) {
+  GeneraIndicadores(year:number) {
 
     for (let i = 0; i < this.indicatorGroups.length; i++) {
       for (let j = 0; j < this.indicatorGroups[i].indicators.length; j++) {
@@ -387,7 +388,6 @@ export class ReportgeneratorComponent implements OnInit {
             const anio = date.getFullYear();
             const mes = date.getMonth() + 1;
             if (anio === this.selectedYear) {
-              
               if (mesString.localeCompare('Ninguno') === 0) {
                 cantidadRegistro++;
               }  else {
@@ -434,10 +434,6 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   downloadExcel() {
-
-
-    //this.OrdernarArregloIndicators();
-
 
     const wb = XLSX.utils.book_new();
 

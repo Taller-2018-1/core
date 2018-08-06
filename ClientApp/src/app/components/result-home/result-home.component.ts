@@ -27,8 +27,7 @@ export class ResultHomeComponent implements OnInit {
   @HostBinding('class') classes = 'wrapper'; // This adds a class to the host container
 
   public indicatorGroups$: Observable<IndicatorGroup[]>;
-
-  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>; 
+  public indicatorGroupsComplete$: Observable<IndicatorGroup[]>;
 
   modalRef: BsModalRef;
 
@@ -39,7 +38,6 @@ export class ResultHomeComponent implements OnInit {
   ngOnInit()
   {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
-
     this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
