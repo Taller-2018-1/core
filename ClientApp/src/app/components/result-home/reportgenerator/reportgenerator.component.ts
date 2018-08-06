@@ -78,6 +78,7 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Onit");
     console.log(this.indicatorGroups);
 
     // const currentYear = new Date().getFullYear();
@@ -197,7 +198,7 @@ export class ReportgeneratorComponent implements OnInit {
     this.selectedMonth = Months[month];
   }
 
-  GeneraIndicadores(year: number) {
+  GeneraIndicadores(year:number) {
 
     for (let i = 0; i < this.indicatorGroups.length; i++) {
       for (let j = 0; j < this.indicatorGroups[i].indicators.length; j++) {

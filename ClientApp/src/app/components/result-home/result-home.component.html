@@ -3,17 +3,19 @@
       <div id="head-page-section" class="l-grey-bg head-page-section">
        <div class="container">
          <div class="row">
-           <div class="col-md-5 col-sm-7">
+           <div class="col-md-4 col-sm-4 col-xs-12">
              <div class="head-title">
                <h1>
                  Resultados
                </h1>
-
              </div> <!-- end subsection-text -->
            </div> <!-- end col-md-8 -->
-           <div class="col-md-7 offset-md-2 text-right">
-            <button type="button" class="btn btn-primary btn-md" (click)="openModalAdd(addIndicatorGroup)">
-               Agregar grupo de indicadores <span class="glyphicon glyphicon-plus"> </span>
+          <div class="col-md-8 col-sm-8 col-xs-12 text-right">
+            <button type="button" class="btn btn-primary btn-md" (click)="openModal(generator)">
+               Generar Informe <span class="glyphicon glyphicon-file"> </span>
+             </button>
+             <button type="button" class="btn btn-primary btn-md" (click)="openModal(addIndicatorGroup)">
+              Agregar grupo de indicadores <span class="glyphicon glyphicon-plus"> </span>
              </button>
            </div> <!-- end col-md-4 -->
          </div> <!-- end row -->
@@ -30,11 +32,25 @@
 
 </div>
 
+<ng-template #generator >
+  <div class="modal-dialog" style="width: 90%">
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Generador de informes de todos los indicadores</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>  
+        <div class="modal-body" *ngIf="indicatorGroupsComplete$ | async as indicatorGroups">
+          <app-reportgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-reportgenerator>
+        </div>
+  </div>
+</ng-template>
+
 
 <ng-template #addIndicatorGroup>
   <div class="modal-dialog">
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Ingrese un nuevo grupo de indicadores</h4>>
+      <h4 class="modal-title pull-left">Ingrese un nuevo grupo de indicadores</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
