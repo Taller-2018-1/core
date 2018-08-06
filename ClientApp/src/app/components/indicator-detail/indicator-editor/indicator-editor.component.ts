@@ -60,7 +60,7 @@ export class IndicatorEditorComponent implements OnInit {
     for (let ig of this.groups) {
       if (ig.name === this.selectedText) {
         if (ig.indicatorGroupID !== this.newIndicator.indicatorGroupID) { // Moved to another IndicatorGroup
-          moved = true
+          moved = true;
         }
         this.newIndicator.indicatorGroupID = ig.indicatorGroupID;
 
@@ -73,7 +73,7 @@ export class IndicatorEditorComponent implements OnInit {
           this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID );
         } else {
           this.updateInfo.emit("Indicator updated");
-          //this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
+          // this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
         }
       } else {
         this.duplicateNameAlert();
