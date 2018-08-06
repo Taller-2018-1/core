@@ -96,7 +96,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/IndicatorGroups/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "administrador")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicatorGroup([FromRoute] long id, [FromBody] IndicatorGroup indicatorGroup)
         {
             if (!ModelState.IsValid)
@@ -132,7 +132,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/IndicatorGroups
         [HttpPost]
-        [Authorize(Roles = "administrador")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostIndicatorGroup([FromBody] IndicatorGroup indicatorGroup)
         {
             if (!ModelState.IsValid)
@@ -158,7 +158,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/IndicatorGroups/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "administrador")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> DeleteIndicatorGroup([FromRoute] long id)
         {
             if (!ModelState.IsValid)

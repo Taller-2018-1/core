@@ -52,7 +52,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // PUT: api/Files/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "administrador")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutDocument([FromRoute] long id, [FromBody] Document document)
         {
             if (!ModelState.IsValid)
