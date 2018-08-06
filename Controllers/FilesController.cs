@@ -29,7 +29,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // GET: api/Files/ASDKFJ"#L$"L#$J!#"#$JLSDG
         [HttpGet("{link}")]
-        [Authorize(Roles = "administrador,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public IActionResult Download([FromRoute] string link) 
         {
             string folderName = "Repository";
@@ -52,7 +52,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // PUT: api/Files/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "administrador")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutDocument([FromRoute] long id, [FromBody] Document document)
         {
             if (!ModelState.IsValid)
