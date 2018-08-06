@@ -31,7 +31,7 @@ export class IndicatorEditorComponent implements OnInit {
   public newIndicator: Indicator;
   public groups: IndicatorGroup[];
 
-  public selectedText: string = 'Cambiar el resultado esperado al que pertenece';
+  public selectedText = 'Cambiar el resultado esperado al que pertenece';
   public maxLength = 46; // The selectedText gets truncated on maxLength characters
                         // The indicatorGroup name show a few more characters
                         // Why 46? - Count the characters of selectedText
@@ -72,7 +72,7 @@ export class IndicatorEditorComponent implements OnInit {
         if (moved) {
           this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID );
         } else {
-          this.updateInfo.emit("Indicator updated");
+          this.updateInfo.emit('Indicator updated');
           // this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
         }
       } else {
