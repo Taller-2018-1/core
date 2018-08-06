@@ -1,12 +1,6 @@
 <!-- Head page section================================================== -->
 <div *ngIf="indicator$ | async as indicator else loading;">
-  
-  <div *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">
-    {{ this.showGraph(indicator) }}
-  </div>
-  <div *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-    {{ this.showDispersionGraph(indicator) }}
-  </div>
+
   <section>
     <div id="head-page-section" class="l-grey-bg head-page-section">
       <div class="container">
@@ -48,6 +42,7 @@
       <!-- end container -->
     </div>
 </section>
+
 <!-- end head-page-section -->
   <section>
     <div>
@@ -142,30 +137,8 @@
         <!--graph row ======================================== -->
         <!-- end row -->
         <!--details files row ======================================== -->
-        <div class="row">
-          <div class="col-md-12">
-            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-              <canvas baseChart
-                      [datasets]="DispersionChartData"
-                      [labels]="lineChartLabels"
-                      [options]="dispersionChartOptions"
-                      [colors]="dispersionChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"></canvas>
-            </div>
-            <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != RegistryType.PercentRegistry">
-              <canvas baseChart
-                      [datasets]="lineChartData"
-                      [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
-            </div>
-          </div>
-        </div>
+        <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart"></app-chart>
+        <!-- There is no data for the following
         <div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
           <div class="row">
             <div class="col-md-6">
@@ -174,7 +147,7 @@
             </div>
           </div>
         </div>
-
+        -->
         <br />
         <div class="row">
           <div class="col-md-12 pad-bt-60">

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace think_agro_metrics.Controllers
 {
@@ -83,6 +84,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries
         [HttpGet]
+        [Authorize(Roles = "administrador,gestor_contenido")]
         public async Task<IActionResult> GetRegistries()
         {
             var registries = await _context.Registries.Include(r => r.Documents).ToListAsync();
@@ -91,6 +93,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "administrador,gestor_contenido")]
         public async Task<IActionResult> GetRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -110,6 +113,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/External
         [HttpGet("External")]
+        [Authorize(Roles = "administrador,gestor_contenido")]
         public async Task<IActionResult> GetExternalRegistries()
         {
             var payload = this.CreateDataObject(new {
@@ -177,6 +181,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/DefaultRegistry/5
         [HttpPut("DefaultRegistry/{id}")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] DefaultRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -212,6 +217,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/QuantityRegistry/5
         [HttpPut("QuantityRegistry/{id}")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] QuantityRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -247,6 +253,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/PercentRegistry/5
         [HttpPut("PercentRegistry/{id}")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> PutRegistry([FromRoute] long id, [FromBody] PercentRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -282,6 +289,7 @@ namespace think_agro_metrics.Controllers
 
        // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/DefaultRegistry")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
             [FromBody] DefaultRegistry registry)
         {
@@ -333,6 +341,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/QuantityRegistry")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
             [FromBody] QuantityRegistry registry)
         {
@@ -379,6 +388,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/PercentRegistry")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> PercentRegistry([FromRoute] long indicatorId,
             [FromBody] PercentRegistry registry)
         {
@@ -426,6 +436,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Registries/Documents/5
         [HttpDelete("Documents/{id}")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> DeleteDocument([FromRoute] long id)
         {
             if(!ModelState.IsValid)
@@ -455,6 +466,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Registries/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> DeleteRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -491,6 +503,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD LinkDocument: api/Registries/5/AddLinkDocument
         [HttpPost("{id}/AddLinkDocument")]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> AddLinkDocument([FromRoute] long id,
             [FromBody] Document document)
         {
@@ -541,6 +554,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD FileDocument: api/Registries/5/AddFileDocument
         [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> AddFileDocument([FromRoute] long id)
         {
             try

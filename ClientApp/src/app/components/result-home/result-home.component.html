@@ -40,7 +40,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" *ngIf="indicatorGroups$ | async as indicatorGroups">
+        <div class="modal-body" *ngIf="indicatorGroupsComplete$ | async as indicatorGroups">
           <app-reportgenerator [modalRef]="modalRef" [indicatorGroups]="indicatorGroups"></app-reportgenerator>
         </div>
   </div>
@@ -50,7 +50,7 @@
 <ng-template #addIndicatorGroup>
   <div class="modal-dialog">
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Ingrese un nuevo grupo de indicadores</h4>>
+      <h4 class="modal-title pull-left">Ingrese un nuevo grupo de indicadores</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
