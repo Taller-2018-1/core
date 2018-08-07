@@ -25,7 +25,7 @@ export class ConfigHomeComponent implements OnInit {
   indicatorsGroups$: Observable<IndicatorGroup[]>;
   public editIndicatorGroupModalRef: BsModalRef;
 
-  public indicatorGroup: IndicatorGroup;
+  public selectedIndicatorGroup: IndicatorGroup;
 
   constructor(private indicatorService: IndicatorService,
               private indicatorGroupService: IndicatorGroupService,
@@ -42,7 +42,7 @@ export class ConfigHomeComponent implements OnInit {
       $event.preventDefault();
     }
 
-    this.indicatorGroup = indicatorGroup;
+    this.selectedIndicatorGroup = indicatorGroup;
     this.editIndicatorGroupModalRef = this.modalService.show(template);
   }
 
@@ -84,6 +84,10 @@ export class ConfigHomeComponent implements OnInit {
     },error =>{
         this.notificationService.showToaster('Error al eliminar el resultado esperado', 'error');
     });
+  }
+
+  public update() {
+    this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
   }
 
   private confirmDeleteIndicator(name: string) {

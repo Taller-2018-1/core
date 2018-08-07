@@ -89,6 +89,5 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <app-indicator-group-editor></app-indicator-group-editor>
-  <!--<app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>-->
+  <app-indicator-group-editor [modalRef]="editIndicatorGroupModalRef" [indicatorGroup]="selectedIndicatorGroup" (updateEvent)="update()"></app-indicator-group-editor>
 </ng-template>

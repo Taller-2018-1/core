@@ -103,6 +103,12 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
+            List<IndicatorGroup> indicatorGroups = await _context.IndicatorGroups.Where(ig => ig.Name == indicatorGroup.Name).ToListAsync();
+
+            if (indicatorGroups.Any()) {
+                return NoContent();
+            }
+
             if (id != indicatorGroup.IndicatorGroupID)
             {
                 return BadRequest();
@@ -126,7 +132,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(indicatorGroup);
         }
 
         // POST: api/IndicatorGroups
