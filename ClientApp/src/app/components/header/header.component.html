@@ -10,11 +10,26 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a class="active" href="/">Inicio</a></li>
-        <li [class.hidden]="!isLogged" ><a  (click)="goToConfigPage()" >Configuración</a></li>
-        <li [class.hidden]="isLogged" ><a (click)="openModal(template)"  href="#">Iniciar Sesión</a></li>
-        <li [class.hidden]="!isLogged" ><a (click)="logOut()"  href="./#">Cerrar Sesión</a></li>
+          <li><a class="active" href="/">Inicio</a></li>
+          <li *ngIf = "isLogged"> <a (click)="openModalReport(generator)"  href="javascript:void(0)" onclick="return false;">Generar Informe</a></li> <!-- Yo lo puse-->
+          <li [class.hidden]="!isLogged" ><a  (click)="goToConfigPage()" >Configuración</a></li>
+          <li [class.hidden]="isLogged" ><a (click)="openModal(template)" href="javascript:void(0)"  >Iniciar Sesión</a></li>
+          <li [class.hidden]="!isLogged" ><a (click)="logOut()" href="javascript:void(0)"  >Cerrar Sesión</a></li>
       </ul>
+
+      <ng-template #generator >
+        <div class="modal-dialog" style="width: 90%">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Generador de informes de todos los indicadores</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" *ngIf="indicatorGroupsComplete$ | async as indicatorGroups">
+                <app-reportgenerator [modalRef]="modalRef"  [indicatorGroups]="indicatorGroups"></app-reportgenerator>
+              </div>
+        </div>
+      </ng-template>
 
       <ng-template #template>
         <div class="modal-header">

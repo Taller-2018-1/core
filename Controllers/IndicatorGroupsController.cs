@@ -38,19 +38,19 @@ namespace think_agro_metrics.Controllers
             return Ok(indicatorGroups);
         }
 
-        // GET: api/IndicatorGroupsComplete
-        [HttpGet("Complete")]
-        public async Task<IActionResult> GetIndicatorGroupsComplete()
-        {
-            var indicatorGroups = await _context.IndicatorGroups
-                .Include(g => g.Indicators)
-                .ThenInclude(i => i.Registries)
-                .Include(i => i.Indicators)
-                .ThenInclude(i => i.Goals)
-                .ToListAsync();
-
-            return Ok(indicatorGroups);
-        }
+         // GET: api/IndicatorGroupsComplete 
+        [HttpGet("Complete")] 
+        public async Task<IActionResult> GetIndicatorGroupsComplete() 
+        { 
+            var indicatorGroups = await _context.IndicatorGroups 
+                .Include(g => g.Indicators) 
+                .ThenInclude(i => i.Registries) 
+                .Include(i => i.Indicators) 
+                .ThenInclude( i => i.Goals) 
+                .ToListAsync(); 
+ 
+            return Ok(indicatorGroups); 
+        } 
 
         // GET: api/IndicatorGroups/5
         [HttpGet("{id}")]
@@ -96,6 +96,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/IndicatorGroups/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicatorGroup([FromRoute] long id, [FromBody] IndicatorGroup indicatorGroup)
         {
             if (!ModelState.IsValid)
@@ -137,6 +138,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/IndicatorGroups
         [HttpPost]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostIndicatorGroup([FromBody] IndicatorGroup indicatorGroup)
         {
             if (!ModelState.IsValid)
@@ -162,6 +164,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/IndicatorGroups/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> DeleteIndicatorGroup([FromRoute] long id)
         {
             if (!ModelState.IsValid)

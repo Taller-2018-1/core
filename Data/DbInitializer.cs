@@ -83,7 +83,10 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
             CreateIndicatorsGroup13(context, IndicatorGroup13.IndicatorGroupID);
 
-
+            var IndicatorGroup14 = new IndicatorGroup {Name = "Prestación de servicios de extensionismo tecnológico a empresas"};
+            context.IndicatorGroups.Add(IndicatorGroup14);
+            context.SaveChanges();
+            CreateIndicatorsGroup14(context, IndicatorGroup14.IndicatorGroupID);
         }
 
         // Indicators
@@ -376,6 +379,29 @@ namespace think_agro_metrics.Data
                 indicator13a, indicator13b};
             
             return indicators13;
+        }
+        private static Indicator[] CreateIndicatorsGroup14(DataContext context, long groupID)
+        {
+            var indicator14a = new Indicator { Name = "Cobertura provincia de Curico", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator14a);
+            context.SaveChanges();
+
+            var indicator14b = new Indicator { Name = "Cobertura provincia de Talca", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator14b);
+            context.SaveChanges();
+
+            var indicator14c = new Indicator { Name = "Cobertura provincia de Cauquenes", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator14c);
+            context.SaveChanges();
+
+            var indicator14d = new Indicator { Name = "Cobertura provincia de Linares", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator14d);
+            context.SaveChanges();
+
+            var indicators14 = new Indicator[]{
+                indicator14a, indicator14b, indicator14c, indicator14d};
+            
+            return indicators14;
         }
     }
 }

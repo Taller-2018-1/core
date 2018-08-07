@@ -399,6 +399,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicator([FromRoute] long id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -434,6 +435,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/Indicators
         [HttpPost]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostIndicator([FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -459,6 +461,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Indicators/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> DeleteIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -513,6 +516,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/AddRegistry")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> AddRegistry([FromRoute] long indicatorId,
             [FromBody] DefaultRegistry registry)
         {
@@ -573,6 +577,7 @@ namespace think_agro_metrics.Controllers
 
         // POST: api/Indicators/1/GoalsList
         [HttpPost("{idIndicator:long}/GoalsList")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PostGoalsList([FromRoute] long idIndicator, [FromBody] Goal[] goals)
         {
             if (!ModelState.IsValid)
@@ -588,6 +593,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Indicators/Goal/7
         [HttpPut("Goal/{id:long}")]
+        [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicatorGoal([FromBody] Goal goal, [FromRoute] long id)
         {
             if (!ModelState.IsValid)

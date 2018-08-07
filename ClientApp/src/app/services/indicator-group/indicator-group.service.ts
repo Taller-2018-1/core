@@ -25,12 +25,12 @@ export class IndicatorGroupService {
     return this.http.get<IndicatorGroup[]>(IndicatorGroupService.API_URL);
   }
 
-  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> {
-    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL);
-  }
-
   getIndicatorGroup(indicatorGroupId: number | string): Observable<IndicatorGroup> {
     return this.http.get<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroupId);
+  }
+
+  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> {
+    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL);
   }
 
   calculateIndicatorGroup(indicatorGroup: number): Observable<number[]> {
