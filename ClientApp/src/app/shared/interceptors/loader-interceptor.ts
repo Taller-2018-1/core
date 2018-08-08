@@ -21,8 +21,13 @@ export class LoaderInterceptor implements HttpInterceptor {
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401) {
+          // No Auth
           // redirect to the login route
           // or show a modal
+          this.loader.pop(request.url);
+        }
+        if (err.status === 403) {
+          // Not allowed
           this.loader.pop(request.url);
         }
       }

@@ -1,27 +1,26 @@
 <section>
-    <div id="statistic-section" class="statistic-bg" data-stellar-background-ratio="0">
-      <div class="container">
-        <div class="row">
-  
-          <ng-template ngFor let-indicatorGroup [ngForOf]="indicatorGroups" let-i="index">
-            <div class="indicator-block col-xs-12 col-sm-6 col-md-4">
-              <a class="active" (click)="gotoIndicatorGroup(indicatorGroup.indicatorGroupID)">
-                <div class="services-content vertical-size-base">
-                  <div class="fact statistic-percent vertical-size" [attr.data-perc]="">
-                    <span class="percentfactor"></span>
-                    <p class="text-ellipsis" title="{{ indicatorGroup.name }}">{{ indicatorGroup.name }}</p>
-                  </div>
+  <div id="statistic-section" class="statistic-bg" data-stellar-background-ratio="0">
+    <div class="container">
+      <div class="row">
+
+        <ng-template ngFor let-indicatorGroup [ngForOf]="indicatorGroups" let-i="index">
+          <div class="indicator-block col-xs-12 col-sm-6 col-md-4">
+            <a class="active" (click)="gotoIndicatorGroup(indicatorGroup.indicatorGroupID)">
+              <div class="services-content vertical-size-base">
+                <div class="fact statistic-percent vertical-size" [attr.data-perc]="">
+                  <span class="percentfactor"></span>
+                  <p class="text-ellipsis" title="{{ indicatorGroup.name }}">{{ indicatorGroup.name }}</p>
                 </div>
-              </a>
-            </div>
-          </ng-template>
-  
-        </div>
-        <!-- end row -->
+              </div>
+            </a>
+          </div>
+        </ng-template>
+
       </div>
       <!-- end container -->
     </div>
-    <!-- end statistic-section -->
-  </section>
-  <!-- End statistic section -->
-  
+    <!-- end container -->
+  </div>
+  <!-- end statistic-section -->
+</section>
+<!-- End statistic section -->

@@ -56,6 +56,7 @@ import { LinkDocumentSubformComponent } from './components/registry-form/link-do
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
+import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
@@ -93,6 +94,7 @@ defineLocale('es', esLocale);
     AddDocumentFormComponent,
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
+    IndicatorEditorComponent,
     ChartComponent,
     SafeDomPipe,
     DateFilterComponent,
@@ -128,12 +130,12 @@ defineLocale('es', esLocale);
         canActivate: [CanActivateUser]
       },
       {
-        path: 'home',
+        path: '',
         component: ResultHomeComponent,
         canActivate: [CanActivateUser]
       },
       {
-        path: '',
+        path: 'welcome',
         component: WelcomeComponent
       },
       {

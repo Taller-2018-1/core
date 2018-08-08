@@ -37,11 +37,12 @@ export class ResultHomeComponent implements OnInit {
 
   ngOnInit() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
-    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete();
+    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
 
-  openModalAdd(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>)
+  {
     this.modalRef = this.modalService.show(template);
   }
 

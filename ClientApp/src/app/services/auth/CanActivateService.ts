@@ -31,6 +31,7 @@ export class CanActivateUser implements CanActivate {
     if (this.auth.getUser() !== false) {
       return Observable.of(true);
     } else {
+      this.router.navigate(['/welcome']);
       return Observable.of(false);
     }
   }
