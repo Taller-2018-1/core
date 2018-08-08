@@ -60,8 +60,10 @@ import { IndicatorEditorComponent } from './components/indicator-detail/indicato
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
+import { ConfigHomeComponent } from './components/config-home/config-home.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
 import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
+import { IndicatorGroupEditorComponent } from './components/config-home/indicator-group-editor/indicator-group-editor.component';
 
 defineLocale('es', esLocale);
 
@@ -99,6 +101,8 @@ defineLocale('es', esLocale);
     SafeDomPipe,
     DateFilterComponent,
     IndicatorEditorComponent,
+    ConfigHomeComponent,
+    IndicatorGroupEditorComponent
   ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -132,6 +136,11 @@ defineLocale('es', esLocale);
       {
         path: '',
         component: ResultHomeComponent,
+        canActivate: [CanActivateUser]
+      },
+      {
+        path: 'config',
+        component: ConfigHomeComponent,
         canActivate: [CanActivateUser]
       },
       {

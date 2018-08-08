@@ -38,6 +38,10 @@ export class IndicatorService {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId);
   }
 
+  getIndicators(): Observable<Indicator[]> {
+    return this.http.get<Indicator[]>(IndicatorService.INDICATORS_API);
+  }
+
   getIndicatorYear(indicatorId: number, year: number): Observable<Indicator> {
     return this.http.get<Indicator>(IndicatorService.INDICATORS_API + indicatorId + '/' + IndicatorService.YEAR + year);
   }
@@ -181,5 +185,9 @@ export class IndicatorService {
 
   editIndicator(indicator: Indicator): Observable<Indicator> {
     return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID,indicator);
+  }
+
+  deleteIndicator(indicator: Indicator): Observable<Indicator> {
+    return this.http.delete<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID);
   }
 }

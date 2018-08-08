@@ -84,7 +84,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries
         [HttpGet]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetRegistries()
         {
             var registries = await _context.Registries.Include(r => r.Documents).ToListAsync();
@@ -93,7 +92,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -113,7 +111,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/External
         [HttpGet("External")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetExternalRegistries()
         {
             var payload = this.CreateDataObject(new {
@@ -502,17 +499,28 @@ namespace think_agro_metrics.Controllers
             {
                 return NotFound();
             }
-            
-            // Remove documents from model
-            registry.Documents = new List<Document>();
 
-            var docsDB = _context.Documents.Where(d => d.RegistryID == id);
-            // Remove documents from database            
-            _context.Documents.RemoveRange(docsDB);            
+            // To delete all documentss asociated to the indicator
 
-            await _context.SaveChangesAsync();
+            var repository = _hostingEnvironment.WebRootPath + "\\Repository";
+            List<Document> docs = await _context.Documents.Where(d => d.RegistryID == registry.RegistryID).ToListAsync();
+            foreach (Document doc in docs)
+            {
+                if (doc.Extension.Equals(".pdf"))
+                { // If it's a pdf, delete it from the server
+                    System.IO.File.Delete(repository + "\\" + doc.Link);
+                }
+                registry.Documents.Remove(doc); // Remove from modal
+                _context.Documents.Remove(doc); // Remove from database
+                await _context.SaveChangesAsync();
 
-            _context.Registries.Remove(registry);
+            }
+
+            var indicator = await _context.Indicators.SingleOrDefaultAsync(i => i.IndicatorID == registry.IndicatorID);
+
+            // To delete the registry
+            indicator.Registries.Remove(registry); // Delete from model
+            _context.Registries.Remove(registry); // Delete from database
             await _context.SaveChangesAsync();
 
             return Ok(registry); // It works
