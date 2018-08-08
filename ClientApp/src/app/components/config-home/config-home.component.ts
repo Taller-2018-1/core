@@ -6,6 +6,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 // Models
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
+import { RegistryType } from '../../shared/models/registryType';
 
 // services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -26,6 +27,8 @@ export class ConfigHomeComponent implements OnInit {
   public editIndicatorGroupModalRef: BsModalRef;
 
   public selectedIndicatorGroup: IndicatorGroup;
+
+  public  externalRegistry = RegistryType.ExternalRegistry;
 
   constructor(private indicatorService: IndicatorService,
               private indicatorGroupService: IndicatorGroupService,
