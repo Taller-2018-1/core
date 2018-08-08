@@ -121,7 +121,8 @@ namespace think_agro_metrics.Controllers
             }
             foreach (var userRole in userRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x,i) => i > 0 && (char.IsUpper(x) || char.IsWhiteSpace(x)) ? "_" + x.ToString().ToLower() : x.ToString().ToLower()))));
+                 // Used to return "administrad_ _indicadores" for "Administrador Indicadores", now it return "administrador_indicadores".
+                claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x,i) => i > 0 && char.IsWhiteSpace(x) ? "_" : x.ToString().ToLower()))));
                 claims.Add(new Claim("role_ids", userRole.Resultado.Id));
                 // came with this idea while listening https://www.youtube.com/watch?v=7PYe57MwxPI while drunk
                 using (StreamReader r = new StreamReader("Data/permissions.json")) 

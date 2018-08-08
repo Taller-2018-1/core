@@ -74,34 +74,9 @@
                   </div>
                 </div>
               <div class="row">
-                <div class="col-xs-6 col-sm-4 col-md-4">
-                  Seleccione Año
-                  <br />
-                  <div class="btn-group" dropdown>
-                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                      {{ selectedYearText }} <span class="caret"></span>
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                        role="menu" aria-labelledby="button-basic">
-                      <li><a class="dropdown-item" (click)="selectRegistries(allYears, '')">Todos los años</a></li>
-                      <li *ngFor="let year of years"><a class="dropdown-item" (click)="selectRegistries(year, '')">Año {{ year }}</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-xs-6 col-sm-5 col-md-5">
-                  Seleccione Mes
-                  <br />
-                  <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
-                    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-                      {{ selectedMonthText }} <span class="caret"></span>
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                        role="menu" aria-labelledby="button-basic">
-                      <li><a class="dropdown-item" (click)="selectRegistries('', allMonths)">Todos los meses</a></li>
-                      <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="selectRegistries('', month)">{{ month }}</a></li>
-                    </ul>
-                  </div>
-                </div>
+                
+                <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
+
                 <div class="col-xs-12 col-sm-3 col-md-3">
                   Seleccione Tipo Gráfico
                   <br />

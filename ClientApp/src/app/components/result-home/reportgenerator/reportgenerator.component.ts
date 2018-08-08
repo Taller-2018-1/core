@@ -629,11 +629,6 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   downloadExcel() {
-
-
-    this.OrdernarArregloIndicators();
-
-
     const wb = XLSX.utils.book_new();
 
     wb.Props = {

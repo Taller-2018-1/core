@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 // Models
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
-import { Months } from '../../shared/models/months';
 import { RegistryType } from '../../shared/models/registryType';
 
 // Services
@@ -24,7 +23,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
   styleUrls: ['./indicator-detail.component.css'],
 })
 export class IndicatorDetailComponent implements OnInit {
-  router: Router;
   modalRef: BsModalRef;
   indicatorModalRef: BsModalRef;
 
@@ -61,19 +59,19 @@ export class IndicatorDetailComponent implements OnInit {
   document: Document = null;
 
   constructor(private service: IndicatorService,
-    router: Router,
+    private router: Router,
     private registryService: RegistryService,
     private indicatorGroupService: IndicatorGroupService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    private sessionStorage: SessionService) {
+    private sessionService: SessionService
+  ) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
-    this.router = router;
+    this.updateObservables(this.sessionService.getDateFiltersData());
   }
 
   ngOnInit() {
-    this.indicator$ = this.service.getIndicator(this.idIndicator);
     this.updateExternalIndicator();
 
     this.selectedTypeChart = 'Gráfico de línea'; // default chart type
@@ -190,14 +188,6 @@ export class IndicatorDetailComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
-
-/*   gotoRegistry(registryID: number) {
-    this.router.navigateByUrl('/registry/' + registryID);
-  }
-
-  gotoAddRegistry() {
-    this.router.navigateByUrl('/indicator-add-registry');
-  } */
 
   updateIndicator() {
     this.indicator$ = this.service.getIndicator(this.idIndicator);

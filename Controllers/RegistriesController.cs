@@ -84,6 +84,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries
         [HttpGet]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetRegistries()
         {
             var registries = await _context.Registries.Include(r => r.Documents).ToListAsync();
@@ -92,6 +93,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -111,6 +113,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/External
         [HttpGet("External")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetExternalRegistries()
         {
             var payload = this.CreateDataObject(new {

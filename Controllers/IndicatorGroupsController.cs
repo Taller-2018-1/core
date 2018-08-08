@@ -28,6 +28,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups
         [HttpGet]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroups()
         {
             var indicatorGroups = await _context.IndicatorGroups
@@ -38,8 +39,9 @@ namespace think_agro_metrics.Controllers
             return Ok(indicatorGroups);
         }
 
-        // GET: api/IndicatorGroupsComplete
+        // GET: api/IndicatorGroups/Complete
         [HttpGet("Complete")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroupsComplete()
         {
             var indicatorGroups = await _context.IndicatorGroups
@@ -54,6 +56,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroup([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -335,6 +338,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/1/Calculate/Year/2018/Month/0 (group= 1, year= 2018, month= January)
         [Route("{id:int}/Calculate/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicatorsYearMonth([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -374,6 +378,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/1/Calculate/Week/2018/6/9 (group= 1, week started at 9th July 2018)
         [Route("{id:int}/Calculate/Week/{year:int}/{month:int}/{day:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicatorsWeek([FromRoute] int id, [FromRoute] int year, [FromRoute] int month, [FromRoute] int day)
         {
             if (!ModelState.IsValid)
@@ -532,6 +537,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/1/Goals/Year/2018/Month/0 (group = 1, year = 2018, month = January)
         [Route("{id:long}/Goals/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetGoalsIndicatorsYearMonth([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -570,6 +576,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/1/Goals/Week/2018/6/9 (group = 1, week started at 9th July 2018)
         [Route("{id:long}/Goals/Week/{year:int}/{month:int}/{day:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetGoalsIndicatorsWeek([FromRoute] int id, [FromRoute] int year, [FromRoute] int month, [FromRoute] int day)
         {
             if (!ModelState.IsValid)
