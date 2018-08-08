@@ -33,9 +33,11 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry is PercentRegistry && registry.Date.Year == year) {
-                    sum += (registry as PercentRegistry).Percent;
-                    quantity++;
+                if(registry is PercentRegistry) {
+                    if (registry.Date.Year == year) {
+                        sum += (registry as PercentRegistry).Percent;
+                        quantity++;
+                    }                    
                 }
                 else
                     throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
@@ -62,9 +64,11 @@ namespace think_agro_metrics.Models
             double sum = 0;
             double quantity = 0;
             foreach (Registry registry in registries) {
-                if(registry is PercentRegistry && registry.Date.Year == year && registry.Date.Month == month) {
-                    sum += (registry as PercentRegistry).Percent;
-                    quantity++;
+                if(registry is PercentRegistry) {
+                    if (registry.Date.Year == year && registry.Date.Month == month) {
+                        sum += (registry as PercentRegistry).Percent;
+                        quantity++;
+                    }                    
                 }
                 else
                     throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
@@ -89,10 +93,12 @@ namespace think_agro_metrics.Models
                     DateTime newDate = date.AddDays(j);
                     if (registry.Date == newDate)
                     {
-                        if (registry is PercentRegistry && registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month)
+                        if (registry is PercentRegistry)
                         {
-                            sum += (registry as PercentRegistry).Percent;
-                            quantity++;
+                            if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month) {
+                                sum += (registry as PercentRegistry).Percent;
+                                quantity++;
+                            }                            
                         }
                         else
                             throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");

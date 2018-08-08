@@ -20,8 +20,12 @@
             <div class="head-title">
               <p class="text-center">Valor Indicador</p>
               <h1 class="row-h1 text-center">
-                <strong><span *ngIf="value$ | async as value">{{ value || "0" }}</span>
-                <span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span></strong>
+                <strong>
+                  <span *ngIf="value$ | async as value else zero;">{{ value | number:'.0-2'}}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
+                    
+                  </span>
+                </strong> 
+                
               </h1>
             </div>
           </div>
@@ -30,8 +34,10 @@
             <div class="head-title">
               <p class="text-center">Valor Meta</p>
               <h1 class="row-h1 text-center">
-                <strong><span *ngIf="goal$ | async as goal">{{ goal || "N/A " }}</span>
-                <span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span></strong>
+                <strong>
+                  <span *ngIf="goal$ | async as goal else zero;">{{ goal | number:'.0-2' }}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
+                  </span>
+                </strong>
               </h1>
             </div>
           </div>
@@ -68,15 +74,19 @@
           <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="heading-block">
 
-                <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12">
-                    <span class="h3">Gráfica de Resultados</span>
-                  </div>
-                </div>
               <div class="row">
-                
                 <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
+              </div>
 
+              <br><br>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                  <span class="h3">Gráfica de Resultados</span>
+                </div>
+              </div>
+
+              <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-3">
                   Seleccione Tipo Gráfico
                   <br />
@@ -187,6 +197,11 @@
       </button>
     </div>
     <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>
+  </ng-template>
+
+
+  <ng-template #zero>
+    0<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
   </ng-template>
 
 </div>
