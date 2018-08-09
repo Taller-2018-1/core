@@ -21,8 +21,7 @@
               <p class="text-center">Valor Indicador</p>
               <h1 class="row-h1 text-center">
                 <strong>
-                  <span *ngIf="value$ | async as value else zero;">{{ value | number:'.0-2'}}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
-                    
+                  <span *ngIf="value$ | async as value else zero;">{{ value | number:'.0-2'}}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span> 
                   </span>
                 </strong> 
                 
@@ -196,7 +195,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicatorToEdit" (updateInfo)="updateIndicator()" ></app-indicator-editor>
+    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicator" (updateInfo)="updateIndicator()" ></app-indicator-editor>
   </ng-template>
 
 
