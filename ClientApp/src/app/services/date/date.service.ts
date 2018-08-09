@@ -60,7 +60,7 @@ export class DateService {
   * Calculates the date for a Monday of the given week and year
   */
   getDateFromWeek (y: number, w: number): Date {
-    const dayN = 0;
+    const dayN = 1;
     const j10 = new Date(y, 0, 10);
     const j4 = new Date(y, 0, 4);
     const mon1 = +j4 - j10.getDay() * 86400000;

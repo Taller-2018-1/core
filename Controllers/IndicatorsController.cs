@@ -183,8 +183,13 @@ namespace think_agro_metrics.Controllers
             // Obtain the Registries
             var registries = await _context.Registries
                 .Where(r => r.IndicatorID == id && 
-                    (r.Date == date || r.Date == date.AddDays(1) || r.Date == date.AddDays(2) || r.Date == date.AddDays(3) ||
-                    r.Date == date.AddDays(4) || r.Date == date.AddDays(5) || r.Date == date.AddDays(6)))
+                    (new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(1) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(2) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(3) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(4) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(5) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(6)))
                 .Include(r => r.Documents)
                 .ToArrayAsync();
 
