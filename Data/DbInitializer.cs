@@ -8,6 +8,9 @@ namespace think_agro_metrics.Data
 {
     public static class DbInitializer
     {
+
+        private static Role[] roles;
+
         public static void Initialize(DataContext context)
         {
             context.Database.EnsureCreated();
@@ -17,6 +20,8 @@ namespace think_agro_metrics.Data
             {
                 return;   // DB has been seeded
             }
+
+            DbInitializer.roles = CreateRoles(context);
 
             var IndicatorGroup1 = new IndicatorGroup {Name = "Estimación de aumento de inversiones de las empresas"};
             context.IndicatorGroups.Add(IndicatorGroup1);
@@ -103,7 +108,11 @@ namespace think_agro_metrics.Data
 
             var indicators1 = new Indicator[]{
                 indicator1a, indicator1b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators1); // admin
+            roles[0].PermissionsWrite.AddRange(indicators1); // admin
+            context.SaveChanges();
+
             return indicators1;
         }
         private static Indicator[] CreateIndicatorsGroup2(DataContext context, long groupID)
@@ -118,7 +127,11 @@ namespace think_agro_metrics.Data
 
             var indicators2 = new Indicator[]{
                 indicator2a, indicator2b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators2); // admin
+            roles[0].PermissionsWrite.AddRange(indicators2); // admin
+            context.SaveChanges();
+
             return indicators2;
         }
         private static Indicator[] CreateIndicatorsGroup3(DataContext context, long groupID)
@@ -133,7 +146,11 @@ namespace think_agro_metrics.Data
 
             var indicators3 = new Indicator[]{
                 indicator3a, indicator3b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators3); // admin
+            roles[0].PermissionsWrite.AddRange(indicators3); // admin
+            context.SaveChanges();
+
             return indicators3;
         }
         private static Indicator[] CreateIndicatorsGroup4(DataContext context, long groupID)
@@ -148,7 +165,11 @@ namespace think_agro_metrics.Data
 
             var indicators4 = new Indicator[]{
                 indicator4a, indicator4b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators4); // admin
+            roles[0].PermissionsWrite.AddRange(indicators4); // admin
+            context.SaveChanges();
+
             return indicators4;
         }
         private static Indicator[] CreateIndicatorsGroup5(DataContext context, long groupID)
@@ -163,7 +184,11 @@ namespace think_agro_metrics.Data
 
             var indicators5 = new Indicator[]{
                 indicator5a, indicator5b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators5); // admin
+            roles[0].PermissionsWrite.AddRange(indicators5); // admin
+            context.SaveChanges();
+
             return indicators5;
         }
         private static Indicator[] CreateIndicatorsGroup6(DataContext context, long groupID)
@@ -182,7 +207,11 @@ namespace think_agro_metrics.Data
 
             var indicators6 = new Indicator[]{
                 indicator6a, indicator6b, indicator6c};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators6); // admin
+            roles[0].PermissionsWrite.AddRange(indicators6); // admin
+            context.SaveChanges();
+
             return indicators6;
         }
         private static Indicator[] CreateIndicatorsGroup7(DataContext context, long groupID)
@@ -229,7 +258,11 @@ namespace think_agro_metrics.Data
 
             var indicators7 = new Indicator[]{
                 indicator7a, indicator7b, indicator7c, indicator7d, indicator7e, indicator7f, indicator7g, indicator7h, indicator7i, indicator7j};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators7); // admin
+            roles[0].PermissionsWrite.AddRange(indicators7); // admin
+            context.SaveChanges();
+
             return indicators7;
         }
         private static Indicator[] CreateIndicatorsGroup8(DataContext context, long groupID)
@@ -248,7 +281,11 @@ namespace think_agro_metrics.Data
 
             var indicators8 = new Indicator[]{
                 indicator8a, indicator8b, indicator8c};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators8); // admin
+            roles[0].PermissionsWrite.AddRange(indicators8); // admin
+            context.SaveChanges();
+
             return indicators8;
         }
         private static Indicator[] CreateIndicatorsGroup9(DataContext context, long groupID)
@@ -301,7 +338,11 @@ namespace think_agro_metrics.Data
 
             var indicators9 = new Indicator[] {
                 indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h,/* indicator9i, indicator9j,*/ indicator9k, indicator9l};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators9); // admin
+            roles[0].PermissionsWrite.AddRange(indicators9); // admin
+            context.SaveChanges();
+
             return indicators9;
         }
         private static Indicator[] CreateIndicatorsGroup10(DataContext context, long groupID)
@@ -336,7 +377,11 @@ namespace think_agro_metrics.Data
             
             var indicators10 = new Indicator[]{
                 indicator10a, indicator10b, indicator10c, indicator10d, indicator10e, indicator10f, indicator10g};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators10); // admin
+            roles[0].PermissionsWrite.AddRange(indicators10); // admin
+            context.SaveChanges();
+
             return indicators10;
         }
         private static Indicator[] CreateIndicatorsGroup11(DataContext context, long groupID)
@@ -351,7 +396,11 @@ namespace think_agro_metrics.Data
 
             var indicators11 = new Indicator[]{
                 indicator11a, indicator11b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators11); // admin
+            roles[0].PermissionsWrite.AddRange(indicators11); // admin
+            context.SaveChanges();
+
             return indicators11;
         }
         private static Indicator[] CreateIndicatorsGroup12(DataContext context, long groupID)
@@ -362,7 +411,11 @@ namespace think_agro_metrics.Data
 
             var indicators12 = new Indicator[]{
                 indicator12a};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators12); // admin
+            roles[0].PermissionsWrite.AddRange(indicators12); // admin
+            context.SaveChanges();
+
             return indicators12;
         }
         private static Indicator[] CreateIndicatorsGroup13(DataContext context, long groupID)
@@ -377,7 +430,11 @@ namespace think_agro_metrics.Data
 
             var indicators13 = new Indicator[]{
                 indicator13a, indicator13b};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators13); // admin
+            roles[0].PermissionsWrite.AddRange(indicators13); // admin
+            context.SaveChanges();
+
             return indicators13;
         }
         private static Indicator[] CreateIndicatorsGroup14(DataContext context, long groupID)
@@ -400,8 +457,59 @@ namespace think_agro_metrics.Data
 
             var indicators14 = new Indicator[]{
                 indicator14a, indicator14b, indicator14c, indicator14d};
-            
+
+            roles[0].PermissionsRead.AddRange(indicators14); // admin
+            roles[0].PermissionsWrite.AddRange(indicators14); // admin
+            context.SaveChanges();
+
             return indicators14;
+        }
+
+        private static Role[] CreateRoles(DataContext context)
+        {
+            var role1 = new Role {RoleName = "Administración", RoleToken = "751381e9-91db-404c-94bb-dbb460551bda"};
+            context.Add(role1);
+            context.SaveChanges();
+
+            var role2 = new Role {RoleName = "Gerencia y Dirección", RoleToken = "710534fb-6e71-4f30-0e33-b1ed2ae8d9bf"};
+            context.Add(role2);
+            context.SaveChanges();
+
+            var role3 = new Role {RoleName = "Encargado de operaciones", RoleToken = "664b8e4c-d351-458d-84c7-315497168769"};
+            context.Add(role3);
+            context.SaveChanges();
+
+            var role4 = new Role {RoleName = "Analista de operaciones", RoleToken = "12d1ed81-cd65-44df-6c19-0d23e9b54ce4"};
+            context.Add(role4);
+            context.SaveChanges();
+
+            var role5 = new Role {RoleName = "Ejecutivo de post-venta", RoleToken = "9093a9fa-635b-46e8-a534-c402b43cf075"};
+            context.Add(role5);
+            context.SaveChanges();
+
+            var role6 = new Role {RoleName = "Encargada de nuevos negocios", RoleToken = "75b671fe-80a4-41bc-8b14-7dcfa3786ec5"};
+            context.Add(role6);
+            context.SaveChanges();
+
+            var role7 = new Role {RoleName = "Ejecutiva técnica de control y seguimiento", RoleToken = "dbf80ff3-26fc-48de-ebbf-820aef696179"};
+            context.Add(role7);
+            context.SaveChanges();
+
+            var role8 = new Role {RoleName = "Extensionista senior", RoleToken = "2e2d4dfd-31ac-4465-eb38-768a228e1f3a"};
+            context.Add(role8);
+            context.SaveChanges();
+
+            var role9 = new Role {RoleName = "Extensionista junior", RoleToken = "c02cd99a-b0ee-4653-33c9-309966b377b0"};
+            context.Add(role9);
+            context.SaveChanges();
+
+            var role10 = new Role {RoleName = "Periodista", RoleToken = "b940f018-287a-4fc0-822c-66719353aa1b"};
+            context.Add(role10);
+            context.SaveChanges();
+
+            var roles = new Role[] { role1, role2, role3, role4, role5, role6, role7, role8, role9, role10 };
+
+            return roles;
         }
     }
 }

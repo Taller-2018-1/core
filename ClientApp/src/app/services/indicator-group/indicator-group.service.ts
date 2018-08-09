@@ -60,4 +60,12 @@ export class IndicatorGroupService {
   getIndicatorGroupName(indicatorId: number): Observable<string> {
     return this.http.get<string>(IndicatorGroupService.NAME + indicatorId);
   }
+
+  deleteIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<IndicatorGroup> {
+    return this.http.delete<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroup.indicatorGroupID);
+  }
+
+  editIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<IndicatorGroup> {
+    return this.http.put<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroup.indicatorGroupID, indicatorGroup);
+  }
 }

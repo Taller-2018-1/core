@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace think_agro_metrics.Controllers
 {
@@ -15,17 +16,18 @@ namespace think_agro_metrics.Controllers
     [Route("api/IndicatorGroups")]
     public class IndicatorGroupsController : Controller
     {
-    
-        private readonly DataContext _context;
 
-        public IndicatorGroupsController(DataContext context)
+        private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
+
+        public IndicatorGroupsController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/IndicatorGroups
         [HttpGet]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroups()
         {
             var indicatorGroups = await _context.IndicatorGroups
@@ -52,7 +54,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroup([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -64,7 +65,7 @@ namespace think_agro_metrics.Controllers
                 .Where(g => g.IndicatorGroupID == id)
                 .Include(g => g.Indicators)
                 .ThenInclude(i => i.Goals)
-                .SingleAsync();            
+                .SingleAsync();
 
             if (indicatorGroup == null)
             {
@@ -76,14 +77,13 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorsGroups/Name/5
         [HttpGet("Name/{id}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGroupName([FromRoute] long id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             var indicatorGroup = await _context.IndicatorGroups.SingleAsync(x => x.IndicatorGroupID == id);
 
             if (indicatorGroup == null)
@@ -102,6 +102,12 @@ namespace think_agro_metrics.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            List<IndicatorGroup> indicatorGroups = await _context.IndicatorGroups.Where(ig => ig.Name == indicatorGroup.Name).ToListAsync();
+
+            if (indicatorGroups.Any()) {
+                return NoContent();
             }
 
             if (id != indicatorGroup.IndicatorGroupID)
@@ -127,7 +133,7 @@ namespace think_agro_metrics.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(indicatorGroup);
         }
 
         // POST: api/IndicatorGroups
@@ -142,7 +148,7 @@ namespace think_agro_metrics.Controllers
 
             List<IndicatorGroup> indicatorGroups = _context.IndicatorGroups.ToList(); ;
 
-            foreach(IndicatorGroup ig in indicatorGroups)
+            foreach (IndicatorGroup ig in indicatorGroups)
             {
                 if (ig.Name.ToUpper().Trim().Equals(indicatorGroup.Name.ToUpper().Trim()))
                 {
@@ -172,6 +178,43 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            List<Indicator> indicators = await _context.Indicators.Where(i => i.IndicatorGroupID == id).ToListAsync();
+
+            foreach (Indicator indicator in indicators) // To delete all the indicators 
+            {
+                var repository = _hostingEnvironment.WebRootPath + "\\Repository";
+
+                List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == indicator.IndicatorID).ToListAsync();
+
+                foreach (Registry registry in registries)
+                {
+                    // To delete all documentss asociated to the indicator
+                    List<Document> docs = await _context.Documents.Where(d => d.RegistryID == registry.RegistryID).ToListAsync();
+                    foreach (Document doc in docs)
+                    {
+                        if (doc.Extension.Equals(".pdf"))
+                        { // If it's a pdf, delete it from the server
+                          //return Ok(repository + "\\" + doc.Link);
+                            System.IO.File.Delete(repository + "\\" + doc.Link);
+                        }
+                        registry.Documents.Remove(doc); // Remove from modal
+                        _context.Documents.Remove(doc); // Remove from database
+                        await _context.SaveChangesAsync();
+
+                    }
+
+                    // To delete the registries 
+                    indicator.Registries.Remove(registry); // Delete from model
+                    _context.Registries.Remove(registry); // Delete from database
+                    await _context.SaveChangesAsync();
+
+                }
+
+                indicatorGroup.Indicators.Remove(indicator);
+                _context.Indicators.Remove(indicator);
+                await _context.SaveChangesAsync();
+            }
+
             _context.IndicatorGroups.Remove(indicatorGroup);
             await _context.SaveChangesAsync();
 
@@ -180,7 +223,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Calculate/1 (group= 1)
         [Route("Calculate/{id:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -193,8 +235,8 @@ namespace think_agro_metrics.Controllers
                 .Where(g => g.IndicatorGroupID == id)
                 .Include(g => g.Indicators)
                 .ThenInclude(i => i.Registries)
-                .SingleAsync();            
-            
+                .SingleAsync();
+
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
             {
@@ -217,7 +259,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Calculate/1/2018 (group= 1, year= 2018)
         [Route("Calculate/{id:int}/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int id, [FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -254,7 +295,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Calculate/1/2018/0 (group= 1, year= 2018, month= January)
         [Route("Calculate/{id:int}/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -294,7 +334,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Goals/1 (group= 1)
         [Route("Goals/{id:long}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetGoalsIndicators([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -306,7 +345,7 @@ namespace think_agro_metrics.Controllers
             var indicators = await _context.Indicators
                 .Where(i => i.IndicatorGroupID == id)
                 .Include(i => i.Goals)
-                .ToListAsync();            
+                .ToListAsync();
 
             // If the specified indicator group don't have indicators, show NotFound
             if (!indicators.Any())
@@ -335,7 +374,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Goals/1/2018 (group = 1, year = 2018)
         [Route("Goals/{id:long}/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -356,13 +394,13 @@ namespace think_agro_metrics.Controllers
             }
 
             // Sum the goals of every indicator of the group of the specified year
-            List<double> list = new List<double>();            
+            List<double> list = new List<double>();
             foreach (Indicator indicator in indicators)
             {
                 double sum = 0;
                 foreach (Goal goal in indicator.Goals)
                 {
-                    if(goal.Year == year)
+                    if (goal.Year == year)
                         sum += goal.Value;
                 }
                 list.Add(sum);
@@ -374,7 +412,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/IndicatorGroups/Goals/1/2018/0 (group = 1, year = 2018, month = January)
         [Route("Goals/{id:long}/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetGoalsIndicators([FromRoute] int id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -382,7 +419,7 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            
+
             // Load from the DB the Indicators 
             var indicators = await _context.Indicators
                 .Where(i => i.IndicatorGroupID == id)
@@ -405,11 +442,13 @@ namespace think_agro_metrics.Controllers
                     {
                         list.Add(goal.Value);
                         continue;
-                    }                        
-                }                
+                    }
+                }
             }
-            if (!list.Any()) {
-                for (int i = 0; i < 12; i++) {
+            if (!list.Any())
+            {
+                for (int i = 0; i < 12; i++)
+                {
                     list.Add(0);
                 }
             }

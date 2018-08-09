@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AuthService } from '../../services/auth/AuthService';
+import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
+
 import {IndicatorGroup} from '../../shared/models/indicatorGroup';
 import {IndicatorGroupService} from '../../services/indicator-group/indicator-group.service';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +19,7 @@ export class HeaderComponent implements OnInit {
   };
   email: string;
   password: string;
-  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>; 
+  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>;
   authorize() {
     this.auth.auth({
       email: this.email,
@@ -30,26 +32,35 @@ export class HeaderComponent implements OnInit {
       this.password = '';
     });
   }
-  
-  constructor(private service: IndicatorGroupService, private modalService: BsModalService, private auth: AuthService) { }
+
+  constructor(private service: IndicatorGroupService,
+              private modalService: BsModalService,
+              private auth: AuthService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
+    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete();
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.config);
   }
 
-  openModalReport(template: TemplateRef<any>) 
+  openModalReport(template: TemplateRef<any>)
   {
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
 
   logOut() {
     this.auth.signOut().subscribe();
+    this.router.navigateByUrl('/welcome') ;
   }
   get isLogged(): boolean {
     return this.auth.getUser() !== false;
+  }
+
+  goToConfigPage() {
+    this.router.navigateByUrl('/config') ;
   }
 }

@@ -17,6 +17,7 @@ namespace think_agro_metrics.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<Registry> Registries { get; set; }
         public DbSet<Goal> Goals { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public DataContext() : base()
         {

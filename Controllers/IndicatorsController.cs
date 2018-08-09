@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,28 +18,30 @@ namespace think_agro_metrics.Controllers
     public class IndicatorsController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public IndicatorsController(DataContext context)
+        public IndicatorsController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Indicators
         [HttpGet]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicators()
         {
-            var indicators = await _context.Indicators
+            // I hope nobody needs this
+            /*var indicators = await _context.Indicators
                 .Include(x => x.Goals)
                 .Include(x => x.Registries)                
                 .ThenInclude(x => x.Documents).ToListAsync();
-
+            */
+            var indicators = await _context.Indicators.ToListAsync();
             return Ok(indicators);
         }
 
         // GET: api/Indicators/5
         [HttpGet("{id:long}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicator([FromRoute] long id)
         {            
             if (!ModelState.IsValid)
@@ -63,7 +66,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/2018
         [HttpGet("{id:long}/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
         {
             if(!ModelState.IsValid)
@@ -95,7 +97,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/2018/1
         [HttpGet("{id:long}/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if(!ModelState.IsValid)
@@ -130,7 +131,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Goals/1
         [HttpGet("Goals/{id:long}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id)
         {
             if(!ModelState.IsValid)
@@ -163,7 +163,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Goals/1/2018
         [HttpGet("Goals/{id:long}/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year)
         {
             if(!ModelState.IsValid)
@@ -196,7 +195,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Goals/1/2018/0 (indicator 1, year 2018, month January)
         [HttpGet("Goals/{id:long}/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if(!ModelState.IsValid)
@@ -218,7 +216,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate
         [Route("Calculate")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators()
         {
             if (!ModelState.IsValid)
@@ -252,7 +249,6 @@ namespace think_agro_metrics.Controllers
         
         // GET: api/Indicators/Calculate/2018
         [Route("Calculate/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -286,7 +282,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate/2018/1
         [Route("Calculate/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -323,7 +318,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate/5 // Calculate Indicator with ID 5 for all years
         [Route("Calculate/{id:long}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -350,7 +344,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate/5/2018 // Calculate Indicator with ID 5 for a selected year
         [Route("Calculate/{id:long}/{year:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYear([FromRoute] long id, [FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -377,7 +370,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/Calculate/5/2018/0 // Calculate Indicator with ID 5 for a selected year and selected month
         [Route("Calculate/{id:long}/{year:int}/{month:int}")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if (!ModelState.IsValid)
@@ -483,11 +475,39 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            var repository = _hostingEnvironment.WebRootPath + "\\Repository";
+
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == id).ToListAsync();
+
+            foreach (Registry registry in registries )
+            {
+                // To delete all documentss asociated to the indicator
+                List<Document> docs = await _context.Documents.Where(d => d.RegistryID == registry.RegistryID).ToListAsync();
+                foreach (Document doc in docs)
+                {
+                    if (doc.Extension.Equals(".pdf")) { // If it's a pdf, delete it from the server
+                        
+                        System.IO.File.Delete(repository + "\\" + doc.Link);
+                    }
+                    registry.Documents.Remove(doc); // Remove from modal
+                    _context.Documents.Remove(doc); // Remove from database
+                    await _context.SaveChangesAsync();
+                }
+
+                // To delete the registries 
+                indicator.Registries.Remove(registry); // Delete from model
+                _context.Registries.Remove(registry); // Delete from database
+                await _context.SaveChangesAsync();
+
+            }
+
             _context.Indicators.Remove(indicator);
             await _context.SaveChangesAsync();
 
             return Ok(indicator);
         }
+
+        
 
         private bool IndicatorExists(long id)
         {
@@ -536,7 +556,6 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/1/GoalsList
         [HttpGet("{id:long}/GoalsList")]
-        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoalsList([FromRoute] long id)
         {
             if (!ModelState.IsValid)
