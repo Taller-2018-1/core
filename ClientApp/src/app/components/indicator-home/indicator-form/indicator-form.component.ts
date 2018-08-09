@@ -3,10 +3,12 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
-import {RegistryType} from "../../../shared/models/registryType";
+import {RegistryType} from '../../../shared/models/registryType';
+import { RolesType } from '../../../shared/models/rolesType';
 
 // Services
-import { IndicatorService} from "../../../services/indicator/indicator.service";
+import { IndicatorService} from '../../../services/indicator/indicator.service';
+import { RoleService } from '../../../services/role/role.service';
 
 import swal from 'sweetalert2';
 
@@ -29,9 +31,16 @@ export class IndicatorFormComponent implements OnInit {
 
   public types;
 
+  // If you don't like those names, change them yourself
+  read: any = { adm: false, ger: false, encOp: false, anOp: false,
+    ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
+
+  write: any = { adm: false, ger: false, encOp: false, anOp: false,
+    ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
   constructor(private modalService: BsModalService,
-              private service: IndicatorService) { }
+              private service: IndicatorService,
+              private roleService: RoleService) { }
 
   ngOnInit() {
     this.types = ["Registros simples",
@@ -69,6 +78,14 @@ export class IndicatorFormComponent implements OnInit {
           return;
         }
         else {
+
+          var roles_id = Object.values(RolesType); // list of 751381e9-91db-404c-94bb-dbb460551bda
+          for (let i in this.read) {
+            if (this.read[i]) {
+              console.log(RolesType[roles_id[i]]);
+            }
+          }
+
           this.udpateEvent.emit("Indicator Added");
         }
       }

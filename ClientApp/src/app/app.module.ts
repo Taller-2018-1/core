@@ -60,6 +60,7 @@ import { ChartComponent } from './components/indicator-detail/chart/chart.compon
 import { ConfigHomeComponent } from './components/config-home/config-home.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
 import { IndicatorGroupEditorComponent } from './components/config-home/indicator-group-editor/indicator-group-editor.component';
+import { RoleService } from './services/role/role.service';
 
 defineLocale('es', esLocale);
 
@@ -157,6 +158,7 @@ defineLocale('es', esLocale);
     NotificationService,
     LoaderService,
     PreviousRouteService,
+    RoleService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
@@ -165,7 +167,7 @@ defineLocale('es', esLocale);
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]

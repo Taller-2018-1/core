@@ -64,14 +64,14 @@ namespace think_agro_metrics.Controllers
 
         // POST api/Roles/5/Permission/Read // To update or add permissions
         [HttpPost("{id}/Permissionn/Read")]
-        public async Task<IActionResult> AddPermissionRead([FromRoute] long id, [FromBody] Indicator indicator)
+        public async Task<IActionResult> AddPermissionRead([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var role = await _context.Roles.SingleAsync(r => r.RoleID == id);
+            var role = await _context.Roles.SingleAsync(r => r.RoleToken == id);
 
             if (role == null)
             {
@@ -89,14 +89,14 @@ namespace think_agro_metrics.Controllers
 
         // POST api/Roles/5/Permission/Read
         [HttpPut("{id}/Permission/Write")]
-        public async Task<IActionResult> AddPermissionWrite([FromRoute] long id, [FromBody] Indicator indicator)
+        public async Task<IActionResult> AddPermissionWrite([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var role = await _context.Roles.SingleAsync(r => r.RoleID == id);
+            var role = await _context.Roles.SingleAsync(r => r.RoleToken == id);
 
             if (role == null)
             {
