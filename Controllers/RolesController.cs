@@ -44,6 +44,24 @@ namespace think_agro_metrics.Controllers
             return Ok(roles);
         }
 
+        // GET: api/Roles/751381e9-91db-404c-94bb-dbb460551bda
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRoleByToken([FromRoute] string id)
+        {
+
+            var roleQuery = _context.Roles.Where(r => r.RoleToken == id);
+            var role = await roleQuery
+                .Include(r => r.PermissionsRead)
+                .Include(r => r.PermissionsWrite).SingleAsync();
+
+            if (role ==  null)
+            {
+                return NotFound();
+            }
+
+            return Ok(role);
+        }
+
         // POST api/Roles/5/Permission/Read // To update or add permissions
         [HttpPost("{id}/Permissionn/Read")]
         public async Task<IActionResult> AddPermissionRead([FromRoute] long id, [FromBody] Indicator indicator)

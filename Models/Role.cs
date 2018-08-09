@@ -7,11 +7,11 @@ namespace think_agro_metrics.Models
 {
     public class Role
     {
-        public long RoleID { get; set; }
+        public long RoleID { get; set; } // Role ID for the database 
         public string RoleName { get; set; }
-        public string RoleToken { get; set; }
-        public ICollection<Indicator> PermissionsRead { get; set; }
-        public ICollection<Indicator> PermissionsWrite { get; set; }
+        public string RoleToken { get; set; } // The real RoleID
+        public List<Indicator> PermissionsRead { get; set; }
+        public List<Indicator> PermissionsWrite { get; set; }
 
         public Role()
         {

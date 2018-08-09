@@ -109,8 +109,8 @@ namespace think_agro_metrics.Data
             var indicators1 = new Indicator[]{
                 indicator1a, indicator1b};
 
-            roles[0].PermissionsRead.Concat(indicators1); // admin
-            roles[0].PermissionsWrite.Concat(indicators1); // admin
+            roles[0].PermissionsRead.AddRange(indicators1); // admin
+            roles[0].PermissionsWrite.AddRange(indicators1); // admin
             context.SaveChanges();
 
             return indicators1;
@@ -128,8 +128,8 @@ namespace think_agro_metrics.Data
             var indicators2 = new Indicator[]{
                 indicator2a, indicator2b};
 
-            roles[0].PermissionsRead.Concat(indicators2); // admin
-            roles[0].PermissionsWrite.Concat(indicators2); // admin
+            roles[0].PermissionsRead.AddRange(indicators2); // admin
+            roles[0].PermissionsWrite.AddRange(indicators2); // admin
             context.SaveChanges();
 
             return indicators2;
@@ -147,8 +147,8 @@ namespace think_agro_metrics.Data
             var indicators3 = new Indicator[]{
                 indicator3a, indicator3b};
 
-            roles[0].PermissionsRead.Concat(indicators3); // admin
-            roles[0].PermissionsWrite.Concat(indicators3); // admin
+            roles[0].PermissionsRead.AddRange(indicators3); // admin
+            roles[0].PermissionsWrite.AddRange(indicators3); // admin
             context.SaveChanges();
 
             return indicators3;
@@ -166,8 +166,8 @@ namespace think_agro_metrics.Data
             var indicators4 = new Indicator[]{
                 indicator4a, indicator4b};
 
-            roles[0].PermissionsRead.Concat(indicators4); // admin
-            roles[0].PermissionsWrite.Concat(indicators4); // admin
+            roles[0].PermissionsRead.AddRange(indicators4); // admin
+            roles[0].PermissionsWrite.AddRange(indicators4); // admin
             context.SaveChanges();
 
             return indicators4;
@@ -185,8 +185,8 @@ namespace think_agro_metrics.Data
             var indicators5 = new Indicator[]{
                 indicator5a, indicator5b};
 
-            roles[0].PermissionsRead.Concat(indicators5); // admin
-            roles[0].PermissionsWrite.Concat(indicators5); // admin
+            roles[0].PermissionsRead.AddRange(indicators5); // admin
+            roles[0].PermissionsWrite.AddRange(indicators5); // admin
             context.SaveChanges();
 
             return indicators5;
@@ -208,8 +208,8 @@ namespace think_agro_metrics.Data
             var indicators6 = new Indicator[]{
                 indicator6a, indicator6b, indicator6c};
 
-            roles[0].PermissionsRead.Concat(indicators6); // admin
-            roles[0].PermissionsWrite.Concat(indicators6); // admin
+            roles[0].PermissionsRead.AddRange(indicators6); // admin
+            roles[0].PermissionsWrite.AddRange(indicators6); // admin
             context.SaveChanges();
 
             return indicators6;
@@ -259,8 +259,8 @@ namespace think_agro_metrics.Data
             var indicators7 = new Indicator[]{
                 indicator7a, indicator7b, indicator7c, indicator7d, indicator7e, indicator7f, indicator7g, indicator7h, indicator7i, indicator7j};
 
-            roles[0].PermissionsRead.Concat(indicators7); // admin
-            roles[0].PermissionsWrite.Concat(indicators7); // admin
+            roles[0].PermissionsRead.AddRange(indicators7); // admin
+            roles[0].PermissionsWrite.AddRange(indicators7); // admin
             context.SaveChanges();
 
             return indicators7;
@@ -282,8 +282,8 @@ namespace think_agro_metrics.Data
             var indicators8 = new Indicator[]{
                 indicator8a, indicator8b, indicator8c};
 
-            roles[0].PermissionsRead.Concat(indicators8); // admin
-            roles[0].PermissionsWrite.Concat(indicators8); // admin
+            roles[0].PermissionsRead.AddRange(indicators8); // admin
+            roles[0].PermissionsWrite.AddRange(indicators8); // admin
             context.SaveChanges();
 
             return indicators8;
@@ -339,8 +339,8 @@ namespace think_agro_metrics.Data
             var indicators9 = new Indicator[] {
                 indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h,/* indicator9i, indicator9j,*/ indicator9k, indicator9l};
 
-            roles[0].PermissionsRead.Concat(indicators9); // admin
-            roles[0].PermissionsWrite.Concat(indicators9); // admin
+            roles[0].PermissionsRead.AddRange(indicators9); // admin
+            roles[0].PermissionsWrite.AddRange(indicators9); // admin
             context.SaveChanges();
 
             return indicators9;
@@ -378,8 +378,8 @@ namespace think_agro_metrics.Data
             var indicators10 = new Indicator[]{
                 indicator10a, indicator10b, indicator10c, indicator10d, indicator10e, indicator10f, indicator10g};
 
-            roles[0].PermissionsRead.Concat(indicators10); // admin
-            roles[0].PermissionsWrite.Concat(indicators10); // admin
+            roles[0].PermissionsRead.AddRange(indicators10); // admin
+            roles[0].PermissionsWrite.AddRange(indicators10); // admin
             context.SaveChanges();
 
             return indicators10;
@@ -397,8 +397,8 @@ namespace think_agro_metrics.Data
             var indicators11 = new Indicator[]{
                 indicator11a, indicator11b};
 
-            roles[0].PermissionsRead.Concat(indicators11); // admin
-            roles[0].PermissionsWrite.Concat(indicators11); // admin
+            roles[0].PermissionsRead.AddRange(indicators11); // admin
+            roles[0].PermissionsWrite.AddRange(indicators11); // admin
             context.SaveChanges();
 
             return indicators11;
@@ -412,8 +412,8 @@ namespace think_agro_metrics.Data
             var indicators12 = new Indicator[]{
                 indicator12a};
 
-            roles[0].PermissionsRead.Concat(indicators12); // admin
-            roles[0].PermissionsWrite.Concat(indicators12); // admin
+            roles[0].PermissionsRead.AddRange(indicators12); // admin
+            roles[0].PermissionsWrite.AddRange(indicators12); // admin
             context.SaveChanges();
 
             return indicators12;
@@ -431,8 +431,8 @@ namespace think_agro_metrics.Data
             var indicators13 = new Indicator[]{
                 indicator13a, indicator13b};
 
-            roles[0].PermissionsRead.Concat(indicators13); // admin
-            roles[0].PermissionsWrite.Concat(indicators13); // admin
+            roles[0].PermissionsRead.AddRange(indicators13); // admin
+            roles[0].PermissionsWrite.AddRange(indicators13); // admin
             context.SaveChanges();
 
             return indicators13;
@@ -458,8 +458,8 @@ namespace think_agro_metrics.Data
             var indicators14 = new Indicator[]{
                 indicator14a, indicator14b, indicator14c, indicator14d};
 
-            roles[0].PermissionsRead.Concat(indicators14); // admin
-            roles[0].PermissionsWrite.Concat(indicators14); // admin
+            roles[0].PermissionsRead.AddRange(indicators14); // admin
+            roles[0].PermissionsWrite.AddRange(indicators14); // admin
             context.SaveChanges();
 
             return indicators14;

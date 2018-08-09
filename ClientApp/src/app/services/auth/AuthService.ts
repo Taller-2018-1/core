@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../alerts/notification.service';
 import { PermissionTarget, PermissionClaim } from './permissions';
 import { User } from './User';
+import { Role } from '../../shared/models/role';
+import { RoleService } from '../role/role.service';
+import {forEach} from "@angular/router/src/utils/collection";
+
 export interface Credentials {
   email: string;
   password: string;
@@ -17,7 +21,9 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router, private notifications: NotificationService) {}
 
   private static AUTHORIZATION_API = '/api/auth/';
+  private static ROLE_API = '/api/Roles/'
   private self_token = null;
+  private role: Role;
 
   public auth(credentials: Credentials): Observable<boolean> {
     return Observable.create(observer => {
@@ -31,6 +37,9 @@ export class AuthService {
           this.router.navigate(['/home']);
           this.notifications.showToaster('Sesión iniciada', 'success');
           this.self_token = this.getToken();
+          this.loadRole();
+
+
         },
         error => {
           // error path
@@ -45,6 +54,16 @@ export class AuthService {
     });
   }
 
+  private loadRole()
+  {
+    let reads: Indicator[];
+    // Load Role
+    this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids).subscribe(data => {
+      this.role = data;
+    });
+  }
+
+  /*
   // came with this idea while listening https://www.youtube.com/watch?v=4NrJ1C4sKr8 and drinking some vodka <3
   public isAllowedTo(target: PermissionTarget, claim: PermissionClaim): boolean {
     const token = <any>this.getToken();
@@ -55,6 +74,27 @@ export class AuthService {
     }
     return false;
   }
+  */
+
+  // came with this idea while sober
+  public isAllowedTo(indicatorId: number, claim: PermissionClaim): boolean {
+    if (claim === PermissionClaim.WRITE) {
+      for (let indicator of  this.role.permissionsWrite) {
+        if (indicator.indicatorID === indicatorId) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      for(let indicator of this.role.permissionsRead) {
+        if (indicator.indicatorID === indicatorId) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
 
   public signOut() {
     return Observable.create(observer => {
@@ -63,6 +103,7 @@ export class AuthService {
       observer.complete();
       this.notifications.showToaster('Sesión finalizada', 'info');
       this.self_token = null;
+      this.role = null;
     });
   }
 
