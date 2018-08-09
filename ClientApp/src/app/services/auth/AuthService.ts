@@ -8,8 +8,6 @@ import { NotificationService } from '../alerts/notification.service';
 import { PermissionTarget, PermissionClaim } from './permissions';
 import { User } from './User';
 import { Role } from '../../shared/models/role';
-import { RoleService } from '../role/role.service';
-import {forEach} from "@angular/router/src/utils/collection";
 
 export interface Credentials {
   email: string;
@@ -76,7 +74,7 @@ export class AuthService {
   }
   */
 
-  // came with this idea while sober
+  // came with this idea while sober <3
   public isAllowedTo(indicatorId: number, claim: PermissionClaim): boolean {
     if (claim === PermissionClaim.WRITE) {
       for (let indicator of  this.role.permissionsWrite) {
