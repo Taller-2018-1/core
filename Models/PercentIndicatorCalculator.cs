@@ -150,5 +150,20 @@ namespace think_agro_metrics.Models
                 return goal2.Value;
             }
         }
+
+        public double[] Cumulative(double[] values)
+        {
+            double sum = 0;
+            double i = 1;
+            List<double> result = new List<double>();
+            foreach (double value in values)
+            {
+                result.Add((sum + value) / i);
+                sum += value;
+                i++;
+            }
+
+            return result.ToArray();
+        }
     }
 }

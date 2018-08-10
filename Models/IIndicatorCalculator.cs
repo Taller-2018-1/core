@@ -15,5 +15,7 @@ namespace think_agro_metrics.Models
 
         double CalculateGoal(ICollection<Goal> goals);
         double CalculateGoalWeek(ICollection<Goal> goals, int startWeekYear, int startWeekMonth, int startWeekDay);
+
+        double[] Cumulative(double[] values);
     }
 }

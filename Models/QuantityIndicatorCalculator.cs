@@ -104,5 +104,18 @@ namespace think_agro_metrics.Models
 
             return (sum / 7.0);
         }
+
+        public double[] Cumulative(double[] values)
+        {
+            double sum = 0;
+            List<double> result = new List<double>();
+            foreach (double value in values)
+            {
+                result.Add(sum + value);
+                sum += value;
+            }
+
+            return result.ToArray();
+        }
     }
 }
