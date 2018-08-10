@@ -110,4 +110,8 @@ export class IndicatorService {
   deleteIndicator(indicator: Indicator): Observable<Indicator> {
     return this.http.delete<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID);
   }
+
+  editIndicator(indicator: Indicator): Observable<Indicator> {
+    return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID,indicator);
+  }
 }
