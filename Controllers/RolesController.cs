@@ -62,8 +62,8 @@ namespace think_agro_metrics.Controllers
             return Ok(role);
         }
 
-        // POST api/Roles/5/Permission/Read // To update or add permissions
-        [HttpPost("{id}/Permissionn/Read")]
+        // POST api/Roles/751381e9-91db-404c-94bb-dbb460551bda/Permission/Read // To update or add permissions
+        [HttpPost("{id}/Permission/Read")]
         public async Task<IActionResult> AddPermissionRead([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -78,7 +78,8 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
-            role.PermissionsRead.Add(indicator);
+            Permission permission = new Permission { IndicatorID = indicator.IndicatorID};
+            role.PermissionsRead.Add(permission);
             _context.Entry(role).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
@@ -87,8 +88,8 @@ namespace think_agro_metrics.Controllers
 
         }
 
-        // POST api/Roles/5/Permission/Read
-        [HttpPut("{id}/Permission/Write")]
+        // POST api/Roles/751381e9-91db-404c-94bb-dbb460551bda/Permission/Read
+        [HttpPost("{id}/Permission/Write")]
         public async Task<IActionResult> AddPermissionWrite([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -103,7 +104,8 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
-            role.PermissionsWrite.Add(indicator);
+            Permission permission = new Permission { IndicatorID = indicator.IndicatorID};
+            role.PermissionsWrite.Add(permission);
             _context.Entry(role).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();

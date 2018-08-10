@@ -52,7 +52,7 @@
                   #registriesDescription="ngModel"></textarea>
       </div>
     </div>
-
+    <div class="row"><label>Administración de permisos</label></div>
     <div class="row">
       <table class="table table-condensed">
         <thead>
@@ -65,53 +65,53 @@
         <tbody>
         <tr>
           <th>Administrador</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check1" [(ngModel)]="write.adm" name="write1"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check2" [(ngModel)]="read.adc" name="read1"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check1" [(ngModel)]="read.adm" name="read1"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check2" [(ngModel)]="write.adm" name="write1"></td>
         </tr>
         <tr>
           <th>Gerencia y dirección	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check3" [(ngModel)]="write.ger" name="write2"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check4" [(ngModel)]="read.ger" name="read2"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check3" [(ngModel)]="read.ger" name="read2"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check4" [(ngModel)]="write.ger" name="read"></td>
         </tr>
         <tr>
           <th>Encargado de operaciones	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check5" [(ngModel)]="write.enOp" name="write3"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check6" [(ngModel)]="read.encOp" name="read3"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check5" [(ngModel)]="read.enOp" name="read3"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check6" [(ngModel)]="write.encOp" name="write3"></td>
         </tr>
         <tr>
           <th>Analista de operaciones	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check7" [(ngModel)]="write.anOp" name="write4"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check8" [(ngModel)]="read.anOp" name="read4"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check7" [(ngModel)]="read.anOp" name="read4"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check8" [(ngModel)]="write.anOp" name="write4"></td>
         </tr>
         <tr>
           <th>Ejecutivo de post-venta	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check9" [(ngModel)]="write.ejVta" name="write5"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check10" [(ngModel)]="read.ejVta" name="read5"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check9" [(ngModel)]="read.ejVta" name="read5"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check10" [(ngModel)]="write.ejVta" name="write5"></td>
         </tr>
         <tr>
           <th>Encargada de nuevos negocios	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check11" [(ngModel)]="write.nvoNeg" name="write6"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check12" [(ngModel)]="read.nvoNeg" name="read6"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check11" [(ngModel)]="read.nvoNeg" name="read6"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check12" [(ngModel)]="write.nvoNeg" name="write6"></td>
         </tr>
         <tr>
           <th>Ejecutiva técnica de control y seguimiento	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check13" [(ngModel)]="write.ctrlSeg" name="write7"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check14" [(ngModel)]="read.ctrlSeg" name="read7"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check13" [(ngModel)]="read.ctrlSeg" name="read7"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check14" [(ngModel)]="write.ctrlSeg" name="write7"></td>
         </tr>
         <tr>
           <th>Extensionista senior	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check15" [(ngModel)]="write.exSr" name="write8"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check16" [(ngModel)]="read.exSr" name="read8"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check15" [(ngModel)]="read.exSr" name="read8"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check16" [(ngModel)]="write.exSr" name="write8"></td>
         </tr>
         <tr>
           <th>Extensionista junior	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check17" [(ngModel)]="write.exJr" name="write9"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check18" [(ngModel)]="read.exJr" name="write9"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check17" [(ngModel)]="read.exJr" name="read9"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check18" [(ngModel)]="write.exJr" name="read9"></td>
         </tr>
         <tr>
           <th>Periodista</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check19" [(ngModel)]="write.prdta" name="write10"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check20" [(ngModel)]="read.prdta" name="read10"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check19" [(ngModel)]="read.prdta" name="read10"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check20" [(ngModel)]="write.prdta" name="write10"></td>
         </tr>
         </tbody>
 

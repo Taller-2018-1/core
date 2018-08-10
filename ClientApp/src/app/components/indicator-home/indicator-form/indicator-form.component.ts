@@ -32,10 +32,10 @@ export class IndicatorFormComponent implements OnInit {
   public types;
 
   // If you don't like those names, change them yourself
-  read: any = { adm: false, ger: false, encOp: false, anOp: false,
+  read: any = { adm: true, ger: false, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
-  write: any = { adm: false, ger: false, encOp: false, anOp: false,
+  write: any = { adm: true, ger: false, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
   constructor(private modalService: BsModalService,
@@ -78,11 +78,15 @@ export class IndicatorFormComponent implements OnInit {
           return;
         }
         else {
-
-          var roles_id = Object.values(RolesType); // list of 751381e9-91db-404c-94bb-dbb460551bda
           for (let i in this.read) {
-            if (this.read[i]) {
-              console.log(RolesType[roles_id[i]]);
+            if (this.read[i] === true) {
+              this.roleService.addPermissionRead(RolesType[i], (data as Indicator)).subscribe();
+            }
+          }
+
+          for (let i in this.write) {
+            if (this.write[i] === true) {
+              this.roleService.addPermissionWrite(RolesType[i], (data as Indicator)).subscribe();
             }
           }
 
