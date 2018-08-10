@@ -22,9 +22,21 @@
 <!-- end head-page-section -->
 <!-- about boxes
 ================================================== -->
-<div *ngIf="indicatorGroup$ | async as indicatorGroup">
-  <app-indicator-display [indicatorGroup]="indicatorGroup"></app-indicator-display>
-</div>
+
+<section>
+  <div class="container">
+    <div class="heading-block">
+      <h2>{{ (indicatorGroup$ | async)?.name }}</h2>
+    </div>
+
+    <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
+
+  </div>
+  <!-- end container -->
+</section>
+<br>
+
+<app-indicator-display *ngIf="indicatorGroup$ | async as indicatorGroup" [indicatorResultsObservable]="indicatorResults$" [goalsObservable]="goals$" [indicatorGroup]="indicatorGroup"></app-indicator-display>
 
 <ng-template #addIndicator>
   <div class="modal-dialog">

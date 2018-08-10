@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,12 @@ namespace think_agro_metrics.Controllers
     public class IndicatorsController : Controller
     {
         private readonly DataContext _context;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public IndicatorsController(DataContext context)
+        public IndicatorsController(DataContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Indicators
@@ -28,11 +31,13 @@ namespace think_agro_metrics.Controllers
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicators()
         {
-            var indicators = await _context.Indicators
+            // I hope nobody needs this
+            /*var indicators = await _context.Indicators
                 .Include(x => x.Goals)
                 .Include(x => x.Registries)                
                 .ThenInclude(x => x.Documents).ToListAsync();
-
+            */
+            var indicators = await _context.Indicators.ToListAsync();
             return Ok(indicators);
         }
 
@@ -51,18 +56,18 @@ namespace think_agro_metrics.Controllers
             var indicator = await indicatorQuery
                 .Include(x => x.Goals)
                 .Include(x => x.Registries)
-                .ThenInclude(x => x.Documents).SingleAsync();
+                .ThenInclude(x => x.Documents).SingleOrDefaultAsync();
 
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             return Ok(indicator);
         }
 
-        // GET: api/Indicators/5/2018
-        [HttpGet("{id:long}/{year:int}")]
+        // GET: api/Indicators/5/Year/2018
+        [HttpGet("{id:long}/Year/{year:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYear([FromRoute] long id, [FromRoute] int year)
         {
@@ -80,12 +85,12 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
             
             // Fails if not found
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             indicator.Registries = registries;
@@ -93,8 +98,40 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
-        // GET: api/Indicators/5/2018/1
-        [HttpGet("{id:long}/{year:int}/{month:int}")]
+        // GET: api/Indicators/5/Year/2018/Trimester/1
+        [HttpGet("{id:long}/Year/{year:int}/Trimester/{trimester:int}")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYearTrimester([FromRoute] long id, [FromRoute] int year, [FromRoute] int trimester)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            // Obtain the Registries
+            var registries = await _context.Registries
+                .Where(r => r.IndicatorID == id && r.Date.Year == year 
+                && (r.Date.Month == (trimester + 1) * 3 || r.Date.Month == (trimester + 1) * 3 - 1 || r.Date.Month == (trimester + 1) * 3 - 2))
+                .Include(r => r.Documents)
+                .ToArrayAsync();
+
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals)
+                .SingleOrDefaultAsync();
+
+            // Fails if not found
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            indicator.Registries = registries;
+
+            return Ok(indicator);
+        }
+
+        // GET: api/Indicators/5/Year/2018/Month/1
+        [HttpGet("{id:long}/Year/{year:int}/Month/{month:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
@@ -115,12 +152,12 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Goals)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // Fails if not found
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             indicator.Registries = registries;
@@ -128,8 +165,52 @@ namespace think_agro_metrics.Controllers
             return Ok(indicator);
         }
 
-        // GET: api/Indicators/Goals/1
-        [HttpGet("Goals/{id:long}")]
+        // GET: api/Indicators/5/Week/2018/6/9 (9th July 2018)
+        [HttpGet("{id:long}/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorRegitriesByYearMonth([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            startWeekMonth = startWeekMonth + 1;
+
+            DateTime date = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
+
+            // Obtain the Registries
+            var registries = await _context.Registries
+                .Where(r => r.IndicatorID == id && 
+                    (new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(1) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(2) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(3) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(4) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(5) ||
+                    new DateTime(r.Date.Year, r.Date.Month, r.Date.Day) == date.AddDays(6)))
+                .Include(r => r.Documents)
+                .ToArrayAsync();
+
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals)
+                .SingleOrDefaultAsync();
+
+            // Fails if not found
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            indicator.Registries = registries;
+
+            return Ok(indicator);
+        }
+
+        // GET: api/Indicators/1/Goals
+        [HttpGet("{id:long}/Goals")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id)
         {
@@ -138,31 +219,32 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the Goals
-            var goals = await _context.Goals.Where(g => g.IndicatorID == id).ToListAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
 
-            // Fails if not found
-            if (goals == null) 
-            {
-                return NotFound();
+            if (indicator == null) {
+                return NoContent();
             }
 
-            double result = 0;
-            foreach (Goal goal in goals)
+            // Goals of the indicator
+            var goals = indicator.Goals;
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any())
             {
-                result += goal.Value;
+                return Ok(0);
             }
-            // Percent Registry
-            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
-            if (indicator.RegistriesType == RegistryType.PercentRegistry){
-                result /= goals.Count;
-            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
 
             return Ok(result);
         }
 
-        // GET: api/Indicators/Goals/1/2018
-        [HttpGet("Goals/{id:long}/{year:int}")]
+        // GET: api/Indicators/1/Goals/Year/2018
+        [HttpGet("{id:long}/Goals/Year/{year:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year)
         {
@@ -171,41 +253,85 @@ namespace think_agro_metrics.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Obtain the Goals
-            var goals = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year).ToListAsync();
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
 
-            // Fails if not found
-            if (goals == null) 
+            if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
-            double result = 0;
-            foreach (Goal goal in goals)
+            // Goals of the indicator
+            var goals = indicator.Goals.Where(g => g.Year == year).ToList();
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any()) 
             {
-                result += goal.Value;
+                return Ok(0);
             }
-            // Percent Registry
-            var indicator = await _context.Indicators.SingleAsync(i => i.IndicatorID == id);
-            if (indicator.RegistriesType == RegistryType.PercentRegistry){
-                result /= goals.Count;
-            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
 
             return Ok(result);
         }
 
-        // GET: api/Indicators/Goals/1/2018/0 (indicator 1, year 2018, month January)
-        [HttpGet("Goals/{id:long}/{year:int}/{month:int}")]
+        // GET: api/Indicators/1/Goals/Year/2018/Trimester/0 (indicator 1, year 2018, trimester January-March)
+        [HttpGet("{id:long}/Goals/Year/{year:int}/Trimester/{trimester:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
-        public async Task<IActionResult> GetIndicatorGoals([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
+        public async Task<IActionResult> GetIndicatorGoalsTrimester([FromRoute] long id, [FromRoute] int year, [FromRoute] int trimester)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the indicator's registries type
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null) {
+                return NoContent();
+            }
+
+            // Obtain the Goals
+            // The month of the goals in the DB starts at 0 (equals to Angular side)
+            int firstMonthTrimester = (trimester + 1) * 3 - 3;
+
+            var goals = indicator.Goals.Where(g => g.Year == year
+            && (g.Month == firstMonthTrimester || g.Month == firstMonthTrimester + 1 || g.Month == firstMonthTrimester + 2)).ToList();
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoal(goals);
+
+            return Ok(result);
+            
+        }
+
+        // GET: api/Indicators/1/Goals/Year/2018/Month/0 (indicator 1, year 2018, month January)
+        [HttpGet("{id:long}/Goals/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null) {
+                return NoContent();
+            }
+
             // Obtain the Goal
-            var goal = await _context.Goals.Where(g => g.IndicatorID == id && g.Year == year && g.Month == month).SingleOrDefaultAsync();
+            // The month of the goals in the DB starts at 0 (equals to Angular side)
+            var goal =  indicator.Goals.Where(g => g.Year == year && g.Month == month).SingleOrDefault();
 
             // Return 0 if not found
             if (goal == null) 
@@ -214,6 +340,32 @@ namespace think_agro_metrics.Controllers
             }
 
             return Ok(goal.Value);
+        }
+
+        // GET: api/Indicators/1/Goals/Week/2018/6/9 (9th July 2018)
+        [HttpGet("{id:long}/Goals/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsWeek([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Assign indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            double result = indicator.IndicatorCalculator.CalculateGoalWeek(indicator.Goals, startWeekYear, startWeekMonth, startWeekDay);
+
+            return Ok(result);
         }
 
         // GET: api/Indicators/Calculate
@@ -231,10 +383,10 @@ namespace think_agro_metrics.Controllers
                 .Include(i => i.Registries)
                 .ToListAsync();
 
-            // If the indicators list is empty, show NotFound
+            // If the indicators list is empty, show NoContent
             if (!indicators.Any())
             {
-                return NotFound();
+                return NoContent();
             }
 
             // List of the results of every indicator
@@ -250,8 +402,8 @@ namespace think_agro_metrics.Controllers
             return Ok(list);
         }
         
-        // GET: api/Indicators/Calculate/2018
-        [Route("Calculate/{year:int}")]
+        // GET: api/Indicators/Calculate/Year/2018
+        [Route("Calculate/Year/{year:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<IActionResult> CalculateIndicators([FromRoute] int year)
         {
@@ -265,10 +417,10 @@ namespace think_agro_metrics.Controllers
                 .Include(i => i.Registries)
                 .ToListAsync();
 
-            // If the indicators list is empty, show NotFound
+            // If the indicators list is empty, show NoContent
             if (!indicators.Any())
             {
-                return NotFound();
+                return NoContent();
             }
 
             // List of the results of every indicator
@@ -277,17 +429,17 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
+                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year));
             }
             
             // Return the list with the results
             return Ok(list);
         }
 
-        // GET: api/Indicators/Calculate/2018/1
-        [Route("Calculate/{year:int}/{month:int}")]
+        // GET: api/Indicators/Calculate/Year/2018/Trimester/1
+        [Route("Calculate/Year/{year:int}/Trimester/{trimester:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
-        public async Task<IActionResult> CalculateIndicators([FromRoute] int year, [FromRoute] int month)
+        public async Task<IActionResult> CalculateIndicatorsYearTrimester([FromRoute] int year, [FromRoute] int trimester)
         {
             if (!ModelState.IsValid)
             {
@@ -299,10 +451,45 @@ namespace think_agro_metrics.Controllers
                 .Include(i => i.Registries)
                 .ToListAsync();
 
-            // If the indicators list is empty, show NotFound
+            // If the indicators list is empty, show NoContent
             if (!indicators.Any())
             {
-                return NotFound();
+                return NoContent();
+            }
+
+            // List of the results of every indicator
+            List<double> list = new List<double>();
+
+            // Calculate every indicator
+            foreach (Indicator indicator in indicators)
+            {
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+                list.Add(indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester));
+            }
+
+            // Return the list with the results
+            return Ok(list);
+        }
+
+        // GET: api/Indicators/Calculate/Year/2018/Month/1
+        [Route("Calculate/Year/{year:int}/Month/{month:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> CalculateIndicatorsYearMonth([FromRoute] int year, [FromRoute] int month)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicators with its Registries
+            var indicators = await _context.Indicators
+                .Include(i => i.Registries)
+                .ToListAsync();
+
+            // If the indicators list is empty, show NoContent
+            if (!indicators.Any())
+            {
+                return NoContent();
             }
 
             // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
@@ -314,15 +501,53 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month));
+                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month));
             }
             
             // Return the list with the results
             return Ok(list);
         }
 
-        // GET: api/Indicators/Calculate/5 // Calculate Indicator with ID 5 for all years
-        [Route("Calculate/{id:long}")]
+        // GET: api/Indicators/Calculate/Week/2018/6/9      9 of July of 2018
+        [Route("Calculate/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> CalculateIndicatorsYearWeek([FromRoute] int year, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicators with its Registries
+            var indicators = await _context.Indicators
+                .Include(i => i.Registries)
+                .ToListAsync();
+
+            // If the indicators list is empty, show NoContent
+            if (!indicators.Any())
+            {
+                return NoContent();
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            startWeekMonth = startWeekMonth + 1;
+
+            // List of the results of every indicator
+            List<double> list = new List<double>();
+
+            // Calculate every indicator
+            foreach (Indicator indicator in indicators)
+            {
+                indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+                list.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay));
+            }
+
+            // Return the list with the results
+            return Ok(list);
+        }
+
+        // GET: api/Indicators/5/Calculate // Calculate Indicator with ID 5 for all years
+        [Route("{id:long}/Calculate")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicator([FromRoute] long id)
         {
@@ -335,11 +560,11 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
@@ -348,8 +573,8 @@ namespace think_agro_metrics.Controllers
             return Ok(value);
         }
 
-        // GET: api/Indicators/Calculate/5/2018 // Calculate Indicator with ID 5 for a selected year
-        [Route("Calculate/{id:long}/{year:int}")]
+        // GET: api/Indicators/5/Calculate/Year/2018 // Calculate Indicator with ID 5 for a selected year
+        [Route("{id:long}/Calculate/Year/{year:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYear([FromRoute] long id, [FromRoute] int year)
         {
@@ -362,21 +587,48 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year);
+            var value = indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year);
 
             return Ok(value);
         }
 
-        // GET: api/Indicators/Calculate/5/2018/0 // Calculate Indicator with ID 5 for a selected year and selected month
-        [Route("Calculate/{id:long}/{year:int}/{month:int}")]
+        // GET: api/Indicators/5/Calculate/Year/2018/Trimester/0 // Calculate Indicator with ID 5 for a selected year and selected trimester
+        [Route("{id:long}/Calculate/Year/{year:int}/Trimester/{trimester:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<ActionResult> CalculateIndicatorByYearTrimester([FromRoute] long id, [FromRoute] int year, [FromRoute] int trimester)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the Indicator with its Registries
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Registries)
+                .SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/5/Calculate/Year/2018/Month/0 // Calculate Indicator with ID 5 for a selected year and selected month
+        [Route("{id:long}/Calculate/Year/{year:int}/Month/{month:int}")]
         [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month)
         {
@@ -392,15 +644,45 @@ namespace think_agro_metrics.Controllers
             var indicator = await _context.Indicators
                 .Where(i => i.IndicatorID == id)
                 .Include(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             if (indicator == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month);
+            var value = indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month);
+
+            return Ok(value);
+        }
+
+        // GET: api/Indicators/5/Calculate/Week/2018/6/9 // Calculate Indicator with ID 5 for the week started the 9 of July of 2018
+        [Route("{id:long}/Calculate/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<ActionResult> CalculateIndicatorByYearWeek([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            startWeekMonth = startWeekMonth + 1;
+
+            // Obtain the Indicator with its Registries
+            var indicator = await _context.Indicators
+                .Where(i => i.IndicatorID == id)
+                .Include(i => i.Registries)
+                .SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+            var value = indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay);
 
             return Ok(value);
         }
@@ -490,11 +772,39 @@ namespace think_agro_metrics.Controllers
                 return NotFound();
             }
 
+            var repository = _hostingEnvironment.WebRootPath + "\\Repository";
+
+            List<Registry> registries = await _context.Registries.Where(r => r.IndicatorID == id).ToListAsync();
+
+            foreach (Registry registry in registries )
+            {
+                // To delete all documentss asociated to the indicator
+                List<Document> docs = await _context.Documents.Where(d => d.RegistryID == registry.RegistryID).ToListAsync();
+                foreach (Document doc in docs)
+                {
+                    if (doc.Extension.Equals(".pdf")) { // If it's a pdf, delete it from the server
+                        
+                        System.IO.File.Delete(repository + "\\" + doc.Link);
+                    }
+                    registry.Documents.Remove(doc); // Remove from modal
+                    _context.Documents.Remove(doc); // Remove from database
+                    await _context.SaveChangesAsync();
+                }
+
+                // To delete the registries 
+                indicator.Registries.Remove(registry); // Delete from model
+                _context.Registries.Remove(registry); // Delete from database
+                await _context.SaveChangesAsync();
+
+            }
+
             _context.Indicators.Remove(indicator);
             await _context.SaveChangesAsync();
 
             return Ok(indicator);
         }
+
+        
 
         private bool IndicatorExists(long id)
         {
@@ -579,8 +889,8 @@ namespace think_agro_metrics.Controllers
             return CreatedAtAction("GetIndicatorGoalsList", new { id = idIndicator }, goals);
         }
 
-        // PUT: api/Indicators/Goal/7
-        [HttpPut("Goal/{id:long}")]
+        // PUT: api/Indicators/7/Goal
+        [HttpPut("{id:long}/Goal/")]
         [Authorize(Roles = "administrador_indicadores")]
         public async Task<IActionResult> PutIndicatorGoal([FromBody] Goal goal, [FromRoute] long id)
         {

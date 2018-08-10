@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding,TemplateRef } from '@angular/core';
+import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { IndicatorGroupService } from '../../services/indicator-group/indicator-
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-//Importa libreria PDF
+// Importa libreria PDF
 import * as jsPDF from 'jspdf';
 import { TemplateAst } from '@angular/compiler';
 
@@ -35,8 +35,7 @@ export class ResultHomeComponent implements OnInit {
 
   }
 
-  ngOnInit()
-  {
+  ngOnInit() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
     this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
@@ -47,8 +46,7 @@ export class ResultHomeComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  indicatorGroupAdded()
-  {
+  indicatorGroupAdded() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
   }
 
