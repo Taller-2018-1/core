@@ -5,6 +5,9 @@ dotnet: 2.0.0
 install:
 - dotnet restore
 
+before_script:
+        -npm i -g npm
+
 script:
 - dotnet publish
         # - dotnet build
