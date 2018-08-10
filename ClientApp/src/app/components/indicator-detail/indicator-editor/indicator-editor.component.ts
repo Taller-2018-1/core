@@ -6,9 +6,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 // Models
 import { Indicator } from '../../../shared/models/indicator';
 import { IndicatorGroup} from '../../../shared/models/indicatorGroup';
+import { RolesType } from '../../../shared/models/rolesType';
+
 // Services
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
+import { AuthService } from '../../../services/auth/AuthService';
+import { PermissionClaim } from '../../../services/auth/permissions';
 
 import swal from 'sweetalert2';
 
@@ -36,9 +40,17 @@ export class IndicatorEditorComponent implements OnInit {
                         // The indicatorGroup name show a few more characters
                         // Why 46? - Count the characters of selectedText
 
+  // If you don't like those names, change them yourself
+  read: any = { adm: false, ger: false, encOp: false, anOp: false,
+    ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
+
+  write: any = { adm: false, ger: false, encOp: false, anOp: false,
+    ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
+
   constructor(private service: IndicatorService,
               private indicatorGroupService: IndicatorGroupService,
-              private router: Router) { }
+              private router: Router,
+              private auth: AuthService) { }
 
   ngOnInit() {
     this.newIndicator = JSON.parse(JSON.stringify(this.indicator)); // Create a clone of the original Indicator.
@@ -48,6 +60,37 @@ export class IndicatorEditorComponent implements OnInit {
       this.groups = data;
     });
 
+    let roles = Object.keys(RolesType);
+    for (let role of roles) {
+      let roleReads: boolean;
+      let roleWrites: boolean;
+
+      this.auth.roleIsAllowedTo(RolesType[role] , this.indicator.indicatorID, PermissionClaim.READ).subscribe( data => {
+        let loadedRole = data;
+        for(let permission of loadedRole.permissionsRead) {
+          if (permission.indicatorID === this.indicator.indicatorID) {
+            roleReads = true;
+            this.read[role] = true;
+          }
+        }
+      });
+
+
+      this.auth.roleIsAllowedTo(RolesType[role], this.indicator.indicatorID, PermissionClaim.WRITE).subscribe(data => {
+        let loadedRole = data;
+        for (let permission of loadedRole.permissionsWrite) {
+          if (permission.indicatorID === this.indicator.indicatorID) {
+            roleWrites = true;
+            this.write[role] = true;
+          }
+        }
+      });
+
+
+    }
+
+    console.log(this.read);
+    console.log(this.write);
 
   }
 

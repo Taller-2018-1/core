@@ -77,20 +77,25 @@ export class AuthService {
   // came with this idea while sober <3
   public isAllowedTo(indicatorId: number, claim: PermissionClaim): boolean {
     if (claim === PermissionClaim.WRITE) {
-      for (let indicator of  this.role.permissionsWrite) {
-        if (indicator.indicatorID === indicatorId) {
+      for (let permission of  this.role.permissionsWrite) {
+        if (permission.indicatorID === indicatorId) {
           return true;
         }
       }
       return false;
     } else {
-      for(let indicator of this.role.permissionsRead) {
-        if (indicator.indicatorID === indicatorId) {
+      for(let permission of this.role.permissionsRead) {
+        if (permission.indicatorID === indicatorId) {
           return true;
         }
       }
       return false;
     }
+  }
+
+  public roleIsAllowedTo(roleId: string, indicatorId: number, claim: PermissionClaim): Observable<Role> {
+
+    return this.http.get<Role>(AuthService.ROLE_API + roleId);
   }
 
 
