@@ -147,7 +147,14 @@ namespace think_agro_metrics.Models
             }
             else
             {
-                return goal2.Value;
+                if (goal2.Value >= goal1.Value)
+                {
+                    return goal2.Value;
+                }
+                else
+                {
+                    return goal1.Value;
+                }                
             }
         }
 
@@ -158,12 +165,30 @@ namespace think_agro_metrics.Models
             List<double> result = new List<double>();
             foreach (double value in values)
             {
-                result.Add((sum + value) / i);
+                result.Add(Math.Round(((sum + value) / i), 4, MidpointRounding.AwayFromZero));
                 sum += value;
                 i++;
             }
 
             return result.ToArray();
+        }
+
+        public double[] CumulativeGoals(double[] values)
+        {
+            List<double> result = new List<double>();
+
+            for (int i = 1; i <= values.Length; i++) {
+                // The max of the first i values
+                double max = values.Take(i).Max(v => v);
+                result.Add(max);
+            }
+
+            return result.ToArray();
+        }
+
+        public double CalculateGoalDay(Goal goal)
+        {
+            return goal.Value;
         }
     }
 }

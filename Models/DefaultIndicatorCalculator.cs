@@ -98,5 +98,18 @@ namespace think_agro_metrics.Models
 
             return result.ToArray();
         }
+
+        public double[] CumulativeGoals(double[] values)
+        {
+            return this.Cumulative(values);
+        }
+
+        public double CalculateGoalDay(Goal goal)
+        {
+            int year = goal.Year;
+            int month = goal.Month;
+            double value = goal.Value / DateTime.DaysInMonth(year, month);
+            return Math.Round(value, 4, MidpointRounding.AwayFromZero);
+        }
     }
 }

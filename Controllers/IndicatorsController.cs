@@ -689,7 +689,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate/Graph // Calculate Indicator with ID 5 for all years by year
         [Route("{id:long}/Calculate/Graph")]
-        //[Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateGraphIndicator([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -714,9 +714,10 @@ namespace think_agro_metrics.Controllers
             List<double> values = new List<double>();
             List<Registry> registriesYear;
             int year = 2018;
+            int maxYear = indicator.Goals.Max(g => g.Year);
 
             // Split the registries by year and calculate
-            while (indicator.Registries.Any(r => r.Date.Year == year))
+            while (year <= maxYear)
             {
                 registriesYear = indicator.Registries.Where(r => r.Date.Year == year).ToList();
                 values.Add(indicator.IndicatorCalculator.CalculateYear(registriesYear, year));
@@ -731,7 +732,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate/Graph/Year/2018 // Calculate Indicator with ID 5 for a selected year by month
         [Route("{id:long}/Calculate/Graph/Year/{year:int}")]
-        //[Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateGraphIndicatorByYear([FromRoute] long id, [FromRoute] int year)
         {
             if (!ModelState.IsValid)
@@ -772,8 +773,8 @@ namespace think_agro_metrics.Controllers
         }
 
         // GET: api/Indicators/5/Calculate/Graph/Year/2018/Trimester/0 // Calculate Indicator with ID 5 for a selected year and selected trimester by month
-        [Route("{id:long}/Calculate/Year/{year:int}/Trimester/{trimester:int}")]
-        //[Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        [Route("{id:long}/Calculate/Graph/Year/{year:int}/Trimester/{trimester:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateGraphIndicatorByYearTrimester([FromRoute] long id, [FromRoute] int year, [FromRoute] int trimester)
         {
             if (!ModelState.IsValid)
@@ -815,7 +816,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Indicators/5/Calculate/Graph/Year/2018/Month/0 // Calculate Indicator with ID 5 for a selected year and selected month by week, starting in the day specified (from)
         [Route("{id:long}/Calculate/Graph/Year/{year:int}/Month/{month:int}/From/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
-        //[Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateGraphIndicatorByYearMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
         {
             if (!ModelState.IsValid)
@@ -824,7 +825,8 @@ namespace think_agro_metrics.Controllers
             }
 
             // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            month = month + 1;
+            month++;
+            startWeekMonth++;
 
             // Obtain the Indicator with its Registries
             var indicator = await _context.Indicators
@@ -864,7 +866,7 @@ namespace think_agro_metrics.Controllers
         }
 
         [Route("{id:long}/Calculate/Graph/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
-        //[Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
         public async Task<ActionResult> CalculateGraphIndicatorByYearWeek([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
         {
             if (!ModelState.IsValid)
@@ -914,6 +916,254 @@ namespace think_agro_metrics.Controllers
             return Ok(result);
         }
 
+        // GET: api/Indicators/1/Goals/Graph
+        [HttpGet("{id:long}/Goals/Graph")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsGraph([FromRoute] long id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Goals of the indicator
+            var goals = indicator.Goals;
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any())
+            {
+                return Ok(0);
+            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            // Calculation
+            List<double> values = new List<double>();
+            List<Goal> goalsYear;
+            int year = 2018;
+            int maxYear = indicator.Goals.Max(g => g.Year);
+
+            // Split the registries by year and calculate
+            while (year <= maxYear)
+            {
+                goalsYear = indicator.Goals.Where(g => g.Year == year).ToList();
+                values.Add(indicator.IndicatorCalculator.CalculateGoal(goalsYear));
+                year++;
+            }
+
+            // Cumulative sum if the registries aren't of type percent, else returns the maximum value until that moment
+            double[] result = indicator.IndicatorCalculator.CumulativeGoals(values.ToArray());
+
+            return Ok(result);
+        }
+
+        // GET: api/Indicators/1/Goals/Graph/Year/2018
+        [HttpGet("{id:long}/Goals/Graph/Year/{year:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsYearGraph([FromRoute] long id, [FromRoute] int year)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Goals of the indicator
+            var goals = indicator.Goals.Where(g => g.Year == year).ToList();
+
+            // The indicator doesn't have goals (return 0)
+            if (goals == null || !goals.Any())
+            {
+                return Ok(0);
+            }
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            // Calculation
+            List<double> values = new List<double>();
+            List<Goal> goalsMonth;
+            // The month of the goals in the DB starts at 0 (equals to Angular side)
+            int month = 0;
+
+            // Split the registries by month and calculate
+            while (month < 12)
+            {
+                goalsMonth = indicator.Goals.Where(g => g.Year == year && g.Month == month).ToList();
+                values.Add(indicator.IndicatorCalculator.CalculateGoal(goalsMonth));
+                month++;
+            }
+
+            // Cumulative sum/average (depends in the type of registries of the indicator)
+            double[] result = indicator.IndicatorCalculator.CumulativeGoals(values.ToArray());
+
+            return Ok(result);
+        }
+
+        // GET: api/Indicators/1/Goals/Graph/Year/2018/Trimester/0 (indicator 1, year 2018, trimester January-March)
+        [HttpGet("{id:long}/Goals/Graph/Year/{year:int}/Trimester/{trimester:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsGraphTrimester([FromRoute] long id, [FromRoute] int year, [FromRoute] int trimester)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Obtain the indicator's registries type
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Obtain the Goals
+            // The month of the goals in the DB starts at 0 (equals to Angular side)
+            int firstMonthTrimester = (trimester + 1) * 3 - 3;
+
+            var goals = indicator.Goals.Where(g => g.Year == year
+            && (g.Month == firstMonthTrimester || g.Month == firstMonthTrimester + 1 || g.Month == firstMonthTrimester + 2)).ToList();
+
+            // Assing indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            // Calculation
+            List<double> values = new List<double>();
+            List<Goal> goalsMonth;
+            int month = firstMonthTrimester;
+
+            // Split the registries by month and calculate
+            while (month <= firstMonthTrimester + 2)
+            {
+                goalsMonth = indicator.Goals.Where(g => g.Year == year && g.Month == month).ToList();
+                values.Add(indicator.IndicatorCalculator.CalculateGoal(goalsMonth));
+                month++;
+            }
+
+            // Cumulative sum/average (depends in the type of registries of the indicator)
+            double[] result = indicator.IndicatorCalculator.CumulativeGoals(values.ToArray());
+
+            return Ok(result);
+
+        }
+
+        // GET: api/Indicators/1/Goals/Year/2018/Month/0/From/2018/0/2 (indicator 1, year 2018, month January, from 2/1/2018)
+        [HttpGet("{id:long}/Goals/Graph/Year/{year:int}/Month/{month:int}/From/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsGraphMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Obtain the Goal
+            // The month of the goals in the DB starts at 0 (equals to Angular side)
+            var goal = indicator.Goals.Where(g => g.Year == year && g.Month == month).SingleOrDefault();
+
+            
+            // Calculate
+            indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
+
+            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
+            month++;
+            startWeekMonth++;
+
+            List<double> values = new List<double>();
+            List<Goal> goalsWeek;
+            DateTime currentMonday = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
+
+
+            // Split the registries by weeks and calculate
+            while (currentMonday.Month <= month) // Asumes that the first value of currentMonth is at most 1 month less (by example the week of 30/07/2018)
+            {
+                DateTime currentSunday = currentMonday.AddDays(6);
+
+                goalsWeek = indicator.Goals.Where(g => (currentMonday.Year == g.Year && currentMonday.Month == g.Month) ||
+                (currentSunday.Year == g.Year && currentSunday.Month == g.Month)).ToList();
+
+                values.Add(indicator.IndicatorCalculator.CalculateGoalWeek(goalsWeek, startWeekYear, startWeekMonth, startWeekDay));
+
+                currentMonday = currentMonday.AddDays(7);
+            }
+
+            // Cumulative sum/average (depends in the type of registries of the indicator)
+            double[] result = indicator.IndicatorCalculator.CumulativeGoals(values.ToArray());
+
+            return Ok(result);
+        }
+
+        // GET: api/Indicators/1/Goals/Graph/Week/2018/6/9 (9th July 2018)
+        [HttpGet("{id:long}/Goals/Graph/Week/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
+        [Authorize(Roles = "administrador_indicadores,gestor_contenido")]
+        public async Task<IActionResult> GetIndicatorGoalsGraphWeek([FromRoute] long id, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var indicator = await _context.Indicators.Where(i => i.IndicatorID == id)
+                .Include(i => i.Goals).SingleOrDefaultAsync();
+
+            if (indicator == null)
+            {
+                return NoContent();
+            }
+
+            // Assign indicator calculator
+            indicator.RegistriesType = indicator.RegistriesType;
+
+            List<double> values = new List<double>();
+            Goal goalDay;
+            DateTime startDate = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
+            DateTime currentDate = startDate;
+
+
+            // Split the registries by day and calculate
+            while (currentDate.CompareTo(startDate.AddDays(7)) < 0)
+            {
+                goalDay = indicator.Goals.Where(g =>
+                    g.Year == currentDate.Year &&
+                    g.Month == currentDate.Month)
+                    .FirstOrDefault();
+
+                values.Add(indicator.IndicatorCalculator.CalculateGoalDay(goalDay));
+
+                currentDate = currentDate.AddDays(1);
+            }
+
+            // Cumulative sum/average (depends in the type of registries of the indicator)
+            double[] result = indicator.IndicatorCalculator.CumulativeGoals(values.ToArray());
+
+            return Ok(result);
+        }
 
         // PUT: api/Indicators/5
         [HttpPut("{id}")]
