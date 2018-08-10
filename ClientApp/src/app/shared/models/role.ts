@@ -1,9 +1,9 @@
-import { Indicator } from './indicator';
+import { Permission } from './permission';
 
 export class Role {
   roleID: number;
   roleName: string;
   roleToken: string;
-  permissionsRead: Indicator [];
-  permissionsWrite: Indicator [];
+  permissionsRead: Permission [];
+  permissionsWrite: Permission [];
 }
