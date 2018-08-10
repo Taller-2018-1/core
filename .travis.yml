@@ -6,7 +6,7 @@ install:
 - dotnet restore
 
 before_script:
-        -npm i -g npm
+- npm i -g npm
 
 script:
 - dotnet publish
