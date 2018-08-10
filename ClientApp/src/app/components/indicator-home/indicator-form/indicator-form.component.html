@@ -65,23 +65,23 @@
         <tbody>
         <tr>
           <th>Administrador</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check1" [(ngModel)]="read.adm" name="read1"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check2" [(ngModel)]="write.adm" name="write1" [disabled]="!read.adm"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check1" [(ngModel)]="read.adm" name="read1" disabled></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check2" [(ngModel)]="write.adm" name="write1" disabled></td>
         </tr>
         <tr>
           <th>Gerencia y dirección	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check3" [(ngModel)]="read.ger" name="read2"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check3" [(ngModel)]="read.ger" name="read2" disabled></td>
           <td><input class="form-check-input" type="checkbox" value="" id="check4" [(ngModel)]="write.ger" name="read" [disabled]="!read.ger"></td>
         </tr>
         <tr>
           <th>Encargado de operaciones	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check5" [(ngModel)]="read.enOp" name="read3"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check6" [(ngModel)]="write.encOp" name="write3" [disabled]="!read.enOp"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check5" [(ngModel)]="read.encOp" name="read3" disabled></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check6" [(ngModel)]="write.encOp" name="write3" [disabled]="!read.encOp"></td>
         </tr>
         <tr>
           <th>Analista de operaciones	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check7" [(ngModel)]="read.anOp" name="read4"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check8" [(ngModel)]="write.anOp" name="write4" [disabled]="!read.anOp"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check7" [(ngModel)]="read.anOp" name="read4" disabled></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check8" [(ngModel)]="write.anOp" name="write4" disabled></td>
         </tr>
         <tr>
           <th>Ejecutivo de post-venta	</th>
@@ -90,8 +90,8 @@
         </tr>
         <tr>
           <th>Encargada de nuevos negocios	</th>
-          <td><input class="form-check-input" type="checkbox" value="" id="check11" [(ngModel)]="read.nvoNeg" name="read6"></td>
-          <td><input class="form-check-input" type="checkbox" value="" id="check12" [(ngModel)]="write.nvoNeg" name="write6" [disabled]="!read.nvoNeg"></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check11" [(ngModel)]="read.nvoNeg" name="read6" disabled></td>
+          <td><input class="form-check-input" type="checkbox" value="" id="check12" [(ngModel)]="write.nvoNeg" name="write6" disabled></td>
         </tr>
         <tr>
           <th>Ejecutiva técnica de control y seguimiento	</th>
