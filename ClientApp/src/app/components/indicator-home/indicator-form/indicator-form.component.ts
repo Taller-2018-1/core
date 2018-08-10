@@ -32,7 +32,11 @@ export class IndicatorFormComponent implements OnInit {
   public types;
 
   // If you don't like those names, change them yourself
-  read: any = { adm: true, ger: false, encOp: false, anOp: false,
+  // adm always can read or write
+  // ger always can read
+  // encOp always can read and can write, but not every indicator
+  // anOp always can read, but can't write by default
+  read: any = { adm: true, ger: true, encOp: true, anOp: true,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
   write: any = { adm: true, ger: false, encOp: false, anOp: false,
