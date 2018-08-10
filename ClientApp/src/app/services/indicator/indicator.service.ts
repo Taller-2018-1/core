@@ -27,6 +27,8 @@ export class IndicatorService {
   public static GOALS = '/Goals/';
   public static GOALS_LIST = '/GoalsList/';
   public static CALCULATE = '/Calculate/';
+  public static CALCULATE_GRAPH = IndicatorService.CALCULATE + 'Graph/';
+  public static GOALS_GRAPH = IndicatorService.GOALS + 'Graph/';
   public static YEAR = 'Year/';
   public static TRIMESTER = '/Trimester/';
   public static MONTH = '/Month/';
@@ -149,6 +151,75 @@ export class IndicatorService {
     const startWeekDay = startWeekDate.getDate();
 
     return this.http.get<number[]>(IndicatorService.CALCULATE_API +
+      IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
+  }
+
+  calculateIndicatorGraph(indicatorId: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE_GRAPH);
+  }
+
+  calculateIndicatorYearGraph(indicatorId: number, year: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE_GRAPH +
+      IndicatorService.YEAR + year);
+  }
+
+  calculateIndicatorYearTrimesterGraph(indicatorId: number, year: number, trimester: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE_GRAPH +
+      IndicatorService.YEAR + year + IndicatorService.TRIMESTER + trimester);
+  }
+
+  calculateIndicatorYearMonthGraph(indicatorId: number, year: number, month: number, week: number): Observable<number> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE_GRAPH +
+      IndicatorService.YEAR + year + IndicatorService.MONTH + month +
+      '/From/' + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
+  }
+
+  calculateIndicatorYearWeekGraph(indicatorId: number, year: number, week: number): Observable<number> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.CALCULATE_GRAPH +
+      IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
+  }
+
+  getGoalGraph(indicatorId: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS_GRAPH);
+  }
+
+  getGoalYearGraph(indicatorId: number, year: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS_GRAPH +
+      IndicatorService.YEAR + year);
+  }
+
+  getGoalYearTrimesterGraph(indicatorId: number, year: number, trimester: number): Observable<number> {
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS_GRAPH +
+      IndicatorService.YEAR + year + IndicatorService.TRIMESTER + trimester);
+  }
+
+  getGoalYearMonthGraph(indicatorId: number, year: number, month: number, week: number): Observable<number> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS_GRAPH +
+      IndicatorService.YEAR + year + IndicatorService.MONTH + month + '/From/' + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
+  }
+
+  getGoalYearWeekGraph(indicatorId: number, year: number, week: number): Observable<number> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number>(IndicatorService.INDICATORS_API + indicatorId + IndicatorService.GOALS_GRAPH +
       IndicatorService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
   }
 
