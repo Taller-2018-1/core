@@ -59,13 +59,17 @@ export class DateService {
   /**
   * Calculates the date for a Monday of the given week and year
   */
-  getDateFromWeek (y: number, w: number): Date {
-    const dayN = 1;
-    const j10 = new Date(y, 0, 10);
-    const j4 = new Date(y, 0, 4);
-    const mon1 = +j4 - j10.getDay() * 86400000;
-
-    return new Date(mon1 + ((w - 1) * 7 + dayN) * 86400000);
+  /* https://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number */
+  getDateFromWeek(y: number, w: number): Date {
+    const simple = new Date(y, 0, 1 + (w - 1) * 7);
+    const dow = simple.getDay();
+    const ISOweekStart = simple;
+    if (dow <= 4) {
+      ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+    } else {
+      ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+    }
+    return ISOweekStart;
   }
 
   getStrDateFromWeek (y: number, w: number): string {
