@@ -37,6 +37,11 @@ export class IndicatorDetailComponent implements OnInit {
   value$: Observable<number>;
   indicatorGroupName$: Observable<string>;
 
+  // Chart Data
+  chartGoals$: Observable<number[]>;
+  chartValues$: Observable<number[]>;
+  chartLabels: string[];
+
   // Dropdown date filters
   isSpecificYearSelected: boolean;
   isSpecificTrimesterSelected: boolean;
@@ -144,30 +149,40 @@ export class IndicatorDetailComponent implements OnInit {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
     this.value$ = this.service.calculateSpecificIndicator(this.idIndicator);
     this.goal$ = this.service.getGoal(this.idIndicator);
+    this.chartValues$ = this.service.calculateIndicatorChart(this.idIndicator);
+    this.chartGoals$ = this.service.getGoalChart(this.idIndicator);
   }
 
   updateObservablesSpecificYear() {
     this.indicator$ = this.service.getIndicatorYear(this.idIndicator, this.selectedYear);
     this.value$ = this.service.calculateSpecificIndicatorYear(this.idIndicator, this.selectedYear);
     this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
+    this.chartValues$ = this.service.calculateIndicatorYearChart(this.idIndicator, this.selectedYear);
+    this.chartGoals$ = this.service.getGoalYearChart(this.idIndicator, this.selectedYear);
   }
 
   updateObservablesSpecificTrimester() {
     this.indicator$ = this.service.getIndicatorYearTrimester(this.idIndicator, this.selectedYear, this.selectedTrimester);
     this.value$ = this.service.calculateSpecificIndicatorYearTrimester(this.idIndicator, this.selectedYear, this.selectedTrimester);
     this.goal$ = this.service.getGoalYearTrimester(this.idIndicator, this.selectedYear, this.selectedTrimester);
+    this.chartValues$ = this.service.calculateIndicatorYearTrimesterChart(this.idIndicator, this.selectedYear, this.selectedTrimester);
+    this.chartGoals$ = this.service.getGoalYearTrimesterChart(this.idIndicator, this.selectedYear, this.selectedTrimester);
   }
 
   updateObservablesSpecificMonth() {
     this.indicator$ = this.service.getIndicatorYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
     this.value$ = this.service.calculateSpecificIndicatorYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
     this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
+    this.chartValues$ = this.service.calculateIndicatorYearMonthChart(this.idIndicator, this.selectedYear, this.selectedMonth);
+    this.chartGoals$ = this.service.getGoalYearMonthChart(this.idIndicator, this.selectedYear, this.selectedMonth);
   }
 
   updateObservablesSpecificWeek() {
     this.indicator$ = this.service.getIndicatorYearWeek(this.idIndicator, this.selectedYear, this.selectedWeek);
     this.value$ = this.service.calculateSpecificIndicatorYearWeek(this.idIndicator, this.selectedYear, this.selectedWeek);
     this.goal$ = this.service.getGoalYearWeek(this.idIndicator, this.selectedYear, this.selectedWeek);
+    this.chartValues$ = this.service.calculateIndicatorYearWeekChart(this.idIndicator, this.selectedYear, this.selectedWeek);
+    this.chartGoals$ = this.service.getGoalYearWeekChart(this.idIndicator, this.selectedYear, this.selectedWeek);
   }
 
   selectChart(type: string, indicator: Indicator) {

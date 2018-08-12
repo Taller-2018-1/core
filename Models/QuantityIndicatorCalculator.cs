@@ -87,6 +87,9 @@ namespace think_agro_metrics.Models
 
         public double CalculateGoalWeek(ICollection<Goal> goals, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
+            // startWeekMonth starts in 0 and the month of the goals in the DB starts in 0 too.
+            // Add 1 to startWeekMonth to create a DateTime and subtract 1 to compare with the month of the goals
+
             DateTime date = new DateTime(startWeekYear, startWeekMonth + 1, startWeekDay);
             double sum = 0;
             for (int i = 0; i < 7; i++)
@@ -125,6 +128,9 @@ namespace think_agro_metrics.Models
 
         public double CalculateGoalDay(Goal goal)
         {
+            if (goal == null){
+                return 0;
+            }
             int year = goal.Year;
             int month = goal.Month;
             double value = goal.Value / DateTime.DaysInMonth(year, month);
