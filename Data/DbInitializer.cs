@@ -113,6 +113,20 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators1); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators1); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators1); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators1); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators1); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators1); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators1); // Ejecutivo Postventa
+            context.SaveChanges();
+
             return indicators1;
         }
         private static Indicator[] CreateIndicatorsGroup2(DataContext context, long groupID)
@@ -130,6 +144,20 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators2); // admin
             roles[0].AddRangeWrite(indicators2); // admin
+            context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators2); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators2); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators2); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators2); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators2); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators2); // Ejecutivo Postventa
             context.SaveChanges();
 
             return indicators2;
@@ -151,6 +179,20 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators3); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators3); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators3); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators3); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators3); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators3); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators3); // Ejecutivo Postventa
+            context.SaveChanges();
+
             return indicators3;
         }
         private static Indicator[] CreateIndicatorsGroup4(DataContext context, long groupID)
@@ -170,6 +212,20 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators4); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators4); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators4); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators4); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators4); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators4); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators4); // Ejecutivo Postventa
+            context.SaveChanges();
+
             return indicators4;
         }
         private static Indicator[] CreateIndicatorsGroup5(DataContext context, long groupID)
@@ -187,6 +243,20 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators5); // admin
             roles[0].AddRangeWrite(indicators5); // admin
+            context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators5); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators5); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators5); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators5); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators5); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators5); // Ejecutivo Postventa
             context.SaveChanges();
 
             return indicators5;
@@ -210,6 +280,20 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators6); // admin
             roles[0].AddRangeWrite(indicators6); // admin
+            context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators6); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators6); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators6); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators6); // Analista de OPS
+            context.SaveChanges();
+
+            roles[4].AddRangeRead(indicators6); // Ejecutivo Postventa
+            roles[4].AddRangeWrite(indicators6); // Ejecutivo Postventa
             context.SaveChanges();
 
             return indicators6;
@@ -263,6 +347,16 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators7); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators7); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators7); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators7); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators7); // Analista de OPS
+            context.SaveChanges();
+
             return indicators7;
         }
         private static Indicator[] CreateIndicatorsGroup8(DataContext context, long groupID)
@@ -284,6 +378,16 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators8); // admin
             roles[0].AddRangeWrite(indicators8); // admin
+            context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators8); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators8); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators8); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators8); // Analista de OPS
             context.SaveChanges();
 
             return indicators8;
@@ -343,6 +447,24 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators9); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators9); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators9); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators9); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators9); // Analista de OPS
+            context.SaveChanges();
+
+            roles[7].AddRangeRead(indicators9); // Extensionista S
+            roles[7].AddRangeWrite(indicators9); // Extensionista S
+            context.SaveChanges();
+
+            roles[8].AddRangeRead(indicators9); // Extensionista J
+            roles[8].AddRangeWrite(indicators9); // Extensionista J
+            context.SaveChanges();
+
             return indicators9;
         }
         private static Indicator[] CreateIndicatorsGroup10(DataContext context, long groupID)
@@ -382,6 +504,24 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators10); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators10); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators10); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators10); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators10); // Analista de OPS
+            context.SaveChanges();
+
+            roles[7].AddRangeRead(indicators10); // Extensionista S
+            roles[7].AddRangeWrite(indicators10); // Extensionista S
+            context.SaveChanges();
+
+            roles[8].AddRangeRead(indicators10); // Extensionista J
+            roles[8].AddRangeWrite(indicators10); // Extensionista J
+            context.SaveChanges();
+
             return indicators10;
         }
         private static Indicator[] CreateIndicatorsGroup11(DataContext context, long groupID)
@@ -401,6 +541,24 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeWrite(indicators11); // admin
             context.SaveChanges();
 
+            roles[1].AddRangeRead(indicators11); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators11); // Encargado de OPS
+            roles[2].AddRangeWrite(indicators11); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators11); // Analista de OPS
+            context.SaveChanges();
+
+            roles[7].AddRangeRead(indicators11); // Extensionista S
+            roles[7].AddRangeWrite(indicators11); // Extensionista S
+            context.SaveChanges();
+
+            roles[8].AddRangeRead(indicators11); // Extensionista J
+            roles[8].AddRangeWrite(indicators11); // Extensionista J
+            context.SaveChanges();
+
             return indicators11;
         }
         private static Indicator[] CreateIndicatorsGroup12(DataContext context, long groupID)
@@ -415,6 +573,25 @@ namespace think_agro_metrics.Data
             roles[0].AddRangeRead(indicators12); // admin
             roles[0].AddRangeWrite(indicators12); // admin
             context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators12); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators12); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators12); // Encargado de OPS
+            context.SaveChanges();
+
+             roles[3].AddRangeRead(indicators12); // Analista de OPS
+            context.SaveChanges();
+
+            roles[6].AddRangeRead(indicators12); // Control y seguimiento
+            roles[6].AddRangeWrite(indicators12); // Control y seguimiento
+            context.SaveChanges();
+
+            roles[9].AddRangeRead(indicators12); // Periodista
+            roles[9].AddRangeWrite(indicators12); // Periodista
+            context.SaveChanges();
+
 
             return indicators12;
         }
@@ -433,6 +610,28 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators13); // admin
             roles[0].AddRangeWrite(indicators13); // admin
+            context.SaveChanges();
+
+            roles[1].AddRangeRead(indicators13); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators13); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators13); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators13); // Analista de OPS
+            context.SaveChanges();
+
+            roles[6].AddRangeRead(indicators13); // Control y seguimiento
+            roles[6].AddRangeWrite(indicators13); // Control y seguimiento
+            context.SaveChanges();
+
+            roles[7].AddRangeRead(indicators13); // Extensionista S
+            roles[7].AddRangeWrite(indicators13); // Extensionista S
+            context.SaveChanges();
+
+            roles[8].AddRangeRead(indicators13); // Extensionista J
+            roles[8].AddRangeWrite(indicators13); // Extensionista J
             context.SaveChanges();
 
             return indicators13;
@@ -460,6 +659,15 @@ namespace think_agro_metrics.Data
 
             roles[0].AddRangeRead(indicators14); // admin
             roles[0].AddRangeWrite(indicators14); // admin
+
+            roles[1].AddRangeRead(indicators14); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators14); // gerencia y direccion
+            context.SaveChanges();
+
+            roles[2].AddRangeRead(indicators14); // Encargado de OPS
+            context.SaveChanges();
+
+            roles[3].AddRangeRead(indicators14); // Analista de OPS
             context.SaveChanges();
 
             return indicators14;
@@ -510,6 +718,8 @@ namespace think_agro_metrics.Data
             var roles = new Role[] { role1, role2, role3, role4, role5, role6, role7, role8, role9, role10 };
 
             return roles;
+
+            var perAdmin new Permission{}
         }
     }
 }
