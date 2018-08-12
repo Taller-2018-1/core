@@ -116,7 +116,7 @@ export class GoalsEditorComponent implements OnInit {
           goalsResult.push(g);
         });
         this.indicator.goals = goalsResult;
-        this.updateGoalEvent.emit('');
+        this.updateGoalEvent.emit();
       });
     });
 

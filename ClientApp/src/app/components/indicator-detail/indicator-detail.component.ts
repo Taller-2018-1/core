@@ -6,12 +6,14 @@ import { Observable } from 'rxjs/Observable';
 import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { RegistryType } from '../../shared/models/registryType';
+import { Months } from '../../shared/models/months';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { RegistryService } from '../../services/registry/registry.service';
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
 import { SessionService } from '../../services/session/session.service';
+import { DateService } from '../../services/date/date.service';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -69,11 +71,12 @@ export class IndicatorDetailComponent implements OnInit {
     private indicatorGroupService: IndicatorGroupService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private dateService: DateService
   ) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
-    this.updateObservables(this.sessionService.getDateFiltersData());
+    this.updateData(this.sessionService.getDateFiltersData());
   }
 
   ngOnInit() {
@@ -92,45 +95,26 @@ export class IndicatorDetailComponent implements OnInit {
     });
   }
 
-  // Called when the editor of goals registers a change
-  updateGoal(event) {
-    // Verify dropdown selection bottom-up (from week to year)
-    if (this.isSpecificWeekSelected) {
-      this.goal$ = this.service.getGoalYearWeek(this.idIndicator, this.selectedYear, this.selectedWeek);
-
-    } else if (this.isSpecificMonthSelected) {
-      this.goal$ = this.service.getGoalYearMonth(this.idIndicator, this.selectedYear, this.selectedMonth);
-
-    } else if (this.isSpecificTrimesterSelected) {
-      this.goal$ = this.service.getGoalYearTrimester(this.idIndicator, this.selectedYear, this.selectedTrimester);
-
-    } else if (this.isSpecificYearSelected) {
-      this.goal$ = this.service.getGoalYear(this.idIndicator, this.selectedYear);
-
-    } else {
-      this.goal$ = this.service.getGoal(this.idIndicator);
-    }
-  }
-
-  // Called when the dropdown of filters by date changes
-  updateObservables(event) {
+  // Called when the dropdown of filters by date changes or the indicator is changed
+  updateData(event) {
     this.updateDropdownDateFiltersValues(event);
 
     // Verify dropdown selection bottom-up (from week to year)
     if (this.isSpecificWeekSelected) {
       this.updateObservablesSpecificWeek();
-
+      this.updateLabelsSpecificWeek();
     } else if (this.isSpecificMonthSelected) {
       this.updateObservablesSpecificMonth();
-
+      this.updateLabelsSpecificMonth();
     } else if (this.isSpecificTrimesterSelected) {
       this.updateObservablesSpecificTrimester();
-
+      this.updateLabelsSpecificTrimester();
     } else if (this.isSpecificYearSelected) {
       this.updateObservablesSpecificYear();
-
+      this.updateLabelsSpecificYear();
     } else {
       this.updateObservablesAllYears();
+      this.updateLabelsAllYears();
     }
   }
 
@@ -185,6 +169,60 @@ export class IndicatorDetailComponent implements OnInit {
     this.chartGoals$ = this.service.getGoalYearWeekChart(this.idIndicator, this.selectedYear, this.selectedWeek);
   }
 
+  updateLabelsAllYears() {
+    this.chartLabels = [];
+    const baseYear = 2018;
+    this.chartValues$.subscribe(values => {
+      for (let i = 0; i < values.length; i++) {
+        this.chartLabels.push((baseYear + i).toString());
+      }
+    });
+  }
+
+  updateLabelsSpecificYear() {
+    this.chartLabels = [];
+    for (let i = 0; i < 12; i++) {
+      this.chartLabels.push(Months[i]);
+    }
+  }
+
+  updateLabelsSpecificTrimester() {
+    this.chartLabels = [];
+    const initialMonth = (this.selectedTrimester + 1) * 3 - 3;
+    for (let i = 0; i < 3; i++) {
+      this.chartLabels.push(Months[initialMonth + i]);
+    }
+  }
+
+  updateLabelsSpecificMonth() {
+    this.chartLabels = [];
+    const from = this.dateService.getWeekISO8601(new Date(this.selectedYear, this.selectedMonth, 1));
+    let dateUntil = new Date(this.selectedYear, this.selectedMonth + 1, 1); // If the month = 12, it passes to the next year
+    dateUntil = this.dateService.addDays(dateUntil, -1);
+    const until = this.dateService.getWeekISO8601(dateUntil);
+    for (let i = 0; i <= until - from; i++) {
+      this.chartLabels.push(this.getWeekString(i + from));
+    }
+  }
+
+  updateLabelsSpecificWeek() {
+    this.chartLabels = [];
+    // Monday of the week
+    let day = this.dateService.getDateFromWeek(this.selectedYear, this.selectedWeek);
+    for (let i = 0 ; i < 7; i++) {
+      this.chartLabels.push(day.getDate() + ' ' + this.dateService.months[day.getMonth()].shortName);
+      day = this.dateService.addDays(day, 1);
+    }
+  }
+
+  getWeekString(week: number): string {
+    const mondayWeek = this.dateService.getDateFromWeek(this.selectedYear, week);
+    const sundayWeek = this.dateService.addDays(mondayWeek, 6);
+    const mondayWeekString = mondayWeek.getDate() + ' ' + this.dateService.months[mondayWeek.getMonth()].shortName;
+    const sundayWeekString = sundayWeek.getDate() + ' ' + this.dateService.months[sundayWeek.getMonth()].shortName;
+    return week + ' (' + mondayWeekString + ' a ' + sundayWeekString + ')';
+  }
+
   selectChart(type: string, indicator: Indicator) {
     if (type === 'Gráfico de barra') {
       this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
@@ -202,13 +240,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-  }
-
-  updateIndicator() {
-    this.indicator$ = this.service.getIndicator(this.idIndicator);
-    this.indicator$.subscribe(data =>{ // Just to preload the data, I don't like to do this, but it is what it is
-      this.indicatorToEdit = data;
-    });
   }
 
   openModalEditIndicator(template: TemplateRef<any>) {

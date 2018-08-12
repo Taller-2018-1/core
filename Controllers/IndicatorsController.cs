@@ -363,8 +363,7 @@ namespace think_agro_metrics.Controllers
             // Assign indicator calculator
             indicator.RegistriesType = indicator.RegistriesType;
 
-            // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
-            startWeekMonth++;
+            // Remember the month of the goals in the DB starts at 0          
 
             double result = indicator.IndicatorCalculator.CalculateGoalWeek(indicator.Goals, startWeekYear, startWeekMonth, startWeekDay);
 
@@ -1110,33 +1109,21 @@ namespace think_agro_metrics.Controllers
             {
                 return NoContent();
             }
-
-            // Obtain the Goal
-            // The month of the goals in the DB starts at 0 (equals to Angular side)
-            var goal = indicator.Goals.Where(g => g.Year == year && g.Month == month).SingleOrDefault();
-
-            
+                                  
             // Calculate
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
 
             // Remember add 1 to month (the month starts in 0 on Angular and in 1 on C#)
             month++;
-            startWeekMonth++;
 
             List<double> values = new List<double>();
-            List<Goal> goalsWeek;
-            DateTime currentMonday = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
+            DateTime currentMonday = new DateTime(startWeekYear, startWeekMonth + 1, startWeekDay);
 
 
             // Split the registries by weeks and calculate
             while (currentMonday.Month <= month) // Asumes that the first value of currentMonth is at most 1 month less (by example the week of 30/07/2018)
             {
-                DateTime currentSunday = currentMonday.AddDays(6);
-
-                goalsWeek = indicator.Goals.Where(g => (currentMonday.Year == g.Year && currentMonday.Month == g.Month) ||
-                (currentSunday.Year == g.Year && currentSunday.Month == g.Month)).ToList();
-
-                values.Add(indicator.IndicatorCalculator.CalculateGoalWeek(goalsWeek, startWeekYear, startWeekMonth, startWeekDay));
+                values.Add(indicator.IndicatorCalculator.CalculateGoalWeek(indicator.Goals, currentMonday.Year, currentMonday.Month - 1, currentMonday.Day));
 
                 currentMonday = currentMonday.AddDays(7);
             }
@@ -1180,9 +1167,10 @@ namespace think_agro_metrics.Controllers
             // Split the registries by day and calculate
             while (currentDate.CompareTo(startDate.AddDays(7)) < 0)
             {
+                // The month of the goals in the BD starts at 0
                 goalDay = indicator.Goals.Where(g =>
                     g.Year == currentDate.Year &&
-                    g.Month == currentDate.Month)
+                    g.Month == currentDate.Month - 1)
                     .FirstOrDefault();
 
                 values.Add(indicator.IndicatorCalculator.CalculateGoalDay(goalDay));

@@ -74,7 +74,7 @@
             <div class="heading-block">
 
               <div class="row">
-                <app-date-filter (dropdownChange)="updateObservables($event)"></app-date-filter>
+                <app-date-filter (dropdownChange)="updateData($event)"></app-date-filter>
               </div>
 
               <br><br>
@@ -121,7 +121,7 @@
         <!--graph row ======================================== -->
         <!-- end row -->
         <!--details files row ======================================== -->
-        <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart"></app-chart>
+        <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart" [chartValuesObservable]="chartValues$" [chartGoalsObservable]="chartGoals$" [chartLabels]="chartLabels"></app-chart>
         <!-- There is no data for the following
         <div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
           <div class="row">
@@ -184,7 +184,7 @@
 
   <!-- Modal Edit Goal -->
   <ng-template #editGoalModal>
-    <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateGoal($event)" [modalRef]="modalRef"></app-goals-editor>
+    <app-goals-editor [indicator]="indicator" (updateGoalEvent)="updateData('')" [modalRef]="modalRef"></app-goals-editor>
   </ng-template>
 
   <!-- Modal Edit Indicator -->
@@ -195,7 +195,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicator" (updateInfo)="updateIndicator()" ></app-indicator-editor>
+    <app-indicator-editor [indicatorModalRef]="indicatorModalRef" [indicator]="indicator" (updateInfo)="updateData('')" ></app-indicator-editor>
   </ng-template>
 
 

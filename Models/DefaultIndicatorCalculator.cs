@@ -83,11 +83,11 @@ namespace think_agro_metrics.Models
                 // Return 0 if not found
                 if (goal != null)
                 {
-                    sum += goal.Value;
+                    sum += goal.Value / DateTime.DaysInMonth(newDate.Year, newDate.Month);
                 }
             }
 
-            return (sum / 7.0);
+            return (sum);
         }
 
         public double[] Cumulative(double[] values)
@@ -95,9 +95,11 @@ namespace think_agro_metrics.Models
             double sum = 0;
             List<double> result = new List<double>();
             foreach (double value in values) {
-                result.Add(sum + value);
                 sum += value;
+                result.Add(sum);
             }
+
+            result = result.Select(r => Math.Round(r, 0, MidpointRounding.AwayFromZero)).ToList();
 
             return result.ToArray();
         }
@@ -113,9 +115,8 @@ namespace think_agro_metrics.Models
                 return 0;
             }
             int year = goal.Year;
-            int month = goal.Month;
-            double value = goal.Value / DateTime.DaysInMonth(year, month);
-            return Math.Round(value, 4, MidpointRounding.AwayFromZero);
+            int month = goal.Month + 1;
+            return goal.Value / DateTime.DaysInMonth(year, month);            
         }
     }
 }

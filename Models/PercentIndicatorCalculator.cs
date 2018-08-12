@@ -140,26 +140,18 @@ namespace think_agro_metrics.Models
 
             var goal2 = goals.Where(g => g.Year == newDate.Year && g.Month == newDate.Month - 1).SingleOrDefault();
 
-            if (goal1 == null && goal2 == null)
-            {
-                return 0;
+            List<Goal> goalsList = new List<Goal>();
+            goalsList.Add(goal1);
+            goalsList.Add(goal2);
+            goalsList.RemoveAll(g => g == null);
+
+            if (goalsList.Any()) {
+                return goalsList.Max(g => g.Value);
             }
-            else if (goal2 == null)
-            {
-                return goal1.Value;
-            }
-            else
-            {
-                if (goal2.Value >= goal1.Value)
-                {
-                    return goal2.Value;
-                }
-                else
-                {
-                    return goal1.Value;
-                }                
-            }
-        }
+
+            return 0;
+
+         }
 
         public double[] Cumulative(double[] values)
         {
@@ -168,10 +160,12 @@ namespace think_agro_metrics.Models
             List<double> result = new List<double>();
             foreach (double value in values)
             {
-                result.Add(Math.Round(((sum + value) / i), 4, MidpointRounding.AwayFromZero));
+                result.Add((sum + value) / i);
                 sum += value;
                 i++;
             }
+
+            result = result.Select(r => Math.Round(r, 2, MidpointRounding.AwayFromZero)).ToList();
 
             return result.ToArray();
         }
@@ -185,6 +179,8 @@ namespace think_agro_metrics.Models
                 double max = values.Take(i).Max(v => v);
                 result.Add(max);
             }
+
+            result = result.Select(r => Math.Round(r, 2, MidpointRounding.AwayFromZero)).ToList();
 
             return result.ToArray();
         }
