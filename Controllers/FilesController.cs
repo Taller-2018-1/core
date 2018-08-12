@@ -29,6 +29,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // GET: api/Files/ASDKFJ"#L$"L#$J!#"#$JLSDG
         [HttpGet("{link}")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public IActionResult Download([FromRoute] string link) 
         {
             string folderName = "Repository";
@@ -51,7 +52,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // PUT: api/Files/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> PutDocument([FromRoute] long id, [FromBody] Document document)
         {
             if (!ModelState.IsValid)

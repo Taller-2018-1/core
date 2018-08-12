@@ -121,7 +121,7 @@ export class AuthService {
 
   public getToken(): String | boolean {
     const raw_token = this.getRawToken();
-    if (typeof raw_token !== "string") {
+    if (typeof raw_token !== 'string') {
       return false;
     }
     const secure_token: string = this.parseJwt(raw_token);
@@ -133,11 +133,10 @@ export class AuthService {
 
   public getRawToken(): String | boolean {
     const raw_token = localStorage.getItem('token');
-    if(!raw_token || raw_token === "null"){
+    if (!raw_token || raw_token === 'null' ) {
       return false;
-    }
-    else{
-      return raw_token
+    } else {
+      return raw_token;
     }
   }
 

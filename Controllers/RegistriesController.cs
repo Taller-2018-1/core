@@ -84,6 +84,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries
         [HttpGet]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetRegistries()
         {
             var registries = await _context.Registries.Include(r => r.Documents).ToListAsync();
@@ -92,6 +93,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -111,6 +113,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Registries/External
         [HttpGet("External")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetExternalRegistries()
         {
             var payload = this.CreateDataObject(new {
@@ -178,7 +181,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/DefaultRegistry/5
         [HttpPut("DefaultRegistry/{indicator}/{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> PutRegistry([FromRoute] long indicator,[FromRoute] long id, [FromBody] DefaultRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -222,7 +225,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/QuantityRegistry/5
         [HttpPut("QuantityRegistry/{indicator}/{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> PutRegistry([FromRoute] long indicator, [FromRoute] long id, [FromBody] QuantityRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -265,7 +268,7 @@ namespace think_agro_metrics.Controllers
 
         // PUT: api/Registries/PercentRegistry/5
         [HttpPut("PercentRegistry/{indicator}/{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> PutRegistry([FromRoute] long indicator, [FromRoute] long id, [FromBody] PercentRegistry registry)
         {   
             if (!ModelState.IsValid)
@@ -308,7 +311,7 @@ namespace think_agro_metrics.Controllers
 
        // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/DefaultRegistry")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> DefaultRegistry([FromRoute] long indicatorId,
             [FromBody] DefaultRegistry registry)
         {
@@ -360,7 +363,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/QuantityRegistry")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> QuantityRegistry([FromRoute] long indicatorId,
             [FromBody] QuantityRegistry registry)
         {
@@ -407,7 +410,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD REGISTRY: api/Indicators/5/AddRegistry
         [HttpPost("{indicatorId}/PercentRegistry")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> PercentRegistry([FromRoute] long indicatorId,
             [FromBody] PercentRegistry registry)
         {
@@ -455,7 +458,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Registries/Documents/5
         [HttpDelete("Documents/{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> DeleteDocument([FromRoute] long id)
         {
             if(!ModelState.IsValid)
@@ -485,7 +488,7 @@ namespace think_agro_metrics.Controllers
 
         // DELETE: api/Registries/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> DeleteRegistry([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -533,7 +536,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD LinkDocument: api/Registries/5/AddLinkDocument
         [HttpPost("{id}/AddLinkDocument")]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> AddLinkDocument([FromRoute] long id,
             [FromBody] Document document)
         {
@@ -584,7 +587,7 @@ namespace think_agro_metrics.Controllers
 
         // ADD FileDocument: api/Registries/5/AddFileDocument
         [HttpPost("{id}/AddFileDocument"), DisableRequestSizeLimit]
-        [Authorize(Roles = "administrador_indicadores")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_direcci�n,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_t�cnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> AddFileDocument([FromRoute] long id)
         {
             try
