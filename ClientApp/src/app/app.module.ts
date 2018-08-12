@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DateFilterComponent } from './components/date-filter/date-filter.component';
+import { DateService } from './services/date/date.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IndicatorHomeComponent } from './components/indicator-home/indicator-home.component';
@@ -54,12 +56,12 @@ import { LinkDocumentSubformComponent } from './components/registry-form/link-do
 import { FileDocumentSubformComponent } from './components/registry-form/file-document-subform/file-document-subform.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
-import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
 import { SafeDomPipe } from './shared/safe-dom.pipe';
 import { NotificationService } from './services/alerts/notification.service';
 import { ChartComponent } from './components/indicator-detail/chart/chart.component';
 import { ConfigHomeComponent } from './components/config-home/config-home.component';
 import { PreviousRouteService } from './services/previous-route/previous-route.service';
+import { IndicatorEditorComponent } from './components/indicator-detail/indicator-editor/indicator-editor.component';
 import { IndicatorGroupEditorComponent } from './components/config-home/indicator-group-editor/indicator-group-editor.component';
 import { RoleService } from './services/role/role.service';
 
@@ -95,8 +97,10 @@ defineLocale('es', esLocale);
     LinkDocumentSubformComponent,
     FileDocumentSubformComponent,
     IndicatorEditorComponent,
-    SafeDomPipe,
     ChartComponent,
+    SafeDomPipe,
+    DateFilterComponent,
+    IndicatorEditorComponent,
     ConfigHomeComponent,
     IndicatorGroupEditorComponent
   ],
@@ -160,6 +164,7 @@ defineLocale('es', esLocale);
     NotificationService,
     LoaderService,
     PreviousRouteService,
+    DateService,
     RoleService,
     {
       provide: HTTP_INTERCEPTORS,

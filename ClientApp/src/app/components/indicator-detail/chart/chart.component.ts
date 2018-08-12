@@ -2,22 +2,26 @@ import { Component, OnInit, Input, DoCheck } from '@angular/core';
 
 import {Indicator} from '../../../shared/models/indicator';
 import {RegistryType} from '../../../shared/models/registryType';
+import { Observable } from '../../../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
-export class ChartComponent implements OnInit,DoCheck {
+export class ChartComponent implements OnInit, DoCheck {
 
-  @Input() indicator : Indicator;
+  @Input() indicator: Indicator;
   @Input() selectedTypeChart: string;
+  @Input() chartValuesObservable: Observable<number[]>;
+  @Input() chartGoalsObservable: Observable<number[]>;
+  @Input() chartLabels: string[];
 
-  oldIndicator : Indicator;
+  oldIndicator: Indicator;
   oldSelectedTypeChart: string;
 
-  devStandar : number = 0;
-  varianza : number = 0;
+  devStandar: number = 0;
+  varianza: number = 0;
 
   public RegistryType = RegistryType;
 
@@ -160,6 +164,13 @@ export class ChartComponent implements OnInit,DoCheck {
   }
 
   ngOnInit() {
+    this.chartValuesObservable.subscribe(values => {
+      console.log(values);
+    });
+    this.chartGoalsObservable.subscribe(goals => {
+      console.log(goals);
+    });
+
     this.oldSelectedTypeChart = this.selectedTypeChart;
     this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
     if (this.indicator.registriesType != this.RegistryType.PercentRegistry){

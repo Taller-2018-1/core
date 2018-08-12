@@ -69,7 +69,8 @@ namespace think_agro_metrics.Models
 				Name = name,
 				Link = link,
 				Extension = ".pdf",
-				DocumentName = name
+				DocumentName = name,
+				Date = DateTime.Today
 			};
 			return document;
 		}

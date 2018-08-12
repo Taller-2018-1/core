@@ -1,53 +1,4 @@
-<div *ngIf="indicatorResults$ | async as indicatorResults; else loading">
-  <section>
-    <div class="container">
-      <div class="heading-block">
-        <h2>{{ indicatorGroup.name }}</h2>
-      </div>
-
-      <!--Dropdown Filters-->
-
-      <div class="row">
-        <!--Dropdown Year Filter-->
-        <div class="col-xs-12 col-sm-6 col-md-6">
-          Seleccione el año a calcular:
-          <br>
-          <div class="btn-group" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedYearText }}
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators(allYears, '')">Todos los años</a></li>
-              <li *ngFor="let year of years"><a class="dropdown-item" (click)="calculateIndicators(year, '')">Año {{ year }}</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <!--Dropdown Month Filter-->
-        <div class="col-xs-12 col-sm-6 col-md-6">
-          Seleccione Período (Mensual, Trimestral, Anual):
-          <br>
-          <div class="btn-group" dropdown [isDisabled]="isMonthDisabled">
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-              {{ selectedMonthText }}
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li ><a class="dropdown-item" (click)="calculateIndicators('', allMonths)">Todos los meses</a></li>
-              <li *ngFor="let month of monthsOfTheYear"><a class="dropdown-item" (click)="calculateIndicators('', month)">{{ month }}</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- end col-md-12 -->
-    </div>
-    <!-- end container -->
-  </section>
-  <br>
+<div *ngIf="indicatorResultsObservable | async as indicatorResults; else loading">
   <!-- end page-section -->
   <section>
     <div id="statistic-section" class="statistic-bg" data-stellar-background-ratio="0">
@@ -56,23 +7,23 @@
 
           <ng-template ngFor let-indicator [ngForOf]="indicatorGroup.indicators" let-i="index" [ngForTrackBy]="trackByFn">
             
-            <div class="indicator-block col-xs-12 col-sm-6 col-md-4">
+            <div class="indicator-block col-xs-12 col-sm-6 col-md-4"> 
               <a class="active" (click)="gotoIndicator(indicatorGroup.indicatorGroupID, indicator.indicatorID)">
                 <div class="services-content">
-                  <div class="fact statistic-percent" [attr.data-perc]="indicatorResults[i]">
+                    <div class="fact statistic-percent" [attr.data-perc]="indicatorResults[i]">
                     
-                    <div class="row" *ngIf="goals$ | async as goals">
-                      <div class="col-md-6 col-sm-6 col-xs-6">
-                        <p>Actual</p>
-                        <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
+                      <div class="row" *ngIf="goalsObservable | async as goals">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                          <p>Actual</p>
+                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                          <p>Meta</p>
+                          <span class="percentfactor">{{ goals[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
+                        </div>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-6">
-                        <p>Meta</p>
-                        <span class="percentfactor">{{ goals[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
-                      </div>
-                    </div>
-                    <p class="text-ellipsis" title="{{ indicator.name }}">{{ indicator.name }}</p>
-
+                      <p class="text-ellipsis" title="{{ indicator.name }}">{{ indicator.name }}</p>
+    
                   </div>
                   <!-- end statistic-percent -->
                 </div>
@@ -94,3 +45,4 @@
 <ng-template #loading>
   Cargando...
 </ng-template>
+  

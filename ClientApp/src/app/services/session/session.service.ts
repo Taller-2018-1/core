@@ -1,88 +1,177 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 
-
-
 @Injectable()
 export class SessionService {
 
-  static YEAR_KEY = 'selectedYear';
-  static YEAR_TEXT_KEY = 'selectedYearText';
-  static MONTH_KEY = 'selectedMonth';
-  static MONTH_TEXT_KEY = 'selectedMonthText';
+  static SELECTED_YEAR_KEY = 'selectedYear';
+  static DROPDOWN_YEAR_TEXT_KEY = 'dropdownYearText';
+  static SELECTED_TRIMESTER_KEY = 'selectedTrimester';
+  static DROPDOWN_TRIMESTER_TEXT_KEY = 'dropdownTrimesterText';
+  static SELECTED_MONTH_KEY = 'selectedMonth';
+  static DROPDOWN_MONTH_TEXT_KEY = 'dropdownMonthText';
+  static SELECTED_WEEK_KEY = 'selectedWeek';
+  static DROPDOWN_WEEK_TEXT_KEY = 'dropdownWeekText';
 
+  static ALL_YEARS = 'Todos los años';
+  static SELECT_DEFAULT_TEXT = 'Seleccione...';
+  static SELECT_DEFAULT = -1;
 
   constructor(@Inject(SESSION_STORAGE) private storage: StorageService) { }
 
-  public isYearSaved(): boolean {
-    return this.storage.has(SessionService.YEAR_KEY);
+  public isSelectedYearSaved(): boolean {
+    return this.storage.has(SessionService.SELECTED_YEAR_KEY);
   }
 
-  public isYearTextSaved(): boolean {
-    return this.storage.has(SessionService.YEAR_TEXT_KEY);
+  public isDropdownYearTextSaved(): boolean {
+    return this.storage.has(SessionService.DROPDOWN_YEAR_TEXT_KEY);
   }
 
-  public isMonthSaved(): boolean {
-    return this.storage.has(SessionService.MONTH_KEY);
+  public isSelectedTrimesterSaved(): boolean {
+    return this.storage.has(SessionService.SELECTED_TRIMESTER_KEY);
   }
 
-  public isMonthTextSaved(): boolean {
-    return this.storage.has(SessionService.MONTH_TEXT_KEY);
+  public isDropdownTrimesterTextSaved(): boolean {
+    return this.storage.has(SessionService.DROPDOWN_TRIMESTER_TEXT_KEY);
   }
 
-  public getYear(defaultYear: number): number {
-    if (this.isYearSaved()) {
-      return this.storage.get(SessionService.YEAR_KEY);
-    }
-    else {
-      this.storage.set(SessionService.YEAR_KEY, defaultYear);
-      return defaultYear;
-    }
+  public isSelectedMonthSaved(): boolean {
+    return this.storage.has(SessionService.SELECTED_MONTH_KEY);
   }
 
-  public getYearText(defaultYear: string): string {
-    if (this.isYearTextSaved()) {
-      return this.storage.get(SessionService.YEAR_TEXT_KEY);
-    }
-    else {
-      this.storage.set(SessionService.YEAR_TEXT_KEY, defaultYear);
-      return defaultYear;
-    }
+  public isDropdownMonthTextSaved(): boolean {
+    return this.storage.has(SessionService.DROPDOWN_MONTH_TEXT_KEY);
   }
 
-  public getMonth(defaultMonth: number): number {
-    if (this.isMonthSaved()) {
-      return this.storage.get(SessionService.MONTH_KEY);
-    }
-    else {
-      this.storage.set(SessionService.MONTH_KEY, defaultMonth);
-      return defaultMonth;
+  public isSelectedWeekSaved(): boolean {
+    return this.storage.has(SessionService.SELECTED_WEEK_KEY);
+  }
+
+  public isDropdownWeekTextSaved(): boolean {
+    return this.storage.has(SessionService.DROPDOWN_WEEK_TEXT_KEY);
+  }
+
+  public getSelectedYear(defaultSelectedYear: number): number {
+    if (this.isSelectedYearSaved()) {
+      return this.storage.get(SessionService.SELECTED_YEAR_KEY);
+    } else {
+      this.storage.set(SessionService.SELECTED_YEAR_KEY, defaultSelectedYear);
+      return defaultSelectedYear;
     }
   }
 
-  public getMonthText(defaultMonth: string): string {
-    if (this.isMonthTextSaved()) {
-      return this.storage.get(SessionService.MONTH_TEXT_KEY);
+  public getDropdownYearText(defaultDropdownYearText: string): string {
+    if (this.isDropdownYearTextSaved()) {
+      return this.storage.get(SessionService.DROPDOWN_YEAR_TEXT_KEY);
+    } else {
+      this.storage.set(SessionService.DROPDOWN_YEAR_TEXT_KEY, defaultDropdownYearText);
+      return defaultDropdownYearText;
     }
-    else {
-      this.storage.set(SessionService.MONTH_TEXT_KEY, defaultMonth);
-      return defaultMonth;
+  }
+
+  public getSelectedTrimester(defaultSelectedTrimester: number): number {
+    if (this.isSelectedTrimesterSaved()) {
+      return this.storage.get(SessionService.SELECTED_TRIMESTER_KEY);
+    } else {
+      this.storage.set(SessionService.SELECTED_TRIMESTER_KEY, defaultSelectedTrimester);
+      return defaultSelectedTrimester;
     }
   }
 
-  public setYear(year: number) {
-    this.storage.set(SessionService.YEAR_KEY, year);
-  }
-  
-  public setYearText(text: string) {
-    this.storage.set(SessionService.YEAR_TEXT_KEY, text);
-  }
-
-  public setMonth(month: number) {
-    this.storage.set(SessionService.MONTH_KEY, month);
+  public getDropdownTrimesterText(defaultDropdownTrimesterText: string): string {
+    if (this.isDropdownTrimesterTextSaved()) {
+      return this.storage.get(SessionService.DROPDOWN_TRIMESTER_TEXT_KEY);
+    } else {
+      this.storage.set(SessionService.DROPDOWN_TRIMESTER_TEXT_KEY, defaultDropdownTrimesterText);
+      return defaultDropdownTrimesterText;
+    }
   }
 
-  public setMonthText(month: string) {
-    this.storage.set(SessionService.MONTH_TEXT_KEY, month);
+  public getSelectedMonth(defaultSelectedMonth: number): number {
+    if (this.isSelectedMonthSaved()) {
+      return this.storage.get(SessionService.SELECTED_MONTH_KEY);
+    } else {
+      this.storage.set(SessionService.SELECTED_MONTH_KEY, defaultSelectedMonth);
+      return defaultSelectedMonth;
+    }
+  }
+
+  public getDropdownMonthText(defaultDropdownMonthText: string): string {
+    if (this.isDropdownMonthTextSaved()) {
+      return this.storage.get(SessionService.DROPDOWN_MONTH_TEXT_KEY);
+    } else {
+      this.storage.set(SessionService.DROPDOWN_MONTH_TEXT_KEY, defaultDropdownMonthText);
+      return defaultDropdownMonthText;
+    }
+  }
+
+  public getSelectedWeek(defaultSelectedWeek: number): number {
+    if (this.isSelectedWeekSaved()) {
+      return this.storage.get(SessionService.SELECTED_WEEK_KEY);
+    } else {
+      this.storage.set(SessionService.SELECTED_WEEK_KEY, defaultSelectedWeek);
+      return defaultSelectedWeek;
+    }
+  }
+
+  public getDropdownWeekText(defaultDropdownWeekText: string): string {
+    if (this.isDropdownWeekTextSaved()) {
+      return this.storage.get(SessionService.DROPDOWN_WEEK_TEXT_KEY);
+    } else {
+      this.storage.set(SessionService.DROPDOWN_WEEK_TEXT_KEY, defaultDropdownWeekText);
+      return defaultDropdownWeekText;
+    }
+  }
+
+  public setSelectedYear(selectedYear: number) {
+    this.storage.set(SessionService.SELECTED_YEAR_KEY, selectedYear);
+  }
+
+  public setDropdownYearText(dropdownYearText: string) {
+    this.storage.set(SessionService.DROPDOWN_YEAR_TEXT_KEY, dropdownYearText);
+  }
+
+  public setSelectedTrimester(selectedTrimester: number) {
+    this.storage.set(SessionService.SELECTED_TRIMESTER_KEY, selectedTrimester);
+  }
+
+  public setDropdownTrimesterText(dropdownTrimesterText: string) {
+    this.storage.set(SessionService.DROPDOWN_TRIMESTER_TEXT_KEY, dropdownTrimesterText);
+  }
+
+  public setSelectedMonth(selectedMonth: number) {
+    this.storage.set(SessionService.SELECTED_MONTH_KEY, selectedMonth);
+  }
+
+  public setDropdownMonthText(dropdownMonthText: string) {
+    this.storage.set(SessionService.DROPDOWN_MONTH_TEXT_KEY, dropdownMonthText);
+  }
+
+  public setSelectedWeek(selectedWeek: number) {
+    this.storage.set(SessionService.SELECTED_WEEK_KEY, selectedWeek);
+  }
+
+  public setDropdownWeekText(dropdownWeekText: string) {
+    this.storage.set(SessionService.DROPDOWN_WEEK_TEXT_KEY, dropdownWeekText);
+  }
+
+  public getDateFiltersData() {
+    return {
+      // Dropdown text
+      dropdownYearText: this.getDropdownYearText(SessionService.ALL_YEARS),
+      dropdownTrimesterText: this.getDropdownTrimesterText(SessionService.SELECT_DEFAULT_TEXT),
+      dropdownMonthText: this.getDropdownMonthText(SessionService.SELECT_DEFAULT_TEXT),
+      dropdownWeekText: this.getDropdownWeekText(SessionService.SELECT_DEFAULT_TEXT),
+      // Selected value
+      selectedYear: this.getSelectedYear(SessionService.SELECT_DEFAULT),
+      selectedTrimester: this.getSelectedTrimester(SessionService.SELECT_DEFAULT),
+      selectedMonth: this.getSelectedMonth(SessionService.SELECT_DEFAULT),
+      selectedWeek: this.getSelectedWeek(SessionService.SELECT_DEFAULT),
+      // Dropdown flags
+      isSpecificYearSelected: (SessionService.SELECT_DEFAULT !== this.getSelectedYear(SessionService.SELECT_DEFAULT)),
+      isSpecificTrimesterSelected: (SessionService.SELECT_DEFAULT !== this.getSelectedTrimester(SessionService.SELECT_DEFAULT)),
+      isSpecificMonthSelected: (SessionService.SELECT_DEFAULT !== this.getSelectedMonth(SessionService.SELECT_DEFAULT)),
+      isSpecificWeekSelected: (SessionService.SELECT_DEFAULT !== this.getSelectedWeek(SessionService.SELECT_DEFAULT)),
+    };
   }
 }

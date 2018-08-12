@@ -51,6 +51,9 @@ namespace think_agro_metrics.Controllers
                 .ThenInclude( i => i.Goals)
                 .ToListAsync();
 
+            return Ok(indicatorGroups);
+        }
+
         // GET: api/IndicatorGroups/5
         [HttpGet("{id}")]
         [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
@@ -84,8 +87,8 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var indicatorGroup = await _context.IndicatorGroups.SingleAsync(x => x.IndicatorGroupID == id);
+            
+            var indicatorGroup = await _context.IndicatorGroups.SingleOrDefaultAsync(x => x.IndicatorGroupID == id);
 
             if (indicatorGroup == null)
             {
@@ -136,7 +139,7 @@ namespace think_agro_metrics.Controllers
 
             return Ok(indicatorGroup);
         }
-
+        
         // POST: api/IndicatorGroups
         [HttpPost]
         [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección")]
@@ -237,8 +240,8 @@ namespace think_agro_metrics.Controllers
                 .Where(g => g.IndicatorGroupID == id)
                 .Include(g => g.Indicators)
                 .ThenInclude(i => i.Registries)
-                .SingleAsync();
-
+                .SingleOrDefaultAsync();            
+            
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
             {
@@ -274,7 +277,7 @@ namespace think_agro_metrics.Controllers
                 .Where(g => g.IndicatorGroupID == id)
                 .Include(g => g.Indicators)
                 .ThenInclude(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -289,7 +292,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year));
+                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year));
             }
 
             // Return the list with the results
@@ -305,6 +308,13 @@ namespace think_agro_metrics.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
+            // Load from the DB the IndicatorGroups with its Indicators and Registries
+            var indicatorGroup = await _context.IndicatorGroups
+                .Where(g => g.IndicatorGroupID == id)
+                .Include(g => g.Indicators)
+                .ThenInclude(i => i.Registries)
+                .SingleOrDefaultAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -344,7 +354,7 @@ namespace think_agro_metrics.Controllers
                 .Where(g => g.IndicatorGroupID == id)
                 .Include(g => g.Indicators)
                 .ThenInclude(i => i.Registries)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             // If the specified indicator group doesn't exist, show NotFound
             if (indicatorGroup == null)
@@ -359,7 +369,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries, year, month));
+                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month));
             }
 
             // Return the list with the results
@@ -431,16 +441,13 @@ namespace think_agro_metrics.Controllers
 
             // List of the sums of goals of every indicator of the group
             List<double> list = new List<double>();
-
-            // Sum the goals of every indicator of the group
+                                
             foreach (Indicator indicator in indicators)
             {
-                double sum = 0;
-                foreach (Goal goal in indicator.Goals)
-                {
-                    sum += goal.Value;
-                }
-                list.Add(sum);
+                // Assign the indicator calculator
+                indicator.RegistriesType = indicator.RegistriesType;
+
+                list.Add(indicator.IndicatorCalculator.CalculateGoal(indicator.Goals));                                
             }
 
             // Return the list with the results
@@ -474,13 +481,11 @@ namespace think_agro_metrics.Controllers
             List<double> list = new List<double>();
             foreach (Indicator indicator in indicators)
             {
-                double sum = 0;
-                foreach (Goal goal in indicator.Goals)
-                {
-                    if (goal.Year == year)
-                        sum += goal.Value;
-                }
-                list.Add(sum);
+                // Assign the indicator calculator
+                indicator.RegistriesType = indicator.RegistriesType;
+
+                var goalsYear = indicator.Goals.Where(i => i.Year == year).ToList();
+                list.Add(indicator.IndicatorCalculator.CalculateGoal(goalsYear));
             }
 
             // Return the list with the results
@@ -514,14 +519,16 @@ namespace think_agro_metrics.Controllers
             List<double> list = new List<double>();
             foreach (Indicator indicator in indicators)
             {
-                foreach (Goal goal in indicator.Goals)
-                {
-                    if (goal.Year == year && goal.Month == month)
-                    {
-                        list.Add(goal.Value);
-                        continue;
-                    }
-                }
+                int trimesterInitialIndex = (trimester + 1) * 3 - 3;
+
+                // Assign the indicator calculator
+                indicator.RegistriesType = indicator.RegistriesType;
+
+                var goalsYearTrimester = indicator.Goals.Where(i => i.Year == year 
+                    && (i.Month == trimesterInitialIndex || i.Month == trimesterInitialIndex + 1 || i.Month == trimesterInitialIndex + 2))
+                    .ToList();
+
+                list.Add(indicator.IndicatorCalculator.CalculateGoal(goalsYearTrimester));
             }
 
             // Return the list with the results
@@ -535,10 +542,32 @@ namespace think_agro_metrics.Controllers
         {
             if (!ModelState.IsValid)
             {
-                for (int i = 0; i < 12; i++)
-                {
-                    list.Add(0);
-                }
+                return BadRequest(ModelState);
+            }
+
+            
+            // Load from the DB the Indicators 
+            var indicators = await _context.Indicators
+                .Where(i => i.IndicatorGroupID == id)
+                .Include(i => i.Goals)
+                .ToListAsync();
+
+            // If the specified indicator group don't have indicators, show NotFound
+            if (!indicators.Any())
+            {
+                return NotFound();
+            }
+
+            // The goals of every indicator of the group of the specified year and month
+            List<double> list = new List<double>();
+            foreach (Indicator indicator in indicators)
+            {
+                // Assign the indicator calculator
+                indicator.RegistriesType = indicator.RegistriesType;
+
+                var goalsYearMonth = indicator.Goals.Where(i => i.Year == year && i.Month == month).ToList();
+
+                list.Add(indicator.IndicatorCalculator.CalculateGoal(goalsYearMonth));
             }
 
             // Return the list with the results

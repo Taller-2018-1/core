@@ -6,19 +6,28 @@ import { Observable } from 'rxjs/Observable';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
 
+// Services
+import { DateService } from '../date/date.service';
+
 @Injectable()
 export class IndicatorGroupService {
 
   public static API_URL = 'api/IndicatorGroups/';
-  public static CALCULATE = IndicatorGroupService.API_URL + 'Calculate/';
-  public static GOALS = IndicatorGroupService.API_URL + 'Goals/';
-  public static NAME = IndicatorGroupService.API_URL + 'Name/';
-  public static ALL = IndicatorGroupService.API_URL + 'Complete';
+  public static CALCULATE = '/Calculate';
+  public static GOALS = '/Goals';
+  public static NAME = '/Name';
 
-  constructor(public http: HttpClient) { }
+  public static YEAR = '/Year/';
+  public static TRIMESTER = '/Trimester/';
+  public static MONTH = '/Month/';
+  public static WEEK = '/Week/';
 
-  addIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<any> {
-    return this.http.post<any>(IndicatorGroupService.API_URL, indicatorGroup);
+  public static ALL = 'Complete';
+
+  constructor(public http: HttpClient, private dateService: DateService) { }
+
+  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> {
+    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.API_URL + IndicatorGroupService.ALL);
   }
 
   getIndicatorGroups(): Observable<IndicatorGroup[]> {
@@ -29,36 +38,70 @@ export class IndicatorGroupService {
     return this.http.get<IndicatorGroup>(IndicatorGroupService.API_URL + indicatorGroupId);
   }
 
-  getIndicatorGroupsComplete(): Observable<IndicatorGroup[]> {
-    return this.http.get<IndicatorGroup[]>(IndicatorGroupService.ALL);
+  calculateIndicatorGroup(indicatorGroupId: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE);
   }
 
-  calculateIndicatorGroup(indicatorGroup: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup);
+  calculateIndicatorGroupYear(indicatorGroupId: number, year: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE
+       + IndicatorGroupService.YEAR + year);
   }
 
-  calculateIndicatorGroupYear(indicatorGroup: number, year: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup + '/' + year);
+  calculateIndicatorGroupYearTrimester(indicatorGroupId: number, year: number, trimester: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE
+      + IndicatorGroupService.YEAR + year + IndicatorGroupService.TRIMESTER + trimester);
   }
 
-  calculateIndicatorGroupYearMonth(indicatorGroup: number, year: number, month: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.CALCULATE + indicatorGroup + '/' + year + '/' + month);
+  calculateIndicatorGroupYearMonth(indicatorGroupId: number, year: number, month: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE
+      + IndicatorGroupService.YEAR + year + IndicatorGroupService.MONTH + month);
+  }
+
+  calculateIndicatorGroupYearWeek(indicatorGroupId: number, year: number, week: number): Observable<number[]> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.CALCULATE
+      + IndicatorGroupService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
   }
 
   getGoals(indicatorGroupId: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId);
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS);
   }
 
   getGoalsYear(indicatorGroupId: number, year: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId + '/' + year);
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS +
+      IndicatorGroupService.YEAR + year);
+  }
+
+  getGoalsYearTrimester(indicatorGroupId: number, year: number, trimester: number): Observable<number[]> {
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS +
+      IndicatorGroupService.YEAR + year + IndicatorGroupService.TRIMESTER + trimester);
   }
 
   getGoalsYearMonth(indicatorGroupId: number, year: number, month: number): Observable<number[]> {
-    return this.http.get<number[]>(IndicatorGroupService.GOALS + indicatorGroupId + '/' + year + '/' + month);
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS +
+      IndicatorGroupService.YEAR + year + IndicatorGroupService.MONTH + month);
+  }
+
+  getGoalsYearWeek(indicatorGroupId: number, year: number, week: number): Observable<number[]> {
+    const startWeekDate = this.dateService.getDateFromWeek(year, week);
+    const startWeekYear = startWeekDate.getFullYear();
+    const startWeekMonth = startWeekDate.getMonth();
+    const startWeekDay = startWeekDate.getDate();
+
+    return this.http.get<number[]>(IndicatorGroupService.API_URL + indicatorGroupId + IndicatorGroupService.GOALS
+      + IndicatorGroupService.WEEK + startWeekYear + '/' + startWeekMonth + '/' + startWeekDay);
   }
 
   getIndicatorGroupName(indicatorId: number): Observable<string> {
-    return this.http.get<string>(IndicatorGroupService.NAME + indicatorId);
+    return this.http.get<string>(IndicatorGroupService.API_URL + indicatorId + IndicatorGroupService.NAME);
+  }
+
+  addIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<any> {
+    return this.http.post<any>(IndicatorGroupService.API_URL, indicatorGroup);
   }
 
   deleteIndicatorGroup(indicatorGroup: IndicatorGroup): Observable<IndicatorGroup> {

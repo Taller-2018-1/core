@@ -13,7 +13,7 @@ export class ResultDisplayComponent implements OnInit {
   private router: Router;
 
   constructor(router: Router) {
-    this.router = router
+    this.router = router;
   }
 
   ngOnInit() {
@@ -21,7 +21,7 @@ export class ResultDisplayComponent implements OnInit {
   }
 
   gotoIndicatorGroup(idIndicatorGroup: number) {
-    this.router.navigateByUrl("/indicatorGroup/" + idIndicatorGroup);
+    this.router.navigateByUrl('/indicatorGroup/' + idIndicatorGroup);
   }
 
 }
