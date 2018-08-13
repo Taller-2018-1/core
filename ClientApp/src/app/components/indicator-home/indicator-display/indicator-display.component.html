@@ -7,7 +7,7 @@
 
           <ng-template ngFor let-indicator [ngForOf]="indicatorGroup.indicators" let-i="index" [ngForTrackBy]="trackByFn">
             
-            <div class="indicator-block col-xs-12 col-sm-6 col-md-4"> 
+            <div *ngIf="isAllowedToRead(indicator.indicatorID)" class="indicator-block col-xs-12 col-sm-6 col-md-4"> 
               <a class="active" (click)="gotoIndicator(indicatorGroup.indicatorGroupID, indicator.indicatorID)">
                 <div class="services-content">
                     <div class="fact statistic-percent" [attr.data-perc]="indicatorResults[i]">
