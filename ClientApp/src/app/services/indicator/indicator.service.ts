@@ -261,6 +261,6 @@ export class IndicatorService {
   }
 
   editIndicator(indicator: Indicator): Observable<Indicator> {
-    return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID,indicator);
+    return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID, indicator);
   }
 }

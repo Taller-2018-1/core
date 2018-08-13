@@ -84,9 +84,9 @@ export class IndicatorFormComponent implements OnInit {
         else {
           for (let i in this.read) {
             if (this.read[i] === true) {
-              this.roleService.addPermissionRead(RolesType[i], (data as Indicator)).subscribe();
+              this.roleService.addPermissionRead(RolesType[i], (data as Indicator), true).subscribe();
               if (this.write[i] === true) { // read and/or write permissions
-                this.roleService.addPermissionWrite(RolesType[i], (data as Indicator)).subscribe();
+                this.roleService.addPermissionWrite(RolesType[i], (data as Indicator), true).subscribe();
               }
             }
           }

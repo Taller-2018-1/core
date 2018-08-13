@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
-import { Indicator } from '../../shared/models/indicator';
-import { IndicatorService } from '../indicator/indicator.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../alerts/notification.service';
-import { PermissionTarget, PermissionClaim } from './permissions';
+import { PermissionClaim } from './permissions';
 import { User } from './User';
 import { Role } from '../../shared/models/role';
 
@@ -52,9 +50,8 @@ export class AuthService {
     });
   }
 
-  private loadRole()
-  {
-    let reads: Indicator[];
+  private loadRole() {
+    // let reads: Indicator[];
     // Load Role
     this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids).subscribe(data => {
       this.role = data;
@@ -94,7 +91,6 @@ export class AuthService {
   }
 
   public roleIsAllowedTo(roleId: string, indicatorId: number, claim: PermissionClaim): Observable<Role> {
-
     return this.http.get<Role>(AuthService.ROLE_API + roleId);
   }
 
