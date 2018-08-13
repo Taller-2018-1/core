@@ -7,6 +7,8 @@ import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { RegistryType } from '../../shared/models/registryType';
 import { Months } from '../../shared/models/months';
+import {Role} from '../../shared/models/role';
+import {RolesType} from '../../shared/models/rolesType';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -14,6 +16,8 @@ import { RegistryService } from '../../services/registry/registry.service';
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
 import { SessionService } from '../../services/session/session.service';
 import { DateService } from '../../services/date/date.service';
+import { AuthService } from '../../services/auth/AuthService';
+import { PermissionClaim } from '../../services/auth/permissions';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -72,7 +76,8 @@ export class IndicatorDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: BsModalService,
     private sessionService: SessionService,
-    private dateService: DateService
+    private dateService: DateService,
+    private authService: AuthService
   ) {
     this.idIndicator = this.route.snapshot.params.idIndicator;
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
@@ -244,6 +249,15 @@ export class IndicatorDetailComponent implements OnInit {
 
   openModalEditIndicator(template: TemplateRef<any>) {
     this.indicatorModalRef = this.modalService.show(template);
+  }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
+  }
+
+  get isWriteAllowed(): boolean {
+    return this.authService.isAllowedTo(this.idIndicator, PermissionClaim.WRITE);
   }
 
 }

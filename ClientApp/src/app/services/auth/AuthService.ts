@@ -106,6 +106,9 @@ export class AuthService {
     });
   }
 
+  public getRole(): Role {
+    return this.role;
+  }
 
   public getUser(): User | boolean {
     const user: any = this.getToken();

@@ -1,11 +1,17 @@
 import { Component, OnInit, HostBinding, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AuthService } from '../../services/auth/AuthService';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
-
-import {IndicatorGroup} from '../../shared/models/indicatorGroup';
-import {IndicatorGroupService} from '../../services/indicator-group/indicator-group.service';
 import { Observable } from 'rxjs/Observable';
+
+// Models
+import {IndicatorGroup} from '../../shared/models/indicatorGroup';
+import {Role} from '../../shared/models/role';
+import {RolesType} from '../../shared/models/rolesType';
+
+// Services
+import {IndicatorGroupService} from '../../services/indicator-group/indicator-group.service';
+import { AuthService } from '../../services/auth/AuthService';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,9 +25,10 @@ export class HeaderComponent implements OnInit {
   };
   email: string;
   password: string;
-  public indicatorGroupsComplete$ : Observable<IndicatorGroup[]>;
+  public indicatorGroupsComplete$: Observable<IndicatorGroup[]>;
+
   authorize() {
-    this.auth.auth({
+    this.authService.auth({
       email: this.email,
       password: this.password
     }).subscribe(item => {
@@ -35,7 +42,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private service: IndicatorGroupService,
               private modalService: BsModalService,
-              private auth: AuthService,
+              private authService: AuthService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -53,11 +60,16 @@ export class HeaderComponent implements OnInit {
   }
 
   logOut() {
-    this.auth.signOut().subscribe();
+    this.authService.signOut().subscribe();
     this.router.navigateByUrl('/welcome') ;
   }
   get isLogged(): boolean {
-    return this.auth.getUser() !== false;
+    return this.authService.getUser() !== false;
+  }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
   }
 
   goToConfigPage() {

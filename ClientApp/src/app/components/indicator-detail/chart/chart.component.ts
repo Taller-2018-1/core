@@ -164,17 +164,19 @@ export class ChartComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    this.chartValuesObservable.subscribe(values => {
-      console.log(values);
-    });
-    this.chartGoalsObservable.subscribe(goals => {
-      console.log(goals);
-    });
+    
 
     this.oldSelectedTypeChart = this.selectedTypeChart;
     this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
-    if (this.indicator.registriesType != this.RegistryType.PercentRegistry){
-      this.showGraph(this.indicator);
+    if (this.indicator.registriesType !== this.RegistryType.PercentRegistry) {
+      // this.showGraph(this.indicator);
+      this.chartValuesObservable.subscribe(values => {
+        this.lineChartData[0].data = values;
+      });
+      this.chartGoalsObservable.subscribe(goals => {
+        this.lineChartData[1].data = goals;
+      });
+      this.lineChartLabels = this.chartLabels;
     }
     else{
       this.showDispersionGraph(this.indicator);
@@ -188,7 +190,8 @@ export class ChartComponent implements OnInit, DoCheck {
       console.log("hay cambios");
       this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
       if (this.indicator.registriesType != this.RegistryType.PercentRegistry){
-        this.showGraph(this.indicator);
+        // this.showGraph(this.indicator);
+        
       }
       else{
         this.showDispersionGraph(this.indicator);

@@ -6,6 +6,10 @@ import { RegistryService } from '../../../services/registry/registry.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
 import { FileService } from '../../../services/file/file.service';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import {Role} from '../../../shared/models/role';
+import {RolesType} from '../../../shared/models/rolesType';
+import { AuthService } from '../../../services/auth/AuthService';
+import { PermissionClaim } from '../../../services/auth/permissions';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -26,6 +30,9 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   customClass = 'card-header';
 
   @Input()
+  public indicatorId: number;
+
+  @Input()
   public registries: Registry[];
 
   @Input()
@@ -43,7 +50,8 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,
     private fileService: FileService,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService,
+    private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -214,4 +222,14 @@ export class IndicatorDetailRegistryComponent implements OnInit {
       allowEscapeKey: false
     });
   }
+
+  get isWriteAllowed(): boolean {
+    return this.authService.isAllowedTo(this.indicatorId, PermissionClaim.WRITE);
+  }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
+  }
+
 }

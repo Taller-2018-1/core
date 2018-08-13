@@ -11,7 +11,7 @@
              </div> <!-- end subsection-text -->
            </div> <!-- end col-md-8 -->
           <div class="col-md-8 col-sm-8 col-xs-12 text-right">
-             <button type="button" class="btn btn-primary btn-md" (click)="openModal(addIndicatorGroup)">
+             <button [class.hidden]="!isAdminOrManager" type="button" class="btn btn-primary btn-md" (click)="openModal(addIndicatorGroup)">
               Agregar grupo de indicadores <span class="glyphicon glyphicon-plus"> </span>
              </button>
            </div> <!-- end col-md-4 -->
