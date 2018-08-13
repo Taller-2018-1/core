@@ -19,7 +19,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router, private notifications: NotificationService) {}
 
   private static AUTHORIZATION_API = '/api/auth/';
-  private static ROLE_API = '/api/Roles/'
+  private static ROLE_API = '/api/Roles/';
   private self_token = null;
   private role: Role;
 
@@ -77,14 +77,14 @@ export class AuthService {
   // came with this idea while sober <3
   public isAllowedTo(indicatorId: number, claim: PermissionClaim): boolean {
     if (claim === PermissionClaim.WRITE) {
-      for (let permission of  this.role.permissionsWrite) {
+      for (const permission of  this.role.permissionsWrite) {
         if (permission.indicatorID === indicatorId) {
           return true;
         }
       }
       return false;
     } else {
-      for(let permission of this.role.permissionsRead) {
+      for (const permission of this.role.permissionsRead) {
         if (permission.indicatorID === indicatorId) {
           return true;
         }
@@ -133,7 +133,7 @@ export class AuthService {
 
   public getRawToken(): String | boolean {
     const raw_token = localStorage.getItem('token');
-    if (!raw_token || raw_token === 'null' ) {
+    if (!raw_token || raw_token === 'null') {
       return false;
     } else {
       return raw_token;

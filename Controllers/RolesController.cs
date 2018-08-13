@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Roles
         [HttpGet]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetRoles()
         {
             var roles = await _context.Roles.ToListAsync();
@@ -36,6 +38,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Roles/Complete
         [HttpGet("Complete")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetRolesComplete()
         {
             var roles = await _context.Roles
@@ -46,6 +49,7 @@ namespace think_agro_metrics.Controllers
 
         // GET: api/Roles/751381e9-91db-404c-94bb-dbb460551bda
         [HttpGet("{id}")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetRoleByToken([FromRoute] string id)
         {
 
@@ -64,6 +68,7 @@ namespace think_agro_metrics.Controllers
 
         // POST api/Roles/751381e9-91db-404c-94bb-dbb460551bda/Permission/Read // To update or add permissions
         [HttpPost("{id}/Permission/Read")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección")]
         public async Task<IActionResult> AddPermissionRead([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)
@@ -90,6 +95,7 @@ namespace think_agro_metrics.Controllers
 
         // POST api/Roles/751381e9-91db-404c-94bb-dbb460551bda/Permission/Read
         [HttpPost("{id}/Permission/Write")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección")]
         public async Task<IActionResult> AddPermissionWrite([FromRoute] string id, [FromBody] Indicator indicator)
         {
             if (!ModelState.IsValid)

@@ -1092,7 +1092,7 @@ namespace think_agro_metrics.Controllers
 
         }
 
-        // GET: api/Indicators/1/Goals/Year/2018/Month/0/From/2018/0/2 (indicator 1, year 2018, month January, from 2/1/2018)
+        // GET: api/Indicators/1/Goals/Chart/Year/2018/Month/0/From/2018/0/2 (indicator 1, year 2018, month January, from 2/1/2018)
         [HttpGet("{id:long}/Goals/Chart/Year/{year:int}/Month/{month:int}/From/{startWeekYear:int}/{startWeekMonth:int}/{startWeekDay:int}")]
         [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public async Task<IActionResult> GetIndicatorGoalsChartMonth([FromRoute] long id, [FromRoute] int year, [FromRoute] int month, [FromRoute] int startWeekYear, [FromRoute] int startWeekMonth, [FromRoute] int startWeekDay)
