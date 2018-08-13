@@ -5,11 +5,14 @@ import { Observable } from 'rxjs/Observable';
 // Model
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
 import { RegistryType } from '../../shared/models/registryType';
+import {Role} from '../../shared/models/role';
+import {RolesType} from '../../shared/models/rolesType';
 
 // Service
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
 import { RegistryService } from '../../services/registry/registry.service';
 import { SessionService } from '../../services/session/session.service';
+import { AuthService } from '../../services/auth/AuthService';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -49,7 +52,8 @@ export class IndicatorHomeComponent implements OnInit {
               private modalService: BsModalService,
               private indicatorService: IndicatorGroupService,
               private registryService: RegistryService,
-              private sessionService: SessionService) {
+              private sessionService: SessionService,
+              private authService: AuthService) {
     this.idIndicatorGroup = this.route.snapshot.params.idIndicatorGroup;
     this.indicatorGroup$ = this.indicatorGroupService.getIndicatorGroup(this.idIndicatorGroup);
   }
@@ -137,6 +141,11 @@ export class IndicatorHomeComponent implements OnInit {
   indicatorAdded() {
     this.indicatorGroup$ = this.indicatorService.getIndicatorGroup(this.idIndicatorGroup);
     this.updateObservables('');
+  }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
   }
 
 }

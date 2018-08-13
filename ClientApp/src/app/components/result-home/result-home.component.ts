@@ -4,9 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 
 // Model
 import { IndicatorGroup } from '../../shared/models/indicatorGroup';
+import {Role} from '../../shared/models/role';
+import {RolesType} from '../../shared/models/rolesType';
 
 // Service
 import { IndicatorGroupService } from '../../services/indicator-group/indicator-group.service';
+import { AuthService } from '../../services/auth/AuthService';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -31,7 +34,10 @@ export class ResultHomeComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  constructor(private service: IndicatorGroupService, private modalService: BsModalService) {
+  constructor(
+    private service: IndicatorGroupService,
+    private modalService: BsModalService,
+    private authService: AuthService) {
 
   }
 
@@ -48,6 +54,11 @@ export class ResultHomeComponent implements OnInit {
 
   indicatorGroupAdded() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
+  }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
   }
 
 }

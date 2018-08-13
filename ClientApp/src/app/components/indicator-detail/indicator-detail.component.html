@@ -49,7 +49,7 @@
 </section>
 
 <!-- end head-page-section -->
-  <section>
+  <section [class.hidden]="!isAdminOrManager">
     <div>
       <ol class="breadcrumb shortcode">
         <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
