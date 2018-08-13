@@ -6,10 +6,10 @@ import { RegistryService } from '../../../services/registry/registry.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
 import { FileService } from '../../../services/file/file.service';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import {Role} from '../../shared/models/role';
-import {RolesType} from '../../shared/models/rolesType';
-import { AuthService } from '../../services/auth/AuthService';
-import { PermissionClaim } from '../../services/auth/permissions';
+import {Role} from '../../../shared/models/role';
+import {RolesType} from '../../../shared/models/rolesType';
+import { AuthService } from '../../../services/auth/AuthService';
+import { PermissionClaim } from '../../../services/auth/permissions';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -51,7 +51,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     private indicatorService: IndicatorService,
     private fileService: FileService,
     private modalService: BsModalService,
-    provate authService: AuthService) { }
+    private authService: AuthService) { }
 
   ngOnInit() {
   }
