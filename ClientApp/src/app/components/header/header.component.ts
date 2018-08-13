@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
       email: this.email,
       password: this.password
     }).subscribe(item => {
-      console.log('ok');
+      // console.log('ok');
       this.modalRef.hide();
     }, error => {
       this.email = '';
@@ -69,8 +69,9 @@ export class HeaderComponent implements OnInit {
 
   get isAdminOrManager(): boolean {
     const token = this.authService.getRole();
-    if(token !== undefined)
+    if (token !== undefined && token !== null) {
       return token.roleToken === RolesType['adm'] || token.roleToken === RolesType['ger'];
+    }
     return false;
   }
 

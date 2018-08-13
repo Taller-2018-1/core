@@ -58,7 +58,7 @@ export class ResultHomeComponent implements OnInit {
 
   get isAdminOrManager(): boolean {
     const token = this.authService.getRole();
-    if(token !== undefined){
+    if (token !== undefined && token !== null) {
       return token.roleToken === RolesType['adm'] || token.roleToken === RolesType['ger'];
     }
     return false;

@@ -183,9 +183,9 @@ export class ChartComponent implements OnInit, DoCheck {
 
   ngDoCheck(){
     if (JSON.stringify(this.oldIndicator) !== JSON.stringify(this.indicator)){
-      console.log("hay cambios");
+      // console.log("hay cambios");
       this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
-      if (this.indicator.registriesType != this.RegistryType.PercentRegistry){
+      if (this.indicator.registriesType !== this.RegistryType.PercentRegistry){
         // this.showGraph(this.indicator);
         
       }
@@ -366,9 +366,9 @@ export class ChartComponent implements OnInit, DoCheck {
           }
         }
       this.lineChartData = _lineChartData; // se ingresa los datos del arreglo provisorio al arreglo de meses original
-      console.log(this.lineChartData);
+      // console.log(this.lineChartData);
       // ajustar rango del eje y en el gráfico      
-    //}
+    // }
   }
 
   // method to calculate the varianza and standard desviation
