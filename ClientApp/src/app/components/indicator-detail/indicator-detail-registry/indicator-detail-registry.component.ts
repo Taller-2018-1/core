@@ -226,4 +226,10 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   get isWriteAllowed(): boolean {
     return this.authService.isAllowedTo(this.indicatorId, PermissionClaim.WRITE);
   }
+
+  get isAdminOrManager(): boolean {
+    const token = this.authService.getRole().roleToken;
+    return token === RolesType['adm'] || token === RolesType['ger'];
+  }
+
 }
