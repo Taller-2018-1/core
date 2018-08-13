@@ -28,6 +28,23 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   @Input()
   public registries: Registry[];
 
+  //@Input()
+  public nDocs;
+
+  loading: boolean = true;
+
+  get documents(): Document[] {
+    return this.registry.documents;
+  }
+
+  set documents(value: Document[]) {
+    this.registry.documents = value;
+    if (value && this.nDocs == 0) {
+      this.loading = false;
+    }
+  }
+
+
   @Input()
   public registriesType: number;
 
@@ -39,6 +56,8 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   public modalRef: BsModalRef; // For Documents
 
   public document: Document = null; // For EditDocument & DocumentPreview
+
+  
 
   constructor(private registryService: RegistryService,
     private indicatorService: IndicatorService,

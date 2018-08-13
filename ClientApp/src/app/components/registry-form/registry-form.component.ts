@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input} from '@angular/core';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Registry } from '../../shared/models/registry';
@@ -9,7 +9,6 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RegistryService } from '../../services/registry/registry.service';
 import { Document } from '../../shared/models/document';
-
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
@@ -34,6 +33,16 @@ export class RegistryFormComponent implements OnInit {
   //For documents
   fileList: File[][] = new Array();
   documentList: Document[] = new Array();
+  private _nDocs: number;
+
+  get nDocs(): number {
+    return this._nDocs;
+  }
+
+  set nDocs(newFullName: number){
+      this._nDocs = newFullName;
+  }
+
 
   onSubmit() {
     //let nameVerification = false;
@@ -63,6 +72,7 @@ export class RegistryFormComponent implements OnInit {
   ) {
     this.model = new Registry();
     this.router = router;
+    this.nDocs = 0;
   }
 
   private getIndicator(indicatorId: number) {
@@ -113,11 +123,15 @@ export class RegistryFormComponent implements OnInit {
     this.fileList.splice(this.fileList.indexOf(file), 1);
   }
   
-  addDocuments(){
+  addDocuments() {
+    this.nDocs = (this.documentList.length + this.fileList.length);
+
     this.documentList.forEach(element => {
       this.registryService.addLinkDocument(element, this.model.registryID).subscribe(data => {
         data.forEach(document => {
           this.model.documents.push(document);
+          this.nDocs -= 1;
+
         });
       });
     });
@@ -127,8 +141,10 @@ export class RegistryFormComponent implements OnInit {
         if (event.type === HttpEventType.UploadProgress)
           //this.progress = Math.round(100 * event.loaded / event.total);
           console.log();
-        else if (event.type === HttpEventType.Response)
+        else if (event.type === HttpEventType.Response) {
           this.model.documents.push(new Document().fromJSON(event.body));
+          this.nDocs -= 1;
+        }
       });      
     });
   }
