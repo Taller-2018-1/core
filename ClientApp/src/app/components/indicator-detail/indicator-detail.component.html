@@ -121,7 +121,12 @@
         <!--graph row ======================================== -->
         <!-- end row -->
         <!--details files row ======================================== -->
-        <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart" [chartValuesObservable]="chartValues$" [chartGoalsObservable]="chartGoals$" [chartLabels]="chartLabels"></app-chart>
+
+        <div *ngIf="chartValues$ | async as chartValues">
+          <div *ngIf="chartGoals$ | async as chartGoals">
+            <app-chart [indicator]="indicator" [selectedTypeChart]="selectedTypeChart" [chartValues]="chartValues" [chartGoals]="chartGoals" [chartLabels]="chartLabels"></app-chart>
+          </div>
+        </div>
         <!-- There is no data for the following
         <div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
           <div class="row">

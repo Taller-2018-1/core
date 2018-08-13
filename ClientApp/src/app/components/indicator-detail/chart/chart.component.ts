@@ -13,8 +13,8 @@ export class ChartComponent implements OnInit, DoCheck {
 
   @Input() indicator: Indicator;
   @Input() selectedTypeChart: string;
-  @Input() chartValuesObservable: Observable<number[]>;
-  @Input() chartGoalsObservable: Observable<number[]>;
+  @Input() chartValues: number[];
+  @Input() chartGoals: number[];
   @Input() chartLabels: string[];
 
   oldIndicator: Indicator;
@@ -170,12 +170,8 @@ export class ChartComponent implements OnInit, DoCheck {
     this.oldIndicator = JSON.parse(JSON.stringify(this.indicator));
     if (this.indicator.registriesType !== this.RegistryType.PercentRegistry) {
       // this.showGraph(this.indicator);
-      this.chartValuesObservable.subscribe(values => {
-        this.lineChartData[0].data = values;
-      });
-      this.chartGoalsObservable.subscribe(goals => {
-        this.lineChartData[1].data = goals;
-      });
+      this.lineChartData[0].data = this.chartValues;
+      this.lineChartData[1].data = this.chartGoals;
       this.lineChartLabels = this.chartLabels;
     }
     else{
