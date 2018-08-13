@@ -18,7 +18,7 @@
               </span>
             </div>
             <div class="col-xs-10 col-sm-4 col-md-4">
-              <div class="pull-right">
+              <div [class.hidden]="!isWriteAllowed" class="pull-right">
                 <button class="btn btn-xs btn-warning" (click)="openModalEditRegistry($event, editRegistry,registry)">Modificar</button>
                 <button class="btn btn-xs btn-danger" (click)="deleteRegistry($event, registry)">Eliminar</button>
               </div>
@@ -32,12 +32,12 @@
 
         <ng-template ngbPanelContent>
 
-          <div class="row">
+          <div [class.hidden]="!isWriteAllowed"  class="row">
             <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalFileDocument($event, fileModal, registry)">Agregar archivo</button>
             <span class="pull-right">&nbsp;</span>
             <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalLinkDocument($event, linkModal, registry)">Agregar link</button>
           </div>
-          <br />
+          <br [class.hidden]="!isWriteAllowed"  />
 
           <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
               <div class="row">
@@ -74,8 +74,8 @@
                         Descargar
                       </button>
                     </ng-template>
-                    <button class="btn btn-xs btn-warning" type="button" (click)="openModalEditDocument($event, editDocument, document)">Modificar</button>
-                    <button class="btn btn-xs btn-danger" type="button" (click)="deleteDocument(registry,document)">Eliminar</button>
+                    <button [class.hidden]="!isWriteAllowed" class="btn btn-xs btn-warning" type="button" (click)="openModalEditDocument($event, editDocument, document)">Modificar</button>
+                    <button [class.hidden]="!isWriteAllowed" class="btn btn-xs btn-danger" type="button" (click)="deleteDocument(registry,document)">Eliminar</button>
                   </div>
                 </div>
 

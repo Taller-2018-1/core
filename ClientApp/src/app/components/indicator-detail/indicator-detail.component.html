@@ -141,14 +141,14 @@
                   <span class="h3">Registros Asociados</span>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6">
-                  <button type="button" class="btn btn-primary btn-lg pull-right" (click)="openModal(addRegistry)">
+                  <button [class.hidden]="!isWriteAllowed" type="button" class="btn btn-primary btn-lg pull-right" (click)="openModal(addRegistry)">
                     <i class="glyphicon glyphicon-plus-sign"></i><span class="hidden-xs"> Añadir Registro</span>
                   </button>
                 </div>
               </div>
             </div>
             <!--Begin tab-->
-            <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
+            <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
           </div>
         </div>
 

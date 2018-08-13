@@ -17,6 +17,7 @@ import { IndicatorGroupService } from '../../services/indicator-group/indicator-
 import { SessionService } from '../../services/session/session.service';
 import { DateService } from '../../services/date/date.service';
 import { AuthService } from '../../services/auth/AuthService';
+import { PermissionClaim } from '../../services/auth/permissions';
 
 // Ngx-Bootstrap
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -253,6 +254,10 @@ export class IndicatorDetailComponent implements OnInit {
   get isAdminOrManager(): boolean {
     const token = this.authService.getRole().roleToken;
     return token === RolesType['adm'] || token === RolesType['ger'];
+  }
+
+  get isWriteAllowed(): boolean {
+    return this.authService.isAllowedTo(this.idIndicator, PermissionClaim.WRITE);
   }
 
 }
