@@ -12,6 +12,7 @@ import { RolesType } from '../../../shared/models/rolesType';
 import { IndicatorGroupService } from '../../../services/indicator-group/indicator-group.service';
 import { IndicatorService } from '../../../services/indicator/indicator.service';
 import { AuthService } from '../../../services/auth/AuthService';
+import { RoleService } from '../../../services/role/role.service';
 import { PermissionClaim } from '../../../services/auth/permissions';
 
 import swal from 'sweetalert2';
@@ -47,10 +48,12 @@ export class IndicatorEditorComponent implements OnInit {
   write: any = { adm: false, ger: false, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
-  constructor(private service: IndicatorService,
-              private indicatorGroupService: IndicatorGroupService,
-              private router: Router,
-              private auth: AuthService) { }
+  constructor(
+    private service: IndicatorService,
+    private indicatorGroupService: IndicatorGroupService,
+    private router: Router,
+    private authService: AuthService,
+    private roleService: RoleService) { }
 
   ngOnInit() {
     this.newIndicator = JSON.parse(JSON.stringify(this.indicator)); // Create a clone of the original Indicator.
@@ -60,14 +63,14 @@ export class IndicatorEditorComponent implements OnInit {
       this.groups = data;
     });
 
-    let roles = Object.keys(RolesType);
-    for (let role of roles) {
+    const roles = Object.keys(RolesType);
+    for (const role of roles) {
       let roleReads: boolean;
       let roleWrites: boolean;
 
-      this.auth.roleIsAllowedTo(RolesType[role] , this.indicator.indicatorID, PermissionClaim.READ).subscribe( data => {
-        let loadedRole = data;
-        for(let permission of loadedRole.permissionsRead) {
+      this.authService.roleIsAllowedTo(RolesType[role] , this.indicator.indicatorID, PermissionClaim.READ).subscribe( data => {
+        const loadedRole = data;
+        for (const permission of loadedRole.permissionsRead) {
           if (permission.indicatorID === this.indicator.indicatorID) {
             roleReads = true;
             this.read[role] = true;
@@ -76,21 +79,16 @@ export class IndicatorEditorComponent implements OnInit {
       });
 
 
-      this.auth.roleIsAllowedTo(RolesType[role], this.indicator.indicatorID, PermissionClaim.WRITE).subscribe(data => {
-        let loadedRole = data;
-        for (let permission of loadedRole.permissionsWrite) {
+      this.authService.roleIsAllowedTo(RolesType[role], this.indicator.indicatorID, PermissionClaim.WRITE).subscribe(data => {
+        const loadedRole = data;
+        for (const permission of loadedRole.permissionsWrite) {
           if (permission.indicatorID === this.indicator.indicatorID) {
             roleWrites = true;
             this.write[role] = true;
           }
         }
       });
-
-
     }
-
-    console.log(this.read);
-    console.log(this.write);
 
   }
 
@@ -98,9 +96,9 @@ export class IndicatorEditorComponent implements OnInit {
     this.selectedText = value;
   }
 
-  onSubmit() {
+  saveChanges() {
     let moved = false;
-    for (let ig of this.groups) {
+    for (const ig of this.groups) {
       if (ig.name === this.selectedText) {
         if (ig.indicatorGroupID !== this.newIndicator.indicatorGroupID) { // Moved to another IndicatorGroup
           moved = true;
@@ -110,20 +108,29 @@ export class IndicatorEditorComponent implements OnInit {
       }
     }
 
+    const roles = Object.keys(RolesType);
+    for (const role of roles) {
+      if (!this.read[role]) { // If the read permission is removed, then remove too the write permission
+        this.roleService.addPermissionRead(RolesType[role], this.newIndicator, false).subscribe();
+        this.roleService.addPermissionWrite(RolesType[role], this.newIndicator, false).subscribe();
+      } else {
+        this.roleService.addPermissionRead(RolesType[role], this.newIndicator, this.read[role]).subscribe();
+        this.roleService.addPermissionWrite(RolesType[role], this.newIndicator, this.write[role]).subscribe();
+      }
+    }
+
     this.service.editIndicator(this.newIndicator).subscribe(data => {
       if (data) {
         if (moved) {
           this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID );
         } else {
-          this.updateInfo.emit('Indicator updated');
-          // this.router.navigateByUrl('/indicatorGroup/' + this.newIndicator.indicatorGroupID ); // I'll find a better way
+          this.updateInfo.emit();
         }
       } else {
         this.duplicateNameAlert();
       }
-
-
     });
+
     this.indicatorModalRef.hide();
   }
 
@@ -138,6 +145,62 @@ export class IndicatorEditorComponent implements OnInit {
       allowOutsideClick: false,
       allowEscapeKey: false
     });
+  }
+
+  changeEncOp(event: boolean): boolean {
+    if (event === false) {
+      this.write.encOp = false;
+    }
+    return event;
+  }
+
+  changeAnOp(event: boolean): boolean {
+    if (event === false) {
+      this.write.anOp = false;
+    }
+    return event;
+  }
+
+  changeEjVta(event: boolean): boolean {
+    if (event === false) {
+      this.write.ejVta = false;
+    }
+    return event;
+  }
+
+  changeNvoNeg(event: boolean): boolean {
+    if (event === false) {
+      this.write.nvoNeg = false;
+    }
+    return event;
+  }
+
+  changeCtrlSeg(event: boolean): boolean {
+    if (event === false) {
+      this.write.ctrlSeg = false;
+    }
+    return event;
+  }
+
+  changeExSr(event: boolean): boolean {
+    if (event === false) {
+      this.write.exSr = false;
+    }
+    return event;
+  }
+
+  changeExJr(event: boolean): boolean {
+    if (event === false) {
+      this.write.exJr = false;
+    }
+    return event;
+  }
+
+  changePrdta(event: boolean): boolean {
+    if (event === false) {
+      this.write.prdta = false;
+    }
+    return event;
   }
 
 }
