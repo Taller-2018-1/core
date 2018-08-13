@@ -87,11 +87,6 @@ namespace think_agro_metrics.Data
             context.IndicatorGroups.Add(IndicatorGroup13);
             context.SaveChanges();
             CreateIndicatorsGroup13(context, IndicatorGroup13.IndicatorGroupID);
-
-            var IndicatorGroup14 = new IndicatorGroup {Name = "Prestación de servicios de extensionismo tecnológico a empresas"};
-            context.IndicatorGroups.Add(IndicatorGroup14);
-            context.SaveChanges();
-            CreateIndicatorsGroup14(context, IndicatorGroup14.IndicatorGroupID);
         }
 
         // Indicators
@@ -114,6 +109,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators1); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators1); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators1); // Encargado de OPS
@@ -147,6 +143,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators2); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators2); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators2); // Encargado de OPS
@@ -180,6 +177,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators3); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators3); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators3); // Encargado de OPS
@@ -213,6 +211,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators4); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators4); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators4); // Encargado de OPS
@@ -246,6 +245,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators5); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators5); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators5); // Encargado de OPS
@@ -283,6 +283,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators6); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators6); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators6); // Encargado de OPS
@@ -348,6 +349,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators7); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators7); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators7); // Encargado de OPS
@@ -381,6 +383,7 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators8); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators8); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators8); // Encargado de OPS
@@ -440,14 +443,31 @@ namespace think_agro_metrics.Data
             context.Indicators.Add(indicator9l);
             context.SaveChanges();
 
+            var indicator9m = new Indicator { Name = "Cobertura provincia de Curico", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator9m);
+            context.SaveChanges();
+
+            var indicator9n = new Indicator { Name = "Cobertura provincia de Talca", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator9n);
+            context.SaveChanges();
+
+            var indicator9o = new Indicator { Name = "Cobertura provincia de Cauquenes", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator9o);
+            context.SaveChanges();
+
+            var indicator9p = new Indicator { Name = "Cobertura provincia de Linares", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
+            context.Indicators.Add(indicator9p);
+            context.SaveChanges();
+
             var indicators9 = new Indicator[] {
-                indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h,/* indicator9i, indicator9j,*/ indicator9k, indicator9l};
+                indicator9a, indicator9c, indicator9d, indicator9e, indicator9f, indicator9g, indicator9h,/* indicator9i, indicator9j,*/ indicator9k, indicator9l, indicator9m, indicator9n, indicator9o, indicator9p};
 
             roles[0].AddRangeRead(indicators9); // admin
             roles[0].AddRangeWrite(indicators9); // admin
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators9); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators9); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators9); // Encargado de OPS
@@ -505,22 +525,25 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators10); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators10); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators10); // Encargado de OPS
-            roles[2].AddRangeWrite(indicators10); // Encargado de OPS
             context.SaveChanges();
 
             roles[3].AddRangeRead(indicators10); // Analista de OPS
             context.SaveChanges();
 
-            roles[7].AddRangeRead(indicators10); // Extensionista S
-            roles[7].AddRangeWrite(indicators10); // Extensionista S
+            roles[6].AddRangeRead(indicators10); // Ejecutiva técnica de control y seguimiento
+            roles[6].AddRangeWrite(indicators10); // Ejecutiva técnica de control y seguimiento
             context.SaveChanges();
 
-            roles[8].AddRangeRead(indicators10); // Extensionista J
-            roles[8].AddRangeWrite(indicators10); // Extensionista J
-            context.SaveChanges();
+            roles[9].AddRead(indicator10e); // Periodista
+            roles[9].AddRead(indicator10f);
+            roles[9].AddRead(indicator10g);
+            roles[9].AddWrite(indicator10e);
+            roles[9].AddWrite(indicator10f);
+            roles[9].AddWrite(indicator10g);
 
             return indicators10;
         }
@@ -542,14 +565,17 @@ namespace think_agro_metrics.Data
             context.SaveChanges();
 
             roles[1].AddRangeRead(indicators11); // gerencia y direccion
+            roles[1].AddRangeWrite(indicators11); // gerencia y direccion
             context.SaveChanges();
 
             roles[2].AddRangeRead(indicators11); // Encargado de OPS
-            roles[2].AddRangeWrite(indicators11); // Encargado de OPS
             context.SaveChanges();
 
             roles[3].AddRangeRead(indicators11); // Analista de OPS
             context.SaveChanges();
+
+            roles[6].AddRangeRead(indicators11); // Ejecutiva técnica de control y seguimiento S
+            roles[6].AddRangeWrite(indicators11); // Ejecutiva técnica de control y seguimiento S
 
             roles[7].AddRangeRead(indicators11); // Extensionista S
             roles[7].AddRangeWrite(indicators11); // Extensionista S
@@ -581,15 +607,7 @@ namespace think_agro_metrics.Data
             roles[2].AddRangeRead(indicators12); // Encargado de OPS
             context.SaveChanges();
 
-             roles[3].AddRangeRead(indicators12); // Analista de OPS
-            context.SaveChanges();
-
-            roles[6].AddRangeRead(indicators12); // Control y seguimiento
-            roles[6].AddRangeWrite(indicators12); // Control y seguimiento
-            context.SaveChanges();
-
-            roles[9].AddRangeRead(indicators12); // Periodista
-            roles[9].AddRangeWrite(indicators12); // Periodista
+            roles[3].AddRangeRead(indicators12); // Analista de OPS
             context.SaveChanges();
 
 
@@ -621,57 +639,10 @@ namespace think_agro_metrics.Data
 
             roles[3].AddRangeRead(indicators13); // Analista de OPS
             context.SaveChanges();
-
-            roles[6].AddRangeRead(indicators13); // Control y seguimiento
-            roles[6].AddRangeWrite(indicators13); // Control y seguimiento
-            context.SaveChanges();
-
-            roles[7].AddRangeRead(indicators13); // Extensionista S
-            roles[7].AddRangeWrite(indicators13); // Extensionista S
-            context.SaveChanges();
-
-            roles[8].AddRangeRead(indicators13); // Extensionista J
-            roles[8].AddRangeWrite(indicators13); // Extensionista J
-            context.SaveChanges();
-
+            
             return indicators13;
         }
-        private static Indicator[] CreateIndicatorsGroup14(DataContext context, long groupID)
-        {
-            var indicator14a = new Indicator { Name = "Cobertura provincia de Curico", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
-            context.Indicators.Add(indicator14a);
-            context.SaveChanges();
-
-            var indicator14b = new Indicator { Name = "Cobertura provincia de Talca", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia.", IndicatorGroupID = groupID };
-            context.Indicators.Add(indicator14b);
-            context.SaveChanges();
-
-            var indicator14c = new Indicator { Name = "Cobertura provincia de Cauquenes", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
-            context.Indicators.Add(indicator14c);
-            context.SaveChanges();
-
-            var indicator14d = new Indicator { Name = "Cobertura provincia de Linares", RegistriesName = "", RegistriesType = RegistryType.DefaultRegistry, RegistriesDescription = "En el nombre del registro se debe ingresar el nombre de la empresa ubicada en esta provincia", IndicatorGroupID = groupID };
-            context.Indicators.Add(indicator14d);
-            context.SaveChanges();
-
-            var indicators14 = new Indicator[]{
-                indicator14a, indicator14b, indicator14c, indicator14d};
-
-            roles[0].AddRangeRead(indicators14); // admin
-            roles[0].AddRangeWrite(indicators14); // admin
-
-            roles[1].AddRangeRead(indicators14); // gerencia y direccion
-            roles[1].AddRangeWrite(indicators14); // gerencia y direccion
-            context.SaveChanges();
-
-            roles[2].AddRangeRead(indicators14); // Encargado de OPS
-            context.SaveChanges();
-
-            roles[3].AddRangeRead(indicators14); // Analista de OPS
-            context.SaveChanges();
-
-            return indicators14;
-        }
+        
 
         private static Role[] CreateRoles(DataContext context)
         {
@@ -718,8 +689,7 @@ namespace think_agro_metrics.Data
             var roles = new Role[] { role1, role2, role3, role4, role5, role6, role7, role8, role9, role10 };
 
             return roles;
-
-            var perAdmin new Permission{}
+            
         }
     }
 }
