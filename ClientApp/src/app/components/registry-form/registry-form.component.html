@@ -79,9 +79,9 @@
 
   <div class="modal-footer">
     <!--modal-footer needed, in other case, the button will be outside the modal-->
-    <button type="button" class="btn btn-sm btn-clean-2" ng-click=cancel()>Cancelar</button>
+    <button type="button" class="btn btn-sm btn-clean-2"  (click)="closeModal()">Cancelar</button>
     <button type="submit" class="btn btn-sm btn-primary" (click)="closeModal()"
-    [ngClass]="{'disabled': (!fileList[0] && !documentList[0]) }">Aceptar</button>
+    [disabled]="!fileList[0] && !documentList[0]">Aceptar</button>
   </div>
 </form>
 
