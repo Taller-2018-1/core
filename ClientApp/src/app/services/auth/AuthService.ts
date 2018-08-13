@@ -107,7 +107,11 @@ export class AuthService {
   }
 
   public getRole(): Role {
-    return this.role;
+     const user = this.getUser();
+     if(typeof user !== 'boolean'){
+       return this.role;
+     }
+     return  new Role(0, 'default', 'b940f018-288a-4fc0-822c-66719353aa1b');
   }
 
   public getUser(): User | boolean {
