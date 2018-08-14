@@ -12,4 +12,9 @@ COPY . ./
 
 RUN dotnet publish
 
+ENV ASPNETCORE_Environment=Production
+ENV ASPNETCORE_URLS=http://*:8080 
+
+EXPOSE 8080/tcp
+
 ENTRYPOINT ["dotnet", "run"]
