@@ -4,7 +4,7 @@
     <div class="container">
       <app-navigation-buttons></app-navigation-buttons>
       <div class="row">
-        <div class="col-md-12 col-sm-12">
+        <div class="col-xs-12 col-md-4 col-sm-4">
           <div class="head-title">
             <h1>
               Configuración
@@ -12,6 +12,11 @@
           </div>
           <!-- end subsection-text -->
         </div>
+        <div class="col-md-8 col-sm-8 col-xs-12 text-right">
+          <button [class.hidden]="!isAdminOrManager" type="button" class="btn btn-primary btn-md" (click)="openModalAddIndicatorGroup(addIndicatorGroup)">
+            Agregar resultado esperado <span class="glyphicon glyphicon-plus"> </span>
+          </button>
+        </div> <!-- end col-md-4 -->
         <!-- end col-md-8 -->
       </div>
       <!-- end row -->
@@ -90,4 +95,20 @@
     </button>
   </div>
   <app-indicator-group-editor [modalRef]="editIndicatorGroupModalRef" [indicatorGroup]="selectedIndicatorGroup" (updateEvent)="update()"></app-indicator-group-editor>
+</ng-template>
+
+
+<!-- Modal Add IndicatorGroup -->
+<ng-template #addIndicatorGroup>
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Ingrese un nuevo resultado esperado</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="addIndicatorGroupModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-indicator-group-form (updateEvent)="indicatorGroupAdded()" [modalRef]="addIndicatorGroupModalRef"></app-indicator-group-form>
+    </div>
+  </div>
 </ng-template>
