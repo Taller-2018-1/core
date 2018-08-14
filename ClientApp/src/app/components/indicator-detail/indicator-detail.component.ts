@@ -61,11 +61,6 @@ export class IndicatorDetailComponent implements OnInit {
   // Allow to use the enum in the html tempalte
   RegistryType = RegistryType;
 
-  // Chart data
-  selectedTypeChart: string;
-  typesChart: string[] = [];
-  typeDispersion: string[] = [];
-
   // Document data (for EditDocument)
   document: Document = null;
 
@@ -86,10 +81,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   ngOnInit() {
     this.updateExternalIndicator();
-
-    this.selectedTypeChart = 'Gráfico de línea'; // default chart type
-    this.typesChart = ['Gráfico de barra', 'Gráfico de línea']; // array options chart type
-    this.typeDispersion = ['Gráfico de dispersión'];
   }
 
   updateExternalIndicator() {
@@ -226,16 +217,6 @@ export class IndicatorDetailComponent implements OnInit {
     const mondayWeekString = mondayWeek.getDate() + ' ' + this.dateService.months[mondayWeek.getMonth()].shortName;
     const sundayWeekString = sundayWeek.getDate() + ' ' + this.dateService.months[sundayWeek.getMonth()].shortName;
     return week + ' (' + mondayWeekString + ' a ' + sundayWeekString + ')';
-  }
-
-  selectChart(type: string, indicator: Indicator) {
-    if (type === 'Gráfico de barra') {
-      this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
-    } else if (type === 'Gráfico de línea') {
-      this.selectedTypeChart = 'Gráfico de línea'; // change the dropdownlist text
-    } else {
-      this.selectedTypeChart = 'Gráfico de dispersión';
-    }
   }
 
   openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {
