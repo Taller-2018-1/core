@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3">
                       <button class="btn btn-xs btn-warning" type="button" (click)="openModalEdit($event, editIndicatorGroup,indicatorGroup)">Modificar</button>
-                      <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicatorGroup($event, indicatorGroup)">ELIMINAR</button>
+                      <button class="btn btn-xs btn-danger" type="button" (click)="deleteIndicatorGroup($event, indicatorGroup)" [disabled]="indicatorGroup.indicatorGroupID === 9" >ELIMINAR</button>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 pull-right">
                       <span class="pull-right centered-vertical glyphicon glyphicon-menu-down" style="font-size: 24px; vertical-align: top; padding-top: -10px;"></span>
