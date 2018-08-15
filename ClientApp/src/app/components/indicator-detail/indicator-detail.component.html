@@ -21,7 +21,7 @@
               <p class="text-center">Valor Indicador</p>
               <h1 class="row-h1 text-center">
                 <strong>
-                  <span *ngIf="value$ | async as value else zero;">{{ value | number:'.0-2'}}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span> 
+                  <span *ngIf="value$ | async as value else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ value | number:'.0-2'}}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ value | number:'.0'}}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span> 
                   </span>
                 </strong> 
                 
@@ -34,7 +34,7 @@
               <p class="text-center">Valor Meta</p>
               <h1 class="row-h1 text-center">
                 <strong>
-                  <span *ngIf="goal$ | async as goal else zero;">{{ goal | number:'.0-2' }}<span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
+                  <span *ngIf="goal$ | async as goal else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ goal | number:'.0-2' }}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ goal | number:'.0' }}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
                   </span>
                 </strong>
               </h1>
