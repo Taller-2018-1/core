@@ -29,6 +29,8 @@ export class ConfigHomeComponent implements OnInit {
   indicatorsGroups$: Observable<IndicatorGroup[]>;
   public editIndicatorGroupModalRef: BsModalRef;
   public addIndicatorGroupModalRef: BsModalRef;
+  public addIndicatorModalRef: BsModalRef;
+  public idIndicatorGroup: number;
 
   public selectedIndicatorGroup: IndicatorGroup;
 
@@ -142,12 +144,13 @@ export class ConfigHomeComponent implements OnInit {
     return false;
   }
 
-  openModalAddIndicatorGroup(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>) {
     this.addIndicatorGroupModalRef = this.modalService.show(template);
   }
 
-  indicatorGroupAdded() {
-    this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
+  openModalIndicator(template: TemplateRef<any>, idIndicatorGroup: number) {
+    this.idIndicatorGroup = idIndicatorGroup;
+    this.addIndicatorModalRef = this.modalService.show(template);
   }
 
 }
