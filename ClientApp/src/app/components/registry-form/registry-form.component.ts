@@ -97,23 +97,23 @@ export class RegistryFormComponent implements OnInit {
     this.submodalRef = this.modalService.show(template);
   }
 
-  addLink(document: Document){
+  addLink(document: Document) {
     this.documentList.push(document);
   }
 
-  addFile(file: File[]){
+  addFile(file: File[]) {
     this.fileList.push(file);
   }
 
-  deleteLink(document: Document){
+  deleteLink(document: Document) {
     this.documentList.splice(this.documentList.indexOf(document), 1);
   }
 
-  deleteFile(file: File[]){
+  deleteFile(file: File[]) {
     this.fileList.splice(this.fileList.indexOf(file), 1);
   }
   
-  addDocuments(){
+  addDocuments() {
     this.documentList.forEach(element => {
       this.registryService.addLinkDocument(element, this.model.registryID).subscribe(data => {
         data.forEach(document => {
@@ -124,11 +124,12 @@ export class RegistryFormComponent implements OnInit {
 
     this.fileList.forEach(element => {
       this.registryService.addFileDocument(element, this.model.registryID).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress)
-          //this.progress = Math.round(100 * event.loaded / event.total);
-          console.log();
-        else if (event.type === HttpEventType.Response)
+        if (event.type === HttpEventType.UploadProgress) {
+          // this.progress = Math.round(100 * event.loaded / event.total);
+          // console.log();
+        } else if (event.type === HttpEventType.Response) {
           this.model.documents.push(new Document().fromJSON(event.body));
+        }
       });      
     });
   }

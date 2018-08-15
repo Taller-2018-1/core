@@ -78,8 +78,8 @@ export class ReportgeneratorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Onit");
-    console.log(this.indicatorGroups);
+    // console.log("Onit");
+    // console.log(this.indicatorGroups);
 
     // const currentYear = new Date().getFullYear();
     // this.baseYear = 2018;

@@ -233,8 +233,11 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   get isAdminOrManager(): boolean {
-    const token = this.authService.getRole().roleToken;
-    return token === RolesType['adm'] || token === RolesType['ger'];
+    const token = this.authService.getRole();
+    if (token !== undefined && token !== null) {
+      return token.roleToken === RolesType['adm'] || token.roleToken === RolesType['ger'];
+    }
+    return false;
   }
 
   get isWriteAllowed(): boolean {

@@ -30,6 +30,10 @@ export class LoaderInterceptor implements HttpInterceptor {
           // Not allowed
           this.loader.pop(request.url);
         }
+        if (err.status === 500){
+        // internal server error
+          this.loader.pop(request.url);
+        }
       }
     });
   }

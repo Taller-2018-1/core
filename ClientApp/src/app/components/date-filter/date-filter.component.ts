@@ -137,7 +137,7 @@ export class DateFilterComponent implements OnInit {
     } else if (year >= DateFilterComponent.BASE_YEAR) {
       this.selectedSpecificYear(year);
     } else {
-      console.log('El año seleccionado es incorrecto');
+      // console.log('El año seleccionado es incorrecto');
     }
   }
 
@@ -148,7 +148,7 @@ export class DateFilterComponent implements OnInit {
     } else if (trimester >= 0 && trimester <= 3) {
       this.selectedSpecificTrimester(trimester);
     } else {
-      console.log('El trimestre seleccionado es incorrecto');
+      // console.log('El trimestre seleccionado es incorrecto');
     }
   }
 
@@ -159,7 +159,7 @@ export class DateFilterComponent implements OnInit {
     } else if (month >= 0 && month <= 11) {
       this.selectedSpecificMonth(month);
     } else {
-      console.log('El mes seleccionado es incorrecto');
+      // console.log('El mes seleccionado es incorrecto');
     }
   }
 
@@ -170,7 +170,7 @@ export class DateFilterComponent implements OnInit {
     } else if (week >= 0 && week <= this.dateService.getWeeksInYearISO8601(this.selectedYear)) {
       this.selectedSpecificWeek(week);
     } else {
-      console.log('La semana seleccionada es incorrecta');
+      // console.log('La semana seleccionada es incorrecta');
     }
   }
 
