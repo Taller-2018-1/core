@@ -71,7 +71,7 @@
             </div>
           </td>
           <td width="15%">
-            <div>
+            <div *ngIf="selectedPeriod !== 'Ninguno'">
               <!--Dropdown  trimestral, mensual, semanal-->
               <div class="btn-group" dropdown>
                 <button type="button" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"
