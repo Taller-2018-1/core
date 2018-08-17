@@ -63,7 +63,7 @@ namespace think_agro_metrics.Models
                 for (int j = 0; j < 7; j++)
                 {
                     DateTime newDate = date.AddDays(j);
-                    if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month)
+                    if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month && registry.Date.Day == newDate.Day)
                     {
                         if (registry is QuantityRegistry)
                             sum += (registry as QuantityRegistry).Quantity;

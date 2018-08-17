@@ -91,18 +91,17 @@ namespace think_agro_metrics.Models
                 for (int j = 0; j < 7; j++)
                 {
                     DateTime newDate = date.AddDays(j);
-                    if (registry.Date == newDate)
+                    
+                    if (registry is PercentRegistry)
                     {
-                        if (registry is PercentRegistry)
-                        {
-                            if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month) {
-                                sum += (registry as PercentRegistry).Percent;
-                                quantity++;
-                            }                            
-                        }
-                        else
-                            throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
+                        if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month && registry.Date.Day == newDate.Day) {
+                            sum += (registry as PercentRegistry).Percent;
+                            quantity++;
+                        }                            
                     }
+                    else
+                        throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
+                    
                 }
             }
             if (quantity > 0)
