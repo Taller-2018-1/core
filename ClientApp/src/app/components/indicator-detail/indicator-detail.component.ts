@@ -7,8 +7,7 @@ import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { RegistryType } from '../../shared/models/registryType';
 import { Months } from '../../shared/models/months';
-import {Role} from '../../shared/models/role';
-import {RolesType} from '../../shared/models/rolesType';
+import { RolesType } from '../../shared/models/rolesType';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -38,7 +37,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   // Observables
   indicator$: Observable<Indicator>;
-  indicatorToEdit: Indicator; // For edit Modal
   goal$: Observable<number>;
   value$: Observable<number>;
   indicatorGroupName$: Observable<string>;
