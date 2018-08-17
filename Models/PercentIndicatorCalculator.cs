@@ -7,10 +7,10 @@ namespace think_agro_metrics.Models
 {
     public class PercentIndicatorCalculator : IIndicatorCalculator
     {
-        public double Calculate(ICollection<Registry> registries)
+        public (double, long) Calculate(ICollection<Registry> registries)
         {
             double sum = 0;
-            double quantity = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry is PercentRegistry)
                 {
@@ -21,17 +21,17 @@ namespace think_agro_metrics.Models
                     throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
-                return sum / quantity;
+                return (sum / quantity, quantity);
             }
             else {
-                return 0;
+                return (0, 0);
             }
         }
 
-        public double CalculateYear(ICollection<Registry> registries, int year)
+        public (double, long) CalculateYear(ICollection<Registry> registries, int year)
         {
             double sum = 0;
-            double quantity = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry is PercentRegistry) {
                     if (registry.Date.Year == year) {
@@ -43,26 +43,25 @@ namespace think_agro_metrics.Models
                     throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
-                return sum / quantity;
+                return (sum / quantity, quantity);
             }
             else {
-                return 0;
+                return (0, 0);
             }
         }
 
-        public double CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
+        public (double, long) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
         {
-            return (
-                CalculateYearMonth(registries, year, (trimester + 1) * 3) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2)
-                ) / 3;
+            (double value1, long quantity1) = CalculateYearMonth(registries, year, (trimester + 1) * 3);
+            (double value2, long quantity2) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1);
+            (double value3, long quantity3) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2);
+            return ( (value1 + value2 + value3) / 3, (quantity1 + quantity2 + quantity3));
         }
 
-        public double CalculateYearMonth(ICollection<Registry> registries, int year, int month)
+        public (double, long) CalculateYearMonth(ICollection<Registry> registries, int year, int month)
         {
             double sum = 0;
-            double quantity = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry is PercentRegistry) {
                     if (registry.Date.Year == year && registry.Date.Month == month) {
@@ -74,44 +73,43 @@ namespace think_agro_metrics.Models
                     throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
             }
             if(quantity > 0) {
-                return sum / quantity;
+                return (sum / quantity, quantity);
             }
             else {
-                return 0;
+                return (0, 0);
             }
         }
 
-        public double CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
+        public (double, long) CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
             double sum = 0;
-            double quantity = 0;
+            long quantity = 0;
             DateTime date = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
             foreach (Registry registry in registries)
             {
                 for (int j = 0; j < 7; j++)
                 {
                     DateTime newDate = date.AddDays(j);
-                    if (registry.Date == newDate)
+                    
+                    if (registry is PercentRegistry)
                     {
-                        if (registry is PercentRegistry)
-                        {
-                            if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month) {
-                                sum += (registry as PercentRegistry).Percent;
-                                quantity++;
-                            }                            
-                        }
-                        else
-                            throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
+                        if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month && registry.Date.Day == newDate.Day) {
+                            sum += (registry as PercentRegistry).Percent;
+                            quantity++;
+                        }                            
                     }
+                    else
+                        throw new TypeAccessException("PercentIndicatorCalculator can't work over this type of registry");
+                    
                 }
             }
             if (quantity > 0)
             {
-                return sum / quantity;
+                return (sum / quantity, quantity);
             }
             else
             {
-                return 0;
+                return (0, 0);
             }
         }
 
@@ -153,14 +151,16 @@ namespace think_agro_metrics.Models
 
          }
 
-        public double[] Cumulative(double[] values)
+        public double[] Cumulative(double[] values, long[] quantities)
         {
             double sum = 0;
-            double i = 1;
+            double quantity = 0;
+            int i = 0;
             List<double> result = new List<double>();
             foreach (double value in values)
             {
-                result.Add((sum + value) / i);
+                quantity += quantities[i];
+                result.Add((sum + value) / quantity);
                 sum += value;
                 i++;
             }

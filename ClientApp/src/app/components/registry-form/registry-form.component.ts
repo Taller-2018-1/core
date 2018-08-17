@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+import {Component, OnInit, TemplateRef, Input, Output, EventEmitter} from '@angular/core';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Registry } from '../../shared/models/registry';
@@ -29,13 +29,15 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
+  @Output() added = new EventEmitter();
+
   submodalRef: BsModalRef;
   
   //For documents
   fileList: File[][] = new Array();
   documentList: Document[] = new Array();
 
-  onSubmit() {
+  addRegistry() {
     //let nameVerification = false;
 
     this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
@@ -48,6 +50,8 @@ export class RegistryFormComponent implements OnInit {
         this.duplicateNameAlert();
       }
     });
+    this.added.emit();
+    this.closeModal();
   }
 
   closeModal() {
