@@ -397,7 +397,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries).Value);
             }
             
             // Return the list with the results
@@ -431,7 +431,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year));
+                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year).Value);
             }
             
             // Return the list with the results
@@ -466,7 +466,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester));
+                list.Add(indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester).Value);
             }
 
             // Return the list with the results
@@ -503,7 +503,7 @@ namespace think_agro_metrics.Controllers
             // Calculate every indicator
             foreach (Indicator indicator in indicators) {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month));
+                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month).Value);
             }
             
             // Return the list with the results
@@ -541,7 +541,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay));
+                list.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay).Value);
             }
 
             // Return the list with the results
@@ -715,6 +715,7 @@ namespace think_agro_metrics.Controllers
             
             // Calculation
             List<double> values = new List<double>();
+            List<long> quantities = new List<long>();
             List<Registry> registriesYear;
 
             int year = 2018;
@@ -741,12 +742,14 @@ namespace think_agro_metrics.Controllers
             while (year <= maxYear)
             {
                 registriesYear = indicator.Registries.Where(r => r.Date.Year == year).ToList();
-                values.Add(indicator.IndicatorCalculator.CalculateYear(registriesYear, year));
+                (double value, long quantity) = indicator.IndicatorCalculator.CalculateYear(registriesYear, year);
+                values.Add(value);
+                quantities.Add(quantity);
                 year++;
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
-            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray());
+            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray(), quantities.ToArray());
 
             return Ok(result);
         }
@@ -776,6 +779,7 @@ namespace think_agro_metrics.Controllers
 
             // Calculation
             List<double> values = new List<double>();
+            List<long> quantities = new List<long>();
             List<Registry> registriesYearMonth;
             int month = 1;
 
@@ -783,12 +787,14 @@ namespace think_agro_metrics.Controllers
             while (month <= 12)
             {
                 registriesYearMonth = indicator.Registries.Where(r => r.Date.Year == year && r.Date.Month == month).ToList();
-                values.Add(indicator.IndicatorCalculator.CalculateYearMonth(registriesYearMonth, year, month));
+                (double value, long quantity) = indicator.IndicatorCalculator.CalculateYearMonth(registriesYearMonth, year, month);
+                values.Add(value);
+                quantities.Add(quantity);
                 month++;
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
-            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray());
+            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray(), quantities.ToArray());
 
             return Ok(result);
         }
@@ -817,6 +823,7 @@ namespace think_agro_metrics.Controllers
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
 
             List<double> values = new List<double>();
+            List<long> quantities = new List<long>();
             List<Registry> registriesYearMonth;
             int initialMonth = (trimester + 1) * 3 - 2;
             int month = initialMonth;
@@ -825,12 +832,14 @@ namespace think_agro_metrics.Controllers
             while (month <= initialMonth + 2)
             {
                 registriesYearMonth = indicator.Registries.Where(r => r.Date.Year == year && r.Date.Month == month).ToList();
-                values.Add(indicator.IndicatorCalculator.CalculateYearMonth(registriesYearMonth, year, month));
+                (double value, long quantity) = indicator.IndicatorCalculator.CalculateYearMonth(registriesYearMonth, year, month);
+                values.Add(value);
+                quantities.Add(quantity);
                 month++;
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
-            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray());
+            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray(), quantities.ToArray());
 
             return Ok(result);
         }
@@ -864,19 +873,23 @@ namespace think_agro_metrics.Controllers
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
 
             List<double> values = new List<double>();
+            List<long> quantities = new List<long>();
             DateTime currentMonday = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
 
 
             // Split the registries by weeks and calculate
             while (currentMonday.Month <= month) // Asumes that the first value of currentMonth is at most 1 month less (by example the week of 30/07/2018)
             {
-                values.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, currentMonday.Year, currentMonday.Month, currentMonday.Day));
+                (double value, long quantity) = indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, currentMonday.Year, currentMonday.Month, currentMonday.Day);
+
+                values.Add(value);
+                quantities.Add(quantity);
 
                 currentMonday = currentMonday.AddDays(7);
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
-            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray());
+            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray(), quantities.ToArray());
 
             return Ok(result);
         }
@@ -907,6 +920,7 @@ namespace think_agro_metrics.Controllers
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
 
             List<double> values = new List<double>();
+            List<long> quantities = new List<long>();
             List<Registry> registriesDay;
             DateTime startDate = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
             DateTime currentDate = startDate;
@@ -921,13 +935,15 @@ namespace think_agro_metrics.Controllers
                     r.Date.Day == currentDate.Day)
                     .ToList();
 
-                values.Add(indicator.IndicatorCalculator.Calculate(registriesDay));
+                (double value, long quantity) = indicator.IndicatorCalculator.Calculate(registriesDay);
+                values.Add(value);
+                quantities.Add(quantity);
 
                 currentDate = currentDate.AddDays(1);
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
-            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray());
+            double[] result = indicator.IndicatorCalculator.Cumulative(values.ToArray(), quantities.ToArray());
 
             return Ok(result);
         }

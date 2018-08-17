@@ -7,30 +7,32 @@ namespace think_agro_metrics.Models
 {
     public class DefaultIndicatorCalculator : IIndicatorCalculator
     {
-        public double Calculate(ICollection<Registry> registries)
-        {           
-            return registries.Count;
+        public (double, long) Calculate(ICollection<Registry> registries)
+        {
+            long value = registries.Count;
+            return (value, value);
         }
 
-        public double CalculateYear(ICollection<Registry> registries, int year)
+        public (double, long) CalculateYear(ICollection<Registry> registries, int year)
         {   
-            int counter = 0;
+            long counter = 0;
             foreach (Registry registry in registries) {
                 if(registry.Date.Year == year){
                     counter++;
                 }
             }
-            return counter;
+            return (counter, counter);
         }
 
-        public double CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
+        public (double, long) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
         {
-            return CalculateYearMonth(registries, year, (trimester + 1) * 3) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2);
+            long counter = CalculateYearMonth(registries, year, (trimester + 1) * 3).Item2 +
+                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1).Item2 +
+                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2).Item2;
+            return (counter, counter);
         }
 
-        public double CalculateYearMonth(ICollection<Registry> registries, int year, int month)
+        public (double, long) CalculateYearMonth(ICollection<Registry> registries, int year, int month)
         {   
             int counter = 0;
             foreach (Registry registry in registries) {
@@ -38,12 +40,12 @@ namespace think_agro_metrics.Models
                     counter++;
                 }
             }
-            return counter;
+            return (counter, counter);
         }
 
-        public double CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
+        public (double, long) CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
-            int counter = 0;
+            long counter = 0;
             DateTime date = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
             foreach (Registry registry in registries)
             {                
@@ -55,7 +57,7 @@ namespace think_agro_metrics.Models
                     }
                 }                
             }
-            return counter;
+            return (counter, counter);
         }
 
         public double CalculateGoal(ICollection<Goal> goals)
@@ -90,7 +92,7 @@ namespace think_agro_metrics.Models
             return (sum);
         }
 
-        public double[] Cumulative(double[] values)
+        public double[] Cumulative(double[] values, long[] quantities)
         {
             double sum = 0;
             List<double> result = new List<double>();
@@ -106,7 +108,7 @@ namespace think_agro_metrics.Models
 
         public double[] CumulativeGoals(double[] values)
         {
-            return this.Cumulative(values);
+            return this.Cumulative(values, new long[0]);
         }
 
         public double CalculateGoalDay(Goal goal)
