@@ -108,6 +108,8 @@ export class IndicatorEditorComponent implements OnInit {
       }
     }
 
+    this.newIndicator.registries = null;
+
     const roles = Object.keys(RolesType);
     for (const role of roles) {
       if (!this.read[role]) { // If the read permission is removed, then remove too the write permission
