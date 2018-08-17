@@ -855,7 +855,7 @@ namespace think_agro_metrics.Controllers
                 .Include(i => i.Registries)
                 .SingleOrDefaultAsync();
 
-            if (indicator == null)
+            if (indicator == null || month + 2 < startWeekMonth || month - 2 > startWeekMonth)
             {
                 return NoContent();
             }
@@ -864,20 +864,15 @@ namespace think_agro_metrics.Controllers
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
 
             List<double> values = new List<double>();
-            List<Registry> registriesWeek;
             DateTime currentMonday = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
 
 
             // Split the registries by weeks and calculate
             while (currentMonday.Month <= month) // Asumes that the first value of currentMonth is at most 1 month less (by example the week of 30/07/2018)
             {
-                DateTime nextMonday = currentMonday.AddDays(7);
+                values.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, currentMonday.Year, currentMonday.Month, currentMonday.Day));
 
-                registriesWeek = indicator.Registries.Where(r => currentMonday.CompareTo(r.Date) >= 0 && nextMonday.CompareTo(r.Date) < 0).ToList();
-
-                values.Add(indicator.IndicatorCalculator.CalculateWeek(registriesWeek, startWeekYear, startWeekMonth, startWeekDay));
-
-                currentMonday = nextMonday;
+                currentMonday = currentMonday.AddDays(7);
             }
 
             // Cumulative sum/average (depends in the type of registries of the indicator)
