@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth/AuthService';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit{
   @HostBinding('class') classes = 'clearfix'; // This adds a class to the host container
   modalRef: BsModalRef;
   config = {
@@ -25,8 +25,9 @@ export class HeaderComponent implements OnInit {
   };
   email: string;
   password: string;
-  public indicatorGroups: IndicatorGroup[] = [];
 
+  public indicatorGroupsComplete$: Observable<IndicatorGroup[]>;
+  
   authorize() {
     this.authService.auth({
       email: this.email,
@@ -47,11 +48,7 @@ export class HeaderComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.service.getIndicatorGroupsComplete().subscribe(
-      indicatorGroupData => {
-        this.indicatorGroups = indicatorGroupData;
-      }
-    );
+    
   }
 
   openModal(template: TemplateRef<any>) {
@@ -59,12 +56,8 @@ export class HeaderComponent implements OnInit {
   }
 
   openModalReport(template: TemplateRef<any>)
-  {
-    this.service.getIndicatorGroupsComplete().subscribe(
-      indicatorGroupData => {
-        this.indicatorGroups = indicatorGroupData;
-      }
-    );
+  { 
+    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete();
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
 

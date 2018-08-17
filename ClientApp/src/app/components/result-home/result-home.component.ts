@@ -43,7 +43,6 @@ export class ResultHomeComponent implements OnInit {
 
   ngOnInit() {
     this.indicatorGroups$ = this.service.getIndicatorGroups();
-    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete(); 
   }
 
 
