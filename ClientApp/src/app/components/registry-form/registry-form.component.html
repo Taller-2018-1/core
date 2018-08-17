@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+<form #heroForm="ngForm">
   <div class="row">
     <div class="form-group col-xs-12 col-sm-8 col-md-8">
       <label>Nombre</label>
@@ -80,7 +80,7 @@
   <div class="modal-footer">
     <!--modal-footer needed, in other case, the button will be outside the modal-->
     <button type="button" class="btn btn-sm btn-clean-2"  (click)="closeModal()">Cancelar</button>
-    <button type="submit" class="btn btn-sm btn-primary" (click)="closeModal()"
+    <button type="button" class="btn btn-sm btn-primary" (click)="addRegistry()"
     [disabled]="!fileList[0] && !documentList[0]">Aceptar</button>
   </div>
 </form>
