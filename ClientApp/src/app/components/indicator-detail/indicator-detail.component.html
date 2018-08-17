@@ -20,7 +20,7 @@
               <p class="text-center">Valor Indicador</p>
               <h1 class="row-h1 text-center">
                 <strong>
-                  <span *ngIf="value$ | async as value else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ value | number:'.0-2'}}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ value | number:'.0'}}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span> 
+                  <span *ngIf="value$ | async as value else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ value | number:'.0-2'}}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ value | number:'.0-0'}}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
                   </span>
                 </strong> 
                 
@@ -33,7 +33,7 @@
               <p class="text-center">Valor Meta</p>
               <h1 class="row-h1 text-center">
                 <strong>
-                  <span *ngIf="goal$ | async as goal else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ goal | number:'.0-2' }}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ goal | number:'.0' }}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
+                  <span *ngIf="goal$ | async as goal else zero;"><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">{{ goal | number:'.0-2' }}</span><span *ngIf="indicator.registriesType !== RegistryType.PercentRegistry">{{ goal | number:'.0-0' }}</span><span *ngIf="indicator.registriesType === RegistryType.PercentRegistry">%</span>
                   </span>
                 </strong>
               </h1>
@@ -143,15 +143,6 @@
     <div class="modal-body">
       <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
     </div>
-    <dialog open>
-      <dl>
-        <dt>Un registro de este indicador debe tener:</dt>
-        <dd>-Nombre: el nombre del registro</dd>
-        <dd>-Fecha: Fecha en que fue realizado</dd>
-        <dd>-Doc de respaldo: Constancia de realizacion de activiad</dd>
-        <dd>-Tipo de registro: Seleccionar el tipo correspondiente</dd>
-      </dl>
-    </dialog>
   </ng-template>
 
   <!-- Modal Edit Goal -->

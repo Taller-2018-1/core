@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 import { Registry } from '../../../shared/models/registry';
 import { Indicator } from '../../../shared/models/indicator';
@@ -32,6 +32,8 @@ export class RegistryEditorComponent implements OnInit {
   @Input()
   public editModalRef: BsModalRef;
 
+  @Output() changed = new EventEmitter();
+
   minDate = new Date(2018, 0, 1); // 1 January 2018
   maxDate = new Date(); // Today
 
@@ -51,12 +53,12 @@ export class RegistryEditorComponent implements OnInit {
   editRegistry() {
     try {
       notDeepEqual(this.registry, this.newRegistry); // If registry and newRegistry are not equal, just close the modal
-      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe(data =>
-      {
+      this.service.editRegistry(this.newRegistry, this.registriesType).subscribe(data => {
         if (data) {
           // replacing the old registry (this.registry) with the edited registry (this.newRegistry)
           const index = this.registries.indexOf(this.registry);
           this.registries[index] = this.newRegistry;
+          this.changed.emit();
         } else {
           this.duplicateNameAlert();
         }
@@ -66,8 +68,7 @@ export class RegistryEditorComponent implements OnInit {
       // let index = this.registries.indexOf(this.registry);
       // this.registries[index] = this.newRegistry;
 
-    }
-    catch (error) {
+    } catch (error) {
 
     }
     this.editModalRef.hide();
