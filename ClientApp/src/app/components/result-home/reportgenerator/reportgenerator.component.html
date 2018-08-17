@@ -70,8 +70,8 @@
               <!--End Dropdown-->
             </div>
           </td>
-          <td width="15%">
-            <div *ngIf="selectedPeriod !== 'Ninguno'">
+          <td width="15%" *ngIf="selectedPeriod !== 'Ninguno'">
+            <div>
               <!--Dropdown  trimestral, mensual, semanal-->
               <div class="btn-group" dropdown>
                 <button type="button" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"

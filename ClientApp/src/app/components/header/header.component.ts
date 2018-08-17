@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
   };
   email: string;
   password: string;
-  public indicatorGroupsComplete$: Observable<IndicatorGroup[]>;
+  public indicatorGroups: IndicatorGroup[] = [];
 
   authorize() {
     this.authService.auth({
@@ -47,7 +47,11 @@ export class HeaderComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.indicatorGroupsComplete$ = this.service.getIndicatorGroupsComplete();
+    this.service.getIndicatorGroupsComplete().subscribe(
+      indicatorGroupData => {
+        this.indicatorGroups = indicatorGroupData;
+      }
+    );
   }
 
   openModal(template: TemplateRef<any>) {
@@ -56,6 +60,11 @@ export class HeaderComponent implements OnInit {
 
   openModalReport(template: TemplateRef<any>)
   {
+    this.service.getIndicatorGroupsComplete().subscribe(
+      indicatorGroupData => {
+        this.indicatorGroups = indicatorGroupData;
+      }
+    );
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
 
