@@ -7,7 +7,7 @@ namespace think_agro_metrics.Models
 {
     public class PercentIndicatorCalculator : IIndicatorCalculator
     {
-        public (double, long) Calculate(ICollection<Registry> registries)
+        public (double Value, long Quantity) Calculate(ICollection<Registry> registries)
         {
             double sum = 0;
             long quantity = 0;
@@ -28,7 +28,7 @@ namespace think_agro_metrics.Models
             }
         }
 
-        public (double, long) CalculateYear(ICollection<Registry> registries, int year)
+        public (double Value, long Quantity) CalculateYear(ICollection<Registry> registries, int year)
         {
             double sum = 0;
             long quantity = 0;
@@ -50,7 +50,7 @@ namespace think_agro_metrics.Models
             }
         }
 
-        public (double, long) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
+        public (double Value, long Quantity) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
         {
             (double value1, long quantity1) = CalculateYearMonth(registries, year, (trimester + 1) * 3);
             (double value2, long quantity2) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1);
@@ -58,7 +58,7 @@ namespace think_agro_metrics.Models
             return ( (value1 + value2 + value3) / 3, (quantity1 + quantity2 + quantity3));
         }
 
-        public (double, long) CalculateYearMonth(ICollection<Registry> registries, int year, int month)
+        public (double Value, long Quantity) CalculateYearMonth(ICollection<Registry> registries, int year, int month)
         {
             double sum = 0;
             long quantity = 0;
@@ -80,7 +80,7 @@ namespace think_agro_metrics.Models
             }
         }
 
-        public (double, long) CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
+        public (double Value, long Quantity) CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
             double sum = 0;
             long quantity = 0;
