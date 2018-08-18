@@ -57,6 +57,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   // Document data (for EditDocument)
   document: Document = null;
+  nDocs: number;
 
   constructor(private service: IndicatorService,
     private router: Router,
@@ -198,6 +199,10 @@ export class IndicatorDetailComponent implements OnInit {
 
   openModalEditIndicator(template: TemplateRef<any>) {
     this.indicatorModalRef = this.modalService.show(template);
+  }
+
+  updateNDocs(event: number) {
+    this.nDocs = event;
   }
 
 }

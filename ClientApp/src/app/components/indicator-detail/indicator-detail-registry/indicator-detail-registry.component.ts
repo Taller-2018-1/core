@@ -28,7 +28,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   @Input()
   public registries: Registry[];
 
-  //@Input()
+  @Input()
   public nDocs;
 
   loading: boolean = true;
