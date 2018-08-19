@@ -570,7 +570,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries);
+            var value = indicator.IndicatorCalculator.Calculate(indicator.Registries).Value;
 
             return Ok(value);
         }
@@ -597,7 +597,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year);
+            var value = indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year).Value;
 
             return Ok(value);
         }
@@ -624,7 +624,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester);
+            var value = indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester).Value;
 
             return Ok(value);
         }
@@ -654,7 +654,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month);
+            var value = indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month).Value;
 
             return Ok(value);
         }
@@ -684,7 +684,7 @@ namespace think_agro_metrics.Controllers
             }
 
             indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-            var value = indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay);
+            var value = indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, startWeekYear, startWeekMonth, startWeekDay).Value;
 
             return Ok(value);
         }

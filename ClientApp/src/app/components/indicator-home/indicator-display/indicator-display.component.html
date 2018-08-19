@@ -15,11 +15,13 @@
                       <div class="row" *ngIf="goalsObservable | async as goals">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <p>Actual</p>
-                          <span class="percentfactor">{{ indicatorResults[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
+                          <span *ngIf="indicator.registriesType == 2;"class="percentfactor">{{ indicatorResults[i] | number:'.0-2' }}<strong >%</strong></span>
+                          <span *ngIf="indicator.registriesType != 2;" class="percentfactor">{{ indicatorResults[i] | number:'.0-0' }}</span>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <p>Meta</p>
-                          <span class="percentfactor">{{ goals[i] | number:'.0-2' }}<strong *ngIf="indicator.registriesType == 2;">%</strong></span>
+                          <span *ngIf="indicator.registriesType == 2;" class="percentfactor">{{ goals[i] | number:'.0-2' }}<strong >%</strong></span>
+                          <span *ngIf="indicator.registriesType != 2;" class="percentfactor">{{ goals[i] | number:'.0-0' }}</span>
                         </div>
                       </div>
                       <p class="text-ellipsis" title="{{ indicator.name }}">{{ indicator.name }}</p>
@@ -45,4 +47,3 @@
 <ng-template #loading>
   Cargando...
 </ng-template>
-  
