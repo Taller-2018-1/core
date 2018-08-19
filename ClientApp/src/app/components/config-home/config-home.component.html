@@ -113,33 +113,28 @@
 
       <!-- Modal Add IndicatorGroup -->
       <ng-template #addIndicatorGroup>
-        <div class="modal-dialog">
-          <div class="modal-header">
-            <h4 class="modal-title pull-left">Ingrese un nuevo resultado esperado</h4>
-            <button type="button" class="close pull-right" aria-label="Close"
-                    (click)="addIndicatorGroupModalRef.hide()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-indicator-group-form (updateEvent)="update()"
-                                      [modalRef]="addIndicatorGroupModalRef"></app-indicator-group-form>
-          </div>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Ingrese un nuevo resultado esperado</h4>
+          <button type="button" class="close pull-right" aria-label="Close"
+                  (click)="addIndicatorGroupModalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+
+        <app-indicator-group-form (updateEvent)="update()"
+                                  [modalRef]="addIndicatorGroupModalRef"></app-indicator-group-form>
+
       </ng-template>
 
 
       <ng-template #addIndicator>
-        <div class="modal-dialog">
-          <div class="modal-header">
-            <h4 class="modal-title pull-left">Ingrese un nuevo indicador</h4>
-            <button type="button" class="close pull-right" aria-label="Close" (click)="addIndicatorModalRef.hide()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-indicator-form (udpateEvent)="update()" [modalRef]="addIndicatorModalRef"
-                                [idIndicatorGroup]="idIndicatorGroup"></app-indicator-form>
-          </div>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Ingrese un nuevo indicador</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="addIndicatorModalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+
+        <app-indicator-form (udpateEvent)="update()" [modalRef]="addIndicatorModalRef"
+                            [idIndicatorGroup]="idIndicatorGroup"></app-indicator-form>
       </ng-template>
