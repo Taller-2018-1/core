@@ -61,6 +61,10 @@ export class HeaderComponent implements OnInit{
     this.modalRef = this.modalService.show(template,  {class: 'modal-lg modal-md'});
   }
 
+  goToHome() {
+   this.router.navigateByUrl('/home'); 
+  }
+
   logOut() {
     this.authService.signOut().subscribe();
     this.router.navigateByUrl('/welcome') ;
