@@ -6,15 +6,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/" style="width: 160px;"><img alt="" src="/assets/images/thinkagro.png"></a>
+      <a href="/"><img style="height: 70px;" src="/assets/images/thinkagro.png"></a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-          <li><a class="active" href="/">Inicio</a></li>
-          <li [class.hidden]="!isLogged || !isAdminOrManager"> <a (click)="openModalReport(generator)"  href="javascript:void(0)" onclick="return false;">Generar Informe</a></li> <!-- Yo lo puse-->
-          <li [class.hidden]="!isLogged || !isAdminOrManager" ><a  (click)="goToConfigPage()" >Configuración</a></li>
-          <li [class.hidden]="isLogged" ><a (click)="openModal(login)" href="javascript:void(0)"  >Iniciar Sesión</a></li>
-          <li [class.hidden]="!isLogged" ><a (click)="logOut()" href="javascript:void(0)"  >Cerrar Sesión</a></li>
+          <li data-toggle="collapse" data-target=".navbar-collapse"><a class="active" href="/">Inicio</a></li>
+          <li data-toggle="collapse" data-target=".navbar-collapse" [class.hidden]="!isLogged || !isAdminOrManager"> <a (click)="openModalReport(generator)"  href="javascript:void(0)" onclick="return false;">Generar Informe</a></li> <!-- Yo lo puse-->
+          <li data-toggle="collapse" data-target=".navbar-collapse" [class.hidden]="!isLogged || !isAdminOrManager" ><a  (click)="goToConfigPage()" >Configuración</a></li>
+          <li data-toggle="collapse" data-target=".navbar-collapse" [class.hidden]="isLogged" ><a (click)="openModal(login)" href="javascript:void(0)"  >Iniciar Sesión</a></li>
+          <li data-toggle="collapse" data-target=".navbar-collapse" [class.hidden]="!isLogged" ><a (click)="logOut()" href="javascript:void(0)"  >Cerrar Sesión</a></li>
       </ul>
 
       <ng-template #generator >
