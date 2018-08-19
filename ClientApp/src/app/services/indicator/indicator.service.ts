@@ -263,4 +263,8 @@ export class IndicatorService {
   editIndicator(indicator: Indicator): Observable<Indicator> {
     return this.http.put<Indicator>(IndicatorService.INDICATORS_API + indicator.indicatorID, indicator);
   }
+
+  verifyIsAscending(goals: Goal[]): Observable<boolean> {
+    return this.http.post<boolean>(IndicatorService.INDICATORS_API + 'IsAscending', goals);
+  }
 }

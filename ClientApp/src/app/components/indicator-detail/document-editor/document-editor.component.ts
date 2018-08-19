@@ -29,6 +29,8 @@ export class DocumentEditorComponent implements OnInit {
   @Input()
   public editModalRef: BsModalRef;
 
+  @Input() bsConfig;
+
   minDate = new Date(2018, 0, 1); // 1 January 2018
   maxDate = new Date(); // Today
   public bsValue;
@@ -37,7 +39,7 @@ export class DocumentEditorComponent implements OnInit {
     private localeService: BsLocaleService, private datepickerConfig: BsDatepickerConfig) { }
 
   ngOnInit() {
-    this.newDocument= JSON.parse(JSON.stringify(this.document)); // To create a clone of the selected document (this.document)
+    this.newDocument = JSON.parse(JSON.stringify(this.document)); // To create a clone of the selected document (this.document)
     this.localeService.use('es'); // Datepicker with spanish locale
     this.datepickerConfig.showWeekNumbers = false; // Don't show the week numbers in the datepicker
     this.fixDate();
@@ -46,17 +48,16 @@ export class DocumentEditorComponent implements OnInit {
   editDocument() {
     try {
       notDeepEqual(this.document, this.newDocument); // If document and newDcoument are not equal, just close the modal
-      
+
         this.service.editDocument(this.newDocument).subscribe(
           data => {
 
-            this.updateEvent.emit("Document modified");
+            this.updateEvent.emit('Document modified');
           },
           err => console.error(err)
         );
 
-    }
-    catch (error) {
+    } catch (error) {
 
     }
 

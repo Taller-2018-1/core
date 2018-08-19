@@ -7,11 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
-//Models
+// Models
 import { Registry } from '../../../shared/models/registry';
 import { Document } from '../../../shared/models/document';
 
-//Services
+// Services
 import { RegistryService } from '../../../services/registry/registry.service';
 import { forEach } from '@angular/router/src/utils/collection';
 
@@ -26,17 +26,17 @@ export class LinkDocumentFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idRegistry;
   @Input() registry: Registry;
+  @Input() bsConfig;
 
   onSubmit() {
-    this.model.extension = "link";
-    this.RegistryService.addLinkDocument(this.model, this.idRegistry).subscribe(
-      (data) =>{
+    this.model.extension = 'link';
+    this.registryService.addLinkDocument(this.model, this.idRegistry).subscribe(
+      (data) => {
         data.forEach(element => {
           this.registry.documents.push(element);
         });
         this.closeModal();
     });
-    
   }
 
   showFormControls(form: any) {
@@ -50,11 +50,11 @@ export class LinkDocumentFormComponent implements OnInit {
   }
 
   constructor(private router: Router,
-              private RegistryService: RegistryService,
+              private registryService: RegistryService,
               private modalService: BsModalService) {
     this.model = new Document();
-    this.model.name = "";
-    this.model.link = "";
+    this.model.name = '';
+    this.model.link = '';
   }
 
   ngOnInit() {

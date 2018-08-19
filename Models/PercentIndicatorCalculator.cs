@@ -50,12 +50,34 @@ namespace think_agro_metrics.Models
             }
         }
 
+        // The trimester starts at 0
         public (double Value, long Quantity) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
         {
-            (double value1, long quantity1) = CalculateYearMonth(registries, year, (trimester + 1) * 3);
-            (double value2, long quantity2) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1);
-            (double value3, long quantity3) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2);
-            return ( (value1 + value2 + value3) / 3, (quantity1 + quantity2 + quantity3));
+            int initialMonth = (trimester + 1) * 3 - 2;
+            double sum = 0;
+            long quantity = 0;
+
+            var (value1, quantity1) = this.CalculateYearMonth(registries, year, initialMonth);
+            var (value2, quantity2) = this.CalculateYearMonth(registries, year, initialMonth + 1);
+            var (value3, quantity3) = this.CalculateYearMonth(registries, year, initialMonth + 2);
+
+            sum += value1 * quantity1;
+            sum += value2 * quantity2;
+            sum += value3 * quantity3;
+
+            quantity += quantity1;
+            quantity += quantity2;
+            quantity += quantity3;
+
+            if (quantity > 0)
+            {
+                return (sum / quantity, quantity);
+            }
+            else
+            {
+                return(0, 0);
+            }            
+
         }
 
         public (double Value, long Quantity) CalculateYearMonth(ICollection<Registry> registries, int year, int month)
@@ -154,15 +176,22 @@ namespace think_agro_metrics.Models
         public double[] Cumulative(double[] values, long[] quantities)
         {
             double sum = 0;
-            double quantity = 0;
-            int i = 0;
+            long quantity = 0;
             List<double> result = new List<double>();
-            foreach (double value in values)
+            for (int i = 0; i < values.Length; i++)
             {
+                sum += values[i] * quantities[i];
                 quantity += quantities[i];
-                result.Add((sum + value) / quantity);
-                sum += value;
-                i++;
+
+                if (quantity == 0)
+                {
+                    result.Add(0);
+                }
+                else
+                {
+                    result.Add((sum) / quantity);
+                }
+                
             }
 
             result = result.Select(r => Math.Round(r, 2, MidpointRounding.AwayFromZero)).ToList();

@@ -62,7 +62,12 @@ export class IndicatorDetailComponent implements OnInit {
   // Document data (for EditDocument)
   document: Document = null;
 
-  constructor(private service: IndicatorService,
+  // Datepicker config
+  bsConfig = { dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false,
+    minDate: new Date(2018, 0, 1), maxDate: new Date()};
+
+  constructor(
+    private service: IndicatorService,
     private router: Router,
     private registryService: RegistryService,
     private indicatorGroupService: IndicatorGroupService,
@@ -89,9 +94,12 @@ export class IndicatorDetailComponent implements OnInit {
     });
   }
 
-  // Called when the dropdown of filters by date changes or the indicator is changed
+  // Called when the dropdown of filters by date changes or the indicator is changed (ex. CRUD registries)
   updateData(event) {
-    this.updateDropdownDateFiltersValues(event);
+
+    if (event.isSpecificYearSelected !== undefined) {
+      this.updateDropdownDateFiltersValues(event);
+    }
 
     // Verify dropdown selection bottom-up (from week to year)
     if (this.isSpecificWeekSelected) {
@@ -126,6 +134,9 @@ export class IndicatorDetailComponent implements OnInit {
   updateObservablesAllYears() {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
     this.value$ = this.service.calculateSpecificIndicator(this.idIndicator);
+    this.value$.subscribe(data => {
+      console.log(data);
+    });
     this.goal$ = this.service.getGoal(this.idIndicator);
     this.chartValues$ = this.service.calculateIndicatorChart(this.idIndicator);
     this.chartGoals$ = this.service.getGoalChart(this.idIndicator);

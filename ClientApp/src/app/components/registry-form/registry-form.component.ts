@@ -29,19 +29,20 @@ export class RegistryFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idIndicator;
   @Input() indicator: Indicator;
+  @Input() bsConfig;
   @Output() added = new EventEmitter();
 
   submodalRef: BsModalRef;
-  
-  //For documents
+
+  // For documents
   fileList: File[][] = new Array();
   documentList: Document[] = new Array();
 
   addRegistry() {
-    //let nameVerification = false;
+    // let nameVerification = false;
 
     this.indicatorService.addRegistry(this.model, this.idIndicator, RegistryType[this.indicator.registriesType]).subscribe((data) => {
-      //nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
+      // nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
       if (data) {
         this.model = data;
         this.indicator.registries.push(this.model);
@@ -116,7 +117,7 @@ export class RegistryFormComponent implements OnInit {
   deleteFile(file: File[]) {
     this.fileList.splice(this.fileList.indexOf(file), 1);
   }
-  
+
   addDocuments() {
     this.documentList.forEach(element => {
       this.registryService.addLinkDocument(element, this.model.registryID).subscribe(data => {
@@ -134,7 +135,7 @@ export class RegistryFormComponent implements OnInit {
         } else if (event.type === HttpEventType.Response) {
           this.model.documents.push(new Document().fromJSON(event.body));
         }
-      });      
+      });
     });
   }
 }
