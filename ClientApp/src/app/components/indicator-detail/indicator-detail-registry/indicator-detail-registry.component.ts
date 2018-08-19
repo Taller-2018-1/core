@@ -38,6 +38,23 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   @Input()
   public registriesType: number;
 
+  @Input()
+  public nDocs;
+
+  loading: boolean = true;
+
+  get documents(): Document[] {
+    return this.registry.documents;
+  }
+
+  set documents(value: Document[]) {
+    this.registry.documents = value;
+    if (value && this.nDocs == 0) {
+      this.loading = false;
+    }
+  } 
+
+
   @Output()
   private updateEvent = new EventEmitter();
 

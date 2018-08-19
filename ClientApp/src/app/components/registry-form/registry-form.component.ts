@@ -33,8 +33,17 @@ export class RegistryFormComponent implements OnInit {
   
   //For documents
   fileList: File[][] = new Array();
-  documentList: Document[] = new Array();
 
+  documentList: Document[] = new Array();
+  public _nDocs: number;
+
+  get nDocs(): number {
+    return this._nDocs;
+  }
+
+  set nDocs(newFullName: number) {
+    this._nDocs = newFullName;
+  } 
   onSubmit() {
     //let nameVerification = false;
 
@@ -63,6 +72,7 @@ export class RegistryFormComponent implements OnInit {
   ) {
     this.model = new Registry();
     this.router = router;
+    this.nDocs = 0;
   }
 
   private getIndicator(indicatorId: number) {

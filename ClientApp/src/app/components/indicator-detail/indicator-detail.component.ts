@@ -68,6 +68,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   // Document data (for EditDocument)
   document: Document = null;
+  nDocs: number;
 
   constructor(private service: IndicatorService,
     private router: Router,
@@ -263,5 +264,8 @@ export class IndicatorDetailComponent implements OnInit {
     return this.authService.isAllowedTo(this.idIndicator, PermissionClaim.WRITE);
   }
 
+  updateNDocs(event: number) {
+    this.nDocs = event;
+  }
 }
 

@@ -153,7 +153,7 @@
               </div>
             </div>
             <!--Begin tab-->
-            <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
+            <app-indicator-detail-registry (updateEvent)="loadDataByFilters()" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType" [nDocs]="nDocs"></app-indicator-detail-registry>
           </div>
         </div>
 
@@ -174,7 +174,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+      <app-registry-form [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef" (eventNDocs)="updateNDocs($event)"></app-registry-form>
     </div>
     <dialog open>
       <dl>
