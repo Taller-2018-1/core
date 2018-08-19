@@ -9,6 +9,6 @@ before_script:
 - npm i -g npm
 
 script:
-- dotnet publish > /dev/null
+- dotnet publish
         # - dotnet build
 #  - dotnet test MTAServiceStatus.Tests/MTAServiceStatus.Tests.csproj
