@@ -13,6 +13,7 @@ export class AddDocumentFormComponent implements OnInit {
 
   linkChecked: boolean = true;
 
+  @Input() bsConfig;
   @Output() linkAdded: EventEmitter<Document> = new EventEmitter<Document>();
   @Output() fileAdded: EventEmitter<File[]> = new EventEmitter<File[]>();
 

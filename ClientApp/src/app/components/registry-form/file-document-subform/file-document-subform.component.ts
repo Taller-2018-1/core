@@ -10,16 +10,18 @@ import { Document } from '../../../shared/models/document';
 export class FileDocumentSubformComponent implements OnInit {
 
   model: Document;
+  @Input() bsConfig;
   @Output() docAdded: EventEmitter<File[]> = new EventEmitter<File[]>();
 
   constructor() {
     this.model = new Document();
-    this.model.name = "Nombre";}
+    this.model.name = 'Nombre';
+  }
 
   ngOnInit() {
   }
 
-  upload(file: File[]){
+  upload(file: File[]) {
     this.docAdded.emit(file);
   }
 }

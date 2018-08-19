@@ -120,7 +120,7 @@
               </div>
             </div>
             <!--Begin tab-->
-            <app-indicator-detail-registry (updateEvent)="updateData('')" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType"></app-indicator-detail-registry>
+            <app-indicator-detail-registry (updateEvent)="updateData('')" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType" [bsConfig]="bsConfig"></app-indicator-detail-registry>
           </div>
         </div>
 
@@ -141,7 +141,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-registry-form (added)="updateData('')" [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef"></app-registry-form>
+      <app-registry-form (added)="updateData('')" [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef" [bsConfig]="bsConfig"></app-registry-form>
     </div>
   </ng-template>
 

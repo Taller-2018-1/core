@@ -32,6 +32,8 @@ export class RegistryEditorComponent implements OnInit {
   @Input()
   public editModalRef: BsModalRef;
 
+  @Input() bsConfig;
+
   @Output() changed = new EventEmitter();
 
   minDate = new Date(2018, 0, 1); // 1 January 2018

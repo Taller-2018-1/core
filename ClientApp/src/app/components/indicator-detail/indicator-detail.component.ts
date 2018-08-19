@@ -62,7 +62,12 @@ export class IndicatorDetailComponent implements OnInit {
   // Document data (for EditDocument)
   document: Document = null;
 
-  constructor(private service: IndicatorService,
+  // Datepicker config
+  bsConfig = { dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false,
+    minDate: new Date(2018, 0, 1), maxDate: new Date()};
+
+  constructor(
+    private service: IndicatorService,
     private router: Router,
     private registryService: RegistryService,
     private indicatorGroupService: IndicatorGroupService,

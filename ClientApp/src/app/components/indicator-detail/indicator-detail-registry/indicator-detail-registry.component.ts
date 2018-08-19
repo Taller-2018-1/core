@@ -38,6 +38,8 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   @Input()
   public registriesType: number;
 
+  @Input() bsConfig;
+
   @Output()
   updateEvent = new EventEmitter();
 

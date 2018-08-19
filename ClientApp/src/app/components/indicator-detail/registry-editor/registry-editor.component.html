@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <label for="date">Fecha</label>
-      <input class="form-control" id="date" required [(ngModel)]="newRegistry.date" name="date" #date="ngModel"  bsDatepicker [minDate]="minDate" [maxDate]="maxDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"/>
+      <input type="button" class="form-control text-left" id="date" required [(ngModel)]="newRegistry.date" name="date" #date="ngModel"  bsDatepicker [bsConfig]="bsConfig"/>
       <div [hidden]="(date.valid || date.pristine)"
             class="alert alert-danger">
         Fecha es requerida
