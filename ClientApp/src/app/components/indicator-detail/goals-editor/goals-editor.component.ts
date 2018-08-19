@@ -52,6 +52,8 @@ export class GoalsEditorComponent implements OnInit {
   public isAdded: boolean; // True if the button to add goals is pressed
   public isChanged: boolean; // True if some field of the form is modified
 
+  public addText: string;
+
   constructor(private service: IndicatorService,
     private fb: FormBuilder) {
       this.createForm();
@@ -67,7 +69,10 @@ export class GoalsEditorComponent implements OnInit {
     // The last year is selected by default
     this.setSelectedYear(this.years.length - 1);
 
-    // Set the data initial data of the form
+    // Set the text to the adder button
+    this.setAddText();
+
+    // Set the initial data of the form
     this.rebuildForm();
   }
 
@@ -90,6 +95,9 @@ export class GoalsEditorComponent implements OnInit {
 
     // Set the last year as selected
     this.setSelectedYear(this.years.length - 1);
+
+    // Update the button text
+    this.setAddText();
   }
 
   // Close the modal, save the changes in the model and the DB and rebuild the form with the new values
@@ -335,6 +343,15 @@ export class GoalsEditorComponent implements OnInit {
         this.rebuildForm();
       }
     });
+  }
+
+  setAddText() {
+    const length = this.monthlyGoals.length;
+    if (length % 12 === 0 && length !== 0) {
+      this.addText = 'Nuevo Año';
+    } else {
+      this.addText = 'Nueva Meta';
+    }
   }
 
 }
