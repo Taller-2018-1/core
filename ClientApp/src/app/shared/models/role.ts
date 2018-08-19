@@ -7,5 +7,4 @@ export class Role {
   permissionsRead: Permission [];
   permissionsWrite: Permission [];
 
-  constructor(roleID: number, roleName: string, roleTOken: string) {}
 }

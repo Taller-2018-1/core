@@ -2,9 +2,17 @@ label {
     cursor: pointer;
     /* Style as you please, it will become the visible UI component. */
  }
- 
+
  #select {
     opacity: 0;
     position: absolute;
     z-index: -1;
+ }
+ p {
+    font-size: smaller;
+    /* margin-top: -15px; */
+    margin-left: 10px;
+    margin-right: 10px;
+    line-height: 8px;
+
  }

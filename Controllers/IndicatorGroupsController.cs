@@ -255,7 +255,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries));
+                list.Add(indicator.IndicatorCalculator.Calculate(indicator.Registries).Value);
             }
 
             // Return the list with the results
@@ -292,7 +292,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year));
+                list.Add(indicator.IndicatorCalculator.CalculateYear(indicator.Registries, year).Value);
             }
 
             // Return the list with the results
@@ -329,7 +329,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester));
+                list.Add(indicator.IndicatorCalculator.CalculateYearTrimester(indicator.Registries, year, trimester).Value);
             }
 
             // Return the list with the results
@@ -369,7 +369,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month));
+                list.Add(indicator.IndicatorCalculator.CalculateYearMonth(indicator.Registries, year, month).Value);
             }
 
             // Return the list with the results
@@ -409,7 +409,7 @@ namespace think_agro_metrics.Controllers
             foreach (Indicator indicator in indicatorGroup.Indicators)
             {
                 indicator.RegistriesType = indicator.RegistriesType; // Assign the IndicatorCalculator according to the Indicator's RegistriesType
-                list.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, year, month, day));
+                list.Add(indicator.IndicatorCalculator.CalculateWeek(indicator.Registries, year, month, day).Value);
             }
 
             // Return the list with the results
