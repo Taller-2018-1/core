@@ -57,7 +57,8 @@
               <div *ngIf="!f.controls.month.valid" class="alert alert-danger">
                 <div *ngIf="f.controls.month.errors.required">{{requiredError}}</div>
                 <div *ngIf="f.controls.month.errors.pattern && indicator.registriesType != 2">{{patternErrorNatural}}</div>
-                <div *ngIf="f.controls.month.errors.pattern && indicator.registriesType == 2">{{patternErrorDecimal}}</div>  
+                <div *ngIf="f.controls.month.errors.pattern && indicator.registriesType == 2">{{patternErrorDecimal}}</div>
+                <div *ngIf="f.controls.month.errors.max">{{patternErrorDecimalExceeds}}</div>
               </div>
             </div>
             <div *ngIf="(i + 1) % 4 === 0">
@@ -76,7 +77,7 @@
 
   <div class="modal-footer">
     <button type="button" (click)="revertChanges()" class="btn btn-sm btn-clean-2">CANCELAR</button>
-    <button [disabled]="!this.form.valid || !(this.isChanged || this.isAdded)" type="submit" (click)="saveChanges()" class="btn btn-sm btn-primary">Guardar</button>
+    <button [disabled]="!this.form.valid || !(this.isChanged || this.isAdded)" type="button" (click)="saveChanges()" class="btn btn-sm btn-primary">Guardar</button>
   </div>
 
 </div>

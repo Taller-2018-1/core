@@ -1,6 +1,6 @@
 // Angular
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { timer } from 'rxjs/observable/timer';
 
 // Models
@@ -14,6 +14,7 @@ import { IndicatorService } from '../../../services/indicator/indicator.service'
 
 // SweetAlert2
 import swal from 'sweetalert2';
+import {RegistryType} from '../../../shared/models/registryType';
 
 @Component({
   selector: 'app-goals-editor',
@@ -46,6 +47,7 @@ export class GoalsEditorComponent implements OnInit {
   public requiredError = 'Este campo es obligatorio';
   public patternErrorNatural = 'El valor debe ser un número positivo';
   public patternErrorDecimal = 'El valor debe ser un número positivo con hasta 2 decimales';
+  public patternErrorDecimalExceeds = 'El valor debe ser menor a 100';
   // Flags to know if the form has changed
   public isAdded: boolean; // True if the button to add goals is pressed
   public isChanged: boolean; // True if some field of the form is modified
@@ -110,20 +112,26 @@ export class GoalsEditorComponent implements OnInit {
       }
     }
 
-    this.service.postGoals(this.indicator.indicatorID, newGoals).subscribe((res) => {
-      this.service.postGoals(this.indicator.indicatorID, goals).subscribe((goalsResult) => {
-        res.forEach(g => {
-          goalsResult.push(g);
-        });
-        this.indicator.goals = goalsResult;
-        this.updateGoalEvent.emit();
-      });
-    });
+    const isAscending = this.verifyPercentAscendingOrder(goals);
 
-    // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
-    // rebuildForm() uses the already saved values of the indicator's goals
-    const source = timer(500);
-    source.subscribe(() => this.rebuildForm());
+    if (isAscending) {
+      this.service.postGoals(this.indicator.indicatorID, newGoals).subscribe((res) => {
+        this.service.postGoals(this.indicator.indicatorID, goals).subscribe((goalsResult) => {
+          res.forEach(g => {
+            goalsResult.push(g);
+          });
+          this.indicator.goals = goalsResult;
+          this.updateGoalEvent.emit();
+        });
+      });
+
+      // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
+      // rebuildForm() uses the already saved values of the indicator's goals
+      const source = timer(500);
+      source.subscribe(() => this.rebuildForm());
+    } else {
+      this.showErrorNotAscendingModal();
+    }
   }
 
   revertChanges() {
@@ -236,7 +244,8 @@ export class GoalsEditorComponent implements OnInit {
       }));
     } else { // Else, it allows decimal numbers (with max. 2 decimals)
       this.monthlyGoals.push(this.fb.group({
-        month: [value, [Validators.required, Validators.pattern('[0-9]{1,}([\.][0-9]{1,2}){0,1}')]]
+        month: [value, [Validators.required, Validators.pattern('[0-9]{1,}([\.][0-9]{1,2}){0,1}'),
+          Validators.max(100)]]
       }));
     }
   }
@@ -248,6 +257,26 @@ export class GoalsEditorComponent implements OnInit {
       title: 'Meta no válida',
       html: '<h6>Una de las metas ingresadas tiene un valor no válido.</h6><br>Los cambios realizados serán revertidos' +
       '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
+      type: 'error',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      confirmButtonClass: 'btn btn-sm btn-primary',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.value) {
+        // Discard changes
+        this.rebuildForm();
+      }
+    });
+  }
+
+  showErrorNotAscendingModal() {
+    swal({
+      title: 'Meta no válida',
+      html: '<h6>Las metas de indicadores porcentuales deben ser ascendentes dentro de un periodo anual.</h6>' +
+        '<br>Los cambios realizados serán revertidos' +
+        '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
       type: 'error',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
@@ -286,6 +315,35 @@ export class GoalsEditorComponent implements OnInit {
       }
     });
   }
+
+  verifyPercentAscendingOrder(goals): boolean {
+    let isAscending = true;
+    if (this.indicator.registriesType === RegistryType.PercentRegistry) {
+      const goalsByYear = [];
+      for (let i = 0; goals.length > i * 12; i++) {
+        goalsByYear.push(goals.slice(i * 12, i * 12 + 12));
+      }
+      goalsByYear.forEach( (goalsYear) => {
+        if (isAscending) {
+          let prev = 0;
+          goalsYear.forEach ( goalYear => {
+            console.log((<number>goalYear.value) + '<' + (<number>prev));
+            console.log('condicion: ' + ((<number>goalYear.value) < (<number>prev)));
+            if ((goalYear.value as number) < (prev as number)) {
+              isAscending = false;
+            } else {
+              prev = goalYear.value;
+            }
+            console.log('prev: ' + prev);
+            console.log('is ascending: ' + isAscending);
+          });
+        }
+      });
+    }
+    console.log('return is ascending: ' + isAscending);
+    return isAscending;
+  }
+
 }
 
 
