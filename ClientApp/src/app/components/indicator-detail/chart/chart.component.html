@@ -1,16 +1,30 @@
 <div class="row">
-  <div class="col-md-12">
-    <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-      <canvas baseChart 
-        [datasets]="DispersionChartData"
-        [labels]="lineChartLabels"
-        [options]="dispersionChartOptions"
-        [colors]="dispersionChartColors"
-        [legend]="lineChartLegend"
-        [chartType]="lineChartType">
-      </canvas>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <span class="h3">Gráfica de Resultados</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-3 col-md-3">
+    Seleccione Tipo Gráfico
+    <br />
+
+    <div class="btn-group" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+        {{ selectedTypeChart }} <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-basic">
+        <li *ngFor="let typeChart of typesChart"><a class="dropdown-item" (click)="selectChart(typeChart)">{{ typeChart }}</a></li>
+      </ul>
     </div>
-    <div style="align-content: center; height: 50vh;" *ngIf="indicator.registriesType != 2">
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div style="align-content: center; height: 50vh;">
       <canvas baseChart
         [datasets]="lineChartData"
         [labels]="lineChartLabels"
@@ -19,14 +33,6 @@
         [legend]="lineChartLegend"
         [chartType]="lineChartType">
       </canvas>
-    </div>
-  </div>
-</div>
-<div class="container" *ngIf="indicator.registriesType == RegistryType.PercentRegistry">
-  <div class="row">
-    <div class="col-md-6">
-      <h4>Desviación estándar: {{devStandar}}</h4>
-      <h4>Varianza: {{varianza}}</h4>
     </div>
   </div>
 </div>

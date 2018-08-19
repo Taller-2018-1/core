@@ -39,7 +39,7 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   public registriesType: number;
 
   @Output()
-  private updateEvent = new EventEmitter();
+  updateEvent = new EventEmitter();
 
   public registry: Registry = null; // For EditRegistry
   public editModalRef: BsModalRef;
@@ -134,7 +134,6 @@ export class IndicatorDetailRegistryComponent implements OnInit {
     }
 
     window.open(url, '_blank');
-
     window.location.href = url;
   }
 
