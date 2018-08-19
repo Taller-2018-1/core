@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, Output } from '@angular/core';
 import { Indicator } from '../../shared/models/indicator';
 import { IndicatorService } from '../../services/indicator/indicator.service';
 import { Registry } from '../../shared/models/registry';
@@ -14,6 +14,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { ActivatedRoute } from '@angular/router';
+import { EventEmitter } from 'protractor'; 
 
 import swal from 'sweetalert2';
 
@@ -30,6 +31,8 @@ export class RegistryFormComponent implements OnInit {
   @Input() idIndicator;
   @Input() indicator: Indicator;
   submodalRef: BsModalRef;
+
+  @Output() eventNDocs = new EventEmitter();
   
   //For documents
   fileList: File[][] = new Array();
@@ -124,23 +127,31 @@ export class RegistryFormComponent implements OnInit {
   }
   
   addDocuments() {
+    this.nDocs = (this.documentList.length + this.fileList.length);
+    this.eventNDocs.emit(this.nDocs.toString());
+
     this.documentList.forEach(element => {
       this.registryService.addLinkDocument(element, this.model.registryID).subscribe(data => {
         data.forEach(document => {
           this.model.documents.push(document);
+          this.nDocs -= 1;
+          this.eventNDocs.emit(this.nDocs.toString());
+
         });
       });
     });
 
     this.fileList.forEach(element => {
       this.registryService.addFileDocument(element, this.model.registryID).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          // this.progress = Math.round(100 * event.loaded / event.total);
-          // console.log();
-        } else if (event.type === HttpEventType.Response) {
+        if (event.type === HttpEventType.UploadProgress)
+          //this.progress = Math.round(100 * event.loaded / event.total);
+          console.log();
+        else if (event.type === HttpEventType.Response) {
           this.model.documents.push(new Document().fromJSON(event.body));
+          this.nDocs -= 1;
+          this.eventNDocs.emit(this.nDocs.toString());
         }
-      });      
+      });
     });
   }
 }

@@ -38,13 +38,9 @@
             <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalLinkDocument($event, linkModal, registry)">Agregar link</button>
           </div>
           <br [class.hidden]="!isWriteAllowed && !isAdminOrManager" />
-          {{holi}}
-          {{this.nDocs}}
+
           <div *ngIf="loading" class="inner-loading-wheel">
             <div class="loader-wheel"></div>
-          </div>
-          <div *ngIf="this.nDocs == 0">
-            (load)="loading=false">
           </div>
           <ng-template ngFor let-document [ngForOf]="registry.documents" let-i="index">
             <div class="row">
