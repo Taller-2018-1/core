@@ -16,6 +16,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import swal from 'sweetalert2';
+import { forEach } from '@angular/router/src/utils/collection';
+import { $, $$ } from 'protractor';
 
 @Component({
   selector: 'app-indicator-detail-registry',
@@ -122,13 +124,34 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   }
 
   goToLink(link: string) {
-    var url = ("https://" + link);
+    var url = link;
+    if (link.substr(0, 5) == "https") {
+      url = link;
+    }
+    else if (link.substr(0, 4) == "http") {
+      url = (link.substr(0, 4) + "s" + link.substr(4, (link.length - 4)));
+    }
+    else{
+      url = ("https://" + link);
+    }
+
+    window.open(url, '_blank');
 
     window.location.href = url;
   }
 
   goToLinkBlank(link: string) {
-    var url = ("https://" + link);
+    var url = link;
+    if (link.substr(0, 5) == "https") {
+      url = link;
+    }
+    else if (link.substr(0, 4) == "http") {
+      url = (link.substr(0, 4) + "s" + link.substr(4, (link.length - 4)) );
+    }
+    else{
+      url = ("https://" + link);
+    }
+
     window.open(url, '_blank');
   }
 
