@@ -36,10 +36,10 @@ export class IndicatorFormComponent implements OnInit {
   // ger always can read
   // encOp always can read and can write, but not every indicator
   // anOp always can read, but can't write by default
-  read: any = { adm: true, ger: true, encOp: true, anOp: true,
+  read: any = { adm: true, ger: true, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
-  write: any = { adm: true, ger: false, encOp: false, anOp: false,
+  write: any = { adm: true, ger: true, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
   constructor(private modalService: BsModalService,
