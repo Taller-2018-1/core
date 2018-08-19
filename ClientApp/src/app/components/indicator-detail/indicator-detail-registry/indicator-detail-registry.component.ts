@@ -16,8 +16,6 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import swal from 'sweetalert2';
-import { forEach } from '@angular/router/src/utils/collection';
-import { $, $$ } from 'protractor';
 
 @Component({
   selector: 'app-indicator-detail-registry',
