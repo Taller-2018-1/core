@@ -14,7 +14,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { ActivatedRoute } from '@angular/router';
-import { EventEmitter } from 'protractor'; 
+import { EventEmitter } from '@angular/core'; 
 
 import swal from 'sweetalert2';
 
