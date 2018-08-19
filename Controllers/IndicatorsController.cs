@@ -1433,5 +1433,38 @@ namespace think_agro_metrics.Controllers
             return Ok();
         }
 
+        // POST: api/Indicators/IsAscending
+        [HttpPost("IsAscending")]
+        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección")]
+        public IActionResult PostIsAscending([FromBody] Goal[] goals)
+        {
+            bool isAscending = true;
+
+            var goalsByYear = goals.GroupBy(g => g.Year, g => g.Value);
+            foreach (IGrouping<int, double> goalsYear in goalsByYear)
+            {
+                if (isAscending)
+                {
+                    double prev = 0;
+                    foreach (double goal in goalsYear)
+                    {
+                        if (goal >= prev)
+                        {
+                            prev = goal;
+                        }
+                        else
+                        {
+                            isAscending = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                    break;
+            }
+
+            return Ok(isAscending);
+        }
+
     }
 }

@@ -112,9 +112,31 @@ export class GoalsEditorComponent implements OnInit {
       }
     }
 
-    const isAscending = this.verifyPercentAscendingOrder(goals);
+    let isAscending = true;
+    if (this.indicator.registriesType === RegistryType.PercentRegistry) {
+      this.service.verifyIsAscending(goals.concat(newGoals)).subscribe( ascending => {
+        isAscending = ascending;
 
-    if (isAscending) {
+        if (isAscending) {
+          this.service.postGoals(this.indicator.indicatorID, newGoals).subscribe((res) => {
+            this.service.postGoals(this.indicator.indicatorID, goals).subscribe((goalsResult) => {
+              res.forEach(g => {
+                goalsResult.push(g);
+              });
+              this.indicator.goals = goalsResult;
+              this.updateGoalEvent.emit();
+            });
+          });
+
+          // Call rebuildForm() with a delay to elude the visualization of errors in the form while the modal is closing
+          // rebuildForm() uses the already saved values of the indicator's goals
+          const source = timer(500);
+          source.subscribe(() => this.rebuildForm());
+        } else {
+          this.showErrorNotAscendingModal();
+        }
+      });
+    } else {
       this.service.postGoals(this.indicator.indicatorID, newGoals).subscribe((res) => {
         this.service.postGoals(this.indicator.indicatorID, goals).subscribe((goalsResult) => {
           res.forEach(g => {
@@ -129,9 +151,8 @@ export class GoalsEditorComponent implements OnInit {
       // rebuildForm() uses the already saved values of the indicator's goals
       const source = timer(500);
       source.subscribe(() => this.rebuildForm());
-    } else {
-      this.showErrorNotAscendingModal();
     }
+
   }
 
   revertChanges() {
@@ -314,34 +335,6 @@ export class GoalsEditorComponent implements OnInit {
         this.rebuildForm();
       }
     });
-  }
-
-  verifyPercentAscendingOrder(goals): boolean {
-    let isAscending = true;
-    if (this.indicator.registriesType === RegistryType.PercentRegistry) {
-      const goalsByYear = [];
-      for (let i = 0; goals.length > i * 12; i++) {
-        goalsByYear.push(goals.slice(i * 12, i * 12 + 12));
-      }
-      goalsByYear.forEach( (goalsYear) => {
-        if (isAscending) {
-          let prev = 0;
-          goalsYear.forEach ( goalYear => {
-            console.log((<number>goalYear.value) + '<' + (<number>prev));
-            console.log('condicion: ' + ((<number>goalYear.value) < (<number>prev)));
-            if ((goalYear.value as number) < (prev as number)) {
-              isAscending = false;
-            } else {
-              prev = goalYear.value;
-            }
-            console.log('prev: ' + prev);
-            console.log('is ascending: ' + isAscending);
-          });
-        }
-      });
-    }
-    console.log('return is ascending: ' + isAscending);
-    return isAscending;
   }
 
 }
