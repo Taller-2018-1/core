@@ -29,7 +29,7 @@ namespace ThinkAgroMetrics.Controllers
 
         // GET: api/Files/ASDKFJ"#L$"L#$J!#"#$JLSDG
         [HttpGet("{link}")]
-        [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
+       // [Authorize(Roles = "administrador_indicadores,gerencia_y_dirección,gestor_operaciones,analista_operaciones,ejecutivo_post-venta,encargado_nuevos_negocios,ejecutivo_técnico_de_control_y_seguimiento,extensionista,extensionista_junior,gestor_contenido")]
         public IActionResult Download([FromRoute] string link) 
         {
             string folderName = "Repository";
