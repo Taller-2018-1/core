@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using think_agro_metrics.Data;
 using think_agro_metrics.Models;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace think_agro_metrics.Controllers
 {
@@ -26,16 +27,26 @@ namespace think_agro_metrics.Controllers
     public class AuthorizationController : Controller
     {
         private IConfiguration _config;
+        private readonly DataContext _context;
+        private IHttpContextAccessor _accessor;
 
-        public class Role{
+        public class RefreshTokenQuery
+        {
+            public String refreshToken;
+        }
+
+        public class Role
+        {
             public String role_id;
             public String role_name;
             public List<String> read;
             public List<String> write;
         }
 
-        public AuthorizationController(IConfiguration config)
+        public AuthorizationController(IConfiguration config, DataContext context, IHttpContextAccessor accessor)
         {
+            _accessor = accessor;
+            _context = context;
             _config = config;
         }
 
@@ -87,27 +98,106 @@ namespace think_agro_metrics.Controllers
             public String UltimaSemilla; //: "030795ac-66ce-4605-5db9-ff16818562ab",
             public Boolean Eliminado; //: false
         }
-        
-        
+
+
         public class UserRole
         {
             public UserRoleResult Resultado;
             public Object Informacion;
         }
 
-        
+
         public class UserRoleResult
         {
-            public String Nombre ; // : "Administrador",
-            public String[] AccionesAutorizadas ; // : [ "fafe970d-963f-41c4-ee3a-b7ec90ee0f19", "1dccffec-076d-446b-4921-cb9ca8945426"],
-            public String Tipo ; // : 0,
-            public String Id ; // : "1a568799-6a2e-453a-690d-0c2c1b8ff761",
-            public String NuevaSemilla ; // : "c4a9f2fa-ebe9-4d0a-3906-385ec270ef68",
-            public String UltimaSemilla ; // : "a8f479de-a17d-405c-e8b6-fc58e41baa13",
-            public Boolean Eliminado ; // : false
+            public String Nombre; // : "Administrador",
+            public String[] AccionesAutorizadas; // : [ "fafe970d-963f-41c4-ee3a-b7ec90ee0f19", "1dccffec-076d-446b-4921-cb9ca8945426"],
+            public String Tipo; // : 0,
+            public String Id; // : "1a568799-6a2e-453a-690d-0c2c1b8ff761",
+            public String NuevaSemilla; // : "c4a9f2fa-ebe9-4d0a-3906-385ec270ef68",
+            public String UltimaSemilla; // : "a8f479de-a17d-405c-e8b6-fc58e41baa13",
+            public Boolean Eliminado; // : false
         }
-                
-        
+
+        // This method consumes a token if it exists or if it is valid. Otherwise, it will return null,
+        // meaning that this token is already consumed or it comes from a foreign IP
+
+        private string GenerateRefreshTokenString()
+        {
+            var randomNumber = new byte[128];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        private RefreshToken GenerateRefreshToken(AuthenticatedUser user){
+            String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            RefreshToken refreshToken = new RefreshToken();
+            refreshToken.ExpirationDate = DateTime.Now.AddDays(14); // RenewToken lasts 14 days
+            refreshToken.IP = clientIp;
+            refreshToken.RefreshTokenString = this.GenerateRefreshTokenString();
+            refreshToken.UID = user.Resultado.Id;
+            _context.RefreshTokens.Add(refreshToken);
+            return refreshToken;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/renew")]
+        private async Task<IActionResult> renewSession([FromBody] RefreshTokenQuery refreshTokenQuery)
+        {
+            try
+            {
+                String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                RefreshToken retrievedToken = _context.RefreshTokens.Where(r_roken => r_roken.RefreshTokenString == refreshTokenQuery.refreshToken).First();// && token.IP == clientIp)
+                if (retrievedToken == null)
+                {
+                    return Unauthorized(); // Nonexistant token
+                }
+                else if (retrievedToken.IP != clientIp)
+                {
+                    _context.RefreshTokens.Remove(retrievedToken);
+                    return Unauthorized(); // Logged from a different IP
+                }
+                else if (retrievedToken.ExpirationDate.CompareTo(DateTime.Now) < 0)
+                {
+                    _context.RefreshTokens.Remove(retrievedToken);
+                    return Unauthorized(); // Token expired long ago :c
+                }
+                else
+                {
+                    AuthenticatedUser user = new AuthenticatedUser();
+                    user.Resultado = new AuthenticatedUserResult();
+                    user.Resultado.Id = retrievedToken.UID;
+                    _context.RefreshTokens.Remove(retrievedToken);
+
+                    UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
+                    if (userDetails == null)
+                    {
+                        return Unauthorized();
+                    }
+
+                    UserRole[] userRoles = await this.GetRolesPerUserFromThinkagro(userDetails);
+                    if (userRoles == null)
+                    {
+                        return Unauthorized();
+                    }
+
+                    String token = this.BuildToken(user, userDetails, userRoles);
+
+                    if (token == null)
+                    {
+                        return Unauthorized();
+                    }
+                    return Ok(new { token = token });
+                }
+            }
+            catch (System.Exception)
+            {
+                return Unauthorized();
+            }
+
+        }
         private string BuildToken(AuthenticatedUser user, UserDetails userDetails, UserRole[] userRoles)
         {
             List<Claim> claims = new List<Claim>();
@@ -116,33 +206,38 @@ namespace think_agro_metrics.Controllers
             claims.Add(new Claim("first_name", userDetails.Resultado.Nombre));
             claims.Add(new Claim("username", userDetails.Resultado.NombreUsuario));
             claims.Add(new Claim("last_name", userDetails.Resultado.Apellido));
-            if(userDetails.Resultado.UrlFoto != null)
+            if (userDetails.Resultado.UrlFoto != null)
             {
                 claims.Add(new Claim("profile_picture", userDetails.Resultado.UrlFoto));
             }
             foreach (var userRole in userRoles)
             {
-                 // Used to return "administrad_ _indicadores" for "Administrador Indicadores", now it return "administrador_indicadores".
-                claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x,i) => i > 0 && char.IsWhiteSpace(x) ? "_" : x.ToString().ToLower()))));
+                // Used to return "administrad_ _indicadores" for "Administrador Indicadores", now it return "administrador_indicadores".
+                claims.Add(new Claim(ClaimTypes.Role, string.Concat(userRole.Resultado.Nombre.Select((x, i) => i > 0 && char.IsWhiteSpace(x) ? "_" : x.ToString().ToLower()))));
                 claims.Add(new Claim("role_ids", userRole.Resultado.Id));
                 // came with this idea while listening https://www.youtube.com/watch?v=7PYe57MwxPI while drunk
-                using (StreamReader r = new StreamReader("Data/permissions.json")) 
+                using (StreamReader r = new StreamReader("Data/permissions.json"))
                 {
                     string json = r.ReadToEnd();
                     List<Role> roles = new List<Role>(JsonConvert.DeserializeObject<List<Role>>(json));
                     Role subject = roles.Find(role => role.role_id == userRole.Resultado.Id);
-                    if(subject != null) 
+                    if (subject != null)
                     {
-                        foreach (string permission in subject.write){
+                        foreach (string permission in subject.write)
+                        {
                             claims.Add(new Claim("writes", permission));
                         }
-                        foreach (string permission in subject.read){
+                        foreach (string permission in subject.read)
+                        {
                             claims.Add(new Claim("reads", permission));
                         }
                     }
-                    
+
                 }
-            }   
+            }
+            RefreshToken refreshToken = this.GenerateRefreshToken(user);
+            claims.Add(new Claim("refreshToken", refreshToken.RefreshTokenString));
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -152,6 +247,7 @@ namespace think_agro_metrics.Controllers
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
 
+            // TODO: Add refresh token entry
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
@@ -182,7 +278,8 @@ namespace think_agro_metrics.Controllers
             };
         }
 
-        private String GetHash(String randomString) {
+        private String GetHash(String randomString)
+        {
             var crypt = new System.Security.Cryptography.SHA256Managed();
             var hash = new System.Text.StringBuilder();
             byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
@@ -195,7 +292,7 @@ namespace think_agro_metrics.Controllers
 
         private async Task<AuthenticatedUser> LogInOntoThinkagro(Credentials credentials)
         {
-            
+
             var seed = Guid.NewGuid();
 
             var payload = this.CreateCommandObject("Usuarios", "IniciarSesion",
@@ -218,7 +315,7 @@ namespace think_agro_metrics.Controllers
             // This was a lie, in fact thinkagro can take up to 5 seconds when authorizing a user :c
             await Task.Delay(2000);
 
-            payload = this.CreateDataObject(new {Semilla = seed.ToString()});
+            payload = this.CreateDataObject(new { Semilla = seed.ToString() });
             response = await _client.PostAsync(this.SESSION_BY_SEED_QUERY_URL,
                 new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
             JSONResponse = await response.Content.ReadAsStringAsync();
@@ -230,12 +327,12 @@ namespace think_agro_metrics.Controllers
 
             AuthenticatedUser user = JsonConvert.DeserializeObject<AuthenticatedUser>(JSONResponse);
             return user;
-        }        
-        
-        
+        }
+
+
         private async Task<UserDetails> GetUserDetailsFromThinkagro(AuthenticatedUser user)
         {
-            var payload = this.CreateDataObject(new {Id = user.Resultado.UsuarioId });
+            var payload = this.CreateDataObject(new { Id = user.Resultado.UsuarioId });
             var response = await _client.PostAsync(this.GET_USER_DETAILS_QUERY_URL, new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
             String JSONResponse = await response.Content.ReadAsStringAsync();
 
@@ -244,17 +341,17 @@ namespace think_agro_metrics.Controllers
                 return null;
             }
             return JsonConvert.DeserializeObject<UserDetails>(JSONResponse);
-        }        
-        
+        }
+
         private async Task<UserRole[]> GetRolesPerUserFromThinkagro(UserDetails userDetails)
         {
             List<UserRole> roles = new List<UserRole>();
-            
+
             IEnumerable<String> rolesQuery = from role in userDetails.Resultado.Roles select role;
 
             foreach (String role in rolesQuery)
             {
-                var payload = this.CreateDataObject(new {Id = role });
+                var payload = this.CreateDataObject(new { Id = role });
                 var response = await _client.PostAsync(this.ROLE_BY_ID_QUERY_URL,
                     new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
                 String JSONResponse = await response.Content.ReadAsStringAsync();
@@ -268,7 +365,7 @@ namespace think_agro_metrics.Controllers
             }
 
             return roles.ToArray();
-        }        
+        }
 
         [AllowAnonymous]
         [HttpPost("")]
@@ -276,7 +373,7 @@ namespace think_agro_metrics.Controllers
         {
             try
             {
-                AuthenticatedUser user =  await this.LogInOntoThinkagro(credentials);
+                AuthenticatedUser user = await this.LogInOntoThinkagro(credentials);
                 if (user == null)
                 {
                     return Unauthorized();
@@ -308,7 +405,7 @@ namespace think_agro_metrics.Controllers
             {
                 return Unauthorized();
             }
-            
+
         }
     }
 }
