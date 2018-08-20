@@ -9,21 +9,22 @@ import { Document } from '../../../shared/models/document';
 })
 export class LinkDocumentSubformComponent implements OnInit {
 
+  @Input() bsConfig;
   @Output() docAdded: EventEmitter<Document> = new EventEmitter<Document>();
 
   model: Document;
 
-  constructor() { 
+  constructor() {
     this.model = new Document();
-    this.model.name = "";
-    this.model.link = "";
+    this.model.name = '';
+    this.model.link = '';
   }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    this.model.extension = "link";
+    this.model.extension = 'link';
     this.docAdded.emit(this.model);
   }
 }

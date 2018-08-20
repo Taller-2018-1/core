@@ -7,8 +7,7 @@ import { Document } from '../../shared/models/document';
 import { Indicator } from '../../shared/models/indicator';
 import { RegistryType } from '../../shared/models/registryType';
 import { Months } from '../../shared/models/months';
-import {Role} from '../../shared/models/role';
-import {RolesType} from '../../shared/models/rolesType';
+import { RolesType } from '../../shared/models/rolesType';
 
 // Services
 import { IndicatorService } from '../../services/indicator/indicator.service';
@@ -38,7 +37,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   // Observables
   indicator$: Observable<Indicator>;
-  indicatorToEdit: Indicator; // For edit Modal
   goal$: Observable<number>;
   value$: Observable<number>;
   indicatorGroupName$: Observable<string>;
@@ -61,15 +59,15 @@ export class IndicatorDetailComponent implements OnInit {
   // Allow to use the enum in the html tempalte
   RegistryType = RegistryType;
 
-  // Chart data
-  selectedTypeChart: string;
-  typesChart: string[] = [];
-  typeDispersion: string[] = [];
-
   // Document data (for EditDocument)
   document: Document = null;
 
-  constructor(private service: IndicatorService,
+  // Datepicker config
+  bsConfig = { dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false,
+    minDate: new Date(2018, 0, 1), maxDate: new Date()};
+
+  constructor(
+    private service: IndicatorService,
     private router: Router,
     private registryService: RegistryService,
     private indicatorGroupService: IndicatorGroupService,
@@ -86,10 +84,6 @@ export class IndicatorDetailComponent implements OnInit {
 
   ngOnInit() {
     this.updateExternalIndicator();
-
-    this.selectedTypeChart = 'Gráfico de línea'; // default chart type
-    this.typesChart = ['Gráfico de barra', 'Gráfico de línea']; // array options chart type
-    this.typeDispersion = ['Gráfico de dispersión'];
   }
 
   updateExternalIndicator() {
@@ -100,9 +94,12 @@ export class IndicatorDetailComponent implements OnInit {
     });
   }
 
-  // Called when the dropdown of filters by date changes or the indicator is changed
+  // Called when the dropdown of filters by date changes or the indicator is changed (ex. CRUD registries)
   updateData(event) {
-    this.updateDropdownDateFiltersValues(event);
+
+    if (event.isSpecificYearSelected !== undefined) {
+      this.updateDropdownDateFiltersValues(event);
+    }
 
     // Verify dropdown selection bottom-up (from week to year)
     if (this.isSpecificWeekSelected) {
@@ -137,6 +134,9 @@ export class IndicatorDetailComponent implements OnInit {
   updateObservablesAllYears() {
     this.indicator$ = this.service.getIndicator(this.idIndicator);
     this.value$ = this.service.calculateSpecificIndicator(this.idIndicator);
+    this.value$.subscribe(data => {
+      console.log(data);
+    });
     this.goal$ = this.service.getGoal(this.idIndicator);
     this.chartValues$ = this.service.calculateIndicatorChart(this.idIndicator);
     this.chartGoals$ = this.service.getGoalChart(this.idIndicator);
@@ -226,16 +226,6 @@ export class IndicatorDetailComponent implements OnInit {
     const mondayWeekString = mondayWeek.getDate() + ' ' + this.dateService.months[mondayWeek.getMonth()].shortName;
     const sundayWeekString = sundayWeek.getDate() + ' ' + this.dateService.months[sundayWeek.getMonth()].shortName;
     return week + ' (' + mondayWeekString + ' a ' + sundayWeekString + ')';
-  }
-
-  selectChart(type: string, indicator: Indicator) {
-    if (type === 'Gráfico de barra') {
-      this.selectedTypeChart = 'Gráfico de barra'; // change the dropdownlist text
-    } else if (type === 'Gráfico de línea') {
-      this.selectedTypeChart = 'Gráfico de línea'; // change the dropdownlist text
-    } else {
-      this.selectedTypeChart = 'Gráfico de dispersión';
-    }
   }
 
   openModalEditDocument(template: TemplateRef<any>, selectedDocument: Document) {

@@ -27,6 +27,7 @@ export class FileDocumentFormComponent implements OnInit {
   @Input() modalRef: BsModalRef;
   @Input() idRegistry;
   @Input() registry: Registry;
+  @Input() bsConfig;
 
   upload(files) {
     if (files.length === 0)

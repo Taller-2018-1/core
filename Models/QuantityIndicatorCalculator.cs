@@ -7,72 +7,92 @@ namespace think_agro_metrics.Models
 {
     public class QuantityIndicatorCalculator : IIndicatorCalculator
     {
-        public double Calculate(ICollection<Registry> registries)
+        public (double Value, long Quantity) Calculate(ICollection<Registry> registries)
         {
             long sum = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry is QuantityRegistry)
+                {
                     sum += (registry as QuantityRegistry).Quantity;
+                    quantity++;
+                }
+                    
                 else
                     throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
             }
-            return sum;
+            return (sum, quantity);
         }
 
-        public double CalculateYear(ICollection<Registry> registries,int year)
+        public (double Value, long Quantity) CalculateYear(ICollection<Registry> registries,int year)
         {
             long sum = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry.Date.Year == year) {
                     if(registry is QuantityRegistry)
+                    {
                         sum += (registry as QuantityRegistry).Quantity;
+                        quantity++;
+                    }
+                        
                     else
                         throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
                 }
             }
-            return sum;
+            return (sum, quantity);
         }
 
-        public double CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
+        public (double Value, long Quantity) CalculateYearTrimester(ICollection<Registry> registries, int year, int trimester)
         {
-            return CalculateYearMonth(registries, year, (trimester + 1) * 3) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1) +
-                CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2);
+            (double value1, long quantity1) = CalculateYearMonth(registries, year, (trimester + 1) * 3);
+            (double value2, long quantity2) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 1);
+            (double value3, long quantity3) = CalculateYearMonth(registries, year, (trimester + 1) * 3 - 2);
+            return ((value1 + value2 + value3), (quantity1 + quantity2 + quantity3));
         }
 
-        public double CalculateYearMonth(ICollection<Registry> registries,int year, int month)
+        public (double Value, long Quantity) CalculateYearMonth(ICollection<Registry> registries,int year, int month)
         {
             long sum = 0;
+            long quantity = 0;
             foreach (Registry registry in registries) {
                 if(registry.Date.Year == year && registry.Date.Month == month) {
                     if(registry is QuantityRegistry)
+                    {
                         sum += (registry as QuantityRegistry).Quantity;
+                        quantity++;
+                    }                        
                     else
                         throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
                 }
             }
-            return sum;
+            return (sum, quantity);
         }
 
-        public double CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
+        public (double Value, long Quantity) CalculateWeek(ICollection<Registry> registries, int startWeekYear, int startWeekMonth, int startWeekDay)
         {
             long sum = 0;
+            long quantity = 0;
             DateTime date = new DateTime(startWeekYear, startWeekMonth, startWeekDay);
             foreach (Registry registry in registries)
             {
                 for (int j = 0; j < 7; j++)
                 {
                     DateTime newDate = date.AddDays(j);
-                    if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month)
+                    if (registry.Date.Year == newDate.Year && registry.Date.Month == newDate.Month && registry.Date.Day == newDate.Day)
                     {
                         if (registry is QuantityRegistry)
+                        {
                             sum += (registry as QuantityRegistry).Quantity;
+                            quantity++;
+                        }
+                            
                         else
                             throw new TypeAccessException("QuantityIndicatorCalculator can't work over this type of registry");
                     }
                 }
             }
-            return sum;
+            return (sum, quantity);
         }
 
         public double CalculateGoal(ICollection<Goal> goals)
@@ -108,7 +128,7 @@ namespace think_agro_metrics.Models
             return (sum);
         }
 
-        public double[] Cumulative(double[] values)
+        public double[] Cumulative(double[] values, long[] quantities)
         {
             double sum = 0;
             List<double> result = new List<double>();
@@ -125,7 +145,7 @@ namespace think_agro_metrics.Models
 
         public double[] CumulativeGoals(double[] values)
         {
-            return this.Cumulative(values);
+            return this.Cumulative(values, new long[0]);
         }
 
         public double CalculateGoalDay(Goal goal)

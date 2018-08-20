@@ -13,9 +13,9 @@
 
 <div>
   <div *ngIf="linkChecked">
-    <app-link-document-subform (docAdded)="emitLink($event)"></app-link-document-subform>
+    <app-link-document-subform [bsConfig]="bsConfig" (docAdded)="emitLink($event)"></app-link-document-subform>
   </div>
   <div *ngIf="!linkChecked">
-    <app-file-document-subform (docAdded)="emitFile($event)"></app-file-document-subform>
+    <app-file-document-subform [bsConfig]="bsConfig" (docAdded)="emitFile($event)"></app-file-document-subform>
   </div>
 </div>

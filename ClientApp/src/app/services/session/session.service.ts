@@ -14,6 +14,7 @@ export class SessionService {
   static DROPDOWN_WEEK_TEXT_KEY = 'dropdownWeekText';
 
   static ALL_YEARS = 'Todos los años';
+  static YEAR = 'Año ';
   static SELECT_DEFAULT_TEXT = 'Seleccione...';
   static SELECT_DEFAULT = -1;
 
@@ -156,14 +157,15 @@ export class SessionService {
   }
 
   public getDateFiltersData() {
+    const year = (new Date()).getFullYear();
     return {
       // Dropdown text
-      dropdownYearText: this.getDropdownYearText(SessionService.ALL_YEARS),
+      dropdownYearText: this.getDropdownYearText(SessionService.YEAR + year),
       dropdownTrimesterText: this.getDropdownTrimesterText(SessionService.SELECT_DEFAULT_TEXT),
       dropdownMonthText: this.getDropdownMonthText(SessionService.SELECT_DEFAULT_TEXT),
       dropdownWeekText: this.getDropdownWeekText(SessionService.SELECT_DEFAULT_TEXT),
       // Selected value
-      selectedYear: this.getSelectedYear(SessionService.SELECT_DEFAULT),
+      selectedYear: this.getSelectedYear(year),
       selectedTrimester: this.getSelectedTrimester(SessionService.SELECT_DEFAULT),
       selectedMonth: this.getSelectedMonth(SessionService.SELECT_DEFAULT),
       selectedWeek: this.getSelectedWeek(SessionService.SELECT_DEFAULT),

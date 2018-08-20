@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation, TemplateRef} from '@angular/core';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 // Models
 import { Indicator } from '../../shared/models/indicator';
@@ -64,14 +64,14 @@ export class ConfigHomeComponent implements OnInit {
 
     this.confirmDeleteIndicator(indicator.name).then( result => {
       if (result.value) {
-        this.indicatorService.deleteIndicator(indicator).subscribe(data =>{
+        this.indicatorService.deleteIndicator(indicator).subscribe(data => {
           this.notificationService.showToaster('Indicador eliminado', 'success');
           this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
         });
       } else {
         // Do nothing
       }
-    }, error =>{
+    }, error => {
       this.notificationService.showToaster('Error al eliminar el registro', 'error');
     });
   }
@@ -91,7 +91,7 @@ export class ConfigHomeComponent implements OnInit {
       } else {
         // Do nothing
       }
-    },error =>{
+    }, error => {
         this.notificationService.showToaster('Error al eliminar el resultado esperado', 'error');
     });
   }
@@ -103,7 +103,8 @@ export class ConfigHomeComponent implements OnInit {
   private confirmDeleteIndicator(name: string) {
     return swal({
       title: 'Eliminar indicador',
-      html: '<h6>¿Está seguro que desea eliminar el indicador <br>"' + name + '"?</h6><br>Esta acción no puede ser revertida y se perderán todos los datos relacionados' +
+      html: '<h6>¿Está seguro que desea eliminar el indicador <br>"' + name + '"?</h6>' +
+        '<br>Esta acción no puede ser revertida y se perderán todos los datos relacionados' +
       '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
       type: 'warning',
       showCancelButton: true,
@@ -121,7 +122,8 @@ export class ConfigHomeComponent implements OnInit {
   private confirmDeleteIndicatorGroup(name: string) {
     return swal({
       title: 'Eliminar resultado esperado',
-      html: '<h6>¿Está seguro que desea eliminar el resultado<br>"' + name + '"?</h6><br>Esta acción no puede ser revertida y se perderán todos los datos relacionados' +
+      html: '<h6>¿Está seguro que desea eliminar el resultado<br>"' + name + '"?</h6>' +
+        '<br>Esta acción no puede ser revertida y se perderán todos los datos relacionados' +
       '<hr style="margin-top: 15px !important; margin-bottom: 2.5px !important;">',
       type: 'warning',
       showCancelButton: true,

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 // Models
 import { Indicator } from '../../../shared/models/indicator';
@@ -27,7 +27,7 @@ export class IndicatorFormComponent implements OnInit {
   private udpateEvent = new EventEmitter();
 
   public model: Indicator = new Indicator();
-  public selectedIndicatorTypeText = "Tipo de registros";
+  public selectedIndicatorTypeText = 'Tipo de registros';
 
   public types;
 
@@ -36,10 +36,10 @@ export class IndicatorFormComponent implements OnInit {
   // ger always can read
   // encOp always can read and can write, but not every indicator
   // anOp always can read, but can't write by default
-  read: any = { adm: true, ger: true, encOp: true, anOp: true,
+  read: any = { adm: true, ger: true, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
-  write: any = { adm: true, ger: false, encOp: false, anOp: false,
+  write: any = { adm: true, ger: true, encOp: false, anOp: false,
     ejVta: false, nvoNeg: false, ctrlSeg: false, exSr: false, exJr: false, prdta: false};
 
   constructor(private modalService: BsModalService,
@@ -47,9 +47,9 @@ export class IndicatorFormComponent implements OnInit {
               private roleService: RoleService) { }
 
   ngOnInit() {
-    this.types = ["Registros simples",
-                  "Registros de cantidad",
-                  "Registros de porcentajes"];
+    this.types = ['Registros simples',
+                  'Registros de cantidad',
+                  'Registros de porcentajes'];
     this.selectedIndicatorTypeText = this.types[0];
   }
 
@@ -65,24 +65,21 @@ export class IndicatorFormComponent implements OnInit {
 
     this.model.indicatorGroupID = this.idIndicatorGroup;
 
-    if(this.selectedIndicatorTypeText == this.types[0]) {
+    if (this.selectedIndicatorTypeText === this.types[0]) {
       this.model.registriesType = 0;
-    }
-    else if(this.selectedIndicatorTypeText == this.types[1]) {
+    } else if (this.selectedIndicatorTypeText === this.types[1]) {
       this.model.registriesType = 1;
-    }
-    else if (this.selectedIndicatorTypeText == this.types[2]) {
+    } else if (this.selectedIndicatorTypeText === this.types[2]) {
       this.model.registriesType = 2;
     }
 
     this.service.addIndicator(this.model).subscribe(
       data => {
-        if (data as boolean == false) {
+        if (data as boolean === false) {
           this.duplicateNameAlert();
           return;
-        }
-        else {
-          for (let i in this.read) {
+        } else {
+          for (const i in this.read) {
             if (this.read[i] === true) {
               this.roleService.addPermissionRead(RolesType[i], (data as Indicator), true).subscribe();
               if (this.write[i] === true) { // read and/or write permissions
@@ -90,18 +87,17 @@ export class IndicatorFormComponent implements OnInit {
               }
             }
           }
-          this.udpateEvent.emit("Indicator Added");
+          this.udpateEvent.emit('Indicator Added');
         }
       }
     );
     this.hideModal();
   }
 
-  private duplicateNameAlert()
-  {
+  private duplicateNameAlert() {
     swal({
       title: 'Error al agregar el grupo de indicadores',
-      //text: 'Ya existe un registro con el nombre ' + this.model.name,
+      // text: 'Ya existe un registro con el nombre ' + this.model.name,
       html: '<h6> Ya existe un indicador con el nombre "' + this.model.name + '"</h6>',
       type: 'warning',
       confirmButtonText: 'Aceptar',
@@ -110,5 +106,61 @@ export class IndicatorFormComponent implements OnInit {
       allowOutsideClick: false,
       allowEscapeKey: false
     });
+  }
+
+  changeEncOp(event: boolean): boolean {
+    if (event === false) {
+      this.write.encOp = false;
+    }
+    return event;
+  }
+
+  changeAnOp(event: boolean): boolean {
+    if (event === false) {
+      this.write.anOp = false;
+    }
+    return event;
+  }
+
+  changeEjVta(event: boolean): boolean {
+    if (event === false) {
+      this.write.ejVta = false;
+    }
+    return event;
+  }
+
+  changeNvoNeg(event: boolean): boolean {
+    if (event === false) {
+      this.write.nvoNeg = false;
+    }
+    return event;
+  }
+
+  changeCtrlSeg(event: boolean): boolean {
+    if (event === false) {
+      this.write.ctrlSeg = false;
+    }
+    return event;
+  }
+
+  changeExSr(event: boolean): boolean {
+    if (event === false) {
+      this.write.exSr = false;
+    }
+    return event;
+  }
+
+  changeExJr(event: boolean): boolean {
+    if (event === false) {
+      this.write.exJr = false;
+    }
+    return event;
+  }
+
+  changePrdta(event: boolean): boolean {
+    if (event === false) {
+      this.write.prdta = false;
+    }
+    return event;
   }
 }
