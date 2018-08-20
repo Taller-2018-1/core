@@ -173,20 +173,20 @@ namespace think_agro_metrics.Controllers
                     UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
                     if (userDetails == null)
                     {
-                        return Unauthorized();
+                        return BadRequest("invalid token");
                     }
 
                     UserRole[] userRoles = await this.GetRolesPerUserFromThinkagro(userDetails);
                     if (userRoles == null)
                     {
-                        return Unauthorized();
+                        return BadRequest("invalid token");
                     }
 
                     String token = this.BuildToken(user, userDetails, userRoles);
 
                     if (token == null)
                     {
-                        return Unauthorized();
+                        return BadRequest("invalid token");
                     }
                     return Ok(new { token = token });
                 }

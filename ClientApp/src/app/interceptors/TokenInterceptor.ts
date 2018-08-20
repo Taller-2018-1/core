@@ -48,9 +48,9 @@ export class TokenInterceptor implements HttpInterceptor {
       if (error instanceof HttpErrorResponse) {
         switch ((<HttpErrorResponse>error).status) {
           case 400:
-            return this.handle400Error(error);
+            return this.throwInternalError(error);
           case 401:
-            return this.handle401Error(request, next);
+            return this.tryToRefreshCredentials(request, next);
         }
       } else {
         return Observable.throw(error);
@@ -58,7 +58,7 @@ export class TokenInterceptor implements HttpInterceptor {
     });
   }
 
-  handle401Error(req: HttpRequest<any>, next: HttpHandler) {
+  tryToRefreshCredentials(req: HttpRequest<any>, next: HttpHandler) {
     if (!this.refreshLock) {
       this.refreshLock = true;
       return this.auth
@@ -87,9 +87,8 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  handle400Error(error) {
-    if (error && error.status === 400 && error.error && error.error.error === 'invalid_grant') {
-        // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
+  throwInternalError(error) {
+    if (error && error.status === 400 && error.error && error.error.error === 'invalid_token') {
         return this.logoutAction();
     }
 
@@ -97,8 +96,6 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 
   logoutAction() {
-    // Route to the login page (implementation up to you)
-
     return Observable.throw('');
   }
 }
