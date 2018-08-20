@@ -28,7 +28,6 @@ namespace think_agro_metrics.Controllers
     {
         private IConfiguration _config;
         private readonly DataContext _context;
-        private IHttpContextAccessor _accessor;
 
         public class RefreshTokenQuery
         {
@@ -43,9 +42,8 @@ namespace think_agro_metrics.Controllers
             public List<String> write;
         }
 
-        public AuthorizationController(IConfiguration config, DataContext context, IHttpContextAccessor accessor)
+        public AuthorizationController(IConfiguration config, DataContext context)
         {
-            _accessor = accessor;
             _context = context;
             _config = config;
         }
@@ -132,10 +130,11 @@ namespace think_agro_metrics.Controllers
         }
 
         private RefreshToken GenerateRefreshToken(AuthenticatedUser user){
-            String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            // Can't intercept due to https://github.com/dotnet/corefx/issues/11036
+            // String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.ExpirationDate = DateTime.Now.AddDays(14); // RenewToken lasts 14 days
-            refreshToken.IP = clientIp;
+            // refreshToken.IP = clientIp;
             refreshToken.RefreshTokenString = this.GenerateRefreshTokenString();
             refreshToken.UID = user.Resultado.Id;
             _context.RefreshTokens.Add(refreshToken);
@@ -148,17 +147,17 @@ namespace think_agro_metrics.Controllers
         {
             try
             {
-                String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                // String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
                 RefreshToken retrievedToken = _context.RefreshTokens.Where(r_roken => r_roken.RefreshTokenString == refreshTokenQuery.refreshToken).First();// && token.IP == clientIp)
                 if (retrievedToken == null)
                 {
                     return Unauthorized(); // Nonexistant token
                 }
-                else if (retrievedToken.IP != clientIp)
-                {
-                    _context.RefreshTokens.Remove(retrievedToken);
-                    return Unauthorized(); // Logged from a different IP
-                }
+                // else if (retrievedToken.IP != clientIp)
+                // {
+                //     _context.RefreshTokens.Remove(retrievedToken);
+                //     return Unauthorized(); // Logged from a different IP
+                // }
                 else if (retrievedToken.ExpirationDate.CompareTo(DateTime.Now) < 0)
                 {
                     _context.RefreshTokens.Remove(retrievedToken);
@@ -244,7 +243,7 @@ namespace think_agro_metrics.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 claims: claims.ToArray(),
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: creds);
 
             // TODO: Add refresh token entry
@@ -401,7 +400,7 @@ namespace think_agro_metrics.Controllers
                 }
                 return Ok(new { token = token });
             }
-            catch (System.Exception)
+            catch (System.Exception exception)
             {
                 return Unauthorized();
             }

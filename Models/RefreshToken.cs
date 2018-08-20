@@ -11,7 +11,7 @@ namespace think_agro_metrics.Models
         public string UID { get; set; } // User ID
         public string RefreshTokenString { get; set; } // The refreshToken
         public DateTime ExpirationDate { get; set; } // Expiration date for this token
-        public string IP { get; set; } // The last ip used
+        // public string IP { get; set; } // The last ip used
         public RefreshToken()
         {
         }
