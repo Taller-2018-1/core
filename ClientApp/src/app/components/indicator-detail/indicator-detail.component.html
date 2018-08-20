@@ -143,15 +143,6 @@
     <div class="modal-body">
       <app-registry-form (added)="updateData('')" [indicator]="indicator" [idIndicator]="idIndicator" [modalRef]="modalRef" [bsConfig]="bsConfig"></app-registry-form>
     </div>
-    <dialog open>
-      <dl>
-        <dt>Un registro de este indicador debe tener:</dt>
-        <dd>-Nombre: el nombre del registro</dd>
-        <dd>-Fecha: Fecha en que fue realizado</dd>
-        <dd>-Doc de respaldo: Constancia de realizacion de actividad (Link, pdf, jpg, jpeg, png)</dd>
-        <dd>-Tipo de registro: Seleccionar el tipo correspondiente</dd>
-      </dl>
-    </dialog>
   </ng-template>
 
   <!-- Modal Edit Goal -->
