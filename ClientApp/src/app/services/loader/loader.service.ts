@@ -24,6 +24,11 @@ export class LoaderService {
     this.loaderUpdateSubject.next(true);
   }
 
+  public clear() {
+    this.eventList = [];
+    this.loaderUpdateSubject.next(true);
+  }
+
   // removes a callback
   public pop(symbol: string): void {
     const targetIndex = this.eventList.findIndex(item => {
