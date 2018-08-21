@@ -8,4 +8,5 @@ export interface User {
   role_ids: string[];
   writes: string[];
   reads: string[];
+  refreshToken: string;
 }

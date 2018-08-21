@@ -12,6 +12,10 @@ export interface Credentials {
   password: string;
 }
 
+export interface RefreshTokenQuery {
+  refreshToken: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient, private router: Router, private notifications: NotificationService) {
@@ -40,9 +44,7 @@ export class AuthService {
         },
         error => {
           // error path
-          localStorage.setItem('token', null);
-          this.router.navigate(['/welcome']);
-          this.self_token = null;
+          this.logout();
           observer.error(new Error('usuario inválido'));
           this.notifications.showToaster('Usuario inválido', 'error');
           observer.complete();
@@ -51,9 +53,36 @@ export class AuthService {
     });
   }
 
+  public logout() {
+    localStorage.setItem('token', null);
+    this.router.navigate(['/welcome']);
+    this.self_token = null;
+  }
+
   private loadRole() {
     this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids).subscribe(data => {
       this.role = data;
+    });
+  }
+
+  public refreshToken(): Observable<string> {
+    return Observable.create(observer => {
+      return this.http.post<any>(`${AuthService.AUTHORIZATION_API}renew`, {refreshToken: (this.getUser() as User).refreshToken}).subscribe(
+        (data: any) => {
+          // success path
+          const token: string = data.token;
+          localStorage.setItem('token', token);
+          observer.next(token);
+          observer.complete();
+        },
+        error => {
+          // error path
+          this.logout();
+          observer.error(new Error('Sesión inválida'));
+          this.notifications.showToaster('Sesión inválida', 'error');
+          observer.complete();
+        }
+      );
     });
   }
 
