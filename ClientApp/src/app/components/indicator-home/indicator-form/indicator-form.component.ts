@@ -88,6 +88,7 @@ export class IndicatorFormComponent implements OnInit {
             }
           }
           this.udpateEvent.emit('Indicator Added');
+          location.reload();
         }
       }
     );
