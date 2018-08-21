@@ -55,6 +55,7 @@ export class AuthService {
   }
 
   public logout() {
+    sessionStorage.clear();
     localStorage.setItem('token', null);
     this.router.navigate(['/welcome']);
     this.self_token = null;
