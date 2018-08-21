@@ -21,6 +21,8 @@ For more info, you can check [this](https://github.com/dotnet/templating/wiki/Av
 ### Prerequisites
 * Node.js ≥ v8.9.0 + npm
 * .NET Core 2
+* wkhtmltox
+* libssl1.0-dev
 
 Install .NET Core. In some operating systems as OSX and Linux is also needed to install separatedly a node environment. It doesn't matter which version you use, as long as is 8+.
 
