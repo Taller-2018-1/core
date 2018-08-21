@@ -98,6 +98,7 @@ export class ConfigHomeComponent implements OnInit {
 
   public update() {
     this.indicatorsGroups$ = this.indicatorGroupService.getIndicatorGroups();
+    this.authService.loadRole();
   }
 
   private confirmDeleteIndicator(name: string) {

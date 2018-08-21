@@ -33,14 +33,15 @@ export class AuthService {
           // success path
           const token: string = data.token;
           localStorage.setItem('token', token);
-          observer.next(true);
-          observer.complete();
-          this.router.navigate(['/home']);
           this.notifications.showToaster('Sesión iniciada', 'success');
           this.self_token = this.getToken();
-          this.loadRole();
-
-
+          this.roleLoadRequest().subscribe(data => {
+            this.setLocalRole(data);
+            this.role = this.getRole();
+            observer.next(true)
+            observer.complete();
+            this.router.navigate(['/home']);
+          } );
         },
         error => {
           // error path
@@ -59,10 +60,15 @@ export class AuthService {
     this.self_token = null;
   }
 
-  private loadRole() {
-    this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids).subscribe(data => {
-      this.role = data;
+  public loadRole() {
+    this.roleLoadRequest().subscribe(data => {
+      this.setLocalRole(data);
     });
+   
+  }
+
+  private roleLoadRequest(){
+    return this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids)
   }
 
   public refreshToken(): Observable<string> {
@@ -74,6 +80,7 @@ export class AuthService {
           localStorage.setItem('token', token);
           observer.next(token);
           observer.complete();
+          this.loadRole();
         },
         error => {
           // error path
@@ -101,6 +108,16 @@ export class AuthService {
 
   // came with this idea while sober <3
   public isAllowedTo(indicatorId: number, claim: PermissionClaim): boolean {
+    //When the page is reloaded this.role == null | undefined.
+    if(this.role === null || this.role === undefined){
+      this.role = this.getRole();
+    }
+    
+    //if this.role ended as null. is because we have no role on session memory
+    if(!this.role){
+      return false;
+    }
+
     if (claim === PermissionClaim.WRITE) {
       for (const permission of  this.role.permissionsWrite) {
         if (permission.indicatorID === indicatorId) {
@@ -125,6 +142,7 @@ export class AuthService {
 
   public signOut() {
     return Observable.create(observer => {
+      sessionStorage.clear();
       localStorage.removeItem('token');
       observer.next(true);
       observer.complete();
@@ -134,24 +152,34 @@ export class AuthService {
     });
   }
 
-  public getRole(): Role {
-    if (this.role === null) { // If load ins't loaded...
-      // Load role
-      this.http.get<Role>(AuthService.ROLE_API + (this.getUser() as User).role_ids).subscribe(data => {
-        this.role = data;
-      },
-        error => { // If cannot obtain the role, close the session
-          this.signOut();
-          localStorage.setItem('token', null);
-          this.router.navigate(['/welcome']);
-          this.self_token = null;
-          this.notifications.showToaster('La sesión se ha cerrado', 'error');
-        },
-        () => { // Returns on subscribe completed
-          return this.role;
-        });
+  private getLocalRole(): Role {
+    const user: any = this.getUser();
+    if(!user){
+      return null;
+    }
+    const user_role = sessionStorage.getItem(JSON.stringify(user.role_ids));
+    if (!user_role || user_role === 'null') {
+      return null;
     } else {
-      return this.role;
+      return JSON.parse(user_role);
+    }
+  }
+
+  private setLocalRole(role: Role){
+    const user = this.getUser();
+    if (typeof user !== 'boolean') {
+      sessionStorage.setItem(JSON.stringify(user.role_ids), JSON.stringify(role));
+    }
+  }
+
+  public getRole(): Role {
+    const local_role = this.getLocalRole();
+    // Check if there isn't a role stored
+    if(!local_role) { 
+        return null; 
+    }
+    else {
+        return local_role;
     }
   }
 

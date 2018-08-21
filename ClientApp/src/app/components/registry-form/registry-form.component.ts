@@ -23,7 +23,7 @@ import swal from 'sweetalert2';
   styleUrls: ['./registry-form.component.css']
 })
 export class RegistryFormComponent implements OnInit {
-
+  
   model: Registry;
   router: Router;
   @Input() modalRef: BsModalRef;
@@ -45,14 +45,12 @@ export class RegistryFormComponent implements OnInit {
       // nameVerification = data; // Will return true if registry was added, and false if it fails because of a duplicated name
       if (data) {
         this.model = data;
-        this.indicator.registries.push(this.model);
+        //
         this.addDocuments();
       } else {
         this.duplicateNameAlert();
       }
     });
-    this.added.emit();
-    this.closeModal();
   }
 
   closeModal() {
@@ -128,14 +126,14 @@ export class RegistryFormComponent implements OnInit {
     });
 
     this.fileList.forEach(element => {
-      this.registryService.addFileDocument(element, this.model.registryID).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          // this.progress = Math.round(100 * event.loaded / event.total);
-          // console.log();
-        } else if (event.type === HttpEventType.Response) {
-          this.model.documents.push(new Document().fromJSON(event.body));
+      this.registryService.addFileDocument(element, this.model.registryID).subscribe(data => {
+        if (data.type === HttpEventType.Response) {
+          this.model.documents.push(new Document().fromJSON(data.body));
         }
       });
     });
+    this.indicator.registries.push(this.model);
+    this.added.emit();
+    this.closeModal();
   }
 }

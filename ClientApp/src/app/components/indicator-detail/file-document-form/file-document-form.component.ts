@@ -33,21 +33,11 @@ export class FileDocumentFormComponent implements OnInit {
     if (files.length === 0)
       return;
     
-    const formData = new FormData();
-
-    for (let file of files)
-      formData.append(file.name, file);
-
-    const uploadReq = new HttpRequest('POST', 'api/Registries/' + this.idRegistry + '/AddFileDocument', formData, {
-      reportProgress: true,
-    });
-
-    this.http.request(uploadReq).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress)
-        this.progress = Math.round(100 * event.loaded / event.total);
-      else if (event.type === HttpEventType.Response)
-        this.registry.documents.push(new Document().fromJSON(event.body));
-    });
+      this.RegistryService.addFileDocument(files, this.idRegistry).subscribe(data => {
+        if (data.type === HttpEventType.Response) {
+          this.registry.documents.push(new Document().fromJSON(data.body));
+        }
+      });
 
     this.closeModal();
   }
