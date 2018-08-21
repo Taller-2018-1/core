@@ -129,15 +129,16 @@ namespace think_agro_metrics.Controllers
             }
         }
 
-        private RefreshToken GenerateRefreshToken(AuthenticatedUser user){
+        private async Task<RefreshToken> GenerateRefreshToken(AuthenticatedUser user){
             // Can't intercept due to https://github.com/dotnet/corefx/issues/11036
             // String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.ExpirationDate = DateTime.Now.AddDays(14); // RenewToken lasts 14 days
             // refreshToken.IP = clientIp;
             refreshToken.RefreshTokenString = this.GenerateRefreshTokenString();
-            refreshToken.UID = user.Resultado.Id;
+            refreshToken.UID = user.Resultado.UsuarioId;
             _context.RefreshTokens.Add(refreshToken);
+            await _context.SaveChangesAsync();
             return refreshToken;
         }
 
@@ -148,7 +149,7 @@ namespace think_agro_metrics.Controllers
             try
             {
                 // String clientIp = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                RefreshToken retrievedToken = _context.RefreshTokens.Where(r_roken => r_roken.RefreshTokenString == refreshTokenQuery.refreshToken).First();// && token.IP == clientIp)
+                RefreshToken retrievedToken = _context.RefreshTokens.Where(r_roken => r_roken.RefreshTokenString == refreshTokenQuery.refreshToken).Last();// && token.IP == clientIp)
                 if (retrievedToken == null)
                 {
                     return Unauthorized(); // Nonexistant token
@@ -161,14 +162,19 @@ namespace think_agro_metrics.Controllers
                 else if (retrievedToken.ExpirationDate.CompareTo(DateTime.Now) < 0)
                 {
                     _context.RefreshTokens.Remove(retrievedToken);
+                    await _context.SaveChangesAsync();
                     return Unauthorized(); // Token expired long ago :c
                 }
                 else
                 {
                     AuthenticatedUser user = new AuthenticatedUser();
                     user.Resultado = new AuthenticatedUserResult();
-                    user.Resultado.Id = retrievedToken.UID;
+                    user.Resultado.UsuarioId = retrievedToken.UID;
+
+                    List<RefreshToken> all = await _context.RefreshTokens.Where(param => param.UID == user.Resultado.Id).ToListAsync();
+                    _context.RefreshTokens.RemoveRange(all);
                     _context.RefreshTokens.Remove(retrievedToken);
+                    await _context.SaveChangesAsync();
 
                     UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
                     if (userDetails == null)
@@ -182,7 +188,7 @@ namespace think_agro_metrics.Controllers
                         return Unauthorized();
                     }
 
-                    String token = this.BuildToken(user, userDetails, userRoles);
+                    String token = await this.BuildToken(user, userDetails, userRoles);
 
                     if (token == null)
                     {
@@ -197,7 +203,7 @@ namespace think_agro_metrics.Controllers
             }
 
         }
-        private string BuildToken(AuthenticatedUser user, UserDetails userDetails, UserRole[] userRoles)
+        private async Task<String> BuildToken(AuthenticatedUser user, UserDetails userDetails, UserRole[] userRoles)
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim("id", userDetails.Resultado.Id));
@@ -234,7 +240,7 @@ namespace think_agro_metrics.Controllers
 
                 }
             }
-            RefreshToken refreshToken = this.GenerateRefreshToken(user);
+            RefreshToken refreshToken = await this.GenerateRefreshToken(user);
             claims.Add(new Claim("refreshToken", refreshToken.RefreshTokenString));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -247,7 +253,8 @@ namespace think_agro_metrics.Controllers
                 signingCredentials: creds);
 
             // TODO: Add refresh token entry
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            String returnValue = new JwtSecurityTokenHandler().WriteToken(token);
+            return returnValue;
         }
 
         public HttpClient _client = new HttpClient();
@@ -334,7 +341,6 @@ namespace think_agro_metrics.Controllers
             var payload = this.CreateDataObject(new { Id = user.Resultado.UsuarioId });
             var response = await _client.PostAsync(this.GET_USER_DETAILS_QUERY_URL, new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
             String JSONResponse = await response.Content.ReadAsStringAsync();
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -392,7 +398,7 @@ namespace think_agro_metrics.Controllers
                     return Unauthorized();
                 }
 
-                String token = this.BuildToken(user, userDetails, userRoles);
+                String token = await this.BuildToken(user, userDetails, userRoles);
 
                 if (token == null)
                 {
