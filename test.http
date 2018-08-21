@@ -1,0 +1,6 @@
+POST http://localhost:5000/api/auth/renew
+Content-Type: application/json
+
+{
+    "refreshToken": "GezpnAbRHawyF11HvkgJlew4wfW6sAJJPttoOm+yP4Nq03IcxqiJdshXY5/qTcyQGtpn5OftZ+mHZQ5AoXIyPbRSQl5AgLdiYvoq33ETWr+n/PXqAexOwNzJtV/SZk8x1HNvrCa3viAKcUZttHd3ZsqY1iDSU++iOlBGWWrZ6/Q="
+}

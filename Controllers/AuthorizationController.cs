@@ -142,8 +142,8 @@ namespace think_agro_metrics.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/renew")]
-        private async Task<IActionResult> renewSession([FromBody] RefreshTokenQuery refreshTokenQuery)
+        [HttpPost("renew")]
+        public async Task<IActionResult> renewSession([FromBody] RefreshTokenQuery refreshTokenQuery)
         {
             try
             {
@@ -173,20 +173,20 @@ namespace think_agro_metrics.Controllers
                     UserDetails userDetails = await this.GetUserDetailsFromThinkagro(user);
                     if (userDetails == null)
                     {
-                        return BadRequest("invalid token");
+                        return Unauthorized();
                     }
 
                     UserRole[] userRoles = await this.GetRolesPerUserFromThinkagro(userDetails);
                     if (userRoles == null)
                     {
-                        return BadRequest("invalid token");
+                        return Unauthorized();
                     }
 
                     String token = this.BuildToken(user, userDetails, userRoles);
 
                     if (token == null)
                     {
-                        return BadRequest("invalid token");
+                        return Unauthorized();
                     }
                     return Ok(new { token = token });
                 }
@@ -243,7 +243,7 @@ namespace think_agro_metrics.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 claims: claims.ToArray(),
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: creds);
 
             // TODO: Add refresh token entry

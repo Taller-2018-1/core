@@ -14,26 +14,13 @@ export class LoaderInterceptor implements HttpInterceptor {
     return next.handle(request).do((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
         // do stuff with response if you want
-        this.loader.pop(request.url);
+        // this.loader.pop(request.url);
       } else {
-        this.loader.push(request.url);
+        // this.loader.push(request.url);
       }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        if (err.status === 401) {
-          // No Auth
-          // redirect to the login route
-          // or show a modal
-          this.loader.pop(request.url);
-        }
-        if (err.status === 403) {
-          // Not allowed
-          this.loader.pop(request.url);
-        }
-        if (err.status === 500) {
-        // internal server error
-          this.loader.pop(request.url);
-        }
+          // this.loader.pop(request.url);
       }
     });
   }
