@@ -19,8 +19,8 @@
             </div>
             <div class="col-xs-10 col-sm-4 col-md-4">
               <div [class.hidden]="!isWriteAllowed && !isAdminOrManager" class="pull-right">
-                <button class="btn btn-xs btn-warning" (click)="openModalEditRegistry($event, editRegistry,registry)">Modificar</button>
-                <button class="btn btn-xs btn-danger" (click)="deleteRegistry($event, registry)">Eliminar</button>
+                <button class="btn btn-xs btn-warning" (click)="openModalEditRegistry($event, editRegistry,registry)">MODIFICAR</button>
+                <button class="btn btn-xs btn-danger" (click)="deleteRegistry($event, registry)">ELIMINAR</button>
               </div>
             </div>
             <div class="col-xs-2 col-sm-1 col-md-1">
@@ -33,9 +33,9 @@
         <ng-template ngbPanelContent>
 
           <div [class.hidden]="!isWriteAllowed && !isAdminOrManager"  class="row">
-            <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalFileDocument($event, fileModal, registry)">Agregar archivo</button>
+            <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalFileDocument($event, fileModal, registry)">AGREGAR ARCHIVO</button>
             <span class="pull-right">&nbsp;</span>
-            <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalLinkDocument($event, linkModal, registry)">Agregar link</button>
+            <button class="btn btn-xs btn-primary btn-size-text pull-right" (click)="openModalLinkDocument($event, linkModal, registry)">AGREGAR LINK</button>
           </div>
           <br [class.hidden]="!isWriteAllowed && !isAdminOrManager"  />
 
@@ -57,25 +57,24 @@
                 <div class="col-xs-12 col-sm-12 col-md-5">
                   <div class="pull-right">
                     <button class="btn btn-xs btn-success" *ngIf="document.extension=='link'; else viewFileTemplate"
-                            type="button" (click)="goToLinkBlank(document.link)">
-                      Ver
+                      type="button" (click)="goToLinkBlank(document.link)"> VER
                     </button>
                     <ng-template #viewFileTemplate>
                       <button class="btn btn-xs btn-success" type="button" (click)="openModalDocumentPreview($event, lgModal, document)">
-                        Ver
+                        VER
                       </button>
                     </ng-template>
                     <button class="btn btn-xs btn-info" *ngIf="document.extension=='link'; else downloadFileTemplate"
                             type="button" (click)="goToLink(document.link)">
-                      Descargar
+                      DESCARGAR
                     </button>
                     <ng-template #downloadFileTemplate>
                       <button class="btn btn-xs btn-info" type="button" (click)="download(document)">
-                        Descargar
+                        DESCARGAR
                       </button>
                     </ng-template>
-                    <button [class.hidden]="!isWriteAllowed && !isAdminOrManager" class="btn btn-xs btn-warning" type="button" (click)="openModalEditDocument($event, editDocument, document)">Modificar</button>
-                    <button [class.hidden]="!isWriteAllowed && !isAdminOrManager" class="btn btn-xs btn-danger" type="button" (click)="deleteDocument(registry,document)">Eliminar</button>
+                    <button [class.hidden]="!isWriteAllowed && !isAdminOrManager" class="btn btn-xs btn-warning" type="button" (click)="openModalEditDocument($event, editDocument, document)">EDITAR</button>
+                    <button [class.hidden]="!isWriteAllowed && !isAdminOrManager" class="btn btn-xs btn-danger" type="button" (click)="deleteDocument(registry,document)">ELIMINAR</button>
                   </div>
                 </div>
 

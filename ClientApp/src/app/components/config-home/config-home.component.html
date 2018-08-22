@@ -14,7 +14,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6">
           <button [class.hidden]="!isAdminOrManager" type="button" class="btn btn-primary btn-md pull-right"
                   (click)="openModal(addIndicatorGroup)">
-            Agregar resultado esperado <span class="glyphicon glyphicon-plus"> </span>
+            agregar resultado esperado <span class="glyphicon glyphicon-plus"> </span>
           </button>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
               <h2>
-                Listado de resultados esperados
+                Listado de Resultados Esperados
               </h2>
             </div>
           </div>
@@ -43,10 +43,10 @@
                       <div class="col-xs-10 col-sm-10 col-md-4">
                         <button class="btn btn-xs btn-danger pull-right" style="margin-right: 6px; margin-bottom: 5px" type="button"
                                 (click)="deleteIndicatorGroup($event, indicatorGroup)"
-                                [disabled]="indicatorGroup.indicatorGroupID === 9">Eliminar
+                                [disabled]="indicatorGroup.indicatorGroupID === 9">ELIMINAR
                         </button>
                         <button class="btn btn-xs btn-warning pull-right" style="margin-right: 5px; margin-bottom: 5px" type="button"
-                                (click)="openModalEdit($event, editIndicatorGroup,indicatorGroup)">Modificar
+                                (click)="openModalEdit($event, editIndicatorGroup,indicatorGroup)">MODIFICAR
                         </button>
                       </div>
                       <div class="col-xs-2 col-sm-2 col-md-1">
@@ -60,7 +60,7 @@
                       <div class="col-xs-12 col-sm-12 col-md-12">
                         <button [class.hidden]="!isAdminOrManager" type="button" class="btn btn-primary btn-xs pull-right"
                                 (click)="openModalIndicator(addIndicator, indicatorGroup.indicatorGroupID)">
-                          Agregar indicador <span class="glyphicon glyphicon-plus"> </span>
+                          AGREGAR INDICADOR <span class="glyphicon glyphicon-plus"> </span>
                         </button>
                       </div>
                     </div>
@@ -76,7 +76,7 @@
                         <div class="col-xs-5 col-sm-5 col-md-3">
                           <button class="btn btn-xs btn-danger"
                                   [disabled]="indicator.registriesType == externalRegistry"
-                                  type="button" (click)="deleteIndicator($event, indicator)">Eliminar
+                                  type="button" (click)="deleteIndicator($event, indicator)">ELIMINAR
                           </button>
                         </div>
                       </div>
@@ -94,7 +94,7 @@
       <!-- Modal Edit Indicator -->
       <ng-template #editIndicatorGroup>
         <div class="modal-header" tabindex="-1">
-          <h4 class="modal-title pull-left">Modificar resultado esperado</h4>
+          <h4 class="modal-title pull-left">Modificar Resultado Esperado</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="editIndicatorGroupModalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -122,7 +122,7 @@
 
       <ng-template #addIndicator>
         <div class="modal-header">
-          <h4 class="modal-title pull-left">Ingrese un nuevo indicador</h4>
+          <h4 class="modal-title pull-left">Ingresar un nuevo indicador</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="addIndicatorModalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
