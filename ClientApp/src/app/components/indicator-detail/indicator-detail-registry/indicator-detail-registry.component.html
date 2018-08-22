@@ -13,8 +13,8 @@
             </div>
             <div class="col-xs-12 col-sm-2 col-md-2">
               <span class="not-bold-but-italic">
-                <strong *ngIf="registriesType === RegistryType.QuantityRegistry">{{registry.quantity || "0"}}  apariciones</strong>
-                <strong *ngIf="registriesType === RegistryType.PercentRegistry">{{registry.percent || "0"}} % asociado</strong>
+                <strong *ngIf="registriesType === RegistryType.QuantityRegistry">{{registry.quantity}}  indicator.registriesName</strong>
+                <strong *ngIf="registriesType === RegistryType.PercentRegistry">{{registry.percent}} indicator.registriesName</strong>
               </span>
             </div>
             <div class="col-xs-10 col-sm-4 col-md-4">
