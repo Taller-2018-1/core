@@ -35,23 +35,23 @@ namespace think_agro_metrics.Data
             var user = Environment.GetEnvironmentVariable("MSSQL_USER");
             var password = Environment.GetEnvironmentVariable("MSSQL_PASSWORD");
             string connection = "Server=";
-            if(server != null){
+            if(! String.IsNullOrEmpty(server)){
                 connection +=server + ";";
             }
             else{
                 connection +=".\\SQLEXPRESS;";
             }
             connection += "Database=";
-            if(database != null){
+            if( ! String.IsNullOrEmpty(database)){
                 connection += database +";";
             }
             else{
                 connection += "think_agro_metrics;";
             }
-            if(user != null){
+            if(! String.IsNullOrEmpty(user)){
                 connection += "User=" + user + ";";
             }
-            if(password != null)
+            if(! String.IsNullOrEmpty(password))
             {
                 connection += "Password=" + password + ";";
             }
