@@ -52,12 +52,12 @@
     <div>
       <ol class="breadcrumb shortcode">
         <div *ngIf="indicator.registriesType != RegistryType.ExternalRegistry">
-          <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
-          <button class="btn btn-xs btn-clean-2" (click)="openModalEditIndicator(editIndicator)">Modificar Indicador</button>
+          <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">MODIFICAR METAS</button>
+          <button class="btn btn-xs btn-clean-2" (click)="openModalEditIndicator(editIndicator)">MODIFICAR INDICADOR</button>
         </div>
 
         <div *ngIf="indicator.registriesType == RegistryType.ExternalRegistry">
-            <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">Modificar Metas</button>
+          <button class="btn btn-xs btn-clean-2" (click)="openModal(editGoalModal)">MODIFICAR METAS</button>
         </div>
       </ol>
     </div>
@@ -120,7 +120,7 @@
               </div>
             </div>
             <!--Begin tab-->
-            <app-indicator-detail-registry (updateEvent)="updateData('')" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType" [bsConfig]="bsConfig"></app-indicator-detail-registry>
+            <app-indicator-detail-registry (updateEvent)="updateData('')" [indicatorId]="idIndicator" [registries]="indicator.registries" [registriesType]="indicator.registriesType" [bsConfig]="bsConfig" [indicator]="indicator"></app-indicator-detail-registry>
           </div>
         </div>
 

@@ -20,7 +20,7 @@
   <div class="row">
 
     <div class="col-sm-6">        
-      <label>Seleccione el año de las metas:</label>
+      <label>Seleccione el año de metas:</label>
       <br>
 
       <!-- Dropdown of years -->
@@ -77,7 +77,7 @@
 
   <div class="modal-footer">
     <button type="button" (click)="revertChanges()" class="btn btn-sm btn-clean-2">CANCELAR</button>
-    <button [disabled]="!this.form.valid || !(this.isChanged || this.isAdded)" type="button" (click)="saveChanges()" class="btn btn-sm btn-primary">Guardar</button>
+    <button [disabled]="!this.form.valid || !(this.isChanged || this.isAdded)" type="button" (click)="saveChanges()" class="btn btn-sm btn-primary">GUARDAR</button>
   </div>
 
 </div>
