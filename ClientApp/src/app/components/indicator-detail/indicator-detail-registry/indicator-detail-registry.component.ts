@@ -16,6 +16,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import swal from 'sweetalert2';
+import {Indicator} from "../../../shared/models/indicator";
 
 @Component({
   selector: 'app-indicator-detail-registry',
@@ -39,6 +40,8 @@ export class IndicatorDetailRegistryComponent implements OnInit {
   public registriesType: number;
 
   @Input() bsConfig;
+
+  @Input() indicator: Indicator;
 
   @Output()
   updateEvent = new EventEmitter();
