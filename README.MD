@@ -73,3 +73,39 @@ Use this method when developing and you want absolute control over the angular p
 
 ### How to create new components
 In the previous version, a patch was needed in order to make the @angular/cli tool to create components. In the 2.1 version of the template, angular projects have native support for those tools. To use them, you need to navigate to the folder `ClientApp` and then run the desired commands in there.
+
+# Aditional considerations
+
+## Database Requirements
+This project uses Microsoft\'s Sql Server as its DBMS, and was tested against Sql server 2017 for linux.
+
+## Database Connection
+Before RC2, the MSSQL connection string must be configured in `Data/Datacontex.cs` In RC2, the MSSQL connection string is constructed based on the following environmental variables: MSSQL_SERVER, MSSQL_DB, MSSQL_USER, MSSQL_PASSWORD. For example in unix based systems:
+```
+export MSSQL_SERVER=127.0.0.3,1433
+export MSSQL_DB=think_agro
+export MSSQL_USER=tauser
+export MSSQL_PASSWORD=tapassword1
+```
+
+## Building a Release Version
+A release version can be build using standard deployment commands of ASP.NET CORE 2. In the following example the Release version is outputed into `./dist`
+``` dotnet publish -c Release -o dist```
+
+ 
+## Creating a Docker image
+This project includes a Dockerfile that install all it's dependencies and creates a Docker image ready for use. 
+
+### Compiling Docker image
+``` docker build . -t think_agro_metrics ```
+
+### Using image
+``` docker run -e 'MSSQL_SERVER=ip,port' -e 'MSSQL_DB=dbname' -e 'MSSQL_USER=dbusername' -e 'MSSQL_PASSWORD=dbpassword' -p hostport:8080 think_agro
+```
+A custom docker volume is recomended for the `/app/wwwroo/Repository` directory as registries' backups are stored in this direction, the Dockerfile includes directives for a generic one, in order to store the backups in host and not the container.
+
+
+## HTTPS/SSL
+The HTTPS/TSL/SSL security layer must be added via a reverse proxy like Caddyserver, Apache or NGINX. This was chosen because, as for the start of this project, Kestrel provides lower security and load management features than the before mentioned. Therefore is a poor choise for a web facing web server.
+
+
