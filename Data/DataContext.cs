@@ -48,17 +48,15 @@ namespace think_agro_metrics.Data
             else{
                 connection += "think_agro_metrics;";
             }
-            if(! String.IsNullOrEmpty(user)){
+            if(! String.IsNullOrEmpty(user) && ! String.IsNullOrEmpty(password ){
                 connection += "User=" + user + ";";
+                connection += "Password=" + password + ";";
+                connection += "MultipleActiveResultSets=True;";
+
             }
             else {
                 connection += "Trusted_Connection=True";
             }
-            if(! String.IsNullOrEmpty(password))
-            {
-                connection += "Password=" + password + ";";
-            }
-            connection += "MultipleActiveResultSets=True;";
             return connection;
         }
 
