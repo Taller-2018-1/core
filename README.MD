@@ -100,7 +100,8 @@ This project includes a Dockerfile that install all it's dependencies and create
 ``` docker build . -t think_agro_metrics ```
 
 ### Using image
-``` docker run -e 'MSSQL_SERVER=ip,port' -e 'MSSQL_DB=dbname' -e 'MSSQL_USER=dbusername' -e 'MSSQL_PASSWORD=dbpassword' -p hostport:8080 think_agro
+``` 
+docker run -e 'MSSQL_SERVER=ip,port' -e 'MSSQL_DB=dbname' -e 'MSSQL_USER=dbusername' -e 'MSSQL_PASSWORD=dbpassword' -p hostport:8080 think_agro
 ```
 A custom docker volume is recomended for the `/app/wwwroo/Repository` directory as registries' backups are stored in this direction, the Dockerfile includes directives for a generic one, in order to store the backups in host and not the container.
 
